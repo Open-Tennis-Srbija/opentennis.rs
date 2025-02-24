@@ -1,0 +1,104 @@
+@use '../abstracts/' as *;
+
+.player-matches{
+    .matches-wrapper{
+        margin-bottom: 50px;
+    }
+    .matches-header{
+        margin-top: -35px;
+    }
+}
+
+.static-wrapper.player{
+    border: 0;
+
+    .edit-btn{
+        display: block;
+        font-size: 14px;
+        padding: 10px 20px;
+        background-color: $blue;
+        color: white;
+        width: max-content;
+        text-decoration: none;
+        padding-top: 15px;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%,-30%);
+        text-transform: uppercase;
+        font-family: 'Helvetica Neue';
+
+        &:hover{
+            background-color: $red;
+        }
+        
+    }
+}
+
+.summary.player{
+
+    
+    &.mobile{
+        display: none;
+    }
+    .summary-item{
+        border: 0;
+        h2{
+            color: $dark-gray;
+            font-size: 17px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+        p{
+            font-size: 40px;
+            font-weight: bold;
+        }
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .static-wrapper.player{
+        h1{
+            display: block;
+            margin-bottom: 0;
+            text-align: center;
+            width: 100%;
+        }
+        p.subtitle{
+            margin-top: 0;
+        }   
+       
+        .summary-title{
+            font-size: 25px;
+            border-width: 1px;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            &.low-margin{
+                margin-bottom: 0;
+                border-bottom: 2px solid $dark-gray !important;
+            }
+        }
+
+        .summary.player.five{
+            &.desktop{
+                display: none !important;
+            }
+            
+            &.mobile{
+                flex-wrap: wrap;
+                display: flex;
+                .summary-item{
+                    width: 33.3%;
+    
+                    &.half{
+                        width: 50%;
+                    }
+                    p{
+                        font-size: 35px;
+                    }
+                }
+            }
+
+        }
+    }
+}

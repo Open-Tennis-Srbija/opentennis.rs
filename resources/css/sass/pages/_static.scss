@@ -1,0 +1,70 @@
+@use '../abstracts' as *;
+
+// Join
+
+.spacer-static {
+    margin-top: 70px;
+}
+
+.title {
+    font-family: 'Helvetica Neue';
+    font-size: 50px;
+    text-align: center;
+    margin: 70px 0 65px;
+    text-transform: uppercase;
+}
+
+.join-wrapper {
+    max-width: 1200px;
+    margin: 0 auto 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+
+    .join-text {
+        font-size: 25px;
+    }
+
+    p a {
+        text-decoration: none;
+        color: $blue;
+
+        &:hover {
+            color: $red;
+        }
+    }
+
+    .icons-wrapper {
+        margin-top: 15px;
+        display: flex;
+        gap: 70px;
+
+        a svg {
+            height: 45px;
+            .cls-1 {
+                fill: #8f8f8f;
+            }
+        }
+
+        a.viber:hover svg .cls-1 {
+            fill: #7360f2;
+        }
+
+        a.WhatsApp:hover svg .cls-1 {
+            fill: #25D366;
+        }
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .join-wrapper {
+        padding-top: 170px;
+        padding-inline: 20px;
+    }
+
+    .title {
+        display: none;
+    }
+}

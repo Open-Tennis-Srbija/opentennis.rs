@@ -1,0 +1,100 @@
+@use '../abstracts' as *;
+
+$global-font-alt: 'Helvetica Neue';
+$footer-text-color: #8f8f8f;
+$footer-hover-color: #c6373d;
+$border-color: #a1a1a1;
+.footer-wrapper {
+  max-width: 1200px;
+  margin: 0 auto 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+
+  &.hide{
+    display: none;
+    visibility: none;
+  }
+
+  .footer-text {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 30px;
+    gap: 66px;
+
+    a {
+      font-size: 20px;
+      text-transform: uppercase;
+      font-family: $global-font-alt;
+      text-decoration: none;
+      color: $footer-text-color;
+
+      &:hover {
+        color: $footer-hover-color;
+      }
+    }
+  }
+
+  .icons-wrapper {
+    display: flex;
+    gap: 70px;
+
+    a {
+      svg {
+        height: 45px;
+
+        .cls-1{
+          fill: #8f8f8f;
+        }
+      }
+
+      &.viber:hover svg .cls-1 {
+        fill: #7360f2;
+      }
+
+      &.WhatsApp:hover svg .cls-1 {
+        fill: #25D366;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .footer-wrapper {
+    position: fixed;
+    width: 100%;
+    background: white;
+    bottom: 0;
+    border-top: 1px solid $border-color;
+    height: 50px;
+    margin: 0;
+
+    .footer-text {
+      padding-inline: 0;
+      justify-content: space-between;
+      gap: 0;
+      width: 100%;
+
+      a {
+        display: grid;
+        place-items: center;
+        width: 50%;
+        font-size: 13px;
+      }
+    }
+
+    .icons-wrapper {
+      display: none;
+
+      a {
+        svg {
+          height: 30px;
+        }
+      }
+    }
+  }
+}

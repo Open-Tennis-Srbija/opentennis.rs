@@ -1,0 +1,192 @@
+@use '../abstracts' as *;
+.loader{
+  position: fixed;
+  top: 150px;
+  left: 0;
+  right: 0;
+  background-color: red;
+  height: calc(100vh - 150px);
+  z-index: 5;
+
+  &.close{
+    display: none !important;
+    pointer-events: none !important;
+  }
+}
+.rankings-wrapper {
+  max-width: 1200px;
+  margin: 0 auto 100px;
+
+  .rankings-header,
+  .ranking-entry {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 100px 224px 78px 133px 133px 133px 133px 133px 133px;
+  }
+
+  .rankings-header {
+    margin-top: 60px;
+    padding-left: 10px;
+    font-size: 17px;
+    color: #949494;
+    border-bottom: 2px solid #b0b0b0;
+    padding-bottom: 5px;
+  }
+
+  .elo,
+  .total-matches,
+  .wins,
+  .loses,
+  .win-precent,
+  .place {
+    place-self: center;
+  }
+
+  .ranking-entry {
+    height: 100px;
+    border-bottom: 2px solid #e2e0e1;
+    align-items: center;
+    padding-left: 10px;
+    position: relative;
+
+    .edit-btn{
+      position: absolute;
+      font-family: 'Helvetica Neue';
+      text-transform: uppercase;
+      background-color: $blue;
+      color: white !important;
+      right: -120px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px;
+      padding: 10px 20px;
+      padding-top: 13px;
+      text-decoration: none;
+  
+      &:hover {
+        background-color: $red;
+      }
+      
+    }
+
+    .elo,
+    .name {
+      font-weight: bold;
+      a{
+        text-decoration: none;
+        color: #000;
+
+        &:hover {
+          color: $red;
+        }
+      }
+    }
+
+    .rank {
+      width: 40px;
+      aspect-ratio: 1 / 1;
+      border-radius: 100px;
+      display: grid;
+      font-size: 20px;
+      place-items: center;
+      align-items: center;
+      padding-left: 1px;
+      padding-top: 2px;
+      border: 1px solid $rank-border-color;
+
+      &.align-left{
+        padding-right: 2px;
+      }
+
+      &.first {
+        border: 3px solid $gold;
+      }
+
+      &.second {
+        border: 3px solid $silver;
+      }
+
+      &.third {
+        border: 3px solid $bronze;
+      }
+    }
+  }
+}
+
+#mobile {
+  display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+  #desktop {
+    display: none;
+  }
+
+  #mobile {
+    display: block;
+  }
+
+  .rankings-wrapper {
+    max-width: 100%;
+    overflow: hidden;
+    margin-bottom: 250px;
+
+    .ranking-entry {
+      display: flex;
+      height: auto;
+      flex-direction: column;
+      gap: 20px;
+      padding: 29px 0 25px 0;
+
+      .edit-btn{
+        top: 40px;
+        left: 10px;
+        right: unset;
+      }
+
+      .rank {
+        width: 55px;
+        font-size: 25px;
+        padding-left: 1px;
+        padding-top: 4px;
+        margin-top: -6px;
+
+        &.align-left{
+          padding-right: 1px;
+          padding-top: 3px;
+        }
+      }
+
+      .name,
+      .place {
+        
+        font-weight: normal;
+        font-size: 18px;
+      }
+    }
+
+    .info {
+      display: grid;
+      width: 100%;
+      grid-auto-flow: column;
+      grid-template-columns: repeat(3, 33.3%);
+    }
+
+    .info-wrapp {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      align-items: center;
+
+      .sup {
+        color: #949494;
+        font-size: 11px;
+      }
+
+      .text {
+        font-size: 18px;
+      }
+    }
+  }
+}
