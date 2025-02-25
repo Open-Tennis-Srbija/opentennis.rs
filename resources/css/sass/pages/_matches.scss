@@ -8,6 +8,12 @@ $border-color-dark: #e2e0e1;
   max-width: 1200px;
   margin: 0 auto 100px;
 
+
+  .message{
+    text-align: center;
+    font-size: 25px;
+    margin-top: 40px;
+  }
   .matches-header,
   .match-entry {
     display: grid;
@@ -109,6 +115,11 @@ $border-color-dark: #e2e0e1;
     max-width: 100%;
     overflow: hidden;
     margin-bottom: 250px;
+
+    .message{
+      font-size: 20px;
+      margin-top: 30px;
+    }
   }
 
   .matches-wrapper .match-entry {

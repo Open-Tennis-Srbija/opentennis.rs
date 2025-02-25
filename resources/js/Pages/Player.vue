@@ -65,11 +65,11 @@ onMounted(() => {
             </div>
             <h2 class="summary-title no-border low-margin">pobede</h2>
             <div class="player-matches">
-                <MatchTable :matches="props.player.wins" />
+                <MatchTable :showMessage="{wins: props.player.wins == 0}" :matches="props.player.wins" />
             </div>
             <h2 class="summary-title no-border low-margin">gubitci</h2>
             <div class="player-matches">
-                <MatchTable :matches="props.player.loses" />
+                <MatchTable :showMessage="{loses: props.player.loses == 0}" :matches="props.player.loses" />
             </div>
         </div>
     </div>

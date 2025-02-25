@@ -34,6 +34,7 @@ class PlayerController extends Controller
         foreach($raw_players as $player){
             array_push($players, [
                 'id' => $player->id,
+                'uri' => $player->uri,
                 'name' => $player->first_name . ' ' . $player->last_name,
                 'stats' => $player->getStats(),
                 'club' => $player->club,
@@ -63,8 +64,8 @@ class PlayerController extends Controller
         return $players;
     }
 
-    public static function getPlayerData($id){
-        $player = Player::find($id);
+    public static function getPlayerData($uri){
+        $player = Player::where('uri', $uri)->first();
 
         $players = PlayerController::getPlayers();
         $position = 0;
@@ -72,7 +73,7 @@ class PlayerController extends Controller
         [$wins,$loses] = $player->getMatches();
 
         foreach($players as $key => $value){
-            if($value['id'] == $id){
+            if($value['uri'] == $uri){
                 $position = $key + 1;
             }
         }
@@ -146,9 +147,9 @@ class PlayerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($uri)
     {
-        $player = PlayerController::getPlayerData(($id));
+        $player = PlayerController::getPlayerData(($uri));
         return Inertia::render('Player', [
             'player' => $player
         ]);

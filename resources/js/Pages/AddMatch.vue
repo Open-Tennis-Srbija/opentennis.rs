@@ -176,6 +176,7 @@ const handlePlayerSelect = (mode, event) => {
               :options="props.players"
               :clearable="false"
               @input="checkChange($event)"
+              :selectOnTab="true"
               @option:selecting="handlePlayerSelect('winner', $event)"
             />
             <p class="error-message">{{ form.errors.winner }}</p>
@@ -189,6 +190,7 @@ const handlePlayerSelect = (mode, event) => {
               :class="{'invalid': form.errors.loser}"
               :clearable="false"
               :options="props.players"
+              :selectOnTab="true"
               @input="checkChange($event)"
               @option:selecting="handlePlayerSelect('loser', $event)"
             />

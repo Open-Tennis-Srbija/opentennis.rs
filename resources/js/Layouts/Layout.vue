@@ -51,10 +51,10 @@
 
     <header class="header-wrapper" @scroll="console.log($event)">
       <div class="logo-wrapp dekstop" :style="{marginTop: -topOffset + 'px'}">
-        <a href="https://srpskatenisliga.rs"><img src="https://blog.openos.me/social/tenisliga.png" alt="SRPSKA TENIS LIGA"/></a>
+        <Link :href="route('home')"><img src="https://blog.openos.me/social/tenisliga.png" alt="SRPSKA TENIS LIGA"/></Link>
       </div>
       <div class="logo-wrapp mobile">
-        <a href="https://srpskatenisliga.rs"><img src="https://blog.openos.me/social/tenisliga.png" alt="SRPSKA TENIS LIGA"/></a>
+        <Link :href="route('home')" @click.prevent="toggleMenu()"><img src="https://blog.openos.me/social/tenisliga.png" alt="SRPSKA TENIS LIGA"/></Link>
       </div>
           <div class="links-wrapper">
             <div class="links">
@@ -85,6 +85,7 @@
             <Link @click.prevent="mobileMenu.state=false" :href="route('join')" :class="{ 'active': $page.url === '/teniseri' }">nađi tenisera</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('mision')" :class="{ 'active': $page.url === '/misija' }">misija</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('rules')" :class="{ 'active': $page.url === '/pravila' }">pravila</Link>
+            <Link @click.prevent="mobileMenu.state=false" class="logout-mobile" method="post" :href="route('logout')" v-if="$page.props.auth.user">odjavi se</Link>
             </div>
           </div>
         <div id="os-holder" @scroll="console.log('scroll')" :class="{ 'high': $page.url === '/teniseri' }" :style="{height: 'calc(100vh - ' + 100 - topOffset + 50 + 'px)'}">
@@ -104,6 +105,7 @@
                 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.24 40.43"><defs></defs><path class="cls-1" d="M400.61,318.07l2.84-10.39a20,20,0,1,1,7.78,7.6Zm11.11-6.42a16.87,16.87,0,0,0,9.09,2.69,16.62,16.62,0,1,0-13.71-7.18l-1.68,6.15Zm19.19-9.2c-.13-.21-.46-.33-1-.59s-3-1.46-3.43-1.62-.79-.26-1.12.25-1.3,1.63-1.59,2-.58.37-1.08.12a13.47,13.47,0,0,1-4-2.48,15,15,0,0,1-2.78-3.47c-.3-.5,0-.77.21-1s.51-.59.76-.88a3.53,3.53,0,0,0,.5-.83.91.91,0,0,0,0-.88c-.13-.25-1.13-2.71-1.54-3.72s-.82-.84-1.13-.86h-1a1.82,1.82,0,0,0-1.33.62,5.65,5.65,0,0,0-1.76,4.18,9.74,9.74,0,0,0,2.05,5.18c.25.33,3.53,5.39,8.55,7.56a30.15,30.15,0,0,0,2.85,1.05,6.85,6.85,0,0,0,3.15.2c1-.14,3-1.21,3.38-2.38A4.24,4.24,0,0,0,430.91,302.45Z" transform="translate(-400.61 -277.64)"/></svg>
               </a>
             </div>
+            <Link class="logout" :href="route('logout')" method="post" as="button" :class="{'hide': !$page.props.auth.user}">odjavi se</Link>
           </footer>
         </div>
 </template>

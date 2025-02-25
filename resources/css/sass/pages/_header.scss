@@ -152,6 +152,20 @@
                     pointer-events: none;
                 }
             }
+            .logout-mobile{
+                display: inline;
+                width: max-content;
+                border: 0;
+                outline: 0;
+                background: none;
+                color: $dark-gray;
+                font-size: 20px;
+                margin-top: 30px;
+
+                &:hover {
+                    color: $red;
+                }
+            }
         }
     }
 
