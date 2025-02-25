@@ -37,6 +37,16 @@ class TenisMatch extends Model
         return $winner->first_name . ' ' . $winner->last_name;
     }
 
+    public function getPlayerUri($player){
+        if($player == 'winner'){
+            $winner = Player::find($this->winner_id);
+            return $winner->uri;
+        }else{
+            $loser = Player::find($this->loser_id);
+            return $loser->uri;
+        }
+    }
+
     public function getLoserName(){
         $loser = Player::find($this->loser_id);
         return $loser->first_name . ' ' . $loser->last_name;
