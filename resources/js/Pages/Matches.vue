@@ -70,8 +70,8 @@ function getDateDay(date){
       <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
         <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`">izmeni</Link>
         <div class="number">{{ match.number || matches.length - index }}</div>
-        <div class="winner"><Link :href="`/${match.winner_uri}`">{{ match.winner }}</Link></div>
-        <div class="loser"><Link :href="`/${match.loser_uri}`">{{ match.loser }}</Link></div>
+        <div class="winner"><Link :href="`/${match.winner_uri}`">{{ match.winner }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
+        <div class="loser"><Link :href="`/${match.loser_uri}`">{{ match.loser }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
         <div class="spacer"></div>
         <div class="score">{{ match.set_score }}<br><span class="gray">{{ match.game_score }}</span></div>
         <div class="date">{{match.day}} <br/> {{ match.date }}</div>
