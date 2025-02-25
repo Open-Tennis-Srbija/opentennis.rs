@@ -183,6 +183,18 @@ $border-color-dark: #e2e0e1;
       font-size: 18px;
       line-height: 1.2;
       text-align: center;
+      position: relative;
+
+        .points{
+          color: $mid-gray;
+          font-weight: normal;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: -25px;
+          text-align: center;
+          margin-top: 10px;
+      }
     }
   }
 
