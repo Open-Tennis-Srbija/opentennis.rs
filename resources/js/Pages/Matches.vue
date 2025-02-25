@@ -93,13 +93,13 @@ function getDateDay(date){
 
         <div class="info">
           <div class="info-wrapp">
-            <div class="text"><Link :href="`/${match.winner_uri}`">{{ match.winner_first_name }}<br>{{ match.winner_last_name }}</Link></div>
+            <div class="text"><Link :href="`/${match.winner_uri}`">{{ match.winner_first_name }}<br>{{ match.winner_last_name }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
           </div>
 
           <div class="sep">:</div>
 
           <div class="info-wrapp">
-            <div class="text"><Link :href="`/${match.loser_uri}`">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</Link></div>
+            <div class="text"><Link :href="`/${match.loser_uri}`">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
           </div>
         </div>
 
