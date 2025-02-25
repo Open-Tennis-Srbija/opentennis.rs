@@ -81,7 +81,14 @@ $border-color-dark: #e2e0e1;
     }
     
   }
-
+  .winner,
+  .loser{
+    .points{
+      color: $mid-gray;
+      font-weight: normal;
+      text-align: center;
+    }
+  }
   .winner {
     font-weight: bold;
   }

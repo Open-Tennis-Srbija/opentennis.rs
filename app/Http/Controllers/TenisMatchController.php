@@ -56,12 +56,16 @@ class TenisMatchController extends Controller
             $winner = Player::find($match->winner_id);
             $loser = Player::find($match->loser_id);
 
+            [$winner_gains, $loser_gains] = $match->getEloGains();
+
             array_push($matches, [
                 'id' => $match->id,
                 'winner' => $winner->first_name . ' ' . $winner->last_name,
                 'winner_uri' => $winner->uri,
+                'winner_points' => $winner_gains,
                 'loser' => $loser->first_name . ' ' . $loser->last_name,
                 'loser_uri' => $loser->uri,
+                'loser_points' => $loser_gains,
                 'set_score' => $match->set_score,
                 'game_score' => $match->game_score,
                 'date' => $match->match_date,
@@ -119,7 +123,7 @@ class TenisMatchController extends Controller
             $winner->last_name = $last_name;
 
             $winner->save();
-
+            
             $winner_id = $winner->id;
         }
 

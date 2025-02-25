@@ -30,6 +30,8 @@ class Player extends Model
 
             array_push($wins, [
                 'id' => $match->id,
+                'winner_points' => $match->getEloGains()[0],
+                'loser_points' => $match->getEloGains()[1],
                 'winner' => $this->first_name . ' ' . $this->last_name,
                 'loser' => $loser->first_name . ' ' . $loser->last_name,
                 'set_score' => $match->set_score,
@@ -47,6 +49,8 @@ class Player extends Model
 
             array_push($loses, [
                 'id' => $match->id,
+                'winner_points' => $match->getEloGains()[0],
+                'loser_points' => $match->getEloGains()[1],
                 'winner' => $winner->first_name . ' ' . $winner->last_name,
                 'loser' => $this->first_name . ' ' . $this->last_name,
                 'set_score' => $match->set_score,
@@ -174,11 +178,11 @@ class Player extends Model
                     $games = explode(',', $match->game_score);
 
                     foreach($games as $game){
-                        $match_points += (int)substr($game, 3, 1) * 7;
+                        $match_points += (int)substr($game, 2, 1) * 7;
                     }
                 }
                 else{
-                    $match_points += (int)substr($match->set_score, 3, 1) * 7;
+                    $match_points += (int)substr($match->set_score, 2, 1) * 7;
                 }
              }
              $points += $match_points * (1 - $match->time_penalty);
