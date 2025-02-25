@@ -43,9 +43,9 @@ class AddMatchNotification extends Mailable
         return new Content(
             view: 'mail.match.added',
             with: ['winner' => $this->match->getWinnerName(),
-                    'winner_id' => $this->match->winner_id,
+                    'winner_uri' => $this->match->getPlayerUri('winner'),
                     'loser' => $this->match->getLoserName(),
-                    'loser_id' => $this->match->loser_id,
+                    'loser_uri' => $this->getPlayerUri('loser'),
                     'set_score' => $this->match->set_score,
                     'game_score' => $this->match->game_score,
                     'date' => $this->match->getFormatedDate(),

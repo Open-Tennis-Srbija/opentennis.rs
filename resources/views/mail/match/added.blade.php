@@ -6,8 +6,8 @@
 <p><b>Datum</b> {{ $date }}</p>
 <br>
 
-<a href="https://srpskatenisliga.rs/teniser/{{$winner_id}}">Pogledaj pobednika</a>
+<a href="https://srpskatenisliga.rs/{{$winner_uri}}">Pogledaj pobednika</a>
 <br>
-<a href="https://srpskatenisliga.rs/teniser/{{$loser_id}}">Pogledaj gubitnika</a>
+<a href="https://srpskatenisliga.rs/{{$loser_uri}}">Pogledaj gubitnika</a>
 <br>
 <a href="https://srpskatenisliga.rs/mecevi">Pogledaj mečeve</a>
