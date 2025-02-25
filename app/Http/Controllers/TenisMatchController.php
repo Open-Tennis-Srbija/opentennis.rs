@@ -59,9 +59,9 @@ class TenisMatchController extends Controller
             array_push($matches, [
                 'id' => $match->id,
                 'winner' => $winner->first_name . ' ' . $winner->last_name,
-                'winner_id' => $winner->id,
+                'winner_uri' => $winner->uri,
                 'loser' => $loser->first_name . ' ' . $loser->last_name,
-                'loser_id' => $loser->id,
+                'loser_uri' => $loser->uri,
                 'set_score' => $match->set_score,
                 'game_score' => $match->game_score,
                 'date' => $match->match_date,

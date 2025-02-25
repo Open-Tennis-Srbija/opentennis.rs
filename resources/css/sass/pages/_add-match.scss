@@ -28,45 +28,7 @@
       }
     }
 
-    >.rank{
-      width: 100px;
-      height: 100px;
-      position: relative;
-      border-radius: 100px;
-      border: 1px solid $rank-border-color;
-      padding: 0;
-      margin: 0 auto;
-      margin-bottom: 50px;
-      margin-top: -20px;
 
-      &.first{
-        border-width: 3px;
-        border-color: $gold;
-      }
-
-      &.second{
-        border-width: 3px;
-        border-color: $silver;
-      }
-
-      &.third{
-        border-width: 3px;
-        border-color: $bronze;
-      }
-
-      p{
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        line-height: 1;
-        margin: 0;
-        padding: 0;
-        font-size: 50px;
-        
-      }
-    }
   
     h1 {
       font-family: 'Helvetica Neue';
@@ -470,7 +432,8 @@
          
         }
         .vs__search{
-          border: 0
+          border: 0;
+          height: 45px;
         }
         .vs__dropdown-option--highlight{
           background-color: $blue;

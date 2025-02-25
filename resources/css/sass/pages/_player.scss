@@ -33,6 +33,46 @@
         }
         
     }
+
+    >.rank{
+        width: 100px;
+        height: 100px;
+        position: relative;
+        border-radius: 100px;
+        border: 2px solid $rank-border-color;
+        padding: 0;
+        margin: 0 auto;
+        margin-bottom: 50px;
+        margin-top: -20px;
+  
+        &.first{
+          border-width: 6px;
+          border-color: $gold;
+        }
+  
+        &.second{
+          border-width: 6px;
+          border-color: $silver;
+        }
+  
+        &.third{
+          border-width: 6px;
+          border-color: $bronze;
+        }
+  
+        p{
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          line-height: 1;
+          margin: 0;
+          padding: 0;
+          font-size: 50px;
+          
+        }
+      }
 }
 
 .summary.player{
@@ -58,6 +98,7 @@
 
 @media only screen and (max-width: 1200px) {
     .static-wrapper.player{
+        padding-inline: 0;
         h1{
             display: block;
             margin-bottom: 0;
@@ -73,10 +114,14 @@
             border-width: 1px;
             padding-bottom: 20px;
             margin-bottom: 30px;
+            border-bottom: 2px solid #e2e0e1;
             &.low-margin{
                 margin-bottom: 0;
-                border-bottom: 2px solid $dark-gray !important;
             }
+
+        }
+        .player-matches{
+            width: 100%;
         }
 
         .summary.player.five{

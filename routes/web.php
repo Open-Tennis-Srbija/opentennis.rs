@@ -22,7 +22,6 @@ Route::post('/dodaj', [TenisMatchController::class, 'store']);
 
 
 Route::inertia('/teniseri', 'Join')->name('join');
-Route::get('/teniser/{id}',[PlayerController::class, 'show'])->name('player');
 
 
 
@@ -45,8 +44,11 @@ Route::middleware('auth')->group(function(){
     Route::post('/teniser/izmeni',[PlayerController::class, 'updatePlayer']);
     Route::post('/teniser/obrisi',[PlayerController::class, 'deletePlayer']);
     Route::post('/mec/obrisi',[TenisMatchController::class, 'deleteMatch']);
-
+    
+    
+    Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
 });
 
+Route::get('/{uri}',[PlayerController::class, 'show'])->name('player');
 
 

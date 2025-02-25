@@ -3,6 +3,7 @@ import { computed } from 'vue';
 
 const props = defineProps({
   matches: Array,
+  showMessage: Object,
 });
 
 const formatedMatchesDesktop = computed(() => {
@@ -62,11 +63,15 @@ function getDateDay(date){
         <div class="date">datum</div>
         <div class="location">lokacija</div>
       </div>
+      <div v-if="props.showMessage">
+        <p v-if="props.showMessage.wins"class="message">Ovaj teniser nikada nije pobedio &#128577;</p>
+        <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
+      </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
         <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`">izmeni</Link>
         <div class="number">{{ match.number || matches.length - index }}</div>
-        <div class="winner"><Link :href="`/teniser/${match.winner_id}`">{{ match.winner }}</Link></div>
-        <div class="loser"><Link :href="`/teniser/${match.loser_id}`">{{ match.loser }}</Link></div>
+        <div class="winner"><Link :href="`/${match.winner_uri}`">{{ match.winner }}</Link></div>
+        <div class="loser"><Link :href="`/${match.loser_uri}`">{{ match.loser }}</Link></div>
         <div class="spacer"></div>
         <div class="score">{{ match.set_score }}<br><span class="gray">{{ match.game_score }}</span></div>
         <div class="date">{{match.day}} <br/> {{ match.date }}</div>
@@ -74,6 +79,10 @@ function getDateDay(date){
       </div>
     </div>
     <div id="mobile">
+      <div v-if="props.showMessage">
+        <p v-if="props.showMessage.wins"class="message">Ovaj teniser nikada nije pobedio &#128577;</p>
+        <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
+      </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesMobile" :key="index">
         <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`">izmeni</Link>
         <div class="score">
@@ -84,13 +93,13 @@ function getDateDay(date){
 
         <div class="info">
           <div class="info-wrapp">
-            <div class="text">{{ match.winner_first_name }}<br>{{ match.winner_last_name }}</div>
+            <div class="text"><Link :href="`/${match.winner_uri}`">{{ match.winner_first_name }}<br>{{ match.winner_last_name }}</Link></div>
           </div>
 
           <div class="sep">:</div>
 
           <div class="info-wrapp">
-            <div class="text">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</div>
+            <div class="text"><Link :href="`/${match.loser_uri}`">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</Link></div>
           </div>
         </div>
 

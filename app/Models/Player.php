@@ -15,6 +15,7 @@ class Player extends Model
         'first_name',
         'last_name',
         'club',
+        'uri',
         'location',
     ];
     

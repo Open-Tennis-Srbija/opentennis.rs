@@ -11,9 +11,31 @@ $border-color: #a1a1a1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
   gap: 50px;
 
   &.hide{
+    display: none;
+    visibility: none;
+  }
+
+  .logout{
+    position: absolute;
+    bottom: -100px;
+    text-transform: uppercase;
+    font-family: $global-font-alt;
+    border: 0;
+    outline: 0;
+    background: none;
+    color: $footer-text-color;
+    font-size: 20px;
+    cursor: pointer;
+    
+    &:hover {
+      color: $footer-hover-color;
+    }
+  }
+  .hide{
     display: none;
     visibility: none;
   }

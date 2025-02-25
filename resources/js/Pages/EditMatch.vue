@@ -205,6 +205,7 @@ const handlePlayerSelect = (mode, event) => {
               :options="props.players"
               :clearable="false"
               :placeholder="form.winner.name"
+              :selectOnTab="true"
               @input="checkChange($event)"
               @option:selecting="handlePlayerSelect('winner', $event)"
             />
@@ -220,6 +221,7 @@ const handlePlayerSelect = (mode, event) => {
               :clearable="false"
               :placeholder="form.loser.name"
               :options="props.players"
+              :selectOnTab="true"
               @input="checkChange($event)"
               @option:selecting="handlePlayerSelect('loser', $event)"
             />

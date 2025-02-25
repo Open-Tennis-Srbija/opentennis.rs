@@ -49,6 +49,12 @@ class AuthController extends Controller
         ]);
     }
 
+    public function logout(){
+        Auth::logout();
+
+        return redirect()->route('home');
+    }
+
     public static function getDashboardData(){
         $players_ranked = PlayerController::getPlayers();
         $all_matches = TenisMatchController::getMatches();
@@ -60,11 +66,17 @@ class AuthController extends Controller
         ->get();
 
         $matches = [];
-
-        for($i=0; $i<5; $i++){
-            $match = $all_matches[$i];
-            $match['number'] = count($all_matches) - $i;
-            array_push($matches, $match);
+        if(count($all_matches)){
+            for($i=0; $i<5; $i++){
+                $match = $all_matches[$i];
+                $match['number'] = count($all_matches) - $i;
+                array_push($matches, $match);
+            }
+        }
+       
+        $location = '';
+        if(isset($popular_location[0])){
+            $location = $popular_location[0]->match_location;
         }
         
         $data = [
@@ -73,7 +85,7 @@ class AuthController extends Controller
             'stats' => [
                 'total_players' => count($players_ranked),
                 'total_matches' => count($all_matches),
-                'popular_location' => $popular_location[0]->match_location,
+                'popular_location' => $location,
             ],
         ];
 
