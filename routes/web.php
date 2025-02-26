@@ -24,6 +24,7 @@ Route::post('/dodaj', [TenisMatchController::class, 'store']);
 Route::inertia('/teniseri', 'Join')->name('join');
 
 
+Route::inertia('/klubovi', 'ForClubs')->name('clubs');
 
 Route::inertia('/misija', 'Mision')->name('mision');
 

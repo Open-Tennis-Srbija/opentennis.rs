@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateTenisMatchRequest;
 use App\Mail\AddMatchNotification;
 use App\Models\Player;
 use App\Models\TenisMatch;
+use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
@@ -112,10 +113,6 @@ class TenisMatchController extends Controller
         $winner_id = $data['winner']['id'];
         $loser_id = $data['loser']['id'];
 
-        $unwanted_array = array('Š' => 'S','š' => 's','Ž' => 'Z','ž' => 'z','À' => 'A','Á' => 'A','Â' => 'A','Ã' => 'A','Ä' => 'A','Å' => 'A','Æ' => 'A','ć' => 'c','č'=> 'c','đ'=> 'dj','Đ'=> 'dj','È' => 'E','É' => 'E','Ê' => 'E','Ë' => 'E','Ì' => 'I','Í' => 'I','Î' => 'I','Ï' => 'I','Ñ' => 'N','Ò' => 'O','Ó' => 'O','Ô' => 'O','Õ' => 'O','Ö' => 'O','Ø' => 'O','Ù' => 'U','Ú' => 'U','Û' => 'U','Ü' => 'U','Ý' => 'Y','Þ' => 'B','ß' => 'ss','à' => 'a','á' => 'a','â' => 'a','ã' => 'a','ä' => 'a','å' => 'a','æ' => 'a','ç' => 'c','è' => 'e','é' => 'e','ê' => 'e','ë' => 'e','ì' => 'i','í' => 'i','î' => 'i','ï' => 'i','ð' => 'o','ñ' => 'n','ò' => 'o','ó' => 'o','ô' => 'o','õ' => 'o','ö' => 'o','ø' => 'o','ù' => 'u','ú' => 'u','û' => 'u','ý' => 'y','þ' => 'b','ÿ' => 'y','Ğ' => 'G','İ' => 'I','Ş' => 'S','ğ' => 'g','ı' => 'i','ş' => 's','ü' => 'u','ă' => 'a','Ă' => 'A','ș' => 's','Ș' => 'S','ț' => 't','Ț' => 'T'
-        );
-
-        
 
         if(!is_numeric($winner_id)){
             $winner = new Player();
@@ -123,8 +120,8 @@ class TenisMatchController extends Controller
             $first_name = explode(' ', $data['winner']['name'])[0];
             $last_name = explode(' ', $data['winner']['name'])[1];
 
-            $uri_firstname = strtr($first_name, $unwanted_array);
-            $uri_lastname = strtr($last_name, $unwanted_array);
+            $uri_firstname = Helper::formatName($first_name);
+            $uri_lastname = Helper::formatName($last_name);
 
             $uri = strtolower($uri_firstname) . '-' . strtolower($uri_lastname);
 
@@ -150,8 +147,8 @@ class TenisMatchController extends Controller
             $first_name = explode(' ', $data['loser']['name'])[0];
             $last_name = explode(' ', $data['loser']['name'])[1];
 
-            $uri_firstname = strtr($first_name, $unwanted_array);
-            $uri_lastname = strtr($last_name, $unwanted_array);
+            $uri_firstname = Helper::formatName($first_name);
+            $uri_lastname = Helper::formatName($last_name);
 
             $uri = strtolower($uri_firstname) . '-' . strtolower($uri_lastname);
 
@@ -184,8 +181,10 @@ class TenisMatchController extends Controller
 
         $match->save();
 
-        Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
-        Mail::to('nikola@openinnovation.me')->send(new AddMatchNotification($match));
+        if(env('APP_ENV') == 'production'){
+            Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
+            Mail::to('nikola@openinnovation.me')->send(new AddMatchNotification($match));
+        }
 
         return redirect()->back()->with('success', 'Meč je uspešno dodat.');
     }

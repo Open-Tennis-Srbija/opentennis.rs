@@ -3,17 +3,24 @@
   import { usePage } from '@inertiajs/vue3';
   import 'overlayscrollbars/overlayscrollbars.css';
   import { OverlayScrollbars } from 'overlayscrollbars';
-
+  import  { bus } from 'vue3-eventbus';
+  
   const mobileMenu = reactive({state: false});
 
   const scrollPos = reactive({top: 0});
 
   onMounted(() => {
-    OverlayScrollbars(document.getElementById('os-holder'), { className: 'os-theme-dark' },{
+    let os = OverlayScrollbars(document.getElementById('os-holder'), { className: 'os-theme-dark' },{
       scroll(osInstance, args){
         scrollPos.top = args.target.scrollTop;
       }
     });
+
+    bus.on('resetScroll', e =>{
+      console.log('got it');
+      document.querySelector('[data-overlayscrollbars-viewport]').scrollTop = 0;
+    })
+
   });
 
   const topOffset = computed(()=>{
@@ -38,6 +45,7 @@
     switch( page.url) {
       case '/': return 'Rang lista';
       case '/mecevi': return 'mečevi';
+      case '/klubovi': return 'za klubove';
       case '/dodaj': return 'dodaj meč';
       case '/teniseri': return 'nađi tenisera';
       case '/misija': return 'misija';
@@ -64,6 +72,7 @@
               <Link :href="route('join')" :class="{ 'active': $page.url === '/teniseri' }">nađi tenisera</Link>
               <Link :href="route('mision')" :class="{ 'active': $page.url === '/misija' }">misija</Link>
               <Link :href="route('rules')" :class="{ 'active': $page.url === '/pravila' }">pravila</Link>
+              <Link :href="route('clubs')" :class="{ 'active': $page.url === '/klubovi' }">za klubove</Link>
             </div>
           </div>
           <div class="mobile-underheader"  @click="toggleMenu" >
@@ -85,6 +94,7 @@
             <Link @click.prevent="mobileMenu.state=false" :href="route('join')" :class="{ 'active': $page.url === '/teniseri' }">nađi tenisera</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('mision')" :class="{ 'active': $page.url === '/misija' }">misija</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('rules')" :class="{ 'active': $page.url === '/pravila' }">pravila</Link>
+            <Link @click.prevent="mobileMenu.state=false" :href="route('clubs')" :class="{ 'active': $page.url === '/klubovi' }">za klubove</Link>
             <Link @click.prevent="mobileMenu.state=false" class="logout-mobile" method="post" :href="route('logout')" v-if="$page.props.auth.user">odjavi se</Link>
             </div>
           </div>
