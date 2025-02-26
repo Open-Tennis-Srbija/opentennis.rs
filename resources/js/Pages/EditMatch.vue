@@ -289,7 +289,7 @@ const handlePlayerSelect = (mode, event) => {
       <div class="form-section">
         <div class="form-row">
           <button id="submit">
-            <span id="add-btn" :class="{'hide': formState.submitted}">Dodaj</span>
+            <span id="add-btn" :class="{'hide': formState.submitted}">izmeni</span>
             <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Lottie :height="150" :animationData="CircleLoader"/></span>
           </button>
         </div>

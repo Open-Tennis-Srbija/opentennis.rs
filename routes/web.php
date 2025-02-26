@@ -34,8 +34,6 @@ Route::post('/admin/login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth')->group(function(){
-    Route::inertia('/admin', 'Auth/Dashboard',
-    ['data' => AuthController::getDashboardData()])->name('admin');
     
     Route::get('/izmeni/{id}',[TenisMatchController::class, 'editMatch'])->name('editMatch');
     Route::post('/izmeni', [TenisMatchController::class, 'updateMatch']);
@@ -45,10 +43,12 @@ Route::middleware('auth')->group(function(){
     Route::post('/teniser/obrisi',[PlayerController::class, 'deletePlayer']);
     Route::post('/mec/obrisi',[TenisMatchController::class, 'deleteMatch']);
     
+    Route::inertia('/admin', 'Auth/Dashboard',
+    ['data' => AuthController::getDashboardData()])->name('admin');
     
     Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
 });
 
-Route::get('/{uri}',[PlayerController::class, 'show'])->name('player');
 
+Route::get('/{uri}',[PlayerController::class, 'show'])->name('player');
 

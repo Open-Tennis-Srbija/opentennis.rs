@@ -3,7 +3,7 @@ import { defineProps } from 'vue';
 const props = defineProps({ data: Object });
 </script>
 <template>
-    <div class="static-wrapper">
+    <div class="static-wrapper dashboard">
         <h1>admin</h1>
         <div class="dashboard-wrapper">
             <div class="summary">

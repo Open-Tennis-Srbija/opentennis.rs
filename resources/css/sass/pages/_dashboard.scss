@@ -1,109 +1,165 @@
 @use '../abstracts' as *;
+.static-wrapper{
+    &.dashboard{
 
-.dashboard-wrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-
-    .summary-title{
-        font-size: 30px;
-        margin-bottom: 40px;
-        color: $dark-gray;
-        text-transform: uppercase;
-        font-family: 'Helvetica Neue';
-        margin-top: 10px;
-        padding-top: 50px;
-        width: 100%;
-        text-align: center;
-        border-bottom: 2px solid $mid-gray;
-        padding-bottom: 30px;
-
-        &.no-border{
-            border: none;
-        }
-
-        &.low-margin{
-            margin-top: -30px;
-        }
-
-    }
-    .summary{
-        display: grid;
-        grid-auto-flow: column;
-        grid-template-columns: repeat(3, 33.3%);
-        width: 100%;
-        margin-bottom: 50px;
-
-
-      
-        &.five{
-            grid-template-columns: repeat(5, 20%);
-        }
-        &.two{
-            grid-template-columns: repeat(2, 50%);
-        }
-
-        &.no-border{
-            .summary-item{
-                border-bottom: none !important;
-            }
-        }
-
-        h2{
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-
-        .summary-item{
-            display: grid;
-            place-items: center;
-            border-bottom: 1px solid $dark-gray;
-
-            p{
-                font-size: 25px;
-            }
-        }
-    }
-
-    .stats{
-        width: 100%;
-
-        h2{
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-
-        .stats-item{
+        .dashboard-wrapper{
             display: flex;
             flex-direction: column;
-            margin-bottom: 10px;
-
-            span{
-                font-size: 16px;
+            align-items: center;
+        
+        
+            .summary-title{
+                font-size: 30px;
+                margin-bottom: 40px;
+                color: $dark-gray;
+                text-transform: uppercase;
+                font-family: 'Helvetica Neue';
+                margin-top: 10px;
+                padding-top: 50px;
+                width: 100%;
+                text-align: center;
+                border-bottom: 2px solid $mid-gray;
+                padding-bottom: 30px;
+        
+                &.no-border{
+                    border: none;
+                }
+        
+                &.low-margin{
+                    margin-top: -30px;
+                }
+        
             }
-
-            .player-wrapper{
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-
-                img{
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 50%;
+            .summary{
+                display: grid;
+                grid-auto-flow: column;
+                grid-template-columns: repeat(3, 33.3%);
+                width: 100%;
+                margin-bottom: 50px;
+        
+        
+              
+                &.five{
+                    grid-template-columns: repeat(5, 20%);
                 }
-                .rankings-wrapper{
-
-                    margin-bottom: 40px;
+                &.two{
+                    grid-template-columns: repeat(2, 50%);
                 }
-                .rankings-header{
-                    margin-top: 15px;
+        
+                &.no-border{
+                    .summary-item{
+                        border-bottom: none !important;
+                    }
+                }
+        
+                h2{
+                    font-size: 20px;
+                    margin-bottom: 20px;
+                }
+        
+                .summary-item{
+                    display: grid;
+                    place-items: center;
+                    border-bottom: 1px solid $dark-gray;
+        
+                    p{
+                        font-size: 25px;
+                    }
                 }
             }
-            .matches-wrapper,
-            .matches-header{
-                margin-top: 15px;
+        
+            .stats{
+                width: 100%;
+        
+                h2{
+                    font-size: 20px;
+                    margin-bottom: 20px;
+                }
+        
+                .stats-item{
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 10px;
+        
+                    span{
+                        font-size: 16px;
+                    }
+        
+                    .player-wrapper{
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+        
+                        img{
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 50%;
+                        }
+                        .rankings-wrapper{
+        
+                            margin-bottom: 40px;
+                        }
+                        .rankings-header{
+                            margin-top: 15px;
+                        }
+                    }
+                    .matches-wrapper,
+                    .matches-header{
+                        margin-top: 15px;
+                    }
+                }
+            }
+        }
+        @media only screen and (max-width: 1200px) {
+            padding-inline: 0;
+            .dashboard-wrapper{
+                .summary{
+                    display: flex;
+                    flex-wrap: wrap;
+                   .summary-item{
+                    width: 50%;
+                    border: 0;
+                    &:last-of-type{
+                        width: 100%;
+                        border-bottom: 2px solid $lignt-gray;
+                    }
+                    text-align: center;
+                    h2{
+                        font-weight: normal;
+                        font-size: 17px;
+                        color: $mid-gray;
+                    }
+                    p{
+                        font-size: 30px;
+                    }
+                   }
+                }
+                .stats{
+                    .stats-item{
+                        h2{
+                            text-align: center;
+                            font-size: 15px;
+                            color: $mid-gray;
+                            text-transform: uppercase;
+                            font-family: 'Helvetica Neue';
+                        }
+                        .player-wrapper{
+                           width: 100%;
+                           .rankings-wrapper{
+                            margin-left: 0;
+                            margin-right: 0;
+                           }
+                        }
+                        .matches-wrapper{
+                            width: 100%;
+                            margin-bottom: -50px;
+                            .rankings-wrapper{
+                             margin-left: 0;
+                             margin-right: 0;
+                            }
+                         }
+                    }
+                }
             }
         }
     }

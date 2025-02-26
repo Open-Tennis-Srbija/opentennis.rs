@@ -15,7 +15,13 @@
           Svi su dobrodošli.
         </p>
         <p>
-          Osnivač, Nikola Tošić
+          Nikola Tošić, osnivač, <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>
+        </p>
+        <p>
+          Bogdan Randelovic, programer, <a href="mailto:bogdan@openinnovation.me">bogdan@openinnovation.me</a>
+        </p>
+        <p>
+         Ivan Jureta, savetnik za algoritam
         </p>
       </div>
 </template>

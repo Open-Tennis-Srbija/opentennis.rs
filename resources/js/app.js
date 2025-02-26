@@ -10,6 +10,7 @@ import VueDatepicker from '@vuepic/vue-datepicker';
 import Home from './Pages/Home.vue';
 import Matches from './Pages/Matches.vue';
 
+
 createInertiaApp({
   title: (title) => `${title} Srpska Tenis Liga`,
 
