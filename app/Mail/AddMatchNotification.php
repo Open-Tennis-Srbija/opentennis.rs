@@ -45,7 +45,7 @@ class AddMatchNotification extends Mailable
             with: ['winner' => $this->match->getWinnerName(),
                     'winner_uri' => $this->match->getPlayerUri('winner'),
                     'loser' => $this->match->getLoserName(),
-                    'loser_uri' => $this->getPlayerUri('loser'),
+                    'loser_uri' => $this->match->getPlayerUri('loser'),
                     'set_score' => $this->match->set_score,
                     'game_score' => $this->match->game_score,
                     'date' => $this->match->getFormatedDate(),
