@@ -9,7 +9,11 @@ import VueSelect from 'vue-select';
 import VueDatepicker from '@vuepic/vue-datepicker';
 import Home from './Pages/Home.vue';
 import Matches from './Pages/Matches.vue';
+import eventBus, { bus } from 'vue3-eventbus';
 
+router.on('finish', () => {
+  bus.emit('resetScroll');
+})
 
 createInertiaApp({
   title: (title) => `${title} Srpska Tenis Liga`,
@@ -27,6 +31,7 @@ createInertiaApp({
     createApp({ render: () => h(App, props) })
       .use(plugin)
       .use(ZiggyVue)
+      .use(eventBus)
       .component('Lottie', Vue3Lottie)
       .component('Head', Head)
       .component('Link', Link)

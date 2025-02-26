@@ -37,7 +37,8 @@
     "autoload-dev": {
         "files":[
             "app/Algorithm/NikolaAlgoV1.php",
-            "app/Algorithm/EloAlgoV1.php"
+            "app/Algorithm/EloAlgoV1.php",
+            "app/Helpers/FormatURI.php"
         ],
         "psr-4": {
             "Tests\\": "tests/"
