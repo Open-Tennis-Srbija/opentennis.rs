@@ -40,7 +40,7 @@ class AuthController extends Controller
         if(Auth::attempt($fields, $request->remember)){
             $request->session()->regenerate();
 
-            return redirect()->route('admin');
+            return redirect()->route('home');
         }
 
         return back()->withErrors([

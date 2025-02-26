@@ -140,15 +140,15 @@ class PlayerController extends Controller
         $player->location = $data['location'];
 
         $player->save();
-
-        return redirect('/teniser/' . $data['id']);
+        $uri = '/'.$player->uri;
+        return redirect($uri);
     }
 
     /**
      * Display the specified resource.
      */
     public function show($uri)
-    {
+    {  
         $player = PlayerController::getPlayerData(($uri));
         return Inertia::render('Player', [
             'player' => $player

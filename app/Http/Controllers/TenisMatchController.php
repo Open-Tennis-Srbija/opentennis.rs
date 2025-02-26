@@ -10,6 +10,7 @@ use App\Models\TenisMatch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
+use NikolaAlgoV1;
 
 class TenisMatchController extends Controller
 {
@@ -56,7 +57,7 @@ class TenisMatchController extends Controller
             $winner = Player::find($match->winner_id);
             $loser = Player::find($match->loser_id);
 
-            [$winner_gains, $loser_gains] = $match->getEloGains();
+            [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
 
             array_push($matches, [
                 'id' => $match->id,

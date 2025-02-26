@@ -53,18 +53,17 @@
       position: absolute;
       font-family: 'Helvetica Neue';
       text-transform: uppercase;
-      background-color: $blue;
-      color: white !important;
-      right: -120px;
+      right: -70px;
+      color: black;
       top: 50%;
-      transform: translateY(-50%);
-      font-size: 15px;
-      padding: 10px 20px;
+      transform: translateY(-50%) rotateZ(90deg);
+      font-size: 30px;
+      padding: 5px 10px;
       padding-top: 13px;
       text-decoration: none;
   
       &:hover {
-        background-color: $red;
+        color: $red;
       }
       
     }

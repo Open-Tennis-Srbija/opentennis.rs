@@ -168,7 +168,7 @@ const handlePlayerSelect = (mode, event) => {
         <div class="form-row">
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
             <label for="winner-fname" class="input-label">
-              Pobednik (Ime i Prezime)<span class="required">*</span>
+              Pobednik (Ime i prezime)<span class="required">*</span>
             </label>
             <vSelect 
               label="name"
@@ -183,7 +183,7 @@ const handlePlayerSelect = (mode, event) => {
           </div>
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
             <label for="winner-fname" class="input-label">
-              Gubitnik (Ime i Prezime)<span class="required">*</span>
+              Gubitnik (Ime i prezime)<span class="required">*</span>
             </label>
             <vSelect 
               label="name"
@@ -211,7 +211,7 @@ const handlePlayerSelect = (mode, event) => {
           </div>
           <div class="form-group">
             <label for="games" class="input-label">
-              Gemovi (6:3,7:6,6:1)
+              Gemovi ako je konačni rezultat u setovima (6:3,7:6,6:1)
             </label>
             <input v-model="form.game_score" @input="handleInputs($event)" :disabled="formState.submitted" id="game_score " type="text">
           </div>

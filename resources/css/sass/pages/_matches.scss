@@ -13,6 +13,8 @@ $border-color-dark: #e2e0e1;
     text-align: center;
     font-size: 25px;
     margin-top: 40px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid $border-color-dark;
   }
   .matches-header,
   .match-entry {
@@ -62,22 +64,21 @@ $border-color-dark: #e2e0e1;
   align-items: center;
   padding-left: 10px;
   position: relative;
-
   .edit-btn{
     position: absolute;
     font-family: 'Helvetica Neue';
     text-transform: uppercase;
-    background-color: $blue;
-    color: white !important;
-    right: -120px;
+    right: -70px;
+    color: black;
     top: 50%;
-    transform: translateY(-50%);
-    font-size: 15px;
-    padding: 10px 20px;
+    transform: translateY(-50%) rotateZ(90deg);
+    font-size: 30px;
+    padding: 5px 10px;
     padding-top: 13px;
+    text-decoration: none;
 
     &:hover {
-      background-color: $red;
+      color: $red;
     }
     
   }

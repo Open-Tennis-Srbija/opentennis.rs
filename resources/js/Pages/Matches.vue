@@ -68,7 +68,7 @@ function getDateDay(date){
         <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
       </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
-        <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`">izmeni</Link>
+        <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`">&#9998;</Link>
         <div class="number">{{ match.number || matches.length - index }}</div>
         <div class="winner"><Link :href="`/${match.winner_uri}`">{{ match.winner }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
         <div class="loser"><Link :href="`/${match.loser_uri}`">{{ match.loser }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
@@ -84,7 +84,7 @@ function getDateDay(date){
         <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
       </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesMobile" :key="index">
-        <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`">izmeni</Link>
+        <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`">&#9998;</Link>
         <div class="score">
           {{ match.set_score }}
           <br />

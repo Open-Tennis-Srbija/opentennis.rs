@@ -94,6 +94,7 @@
     
         label {
           font-size: 16px;
+          cursor: text;
           
           .required {
             color: #c6373d;
@@ -132,6 +133,7 @@
           input{
             padding-left: 40px;
             padding-bottom: 10px;
+            font-family: Arial;
           }
         }
         .dp__main.dp__theme_light.invalid{
@@ -494,6 +496,14 @@
       .datepicker-wrapper,
       button {
         width: 100% !important;
+      }
+    }
+    .dp__input_wrap{
+      input{
+        padding-left: 40px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-family: Arial;
       }
     }
   
