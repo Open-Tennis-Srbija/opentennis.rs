@@ -54,7 +54,7 @@
         <Link :href="route('home')"><img src="https://blog.openos.me/social/tenisliga.png" alt="SRPSKA TENIS LIGA"/></Link>
       </div>
       <div class="logo-wrapp mobile">
-        <Link :href="route('home')" @click.prevent="toggleMenu()"><img src="https://blog.openos.me/social/tenisliga.png" alt="SRPSKA TENIS LIGA"/></Link>
+        <Link :href="route('home')" @click.prevent="mobileMenu.state=false"><img src="https://blog.openos.me/social/tenisliga.png" alt="SRPSKA TENIS LIGA"/></Link>
       </div>
           <div class="links-wrapper">
             <div class="links">
