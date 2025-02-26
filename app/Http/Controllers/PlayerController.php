@@ -149,6 +149,11 @@ class PlayerController extends Controller
      */
     public function show($uri)
     {  
+        $check = Player::where('uri', $uri)->first();
+        if(!$check){
+            return redirect('/');
+        }
+        
         $player = PlayerController::getPlayerData(($uri));
         return Inertia::render('Player', [
             'player' => $player
