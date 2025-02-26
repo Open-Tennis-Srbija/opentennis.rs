@@ -42,8 +42,10 @@ const submit = () =>{
   formState.submitted = true;
   form.first_name.trim();
   form.last_name.trim();
-  form.club.trim();
-  form.location.trim();
+  if(form.club)
+    form.club.trim();
+  if(form.location)
+    form.location.trim();
 
     form.post(`/teniser/izmeni`,{
         onSuccess: () => {

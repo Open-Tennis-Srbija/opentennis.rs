@@ -15,6 +15,7 @@ onMounted(() => {
         :class="{'first': props.player.position==1, 'second': props.player.position == 2, 'third': props.player.position==3}"
         ><p>{{ player.position }}</p></div>
         <h1>{{props.player.name}}<Link class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${props.player.id}`">&#9998;</Link></h1>
+        <p class="subtitle-spacer" v-if="!player.club && !player.location">&nbsp;</p>
         <p class="subtitle">{{ player.club }}{{ player.club ? ', ' : ' ' }}{{ player.location }}</p>
         
         <div class="dashboard-wrapper">
