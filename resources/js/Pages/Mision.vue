@@ -15,13 +15,13 @@
           Svi su dobrodošli.
         </p>
         <p>
-          Nikola Tošić, osnivač, <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>
+          <a target="_blank" href="https://www.linkedin.com/in/nikolatosic/">Nikola Tošić</a>, osnivač, <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>
         </p>
         <p>
-          Bogdan Ranđelović, programer, <a href="mailto:bogdan@openinnovation.me">bogdan@openinnovation.me</a>
+         Bogdan Ranđelović, programer, <a href="mailto:bogdan@openinnovation.me">bogdan@openinnovation.me</a>
         </p>
         <p>
-         Ivan Jureta, savetnik za algoritam
+        <a target="_blank" href="https://ivanjureta.com">Ivan Jureta</a>, savetnik za algoritam
         </p>
       </div>
 </template>
