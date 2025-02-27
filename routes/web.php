@@ -33,6 +33,8 @@ Route::inertia('/pravila', 'Rules')->name('rules');
 Route::inertia('/admin/login', 'Auth/Login')->name('login');
 Route::post('/admin/login', [AuthController::class, 'login']);
 
+Route::post('/getChart',[PlayerController::class, 'getChart'])->name('playerChart');
+
 
 Route::middleware('auth')->group(function(){
     

@@ -7,7 +7,7 @@
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",
-        "axios": "^1.7.4",
+        "axios": "^1.8.1",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.4.47",
@@ -19,11 +19,13 @@
         "@inertiajs/vue3": "^2.0.3",
         "@vitejs/plugin-vue": "^5.2.1",
         "@vuepic/vue-datepicker": "^11.0.1",
+        "apexcharts": "^4.5.0",
         "nprogress": "^0.2.0",
         "overlayscrollbars": "^2.11.0",
         "overlayscrollbars-vue": "^0.5.9",
         "vue": "^3.5.13",
         "vue-select": "^4.0.0-beta.6",
+        "vue3-apexcharts": "^1.8.0",
         "vue3-eventbus": "^2.0.0",
         "vue3-lottie": "^3.3.1"
     }
