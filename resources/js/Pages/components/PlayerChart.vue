@@ -135,6 +135,19 @@ const chartOptions = {
             },
     },
     colors: ['#c6373d'],
+    noData: {
+        text: 'Učitavanje...',
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: -10,
+        style: {
+            color: undefined,
+            fontSize: '40px',
+            fontFamily: 'Helvetica Neue',
+            zIndex: 5
+        }
+    },
     yaxis:{
         min: 0,
     },
@@ -198,14 +211,14 @@ const chartOptionsLine2 = {
     },
     colors: ['#0d4075'],
     noData: {
-        text: 'Loading',
+        text: 'Učitavanje...',
         align: 'center',
         verticalAlign: 'middle',
         offsetX: 0,
-        offsetY: 0,
+        offsetY: -10,
         style: {
             color: undefined,
-            fontSize: '14px',
+            fontSize: '40px',
             fontFamily: 'Helvetica Neue'
         }
     },
