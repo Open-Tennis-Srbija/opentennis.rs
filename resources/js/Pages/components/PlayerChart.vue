@@ -136,14 +136,14 @@ const chartOptions = {
     },
     colors: ['#c6373d'],
     noData: {
-        text: 'Učitavanje...',
+        text: 'grafikon se učitava',
         align: 'center',
         verticalAlign: 'middle',
         offsetX: 0,
-        offsetY: -10,
+        offsetY: 7,
         style: {
-            color: undefined,
-            fontSize: '40px',
+            color: "#8f8f8f",
+            fontSize: '15px',
             fontFamily: 'Helvetica Neue',
             zIndex: 5
         }
@@ -211,15 +211,16 @@ const chartOptionsLine2 = {
     },
     colors: ['#0d4075'],
     noData: {
-        text: 'Učitavanje...',
+        text: 'grafikon se učitava',
         align: 'center',
         verticalAlign: 'middle',
         offsetX: 0,
-        offsetY: -10,
+        offsetY: 7,
         style: {
-            color: undefined,
-            fontSize: '40px',
-            fontFamily: 'Helvetica Neue'
+            color: "#8f8f8f",
+            fontSize: '15px',
+            fontFamily: 'Helvetica Neue',
+            zIndex: 5
         }
     },
     title:{
