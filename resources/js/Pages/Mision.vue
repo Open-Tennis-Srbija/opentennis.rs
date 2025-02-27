@@ -16,11 +16,9 @@
         </p>
         <p>
           <a target="_blank" href="https://www.linkedin.com/in/nikolatosic/">Nikola Tošić</a>, osnivač, <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>
-        </p>
-        <p>
+          <br>
          Bogdan Ranđelović, programer, <a href="mailto:bogdan@openinnovation.me">bogdan@openinnovation.me</a>
-        </p>
-        <p>
+         <br>
         <a target="_blank" href="https://ivanjureta.com">Ivan Jureta</a>, savetnik za algoritam
         </p>
       </div>

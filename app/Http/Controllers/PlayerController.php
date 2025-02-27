@@ -8,6 +8,7 @@ use App\Models\Player;
 use App\Models\TenisMatch;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use PlayerChartData;
 
 class PlayerController extends Controller
 {
@@ -42,6 +43,28 @@ class PlayerController extends Controller
             ]);
         }
 
+
+        usort($players, function($a, $b) {
+            return $b['stats']['elo'] <=> $a['stats']['elo'];
+        });
+
+        return $players;
+    }
+
+    public static function getPlayersOnDate($date){
+        $raw_players = Player::all();
+
+        $players = [];
+        foreach($raw_players as $player){
+            $check = TenisMatch::where('winner_id', $player->id)->orWhere('loser_id', $player->id)->where('match_date', '<=', $date)->first();
+
+            if($check){
+                array_push($players, [
+                    'uri' => $player->uri,
+                    'stats' => $player->getStatsOnDate($date),
+                ]);
+            }
+        }
 
         usort($players, function($a, $b) {
             return $b['stats']['elo'] <=> $a['stats']['elo'];
@@ -113,6 +136,13 @@ class PlayerController extends Controller
             'player' => Player::find($id),
         ]);
        
+    }
+
+    public function getChart(Request $request){
+
+        $player = Player::find($request->id);
+
+        return  PlayerChartData::getChartData($player);
     }
 
 

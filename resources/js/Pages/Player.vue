@@ -2,12 +2,17 @@
 import { usePage } from '@inertiajs/vue3';
 import { defineProps, onMounted } from 'vue';
 import utils from '../utils';
+import VueApexCharts from 'vue3-apexcharts';
+import { computed } from 'vue';
+import PlayerChart from './components/PlayerChart.vue';
 const props = defineProps({ player: Object });
 const page = usePage();
 
 onMounted(() => {
     page.props['title'] = 'teniser';
 });
+
+
 </script>
 <template>
     <div class="static-wrapper player">
@@ -63,6 +68,9 @@ onMounted(() => {
                     <h2>gubitci</h2>
                     <p>{{ props.player.stats.loses }}</p>
                 </div>
+            </div>
+            <div class="chart-wrapper">
+                <PlayerChart :player_id="props.player.id"/>
             </div>
             <h2 class="summary-title no-border low-margin">pobede</h2>
             <div class="player-matches">

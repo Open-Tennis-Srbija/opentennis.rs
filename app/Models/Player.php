@@ -91,6 +91,23 @@ class Player extends Model
         ];
     }
 
+    public function getStatsOnDate($date){
+        $total_matches = TenisMatch::where('winner_id', $this->id)
+            ->orWhere('loser_id', $this->id)
+            ->get();
+
+        $filtered_matches = [];
+
+        foreach($total_matches as $match){
+            if(strtotime($match->match_date) <= strtotime($date)){
+                array_push($filtered_matches, $match);
+            }
+        }        
+        return [
+            'elo' => $this->getElo($filtered_matches),
+        ];
+    }
+
     public function getElo($matches) {
         
         $elo = NikolaAlgoV1::calculatePoints($matches, $this);
