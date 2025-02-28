@@ -36,15 +36,15 @@
             <h2 class="summary-title">teniseri</h2>
             <div class="summary player three desktop col">
                 <div class="summary-item">
-                    <h2>najvise mečeva</h2>
+                    <h2>najviše mečeva</h2>
                     <p class="smaller"><Link :href="`/${props.data.players.total.uri}`">{{ props.data.players.total.name }}</Link></p>
                 </div>
                 <div class="summary-item">
-                    <h2>najvise pobeda</h2>
+                    <h2>najviše pobeda</h2>
                     <p class="smaller"><Link :href="`/${props.data.players.wins.uri}`">{{ props.data.players.wins.name }}</Link></p>
                 </div>
                 <div class="summary-item">
-                    <h2>najvise gubitaka</h2>
+                    <h2>najviše gubitaka</h2>
                     <p class="smaller"><Link :href="`/${props.data.players.loses.uri}`">{{ props.data.players.loses.name }}</Link></p>
                 </div>
             </div>
