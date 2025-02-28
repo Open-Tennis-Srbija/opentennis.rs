@@ -39,7 +39,8 @@
             "app/Algorithm/NikolaAlgoV1.php",
             "app/Algorithm/EloAlgoV1.php",
             "app/Helpers/FormatURI.php",
-            "app/Helpers/PlayerChartData.php"
+            "app/Helpers/PlayerChartData.php",
+            "app/Helpers/LeagueChartData.php"
         ],
         "psr-4": {
             "Tests\\": "tests/"

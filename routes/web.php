@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LeagueController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\TenisMatchController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,13 @@ Route::inertia('/teniseri', 'Join')->name('join');
 Route::inertia('/klubovi', 'ForClubs')->name('clubs');
 
 Route::inertia('/misija', 'Mision')->name('mision');
+
+Route::inertia('/statistika', 'Statistics',
+    ['data' => LeagueController::getStatistics()] 
+)->name('leagueStats');
+
+Route::post('/leagueChart',[LeagueController::class, 'getChart'])->name('leagueChart');
+
 
 Route::inertia('/pravila', 'Rules')->name('rules');
 

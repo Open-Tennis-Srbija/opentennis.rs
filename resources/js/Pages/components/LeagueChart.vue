@@ -4,17 +4,13 @@ import VueApexCharts from 'vue3-apexcharts';
 import { reactive } from 'vue';
 import { computed } from 'vue';
 
-const props = defineProps({
-    player_id: Number
-});
-
 const data = reactive({
-    playerData: {}
+    leagueData: {}
 });
 
 onBeforeMount(() => {
   
-    fetchPlayerData()
+    fetchData()
 
 });
 
@@ -24,37 +20,13 @@ const formatDate = (d) => {
     let months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'];
     return days[date.getDay()] + ' ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
 }
-const options = reactive({
-    chart: {
-        id: 'fb',
-        group: 'social',
-        type: 'line',
-        zoom: {
-            enabled: false
-        },
-        toolbar: {
-            show: false
-        },
-        min: 0,
-        max: 1000,
-        dataLabels: {
-              enabled: true,
-            },
-        xaxis: {
-            categories: []
-        },
-    },
-    colors: ['#008FFB'],
-})
 
-
-const fetchPlayerData = async () => {
+const fetchData = async () => {
     
-    await axios.post(route("playerChart"), {
-        id: props.player_id
-    }).then(res =>{
-        console.log(res.data)
-        data.playerData = res.data
+    await axios.post(route("leagueChart"))
+    .then(res =>{
+        console.log(res)
+        data.leagueData = res.data
     }).catch(err => {
         console.log(err)
     })
@@ -62,10 +34,10 @@ const fetchPlayerData = async () => {
 }
 const points = computed(() => {
 
-    if(data.playerData.points){
+    if(data.leagueData.points){
         let array = []
 
-        data.playerData.points.forEach(entry => {
+        data.leagueData.points.forEach(entry => {
             array.push({
                 x: formatDate(entry.date),
                 y: entry.points,
@@ -85,29 +57,46 @@ const points = computed(() => {
     } 
 })
 
-const ranks = computed(() => {
+const players = computed(() => {
 
-    if(data.playerData.rankings){
+    if(data.leagueData.players){
         let array = []
 
-        data.playerData.rankings.forEach(entry => {
+        data.leagueData.players.forEach(entry => {
             array.push({
                 x: formatDate(entry.date),
-                y: entry.rank,
+                y: entry.players,
             })
         });
         return [{
             data: array,
-            name: 'Rang',
-            title: {
-            text: 'Poeni',
-            align: 'center'
-            },
+            name: 'Teniseri',
         }]
     }
     else{
         return [{data: []}]
     } 
+})
+
+const matches = computed(() => {
+
+if(data.leagueData.matches){
+    let array = []
+
+    data.leagueData.matches.forEach(entry => {
+        array.push({
+            x: formatDate(entry.date),
+            y: entry.matches,
+        })
+    });
+    return [{
+        data: array,
+        name: 'Mečevi',
+    }]
+}
+else{
+    return [{data: []}]
+} 
 })
 
 
@@ -129,7 +118,7 @@ const chartOptions = {
             show: false
         },
         min: 0,
-        max: data.playerData.maxPoints || undefined,
+        max: data.leagueData.maxPoints || undefined,
         dataLabels: {
               enabled: true,
             },
@@ -181,7 +170,7 @@ const chartOptions = {
 }
 
 const maxRank = reactive(()=>{
-    return data.playerData.maxRank || 5
+    return data.leagueData.maxRank || 10
 })
 
 
@@ -198,9 +187,9 @@ const chartOptionsLine2 = {
         },
     },
     yaxis:{
-        reversed: true,
-        min: 1,
+        min: 2,
         max: maxRank,
+        forceNiceScale: true,
     },
     xaxis:{
         
@@ -224,7 +213,55 @@ const chartOptionsLine2 = {
         }
     },
     title:{
-        text: 'Rang',
+        text: 'Teniseri',
+        align: 'center',
+        style:{
+            fontSize: '17px',
+            color: '#8f8f8f',
+            fontFamily: 'Arial',
+            fontWeight: 'normal'
+        }
+    },
+}
+
+const chartOptionsLine3 = { 
+    chart: {
+        id: 'tw',
+        group: 'social',
+        type: 'line',
+        zoom: {
+            enabled: false
+        },
+        toolbar: {
+            show: false
+        },
+    },
+    yaxis:{
+        min: 1,
+    },
+    xaxis:{
+        
+        labels:{
+            show: false
+        },
+        
+    },
+    colors: ['#8f8f8f'],
+    noData: {
+        text: 'grafikon se učitava',
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 7,
+        style: {
+            color: "#8f8f8f",
+            fontSize: '15px',
+            fontFamily: 'Helvetica Neue',
+            zIndex: 5
+        }
+    },
+    title:{
+        text: 'Mecevi',
         align: 'center',
         style:{
             fontSize: '17px',
@@ -239,10 +276,13 @@ const chartOptionsLine2 = {
 <template>
     <div id="wrapper">
         <div id="chart-line">
-            <VueApexCharts type="line" height="200" :options="chartOptions" :series="points" />
+            <VueApexCharts type="line" height="300" :options="chartOptions" :series="points" />
         </div>
         <div id="chart-line2">
-            <VueApexCharts type="line" height="200" :options="chartOptionsLine2" :series="ranks" />
+            <VueApexCharts type="line" height="300" :options="chartOptionsLine2" :series="players" />
+        </div>
+        <div id="chart-line3">
+            <VueApexCharts type="line" height="300" :options="chartOptionsLine3" :series="matches" />
         </div>
     </div>
 </template>

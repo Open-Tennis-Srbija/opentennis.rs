@@ -2,8 +2,6 @@
 import { usePage } from '@inertiajs/vue3';
 import { defineProps, onMounted } from 'vue';
 import utils from '../utils';
-import VueApexCharts from 'vue3-apexcharts';
-import { computed } from 'vue';
 import PlayerChart from './components/PlayerChart.vue';
 const props = defineProps({ player: Object });
 const page = usePage();
