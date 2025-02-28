@@ -261,7 +261,7 @@ const chartOptionsLine3 = {
         }
     },
     title:{
-        text: 'Mecevi',
+        text: 'Mečevi',
         align: 'center',
         style:{
             fontSize: '17px',
