@@ -162,7 +162,7 @@ const chartOptions = {
         
     },
     title:{
-        text: 'Poeni',
+        text: 'poeni',
         align: 'center',
         style:{
             fontSize: '17px',
@@ -224,7 +224,7 @@ const chartOptionsLine2 = {
         }
     },
     title:{
-        text: 'Rang',
+        text: 'rang',
         align: 'center',
         style:{
             fontSize: '17px',

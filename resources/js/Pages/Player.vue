@@ -67,6 +67,7 @@ onMounted(() => {
                     <p>{{ props.player.stats.loses }}</p>
                 </div>
             </div>
+            <h2 class="summary-title">Grafikoni</h2>
             <div class="chart-wrapper">
                 <PlayerChart :player_id="props.player.id"/>
             </div>
