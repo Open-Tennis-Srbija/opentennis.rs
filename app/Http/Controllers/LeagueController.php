@@ -33,6 +33,7 @@ class LeagueController extends Controller
 
         $data['players']['total'] = [
             'name' => $players[0]['name'],
+            'count' => $players[0]['stats']['total_matches'],
             'uri' => $players[0]['uri'],
         ];
 
@@ -42,6 +43,7 @@ class LeagueController extends Controller
 
         $data['players']['wins'] = [
             'name' => $players[0]['name'],
+            'count' => $players[0]['stats']['wins'],
             'uri' => $players[0]['uri'],
         ];
 
@@ -51,6 +53,7 @@ class LeagueController extends Controller
 
         $data['players']['loses'] = [
             'name' => $players[0]['name'],
+            'count' => $players[0]['stats']['loses'],
             'uri' => $players[0]['uri'],
         ];
 

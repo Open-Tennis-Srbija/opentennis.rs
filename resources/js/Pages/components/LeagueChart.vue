@@ -151,7 +151,7 @@ const chartOptions = {
         
     },
     title:{
-        text: 'Poeni',
+        text: 'poeni',
         align: 'center',
         style:{
             fontSize: '17px',
@@ -213,7 +213,7 @@ const chartOptionsLine2 = {
         }
     },
     title:{
-        text: 'Teniseri',
+        text: 'teniseri',
         align: 'center',
         style:{
             fontSize: '17px',
@@ -261,7 +261,7 @@ const chartOptionsLine3 = {
         }
     },
     title:{
-        text: 'Mečevi',
+        text: 'mečevi',
         align: 'center',
         style:{
             fontSize: '17px',

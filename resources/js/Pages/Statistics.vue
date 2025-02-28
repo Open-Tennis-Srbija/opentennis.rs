@@ -37,15 +37,15 @@
             <div class="summary player three desktop col">
                 <div class="summary-item">
                     <h2>najviše mečeva</h2>
-                    <p class="smaller"><Link :href="`/${props.data.players.total.uri}`">{{ props.data.players.total.name }}</Link></p>
+                    <p class="smaller"><Link :href="`/${props.data.players.total.uri}`">{{ props.data.players.total.name }}</Link> ({{ props.data.players.total.count }})</p>
                 </div>
                 <div class="summary-item">
                     <h2>najviše pobeda</h2>
-                    <p class="smaller"><Link :href="`/${props.data.players.wins.uri}`">{{ props.data.players.wins.name }}</Link></p>
+                    <p class="smaller"><Link :href="`/${props.data.players.wins.uri}`">{{ props.data.players.wins.name }}</Link> ({{ props.data.players.wins.count }})</p>
                 </div>
                 <div class="summary-item">
                     <h2>najviše gubitaka</h2>
-                    <p class="smaller"><Link :href="`/${props.data.players.loses.uri}`">{{ props.data.players.loses.name }}</Link></p>
+                    <p class="smaller"><Link :href="`/${props.data.players.loses.uri}`">{{ props.data.players.loses.name }}</Link>  ({{ props.data.players.loses.count }})</p>
                 </div>
             </div>
            
