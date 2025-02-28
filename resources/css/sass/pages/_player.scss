@@ -119,6 +119,15 @@
                   place-items: center;
               }
           }
+          &.three{
+            display: grid;
+            grid-template-columns: repeat(3, 33.3%);
+    
+            .summary-item{
+                display: grid;
+                place-items: center;
+            }
+        }
           &.mobile{
               display: none;
           }
@@ -132,6 +141,18 @@
               p{
                   font-size: 40px;
                   font-weight: bold;
+
+                  &.smaller{
+                      font-size: 30px;
+
+                      a{
+                        color: black;
+
+                        &:hover{
+                            color: $red;
+                        }
+                      }
+                  }
               }
           }
       }
@@ -149,7 +170,7 @@
         p.subtitle{
             margin-top: 0;
         }   
-       
+      
         .summary-title{
             font-size: 17px;
             border-bottom: 2px solid $lignt-gray !important;
@@ -159,6 +180,12 @@
             width: 100%;
         }
 
+        .summary.player.three{
+            &.col{
+              grid-template-columns: 100%;
+              gap: 20px;
+            }
+        }
         .summary.player.five{
             &.desktop{
                 display: none !important;

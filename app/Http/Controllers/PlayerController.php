@@ -6,7 +6,9 @@ use App\Http\Requests\StorePlayerRequest;
 use App\Http\Requests\UpdatePlayerRequest;
 use App\Models\Player;
 use App\Models\TenisMatch;
+use Illuminate\Container\Attributes\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB as FacadesDB;
 use Inertia\Inertia;
 use PlayerChartData;
 
@@ -56,11 +58,12 @@ class PlayerController extends Controller
 
         $players = [];
         foreach($raw_players as $player){
-            $check = TenisMatch::where('winner_id', $player->id)->orWhere('loser_id', $player->id)->where('match_date', '<=', $date)->first();
+            $check = TenisMatch::where('winner_id', $player->id)->orWhere('loser_id', $player->id)->orderBy('match_date')->first();
 
-            if($check){
+            if(strtotime($check->match_date) <= strtotime($date)){
                 array_push($players, [
                     'uri' => $player->uri,
+                    'check' => $check,
                     'stats' => $player->getStatsOnDate($date),
                 ]);
             }

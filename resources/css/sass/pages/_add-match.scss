@@ -33,7 +33,7 @@
     h1 {
       font-family: 'Helvetica Neue';
       text-transform: uppercase;
-      font-size: 50px;
+      font-size: 40px;
       text-align: center;
       margin-bottom: 70px;
     }
@@ -168,9 +168,7 @@
          left: 0 !important;
 
          .dp__overlay_cell.dp__overlay_cell_pad{
-          font-family: 'Helvetica Neue';
-          text-transform: uppercase;
-          padding-bottom: 4px;
+          font-family: 'Arial';
 
          }
          .dp__overlay_cell:hover{
@@ -192,11 +190,9 @@
           padding-top: 7px;
         }
           .dp__overlay_cell_active.dp__overlay_cell_pad{
-            background-color: $blue;
+            background-color: $mid-gray;
             border-radius: 0;
-            font-family: 'Helvetica Neue';
-            text-transform: uppercase;
-            padding-bottom: 4px;
+            font-family: 'Arial';
           }
          .dp__month_year_wrap{
           button{
@@ -210,7 +206,9 @@
             padding-top: 3px;
             font-size: 17px;
             height: 40px;
-            font-family: 'Helvetica Neue';
+            font-family: 'Arial';
+            background-color: $mid-gray;
+            text-transform: capitalize;
             border-radius: 0;
 
             &.dp--arrow-btn-nav{
@@ -258,6 +256,7 @@
             
             .dp__selection_preview{
               position: absolute;
+              font-size: 17px;
               top: 70%;
               left: 50%;
               transform: translate(-50%, -50%);
@@ -269,6 +268,7 @@
             flex: unset;
 
             button{
+              background-color: $blue;
               margin-left: 0;
               margin-right: 0;
               width: auto !important;

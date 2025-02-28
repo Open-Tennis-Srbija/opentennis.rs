@@ -12,7 +12,7 @@ const form = useForm({
     loser:null,
     set_score: '',
     game_score: '',
-    date: null,
+    date: new Date(),
     location: '',
 });
 

@@ -131,6 +131,8 @@ $border-color-dark: #e2e0e1;
   }
 
   .matches-wrapper .match-entry {
+    min-height: 250px;
+    position: relative;
     .edit-btn{
       top: 40px;
       left: 0px;
@@ -144,23 +146,40 @@ $border-color-dark: #e2e0e1;
     flex-direction: column;
     gap: 29px;
     padding: 26px 0 34px 0;
-  }
 
-  .match-entry .score {
-    font-size: 30px;
-    line-height: 1.2;
-    margin-bottom: -10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 72px;
-
-    .games {
-      font-size: 25px;
+    .location {
+      position: absolute;
+      bottom: 10px;
       color: $text-color-gray;
+      line-height: 1.7;
     }
+
+    .score {
+      font-size: 30px;
+      line-height: 1.2;
+      position: absolute;
+      top: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 72px;
+  
+      .games {
+        font-size: 25px;
+        color: $text-color-gray;
+      }
+    }
+
+    .info{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
   }
+
 
   .info {
     display: grid;
@@ -206,8 +225,4 @@ $border-color-dark: #e2e0e1;
     font-size: 35px;
   }
 
-  .match-entry .location {
-    color: $text-color-gray;
-    line-height: 1.7;
-  }
 }
