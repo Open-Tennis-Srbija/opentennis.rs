@@ -64,7 +64,7 @@ const submit = () =>{
   form.set_score.trim();
   if(form.game_score){
       form.game_score.trim();
-      form.game_score = '('+ form.game_score + ')';
+      form.game_score.replace(' ', '');
   }
   form.location.trim();
 

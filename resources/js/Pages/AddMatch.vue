@@ -35,6 +35,7 @@ const submit = () =>{
 
   form.set_score.trim();
   form.game_score.trim();
+  form.game_score.replace(' ', '');
 
   form.location.trim();
 
@@ -73,8 +74,21 @@ const prepareTemp = () => {
   });
 }
 const handleTemp = (mode) => {
-  if(tempPlayers.players[tempPlayers.players.length-1].name === ''){
-    tempPlayers.players.pop();
+  let player = tempPlayers.players[tempPlayers.players.length-1];
+  debugger;
+  if(player.name !== ''){
+    if(mode == 'winner'){
+    if(player.id == 'temp'){
+        player.id = generatetempID('winner');
+      }
+      form.winner = player;
+    }
+    else{
+      if(player.id == 'temp'){
+        player.id = generatetempID('loser');
+      }
+      form.loser = player;
+    }
   }
   if(!form[mode] || form[mode] === ''){
     form.errors[mode] = 'Ovo polje je obavezno';
@@ -166,7 +180,7 @@ const handlePlayerSelect = (mode, event) => {
       <div class="form-section">
         <h2>Teniseri</h2>
         <div class="form-row">
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
+          <div class="form-group" @focusin="prepareTemp()">
             <label for="winner-fname" class="input-label">
               Pobednik (Ime i prezime)<span class="required">*</span>
             </label>
@@ -175,13 +189,15 @@ const handlePlayerSelect = (mode, event) => {
               :class="{'invalid': form.errors.winner}"
               :options="props.players"
               :clearable="false"
+              v-model="form.winner"
+              @search:blur="handleTemp('winner')"
               @input="checkChange($event)"
               :selectOnTab="true"
               @option:selecting="handlePlayerSelect('winner', $event)"
             />
             <p class="error-message">{{ form.errors.winner }}</p>
           </div>
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
+          <div class="form-group" @focusin="prepareTemp()">
             <label for="winner-fname" class="input-label">
               Gubitnik (Ime i prezime)<span class="required">*</span>
             </label>
@@ -191,6 +207,8 @@ const handlePlayerSelect = (mode, event) => {
               :clearable="false"
               :options="props.players"
               :selectOnTab="true"
+              v-model="form.loser"
+              @search:blur="handleTemp('loser')"
               @input="checkChange($event)"
               @option:selecting="handlePlayerSelect('loser', $event)"
             />
