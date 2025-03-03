@@ -75,8 +75,7 @@ const prepareTemp = () => {
 }
 const handleTemp = (mode) => {
   let player = tempPlayers.players[tempPlayers.players.length-1];
-  debugger;
-  if(player.name !== ''){
+  if(player.name !== '' && player.id == 'temp'){
     if(mode == 'winner'){
     if(player.id == 'temp'){
         player.id = generatetempID('winner');
