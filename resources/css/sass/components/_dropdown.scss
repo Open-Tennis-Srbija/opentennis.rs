@@ -1,0 +1,73 @@
+@use '../abstracts/' as *;
+
+.dropdown-wrapper{
+    position: relative;
+    &.invalid{
+        input{
+            border-color: $red !important;
+        }
+    }
+
+
+    .dropdown{
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        max-height: 30vh;
+        overflow-y: scroll;
+        background-color: white;
+        z-index: 3;
+        border: 1px solid black;
+        border-top: 0;
+        transition: .1s ease-in-out;
+        top: 100%;
+        opacity: 0;
+        visibility: hidden;
+
+      
+
+        &.open{
+            opacity: 1;
+            visibility: visible;
+        }
+
+        ul{
+            li{
+                width: 100%;
+                padding:5px 10px;
+                cursor: pointer;
+
+                &.hovered{
+                    background-color: $blue;
+                    color: white;
+                }
+            }
+        }
+
+    }
+    .arrow{
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        padding: 0;
+        transform: translateY(-12px) rotate(0deg);
+        pointer-events: none;
+        transition: .1s ease-in-out;
+        transform-origin: bottom;
+        
+        
+        svg{
+            transform: rotate(0deg);
+            transition: .15s ease-in-out;
+            fill: #8f8f8f;
+            height: 25px;
+            margin: 0;
+        }
+        &.open{
+            svg{
+                transform: rotate(180deg);
+            }
+        }
+    }
+}

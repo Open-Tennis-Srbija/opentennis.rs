@@ -36,13 +36,7 @@ const deleteMatch = () =>{
         });
     }
 }
-const selectedWinner = computed(() => {
-  return props.players.find(player => player.id === form.winner.id);
-});
 
-const selectedLoser = computed(() => {
-  return props.players.find(player => player.id === form.loser.id);
-});
 
 const formState = reactive({
     submitted: false,
@@ -50,6 +44,8 @@ const formState = reactive({
 });
 
 const submit = () =>{
+
+  if(!validateNames()) return;
 
   formState.submitted = true;
   if(form.winner){
@@ -79,6 +75,35 @@ const submit = () =>{
         },
     });
 }
+const validateNames = (()=>{
+  let check = true;
+  if(!form.winner.name || form.winner.name === ''){
+    form.errors.winner = 'Ovo polje je obavezno';
+    check = false;
+  }
+
+  if(!form.loser || form.loser === ''){
+    form.errors.loser = 'Ovo polje je obavezno';
+    check = false;
+  }
+  if(!check) return check;
+
+  
+  form.winner.name.trim();
+  if(form.winner.name.split(' ').length < 2){
+    form.errors.winner = 'Molim vas unesite i ime i prezime';
+    check =  false;
+  }
+
+  form.loser.name.trim();
+  if(form.loser.name.split(' ').length < 2){
+    form.errors.loser = 'Molim vas unesite i ime i prezime';
+    check =  false;
+  }
+
+  return check;
+
+})
 const minDate = (date) =>{
   let temp = date;
   temp.setFullYear(temp.getFullYear() - 1);
@@ -95,17 +120,8 @@ const tempPlayers = reactive({
   players: props.players
 })
 
-const prepareTemp = () => {
-  console.log('focus')
-  tempPlayers.players.push({
-    id:'temp',
-    name:''
-  });
-}
+
 const handleTemp = (mode) => {
-  if(tempPlayers.players[tempPlayers.players.length-1].name === ''){
-    tempPlayers.players.pop();
-  }
   if(!form[mode] || form[mode] === ''){
     form.errors[mode] = 'Ovo polje je obavezno';
   }
@@ -113,18 +129,12 @@ const handleTemp = (mode) => {
     form.errors[mode] = '';
   }
 }
-const checkChange = (event) => {
-  if(event.data)
-    tempPlayers.players[tempPlayers.players.length-1].name += event.data;
-  else{
-    tempPlayers.players[tempPlayers.players.length-1].name = tempPlayers.players[tempPlayers.players.length-1].name.slice(0, -1);
-  }
-}
+
 
 const handleInputs = (event,isDate = false) => {
   if(isDate) return form.errors['date'] = '';
-  
-  if(event.data){
+
+  if(event.target.value && event.target.value !== ''){
       form.errors[event.target.id] = '';
   }
   else{
@@ -193,37 +203,29 @@ const handlePlayerSelect = (mode, event) => {
     <form id="form" @submit.prevent="submit" :class="{'hide': formState.success}">
 
       <div class="form-section">
-        <h2>Igrači</h2>
+        <h2>Teniseri</h2>
         <div class="form-row">
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
+          <div class="form-group">
             <label for="winner-fname" class="input-label">
-              Pobednik<span class="required">*</span>
+              Pobednik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
-            <vSelect 
+           <Dropdown 
               label="name"
-              :class="{'invalid': form.errors.winner}"
               :options="props.players"
-              :clearable="false"
-              :placeholder="form.winner.name"
-              :selectOnTab="true"
-              @input="checkChange($event)"
-              @option:selecting="handlePlayerSelect('winner', $event)"
+              v-model="form.winner"
+              :class="{'invalid': form.errors.winner}"
             />
             <p class="error-message">{{ form.errors.winner }}</p>
           </div>
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
+          <div class="form-group">
             <label for="winner-fname" class="input-label">
-              Gubitnik<span class="required">*</span>
+              Gubitnik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
-            <vSelect 
+            <Dropdown 
               label="name"
-              :class="{'invalid': form.errors.loser}"
-              :clearable="false"
-              :placeholder="form.loser.name"
               :options="props.players"
-              :selectOnTab="true"
-              @input="checkChange($event)"
-              @option:selecting="handlePlayerSelect('loser', $event)"
+              v-model="form.loser"
+              :class="{'invalid': form.errors.loser}"
             />
             <p class="error-message">{{ form.errors.loser }}</p>
           </div>

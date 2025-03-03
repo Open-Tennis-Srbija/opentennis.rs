@@ -10,6 +10,7 @@ import VueDatepicker from '@vuepic/vue-datepicker';
 import Home from './Pages/Home.vue';
 import Matches from './Pages/Matches.vue';
 import eventBus, { bus } from 'vue3-eventbus';
+import Dropdown from './Pages/components/Dropdown.vue';
 
 router.on('finish', () => {
   bus.emit('resetScroll');
@@ -35,6 +36,7 @@ createInertiaApp({
       .component('Lottie', Vue3Lottie)
       .component('Head', Head)
       .component('Link', Link)
+      .component('Dropdown', Dropdown)
       .component('vSelect', VueSelect)
       .component('datepicker', VueDatepicker)
       .component('PlayerTable', Home)
