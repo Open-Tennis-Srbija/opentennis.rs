@@ -47,6 +47,10 @@
                     color: $dark-gray;
                     font-size: 20px;
 
+                    &.highlighted{
+                        color: $blue;
+                    }
+
                     &:hover {
                         color: $red;
                     }
