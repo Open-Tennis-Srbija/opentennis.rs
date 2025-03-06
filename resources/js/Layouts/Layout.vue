@@ -66,9 +66,9 @@
       </div>
           <div class="links-wrapper">
             <div class="links">
+              <Link class="highlighted" :href="route('addMatch')" :class="{ 'active': $page.url === '/dodaj' }">dodaj meč</Link>
               <Link :href="route('home')" :class="{ 'active': $page.url === '/' }">rang lista</Link>
               <Link :href="route('matches')" :class="{ 'active': $page.url === '/mecevi' }">mečevi</Link>
-              <Link class="highlighted" :href="route('addMatch')" :class="{ 'active': $page.url === '/dodaj' }">dodaj meč</Link>
               <Link :href="route('join')" :class="{ 'active': $page.url === '/teniseri' }">nađi tenisera</Link>
               <Link :href="route('leagueStats')" :class="{ 'active': $page.url === '/statistika' }">statistika</Link>
               <Link :href="route('mision')" :class="{ 'active': $page.url === '/misija' }">misija</Link>
@@ -89,9 +89,9 @@
         </header>
         <div id="mobile-menu" :class="{ 'open': mobileMenu.state }">
           <div class="links">
+            <Link @click.prevent="mobileMenu.state=false" class="highlighted" :href="route('addMatch')" :class="{ 'active': $page.url === '/dodaj' }">dodaj meč</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('home')" :class="{ 'active': $page.url === '/' }">rang lista</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('matches')" :class="{ 'active': $page.url === '/mecevi' }">mečevi</Link>
-            <Link @click.prevent="mobileMenu.state=false" class="highlighted" :href="route('addMatch')" :class="{ 'active': $page.url === '/dodaj' }">dodaj meč</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('join')" :class="{ 'active': $page.url === '/teniseri' }">nađi tenisera</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('leagueStats')" :class="{ 'active': $page.url === '/statistika' }">statistika</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('mision')" :class="{ 'active': $page.url === '/misija' }">misija</Link>
