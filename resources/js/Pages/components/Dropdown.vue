@@ -81,9 +81,6 @@ const onFocus = (e) => {
 
 }
 const onBlur = (e) => {
-  let input = e.target;
-  let value = e.target.value;
-  input.setSelectionRange(value.length, value.length);
 
   state.searching = false;
   state.isOpen = false;
