@@ -1,7 +1,9 @@
 <script setup>
-import { computed, onBeforeMount, reactive } from 'vue';
+import { getCurrentInstance, watch } from 'vue';
+import { computed, onBeforeMount, onMounted, reactive } from 'vue';
 
 const model = defineModel();
+const instance = getCurrentInstance();
 
 onBeforeMount(()=>{
   if(model.value)
@@ -14,7 +16,18 @@ const props = defineProps({
   label: String,
   value: String,
   multiple: Boolean,
+  shouldReset: Boolean,
 });
+
+watch(() => props.shouldReset, (value) => {
+  console.log('reset');
+  if (value) {
+    state.search = '';
+    model.value = null;
+    props.shouldReset = false;
+  }
+});
+
 
 const state = reactive({
   isOpen: false,

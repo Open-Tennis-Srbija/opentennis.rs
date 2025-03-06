@@ -51,7 +51,7 @@ class TenisMatchController extends Controller
     }
 
     public static function getMatches(){
-        $raw_matches = TenisMatch::all()->sortBy('match_date', SORT_REGULAR, true)->sortBy('date_created', SORT_REGULAR, true);
+        $raw_matches = TenisMatch::all()->sortBy('created_at', SORT_REGULAR, true)->sortBy('match_date', SORT_REGULAR, true);
 
         $matches = [];
         foreach($raw_matches as $match){
