@@ -109,11 +109,11 @@ const onEsc = () => {
 }
 
 
-const selectOption = (player) => {
+const selectOption = (player,e) => {
   model.value.id = player.id;
   model.value.name = player.name;
   state.search = player.name;
-  document.activeElement.blur();
+  e.target.blur()
 }
 
 
@@ -133,7 +133,7 @@ const selectOption = (player) => {
     <div class="dropdown" :class="{ 'open': state.isOpen }">
       <ul>
         <li v-for="(option, index) in filteredOptions" :key="index" :class="{ 'hovered': state.selectedIndex == index }"
-          @mouseover="state.selectedIndex = index" @click="selectOption(option)">
+          @mouseover="state.selectedIndex = index" @click="selectOption(option,$event)" @tap="selectOption(option,$event)">
           {{ option[props.label] }}
         </li>
       </ul>
