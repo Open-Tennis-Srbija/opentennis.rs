@@ -7,6 +7,8 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 const props = defineProps({players: Array});
 
+
+
 const form = useForm({
     winner: null,
     loser:null,
@@ -19,6 +21,7 @@ const form = useForm({
 const formState = reactive({
     submitted: false,
     success: false,
+    shouldReset: false,
 });
 
 const submit = () =>{
@@ -44,11 +47,16 @@ const submit = () =>{
     form.post('/dodaj',{
         onSuccess: () => {
           form.reset();
+          formState.shouldReset = true;
           formState.submitted = false;
           formState.success = true;
+          formState.shouldReset = false;
         },
         onError: (errors) => {
+          form.reset();
+          formState.shouldReset = true;
           formState.submitted = false;
+          formState.shouldReset = false;
         },
     });
 }
@@ -94,10 +102,6 @@ const formatDate = (date) => {
     return days[date.getDay()] + ' ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
 }
 
-const tempPlayers = reactive({
-  players: props.players
-})
-
 
 const handleTemp = (mode) => {
   if(!form[mode] || form[mode] === ''){
@@ -121,53 +125,6 @@ const handleInputs = (event,isDate = false) => {
 
 }
 
-function generatetempID(base){
-  return `${base}-${new Date().getTime()}`;
-}
-const handlePlayerSelect = (mode, event) => {
-  if(form.errors[mode]){
-    form.errors[mode] = '';
-  }
-
-  let player = event;
-  
-  if(mode == 'winner'){
-    if(player.id == 'temp'){
-        player.id = generatetempID('winner');
-      }
-      form.winner = player;
-    }
-    else{
-      if(player.id == 'temp'){
-        player.id = generatetempID('loser');
-      }
-      form.loser = player;
-    }
-    
-    for( let i = 0; i < tempPlayers.players.length; i++){
-      let checkToDel = false;
-      
-      if(tempPlayers.players[i].id == 'temp')
-        checkToDel = true;
-
-      if(!isNaN(player.id)){
-        if(isNaN(tempPlayers.players[i].id))
-          checkToDel = true;
-      }
-
-    else{
-      if(isNaN(tempPlayers.players[i].id) && tempPlayers.players[i].id != player.id){
-          checkToDel = true;
-      }
-    }
-
-    if(checkToDel){
-      tempPlayers.players.splice(i, 1);
-      i--;
-    }
-    
-  }
-}
 </script>
 <template>
   <Head title="Dodaj meč -" />
@@ -193,6 +150,7 @@ const handlePlayerSelect = (mode, event) => {
               :options="props.players"
               v-model="form.winner"
               :class="{'invalid': form.errors.winner}"
+              :shouldReset="formState.shouldReset"
             />
             <p class="error-message">{{ form.errors.winner }}</p>
           </div>
@@ -205,6 +163,7 @@ const handlePlayerSelect = (mode, event) => {
               :options="props.players"
               v-model="form.loser"
               :class="{'invalid': form.errors.loser}"
+              :shouldReset="formState.shouldReset"
             />
             <p class="error-message">{{ form.errors.loser }}</p>
           </div>
