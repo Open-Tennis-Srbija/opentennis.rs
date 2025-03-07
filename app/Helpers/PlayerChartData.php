@@ -40,6 +40,25 @@ Class PlayerChartData{
         $interval = DateInterval::createFromDateString('1 day');
         $period = new DatePeriod($start, $interval, $end);
 
+        if(count($matches) == 1){
+            if($matches[0]->winner_id == $player->id){
+                return [
+                    [
+                        'points' => NikolaAlgoV1::getMatchEloGains($matches[0])[0],
+                        'date' => $matches[0]->match_date,
+                    ]
+                ];
+            }
+            else{
+                return [
+                    [
+                        'points' => NikolaAlgoV1::getMatchEloGains($matches[0])[1],
+                        'date' => $matches[0]->match_date,
+                    ]
+                ];
+            }
+        }
+
         foreach($matches as $match){
             if($match->winner_id == $player->id){
                 $accumulative_points += NikolaAlgoV1::getMatchEloGains($match)[0];
@@ -81,6 +100,25 @@ Class PlayerChartData{
 
         $interval = DateInterval::createFromDateString('1 day');
         $period = new DatePeriod($start, $interval, $end);
+
+        if(count($matches) == 1){
+            $players = PlayerController::getPlayersOnDate($matches[0]->match_date);
+
+            $rank = 0;
+
+            foreach($players as $key => $value){
+                if($value['uri'] == $player->uri){
+                    $rank = $key + 1;
+                }
+            }
+
+            return [
+                [
+                    'rank' => $rank,
+                    'date' => $matches[0]->match_date,
+                ]
+            ];
+        }
 
         foreach($period as $day){
             $players = PlayerController::getPlayersOnDate($day->format('Y-m-d'));
