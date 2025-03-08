@@ -45,7 +45,8 @@ Class LeagueChartData{
         foreach($matches as $match){
                 $accumulative_points += NikolaAlgoV1::getMatchEloGains($match)[0];
                 $accumulative_points += NikolaAlgoV1::getMatchEloGains($match)[1];
-                $date = new DateTime($match->match_date)->format('Y-m-d');
+                $date = new DateTime($match->match_date);
+                $date = $date->format('Y-m-d');
                 array_push($changes_array, [
                     'points' => $accumulative_points,
                     'date' => $date,
@@ -102,7 +103,8 @@ Class LeagueChartData{
         foreach($period as $day){
             $count = 0;
             foreach($matches as $match){
-                $date = new DateTime($match->match_date)->format('Y-m-d');
+                $date = new DateTime($match->match_date);
+                $date = $date->format('Y-m-d');
                 if(strtotime($date) <= strtotime($day->format('Y-m-d'))){
                     $count++;
                 }
