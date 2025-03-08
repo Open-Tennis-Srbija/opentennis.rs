@@ -59,9 +59,9 @@ class PlayerController extends Controller
         $players = [];
         foreach($raw_players as $player){
             $check = TenisMatch::where('winner_id', $player->id)->orWhere('loser_id', $player->id)->orderBy('match_date')->first();
-            
+            $checkDate = new \DateTime($check->match_date)->format('Y-m-d');
             if($check)
-                if(strtotime($check->match_date) <= strtotime($date)){
+                if(strtotime($checkDate) <= strtotime($date)){
                     array_push($players, [
                         'uri' => $player->uri,
                         'check' => $check,
