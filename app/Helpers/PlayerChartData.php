@@ -79,9 +79,14 @@ Class PlayerChartData{
         foreach($period as $day){
             $most_recent = null;
             foreach($changes_array as $change){
-                if(strtotime($change['date']) <= strtotime($day->format('Y-m-d'))){
+                $date = new DateTime($change['date']);
+                $date = $date->format('Y-m-d');
+                $date = strtotime($date,0);
+                $compate = strtotime($day->format('Y-m-d'),0);
+                if($date <= $compate){
                     $most_recent = $change;
                 }
+
             }
             array_push($formated_changes, [
                 'points' => $most_recent['points'],
