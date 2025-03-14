@@ -8,6 +8,8 @@ const instance = getCurrentInstance();
 onBeforeMount(()=>{
   if(model.value)
     state.search = model.value.name;
+
+    console.log('test')
 })
 
 

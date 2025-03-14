@@ -46,17 +46,23 @@ const submit = () =>{
 
     form.post('/dodaj',{
         onSuccess: () => {
-          form.reset();
           formState.shouldReset = true;
+          form.reset();
+          form.winner = null;
+          form.loser = null;
           formState.submitted = false;
           formState.success = true;
-          formState.shouldReset = false;
+          setTimeout(()=>{
+            formState.shouldReset = false;
+          }, 1000);
         },
         onError: (errors) => {
           form.reset();
           formState.shouldReset = true;
           formState.submitted = false;
-          formState.shouldReset = false;
+          setTimeout(()=>{
+            formState.shouldReset = false;
+          }, 1000);
         },
     });
 }
