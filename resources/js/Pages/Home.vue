@@ -1,5 +1,6 @@
 <script setup>
 import utils from '../utils';
+import EditBtn from './components/EditIcon.vue';
 
 const utl = utils;
 
@@ -28,8 +29,8 @@ const props = defineProps({
         <div class="place">mesto</div>
       </div>
       <div class="ranking-entry" v-for="(player, index) in players">
-        <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`">&#9998;</Link>
-        <div class="rank" 
+                <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
+        <div class="rank"
         :class="{'first': index==0, 'second': index == 1, 'third': index==2, 'align-left': index+1 > 9}">
           {{ index+1}}
         </div>
@@ -46,8 +47,8 @@ const props = defineProps({
 
     <div id="mobile">
       <div class="ranking-entry" v-for="(player, index) in players">
-        <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`">&#9998;</Link>
-        <div class="rank" 
+                <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
+        <div class="rank"
         :class="{'first': index==0, 'second': index == 1, 'third': index==2, 'align-left': index+1 > 9}">
           {{ index+1}}
         </div>

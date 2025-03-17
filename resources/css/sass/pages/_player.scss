@@ -3,7 +3,7 @@
 
 .static-wrapper.player{
     border: 0;
-    
+
     .player-matches{
         .matches-wrapper{
             margin-bottom: 120px;
@@ -12,26 +12,32 @@
             margin-top: -35px;
         }
     }
-    
 
-   
+
+
       >h1{
         position: relative;
         .edit-btn{
             position: absolute;
             text-transform: uppercase;
-            right: 150px;
+            right: 290px;
             color: black;
             font-size: 50px;
             padding: 5px 10px;
-            top: 10px;
-            transform: translateY(-50%) rotateZ(90deg);
+            top: -19px;
             font-weight: normal;
-        
-            &:hover {
-              color: $red;
+
+            svg{
+                width: 50px;
+                height: 50px;
             }
-            
+
+            &:hover {
+                svg{
+                    fill: $red;
+                }
+            }
+
           }
       }
       .subtitle-spacer{
@@ -48,23 +54,23 @@
         margin: 0 auto;
         margin-bottom: 50px;
         margin-top: -20px;
-  
+
         &.first{
           border-width: 6px;
           border-color: $gold;
         }
-  
+
         &.second{
           border-width: 6px;
           border-color: $silver;
         }
-  
+
         &.third{
           border-width: 6px;
           border-color: $bronze;
         }
 
-        
+
         p{
             display: block;
             position: absolute;
@@ -75,7 +81,7 @@
             margin: 0;
             padding: 0;
             font-size: 50px;
-            
+
             &.align-left{
                 transform: translate(-52%, -47%);
             }
@@ -100,7 +106,7 @@
           &.no-border{
               border: none;
           }
-  
+
           &.low-margin{
               margin-top: 70px;
           }
@@ -108,12 +114,12 @@
       .chart-wrapper{
         margin-top: 20px;
       }
-      
+
       .summary.player{
           &.five{
               display: grid;
               grid-template-columns: repeat(5, 20%);
-      
+
               .summary-item{
                   display: grid;
                   place-items: center;
@@ -122,10 +128,24 @@
           &.three{
             display: grid;
             grid-template-columns: repeat(3, 33.3%);
-    
+
             .summary-item{
-                display: grid;
-                place-items: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                &.players{
+                    p{
+                        margin-bottom: 0;
+                        font-size: 20px;
+                        font-weight: normal;
+                        a{
+                            color: black;
+                            &:hover{
+                                color: $red;
+                            }
+                        }
+                    }
+                }
             }
         }
           &.mobile{
@@ -141,7 +161,9 @@
               p{
                   font-size: 40px;
                   font-weight: bold;
-
+                  &.smaller-list{
+                    font-weight: normal;
+                  }
                   &.smaller{
                       font-size: 30px;
 
@@ -169,19 +191,23 @@
             &.hide-mobile{
                 display: none;
             }
-            
+
+        .edit-btn{
+            right: 10px;
+            top: -64px;
+          }
         }
 
         .summary-item{
-          
+
             p{
                 font-size: 33px !important;
             }
         }
         p.subtitle{
             margin-top: 0;
-        }   
-      
+        }
+
         .summary-title{
             font-size: 17px;
             border-bottom: 2px solid $lignt-gray !important;
@@ -194,20 +220,34 @@
         .summary.player.three{
             &.col{
               grid-template-columns: 100%;
-              gap: 20px;
+              gap: 30px;
+             .summary-item{
+                &.players{
+                    display: flex;
+                    padding-inline: 20px;
+                    h2{
+                      width: max-content;
+                      margin: 0 auto;
+                      margin-bottom: 10px;
+                    }
+                    p{
+                        font-size: 20px !important;
+                    }
+                }
+             }
             }
         }
         .summary.player.five{
             &.desktop{
                 display: none !important;
             }
-            
+
             &.mobile{
                 flex-wrap: wrap;
                 display: flex;
                 .summary-item{
                     width: 33.3%;
-    
+
                     &.half{
                         width: 50%;
                     }

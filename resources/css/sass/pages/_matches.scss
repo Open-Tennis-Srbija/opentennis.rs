@@ -68,19 +68,27 @@ $border-color-dark: #e2e0e1;
     position: absolute;
     font-family: 'Helvetica Neue';
     text-transform: uppercase;
-    right: -70px;
+    right: -50px;
     color: black;
-    top: 50%;
-    transform: translateY(-50%) rotateZ(90deg);
+    top: 48%;
+    transform: translateY(-50%);
     font-size: 30px;
     padding: 5px 10px;
     padding-top: 13px;
     text-decoration: none;
 
-    &:hover {
-      color: $red;
+    svg{
+        width: 30px;
+        height: 30px;
     }
-    
+
+
+    &:hover {
+        svg{
+            fill: $red;
+        }
+    }
+
   }
   .winner,
   .loser{
@@ -164,7 +172,7 @@ $border-color-dark: #e2e0e1;
       justify-content: center;
       align-items: center;
       min-height: 72px;
-  
+
       .games {
         font-size: 25px;
         color: $text-color-gray;

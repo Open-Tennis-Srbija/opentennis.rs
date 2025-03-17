@@ -53,19 +53,23 @@
       position: absolute;
       font-family: 'Helvetica Neue';
       text-transform: uppercase;
-      right: -70px;
+      right: -40px;
       color: black;
       top: 50%;
-      transform: translateY(-50%) rotateZ(90deg);
+      transform: translateY(-50%);
       font-size: 30px;
-      padding: 5px 10px;
-      padding-top: 13px;
       text-decoration: none;
-  
-      &:hover {
-        color: $red;
+
+     svg{
+        width: 30px;
+        height: 30px;
       }
-      
+      &:hover {
+        svg{
+          fill: $red;
+        }
+      }
+
     }
 
     .elo,
@@ -158,7 +162,7 @@
 
       .name,
       .place {
-        
+
         font-weight: normal;
         font-size: 18px;
       }

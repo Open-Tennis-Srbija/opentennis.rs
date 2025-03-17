@@ -1,12 +1,17 @@
 <script setup>
-import {useForm} from '@inertiajs/vue3'
-import {reactive} from 'vue';
+import {useForm, usePage} from '@inertiajs/vue3'
+import {reactive, onMounted} from 'vue';
 import CircleLoader from '../../../../public/LRlCNqLdgl.json';
 
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const props = defineProps({players: Array});
+const page = usePage();
+
+onMounted(() => {
+    page.props['title'] = 'Admin';
+});
 
 const form = useForm({
     username: null,
@@ -37,8 +42,8 @@ const submit = () =>{
 
 const handleInputs = (event,isDate = false) => {
   if(isDate) return form.errors['date'] = '';
-  
-  if(event.data){
+
+  if(event.target.value && event.target.value !== ''){
       form.errors[event.target.id] = '';
   }
   else{
@@ -65,7 +70,7 @@ const handleInputs = (event,isDate = false) => {
             <label for="games" class="input-label">
               Lozinka <span class="required">*</span>
             </label>
-            <input :class="{'invalid': form.errors.username}" v-model="form.password" @input="handleInputs($event)" :disabled="formState.submitted" id="game_score " type="password">
+            <input :class="{'invalid': form.errors.password}" v-model="form.password" @input="handleInputs($event)" :disabled="formState.submitted" id="game_score " type="password">
             <p class="error-message">{{ form.errors.password }}</p>
           </div>
         </div>

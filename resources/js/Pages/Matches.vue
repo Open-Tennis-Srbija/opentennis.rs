@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import EditIcon from './components/EditIcon.vue';
 
 const props = defineProps({
   matches: Array,
@@ -11,11 +12,11 @@ const formatedMatchesDesktop = computed(() => {
     return {
       ...match,
       day: getDateDay(match.date),
-      date: Intl.DateTimeFormat('en-GB', {  
-      day: 'numeric',  
-      month: 'short',  
-      year: 'numeric',  
-      timeZone: 'Europe/Belgrade' // Equivalent to GMT+1 (adjust based on daylight saving time)  
+      date: Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'Europe/Belgrade' // Equivalent to GMT+1 (adjust based on daylight saving time)
     }).format(new Date(match.date)),
     };
   });
@@ -31,11 +32,11 @@ const formatedMatchesMobile = computed(() => {
       loser_first_name: match.loser.split(' ')[0],
       loser_last_name: match.loser.split(' ')[1],
       day: getDateDay(match.date),
-      date: Intl.DateTimeFormat('en-GB', {  
-      day: 'numeric',  
-      month: 'short',  
-      year: 'numeric',  
-      timeZone: 'Europe/Belgrade' // Equivalent to GMT+1 (adjust based on daylight saving time)  
+      date: Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'Europe/Belgrade' // Equivalent to GMT+1 (adjust based on daylight saving time)
     }).format(new Date(match.date)),
     };
   });
@@ -68,7 +69,7 @@ function getDateDay(date){
         <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
       </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
-        <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`">&#9998;</Link>
+                <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`"><EditIcon/></Link>
         <div class="number">{{ match.number || matches.length - index }}</div>
         <div class="winner"><Link :href="`/${match.winner_uri}`">{{ match.winner }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
         <div class="loser"><Link :href="`/${match.loser_uri}`">{{ match.loser }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
@@ -84,7 +85,7 @@ function getDateDay(date){
         <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
       </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesMobile" :key="index">
-        <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`">&#9998;</Link>
+                <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`"><EditIcon/></Link>
         <div class="score">
           {{ match.set_score }}
           <br />
