@@ -3,7 +3,7 @@
   import { usePage } from '@inertiajs/vue3';
   import 'overlayscrollbars/overlayscrollbars.css';
   import { OverlayScrollbarsComponent, useOverlayScrollbars } from 'overlayscrollbars-vue';
-import { OverlayScrollbars } from 'overlayscrollbars';
+  import { OverlayScrollbars } from 'overlayscrollbars';
 
   const mobileMenu = reactive({state: false});
 

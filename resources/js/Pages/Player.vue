@@ -19,6 +19,13 @@ const matchups = computed(() => {
         not_played: props.player.matchups.notPlayedWith,
     };
 });
+const getInteractionText = (number) =>{
+    if(number == 1 || (number>20 && number%10 == 1)){
+        return "teniserom";
+    }
+    else return "tenisera";
+}
+
 </script>
 <template>
     <div class="static-wrapper player">
@@ -132,7 +139,7 @@ const matchups = computed(() => {
                 </div>
                 <div class="summary-item players">
                     <template v-if="matchups.not_played.length > 0">
-                        <h2>nije igrao sa {{matchups.not_played.length}} tenisera</h2>
+                        <h2>nije igrao sa {{matchups.not_played.length}} {{getInteractionText(matchups.not_played.length)}}</h2>
                         <template v-for="player in matchups.not_played">
                             <p>
                                 <Link :href="`/${player.uri}`">{{
