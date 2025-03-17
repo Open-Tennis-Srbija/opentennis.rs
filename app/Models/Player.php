@@ -35,6 +35,7 @@ class Player extends Model
         foreach($matches as $match){
             if($match->winner_id == $this->id){
                 $loser = Player::find($match->loser_id);
+
                 if(!isset($matchups['wins'][$loser->getName()])){
                     $matchups['wins'][$loser->getName()] = [
                         'name' => $loser->getName(),
@@ -45,7 +46,11 @@ class Player extends Model
                 else{
                     $matchups['wins'][$loser->getName()]['number']++;
                 }
-                $players->forget($loser);
+                foreach($players as $key=>$player){
+                    if($player->id == $loser->id || $player->id == $this->id){
+                        $players->forget($key);
+                    }
+                }
             }
             else{
                 $winner = Player::find($match->winner_id);
@@ -59,18 +64,29 @@ class Player extends Model
                 else{
                     $matchups['loses'][$winner->getName()]['number']++;
                 }
-                $players->forget($winner);
+                   foreach($players as $key=>$player){
+                    if($player->id == $winner->id || $player->id == $this->id){
+                        $players->forget($key);
+                    }
+                }
             }
-
-
         }
+
         foreach($players as $player){
             array_push($matchups['notPlayedWith'], [
                 'name' => $player->getName(),
                 'uri' => $player->uri,
             ]);
         }
-
+        usort($matchups['wins'], function($a, $b) {
+         return strcmp($a['name'], $b['name']);
+        });
+        usort($matchups['loses'], function($a, $b) {
+         return strcmp($a['name'], $b['name']);
+        });
+        usort($matchups['notPlayedWith'], function($a, $b) {
+         return strcmp($a['name'], $b['name']);
+        });
         return $matchups;
 
     }
