@@ -18,7 +18,65 @@ class Player extends Model
         'uri',
         'location',
     ];
-    
+
+    public function getMatchups(){
+        $matches = TenisMatch::where('winner_id', $this->id)
+            ->orWhere('loser_id', $this->id)
+            ->get();
+
+        $players = Player::all();
+
+        $matchups = [
+            'wins' => [],
+            'loses' => [],
+            'notPlayedWith' => [],
+        ];
+
+        foreach($matches as $match){
+            if($match->winner_id == $this->id){
+                $loser = Player::find($match->loser_id);
+                if(!isset($matchups['wins'][$loser->getName()])){
+                    $matchups['wins'][$loser->getName()] = [
+                        'name' => $loser->getName(),
+                        'uri' => $loser->uri,
+                        'number' => 1,
+                    ];
+                }
+                else{
+                    $matchups['wins'][$loser->getName()]['number']++;
+                }
+                $players->forget($loser);
+            }
+            else{
+                $winner = Player::find($match->winner_id);
+                if(!isset($matchups['loses'][$winner->getName()])){
+                    $matchups['loses'][$winner->getName()] = [
+                        'name' => $winner->getName(),
+                        'uri' => $winner->uri,
+                        'number' => 1,
+                    ];
+                }
+                else{
+                    $matchups['loses'][$winner->getName()]['number']++;
+                }
+                $players->forget($winner);
+            }
+
+
+        }
+        foreach($players as $player){
+            array_push($matchups['notPlayedWith'], [
+                'name' => $player->getName(),
+                'uri' => $player->uri,
+            ]);
+        }
+
+        return $matchups;
+
+    }
+    public function getName(){
+        return $this->first_name . ' ' . $this->last_name;
+    }
     public function getMatches(){
         $raw_wins =TenisMatch::where('winner_id', $this->id)->get()->sortBy('match_date', SORT_REGULAR,true)->sortBy('date_created', SORT_REGULAR);
         $raw_loses = TenisMatch::where('loser_id', $this->id)->get()->sortBy('match_date', SORT_REGULAR,true)->sortBy('date_created', SORT_REGULAR);;
@@ -77,7 +135,7 @@ class Player extends Model
 
         $wins = TenisMatch::where('winner_id', $this->id)
             ->count();
-        
+
         $loses = $total_matches->count() - $wins;
 
         $win_precentage = $total_matches->count() > 0 ? ($wins / $total_matches->count()) * 100 : 0;
@@ -102,18 +160,18 @@ class Player extends Model
             if(strtotime($match->match_date) <= strtotime($date)){
                 array_push($filtered_matches, $match);
             }
-        }        
+        }
         return [
             'elo' => $this->getElo($filtered_matches),
         ];
     }
 
     public function getElo($matches) {
-        
+
         $elo = NikolaAlgoV1::calculatePoints($matches, $this);
-        
+
         return $elo;
     }
 
 }
-    
+

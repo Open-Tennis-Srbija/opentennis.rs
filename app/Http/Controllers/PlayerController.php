@@ -114,6 +114,7 @@ class PlayerController extends Controller
             'club' => $player->club,
             'position' => $position,
             'wins' => $wins,
+            'matchups' => $player->getMatchups(),
             'loses' => $loses,
             'location' => $player->location,
         ];
@@ -141,7 +142,7 @@ class PlayerController extends Controller
         return Inertia::render('EditPlayer', [
             'player' => Player::find($id),
         ]);
-       
+
     }
 
     public function getChart(Request $request){
@@ -184,12 +185,12 @@ class PlayerController extends Controller
      * Display the specified resource.
      */
     public function show($uri)
-    {  
+    {
         $check = Player::where('uri', $uri)->first();
         if(!$check){
             return redirect('/');
         }
-        
+
         $player = PlayerController::getPlayerData(($uri));
         return Inertia::render('Player', [
             'player' => $player
