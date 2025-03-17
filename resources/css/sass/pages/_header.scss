@@ -216,7 +216,8 @@
         top: 0;
 
         .logo-wrapp {
-            height: 50px;
+            height: 50px !important;
+            margin-top: 0 !important;
             overflow: hidden;
             border-bottom: 1px solid $dark-gray;
 
