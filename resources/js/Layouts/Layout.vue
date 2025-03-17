@@ -4,7 +4,8 @@
   import 'overlayscrollbars/overlayscrollbars.css';
   import { OverlayScrollbars } from 'overlayscrollbars';
   import  { bus } from 'vue3-eventbus';
-  
+  import Logo from './components/Logo.vue';
+
   const mobileMenu = reactive({state: false});
 
   const scrollPos = reactive({top: 0});
@@ -58,11 +59,10 @@
 <template>
 
     <header class="header-wrapper" @scroll="console.log($event)">
-      <div class="logo-wrapp dekstop" :style="{marginTop: -topOffset + 'px'}">
-        <Link :href="route('home')"><img src="https://blog.openos.me/social/tenisliga.png" alt="SRPSKA TENIS LIGA"/></Link>
-      </div>
-      <div class="logo-wrapp mobile">
-        <Link :href="route('home')" @click.prevent="mobileMenu.state=false"><img src="https://blog.openos.me/social/tenisliga.png" alt="SRPSKA TENIS LIGA"/></Link>
+      <div class="logo-wrapp" :style="{marginTop: -topOffset + 'px'}">
+        <Link :href="route('home')">
+            <Logo />
+            </Link>
       </div>
           <div class="links-wrapper">
             <div class="links">
