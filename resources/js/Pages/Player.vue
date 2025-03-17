@@ -1,15 +1,15 @@
 <script setup>
-import { usePage } from '@inertiajs/vue3';
-import { defineProps, onMounted, computed } from 'vue';
-import utils from '../utils';
-import PlayerChart from './components/PlayerChart.vue';
-import EditIcon from './components/EditIcon.vue';
+import { usePage } from "@inertiajs/vue3";
+import { defineProps, onMounted, computed } from "vue";
+import utils from "../utils";
+import PlayerChart from "./components/PlayerChart.vue";
+import EditIcon from "./components/EditIcon.vue";
 
 const props = defineProps({ player: Object });
 const page = usePage();
 
 onMounted(() => {
-    page.props['title'] = 'teniser';
+    page.props["title"] = "teniser";
 });
 
 const matchups = computed(() => {
@@ -18,18 +18,37 @@ const matchups = computed(() => {
         loses: Object.values(props.player.matchups.loses),
         not_played: props.player.matchups.notPlayedWith,
     };
-
 });
-
 </script>
 <template>
     <div class="static-wrapper player">
-        <div class="rank"
-        :class="{'first': props.player.position==1, 'second': props.player.position == 2, 'third': props.player.position==3}">
-        <p :class="{'align-left': props.player.position > 9}">{{ player.position }}</p></div>
-        <h1>{{props.player.name}}<Link class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${props.player.id}`"><EditIcon/></Link></h1>
-        <p class="subtitle-spacer" v-if="!player.club && !player.location">&nbsp;</p>
-        <p class="subtitle">{{ player.club }}{{ player.club ? ', ' : ' ' }}{{ player.location }}</p>
+        <div
+            class="rank"
+            :class="{
+                first: props.player.position == 1,
+                second: props.player.position == 2,
+                third: props.player.position == 3,
+            }"
+        >
+            <p :class="{ 'align-left': props.player.position > 9 }">
+                {{ player.position }}
+            </p>
+        </div>
+        <h1>
+            {{ props.player.name
+            }}<Link
+                class="edit-btn"
+                v-if="$page.props.auth.user"
+                :href="`/teniser/izmeni/${props.player.id}`"
+                ><EditIcon
+            /></Link>
+        </h1>
+        <p class="subtitle-spacer" v-if="!player.club && !player.location">
+            &nbsp;
+        </p>
+        <p class="subtitle">
+            {{ player.club }}{{ player.club ? ", " : " " }}{{ player.location }}
+        </p>
 
         <div class="dashboard-wrapper">
             <h2 class="summary-title">Statistika</h2>
@@ -80,35 +99,70 @@ const matchups = computed(() => {
             <h2 class="summary-title">Teniseri</h2>
             <div class="summary player three col">
                 <div class="summary-item players">
-                    <h2>pobedio</h2>
-                    <template v-for="player in matchups.wins">
-                        <p><Link :href="`/${player.uri}`">{{ player.name }}</Link> ({{player.number}})</p>
+                    <template v-if="matchups.wins.length > 0">
+                        <h2>pobedio {{ matchups.wins.length }} tenisera</h2>
+                        <template v-for="player in matchups.wins">
+                            <p>
+                                <Link :href="`/${player.uri}`">{{
+                                    player.name
+                                }}</Link>
+                                ({{ player.number }})
+                            </p>
+                        </template>
+                    </template>
+                    <template v-else>
+                        <h2>ovaj teniser nikada nije pobedio &#128577;</h2>
                     </template>
                 </div>
                 <div class="summary-item players">
-                    <h2>izgubio od</h2>
-                    <template v-for="player in matchups.loses">
-                        <p><Link :href="`/${player.uri}`">{{ player.name }}</Link> ({{player.number}})</p>
+                    <template v-if="matchups.loses.length > 0">
+                        <h2>izgubio od {{matchups.loses.length}} tenisera</h2>
+                        <template v-for="player in matchups.loses">
+                            <p>
+                                <Link :href="`/${player.uri}`">{{
+                                    player.name
+                                }}</Link>
+                                ({{ player.number }})
+                            </p>
+                        </template>
+                    </template>
+                    <template v-else>
+                        <h2>ovaj teniser nikada nije izgubio &#128578;</h2>
                     </template>
                 </div>
                 <div class="summary-item players">
-                    <h2>nije igrao sa</h2>
-                    <template v-for="player in matchups.not_played">
-                        <p><Link :href="`/${player.uri}`">{{ player.name }}</Link></p>
+                    <template v-if="matchups.not_played.length > 0">
+                        <h2>nije igrao sa {{matchups.not_played.length}} tenisera</h2>
+                        <template v-for="player in matchups.not_played">
+                            <p>
+                                <Link :href="`/${player.uri}`">{{
+                                    player.name
+                                }}</Link>
+                            </p>
+                        </template>
+                    </template>
+                    <template v-else>
+                        <h2>ovaj teniser je igrao sa svima &#128578;</h2>
                     </template>
                 </div>
             </div>
             <h2 class="summary-title">Grafikoni</h2>
             <div class="chart-wrapper">
-                <PlayerChart :player_id="props.player.id"/>
+                <PlayerChart :player_id="props.player.id" />
             </div>
             <h2 class="summary-title no-border low-margin">pobede</h2>
             <div class="player-matches">
-                <MatchTable :showMessage="{wins: props.player.wins == 0}" :matches="props.player.wins" />
+                <MatchTable
+                    :showMessage="{ wins: props.player.wins == 0 }"
+                    :matches="props.player.wins"
+                />
             </div>
             <h2 class="summary-title no-border low-margin">gubitci</h2>
             <div class="player-matches">
-                <MatchTable :showMessage="{loses: props.player.loses == 0}" :matches="props.player.loses" />
+                <MatchTable
+                    :showMessage="{ loses: props.player.loses == 0 }"
+                    :matches="props.player.loses"
+                />
             </div>
         </div>
     </div>
