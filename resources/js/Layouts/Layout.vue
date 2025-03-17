@@ -52,7 +52,7 @@
       case '/misija': return 'misija';
       case '/pravila': return 'pravila';
       case '/admin': return 'admin';
-      default: return 'Hello';}
+      default: return '';}
   })
 
 </script>
