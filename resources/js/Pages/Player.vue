@@ -1,6 +1,6 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
-import { defineProps, onMounted, computed } from "vue";
+import { onMounted, computed } from "vue";
 import utils from "../utils";
 import PlayerChart from "./components/PlayerChart.vue";
 import EditIcon from "./components/EditIcon.vue";

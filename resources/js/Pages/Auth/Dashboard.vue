@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
 const props = defineProps({ data: Object });
 </script>
 <template>
@@ -25,8 +24,8 @@ const props = defineProps({ data: Object });
                     <h2>Top 5 tenisera</h2>
                     <div class="player-wrapper">
                       <PlayerTable :players="props.data.players" />
-                    </div>  
-                       
+                    </div>
+
                 </div>
                 <div class="stats-item">
                     <h2>Poslednjih 5 mečeva</h2>
