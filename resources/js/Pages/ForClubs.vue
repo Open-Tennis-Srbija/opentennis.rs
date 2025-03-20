@@ -17,7 +17,7 @@
           <p>
             Da bi dodali više mečeva odjednom treba poslati email na
             <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a> tekst ili spreadsheet fajl koji sadrži
-            sledeće podatke za svaki meć: ime i prezime pobednika, ime i prezime
+            sledeće podatke za svaki meč: ime i prezime pobednika, ime i prezime
             gubitnika, rezultat u setovima i gemove, datum meča i lokaciju tj.
             terene.
           </p>
