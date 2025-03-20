@@ -6,10 +6,11 @@ const model = defineModel();
 const instance = getCurrentInstance();
 
 onBeforeMount(()=>{
-  if(model.value)
-    state.search = model.value.name;
-
-    console.log('test')
+  if(model.value && model.value.name && model.value.name != ''){
+        state.search = model.value.name;
+  }
+  if((model.value && !model.value.name) && model.value.name !== '')
+    state.search = model.value;
 })
 
 
@@ -19,6 +20,8 @@ const props = defineProps({
   value: String,
   multiple: Boolean,
   shouldReset: Boolean,
+  type: String,
+  canAdd: Boolean,
 });
 
 watch(() => props.shouldReset, (value) => {
@@ -47,9 +50,12 @@ const handleSearch = (e) => {
 }
 
 const filteredOptions = computed(() => {
-  if (state.search === '') return state.options;
+  if (state.search === '' || (model.value && model.value.name == '')) return state.options;
+  if(props.type !== 'array')
+      return state.options.filter(option => option[props.label].toLowerCase().includes(state.search.toLowerCase()));
+  else
+    return state.options.filter(option => option.toLowerCase().includes(state.search.toLowerCase()));
 
-  return state.options.filter(option => option[props.label].toLowerCase().includes(state.search.toLowerCase()));
 });
 
 
@@ -71,12 +77,15 @@ const onFocus = (e) => {
 
   if(!model.value){
     console.log('model is empty');
+    if(props.type !== 'array')
     model.value = {
       id: 'temp',
       name: state.search
     }
+    else
+     model.value = state.search;
   }
-  
+
   state.searching = true;
   state.isOpen = true;
   state.selectedIndex = 0;
@@ -108,32 +117,42 @@ const onEsc = () => {
 }
 
 
-const selectOption = (player,e) => {
-  model.value.id = player.id;
-  model.value.name = player.name;
-  state.search = player.name;
+const selectOption = (option,e) => {
+    console.log(option)
+    console.log(props.type)
+    if(!props.type || props.type !== 'array'){
+        console.log('here')
+        model.value.id = option.id;
+        model.value.name = option.name;
+        state.search = option.name;
+  }
+  else{
+    model.value = option;
+    state.search = option;
+  }
   e.target.blur()
+
 }
 
 
 </script>
 <template>
   <div class="dropdown-wrapper">
-    <input type="text" 
+    <input type="text"
       :value="state.search"
-      @input="handleSearch" 
-      @focus="onFocus" 
+      @input="handleSearch"
+      @focus="onFocus"
       @blur="onBlur"
-      @keydown.down.prevent="onKeyDown" 
-      @keydown.up.prevent="onKeyUp" 
-      @keydown.esc.prevent="onEsc" 
-      @keydown.tab.prevent="onTab" 
+      @keydown.down.prevent="onKeyDown"
+      @keydown.up.prevent="onKeyUp"
+      @keydown.esc.prevent="onEsc"
+      @keydown.tab.prevent="onTab"
       />
     <div class="dropdown" :class="{ 'open': state.isOpen }">
       <ul>
         <li v-for="(option, index) in filteredOptions" :key="index" :class="{ 'hovered': state.selectedIndex == index }"
           @mouseover="state.selectedIndex = index" @click="selectOption(option,$event)" @tap="selectOption(option,$event)">
-          {{ option[props.label] }}
+          {{ props.type == 'array' ? option : option[props.label] }}
         </li>
       </ul>
     </div>

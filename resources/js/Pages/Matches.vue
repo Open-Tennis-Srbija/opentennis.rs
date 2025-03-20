@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import EditIcon from './components/EditIcon.vue';
 
 const props = defineProps({
@@ -22,7 +22,9 @@ const formatedMatchesDesktop = computed(() => {
   });
   return formated;
 });
-
+onMounted(()=>{
+  console.log(props.matches);
+})
 const formatedMatchesMobile = computed(() => {
   let formated = props.matches.map((match, index) => {
     return {
@@ -62,7 +64,8 @@ function getDateDay(date){
         <div class="spacer"></div>
         <div class="score">rezultat</div>
         <div class="date">datum</div>
-        <div class="location">lokacija</div>
+        <div class="location">opština</div>
+        <div class="location">teren</div>
       </div>
       <div v-if="props.showMessage">
         <p v-if="props.showMessage.wins"class="message">Ovaj teniser nikada nije pobedio &#128577;</p>
@@ -77,6 +80,16 @@ function getDateDay(date){
         <div class="score">{{ match.set_score }}<br><span class="gray">{{ match.game_score }}</span></div>
         <div class="date">{{match.day}} <br/> {{ match.date }}</div>
         <div class="location">{{ match.location }}</div>
+        <div class="location">
+            <template v-if="match.court.link == ''">
+                    {{ match.court.name }}
+            </template>
+            <template v-else>
+                <a target="_blank" :href="match.court.link">
+                    {{ match.court.name }}
+                </a>
+            </template>
+        </div>
       </div>
     </div>
     <div id="mobile">
@@ -105,7 +118,14 @@ function getDateDay(date){
         </div>
 
         <div class="location">
-          #{{ match.number || matches.length - index }}, {{ match.day }} {{ match.date }}<br>{{ match.location }}
+          #{{ match.number || matches.length - index }}, {{ match.day }} {{ match.date }}
+         <br>
+        <template v-if="match.court.id == 1">
+          {{ match.location }}
+        </template>
+        <template v-else>
+                        {{ match.location }}, <a v-if="match.court.link !== ''" target="_blank" :href="match.court.link">{{ match.court.name }}</a> <span v-else>{{ match.court.name }}</span>
+        </template>
         </div>
       </div>
     </div>

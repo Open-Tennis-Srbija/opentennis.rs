@@ -4,8 +4,9 @@ import {reactive} from 'vue';
 import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
+import opstine from '../assets/opstine.json';
 
-const props = defineProps({players: Array});
+const props = defineProps({players: Array,courts: Array});
 
 
 
@@ -14,8 +15,9 @@ const form = useForm({
     loser:null,
     set_score: '',
     game_score: '',
+    court: null,
     date: new Date(),
-    location: '',
+    location: 'Beograd',
 });
 
 const formState = reactive({
@@ -57,8 +59,6 @@ const submit = () =>{
           }, 1000);
         },
         onError: (errors) => {
-          form.reset();
-          formState.shouldReset = true;
           formState.submitted = false;
           setTimeout(()=>{
             formState.shouldReset = false;
@@ -69,13 +69,22 @@ const submit = () =>{
 
 const validateNames = (()=>{
   let check = true;
+  if(!form.winner){
+    form.errors.winner = 'ovo polje je obavezno';
+    check = false;
+  }
+  if(!form.loser){
+    form.errors.loser = 'ovo polje je obavezno';
+    check = false;
+  }
+  if(check){
   if(!form.winner.name || form.winner.name === ''){
-    form.errors.winner = 'Ovo polje je obavezno';
+    form.errors.winner = 'ovo polje je obavezno';
     check = false;
   }
 
   if(!form.loser || form.loser === ''){
-    form.errors.loser = 'Ovo polje je obavezno';
+    form.errors.loser = 'ovo polje je obavezno';
     check = false;
   }
   if(!check) return check;
@@ -83,18 +92,18 @@ const validateNames = (()=>{
 
   form.winner.name.trim();
   if(form.winner.name.split(' ').length < 2){
-    form.errors.winner = 'Molim vas unesite i ime i prezime';
+    form.errors.winner = 'molim vas unesite i ime i prezime';
     check =  false;
   }
 
   form.loser.name.trim();
   if(form.loser.name.split(' ').length < 2){
-    form.errors.loser = 'Molim vas unesite i ime i prezime';
+    form.errors.loser = 'molim vas unesite i ime i prezime';
     check =  false;
   }
 
   return check;
-
+ }
 })
 const minDate = (date) =>{
   let temp = date;
@@ -121,7 +130,7 @@ const handleTemp = (mode) => {
 
 const handleInputs = (event,isDate = false) => {
   if(isDate) return form.errors['date'] = '';
-  
+
   if(event.target.value && event.target.value !== ''){
       form.errors[event.target.id] = '';
   }
@@ -151,12 +160,12 @@ const handleInputs = (event,isDate = false) => {
             <label for="winner-fname" class="input-label">
               Pobednik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
-           <Dropdown 
+           <dropdown
               label="name"
               :options="props.players"
               v-model="form.winner"
               :class="{'invalid': form.errors.winner}"
-              :shouldReset="formState.shouldReset"
+              :shouldreset="formState.shouldreset"
             />
             <p class="error-message">{{ form.errors.winner }}</p>
           </div>
@@ -164,7 +173,7 @@ const handleInputs = (event,isDate = false) => {
             <label for="winner-fname" class="input-label">
               Gubitnik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
-            <Dropdown 
+            <Dropdown
               label="name"
               :options="props.players"
               v-model="form.loser"
@@ -188,7 +197,7 @@ const handleInputs = (event,isDate = false) => {
           </div>
           <div class="form-group">
             <label for="games" class="input-label">
-              Gemovi ako je konačni rezultat u setovima (6:3,7:6,6:1)
+              Gemovi (primer: 6:3,7:6,6:1)
             </label>
             <input v-model="form.game_score" @input="handleInputs($event)" :disabled="formState.submitted" id="game_score " type="text">
           </div>
@@ -197,13 +206,13 @@ const handleInputs = (event,isDate = false) => {
 
       <div class="form-section">
         <h2>Vreme i lokacija</h2>
-        <div class="form-row">
+        <div class="form-row three">
           <div class="form-group" @focsout="handleTemp('date')">
             <label for="date" class="input-label">
-              Datum (možeš da dodaš meč odigran u zadnjih godinu dana) <span class="required">*</span>
+              Datum (godinu dana unazad) <span class="required">*</span>
             </label>
-            <datepicker 
-              :enable-time-picker="false" 
+            <datepicker
+              :enable-time-picker="false"
               :format="formatDate"
               :preview-format="formatDate"
               @update:model-value="handleInputs($event,true)"
@@ -223,11 +232,31 @@ const handleInputs = (event,isDate = false) => {
             <p class="error-message">{{ form.errors.date }}</p>
           </div>
           <div class="form-group">
-            <label for="place" class="input-label">
-              Lokacija tj. teniski teren ili klub <span class="required">*</span>
+            <label for="winner-fname" class="input-label">
+              Opština <span class="required">*</span>
             </label>
-            <input v-model="form.location" @input="handleInputs($event)" :class="{'invalid': form.errors.location}" :disabled="formState.submitted" data-validate="true" id="location" type="text">
+            <Dropdown
+              label="name"
+              :options="opstine.data"
+              :type="'array'"
+              v-model="form.location"
+              :class="{'invalid': form.errors.location}"
+              :shouldReset="formState.shouldReset"
+            />
             <p class="error-message">{{ form.errors.location }}</p>
+          </div>
+          <div class="form-group">
+            <label for="place" class="input-label">
+              Teniski teren ili
+            </label>
+            <Dropdown
+              label="name"
+              :options="props.courts"
+              v-model="form.court"
+              :class="{'invalid': form.errors.court}"
+              :shouldReset="formState.shouldReset"
+            />
+            <p class="error-message">{{ form.errors.court }}</p>
           </div>
         </div>
       </div>

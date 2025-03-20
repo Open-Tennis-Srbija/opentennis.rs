@@ -31,7 +31,14 @@ class TenisMatch extends Model
         }
         return $match_number;
     }
-   
+
+    public function getCourt(){
+        $court = Court::where('id', $this->court_id)->first();
+        return [
+            'name' => $court->name,
+            'link' => $court->link,
+        ];
+    }
     public function getWinnerName(){
         $winner = Player::find($this->winner_id);
         return $winner->first_name . ' ' . $winner->last_name;
