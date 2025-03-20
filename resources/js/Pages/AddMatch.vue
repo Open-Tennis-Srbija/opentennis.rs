@@ -247,7 +247,7 @@ const handleInputs = (event,isDate = false) => {
           </div>
           <div class="form-group">
             <label for="place" class="input-label">
-              Teniski teren ili
+              Teniski teren ili klub
             </label>
             <Dropdown
               label="name"
