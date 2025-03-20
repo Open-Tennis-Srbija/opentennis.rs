@@ -233,7 +233,7 @@ const handleInputs = (event,isDate = false) => {
           </div>
           <div class="form-group">
             <label for="winner-fname" class="input-label">
-              Opština <span class="required">*</span>
+              Opština (ili inostranstvo na dnu) <span class="required">*</span>
             </label>
             <Dropdown
               label="name"
