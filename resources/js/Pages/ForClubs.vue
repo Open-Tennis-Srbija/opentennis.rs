@@ -3,7 +3,7 @@
       <div class="static-wrapper">
           <h1>ZA KLUBOVE</h1>
           <p>
-            Srpska Tenis Liga povećava broj mećeva, iznajmljivanje terena, i
+            Srpska Tenis Liga povećava broj mečeva, iznajmljivanje terena, i
             zapošljavanje trenera.
           </p>
           <p>

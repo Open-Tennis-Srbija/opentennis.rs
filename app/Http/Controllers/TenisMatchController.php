@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTenisMatchRequest;
 use App\Http\Requests\UpdateTenisMatchRequest;
 use App\Mail\AddMatchNotification;
 use App\Models\Player;
 use App\Models\TenisMatch;
+use App\Models\Court;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -27,6 +27,7 @@ class TenisMatchController extends Controller
         return Inertia::render('EditMatch', [
             'players' => PlayerController::getPlayersForDropdown(),
             'match' => TenisMatchController::getMatchForEdit($id),
+            'courts' => CourtsController::getCourts(),
         ]);
     }
 
@@ -47,6 +48,7 @@ class TenisMatchController extends Controller
             'game_score' => $match->game_score,
             'date' => $match->match_date,
             'location' => $match->match_location,
+            'court' => Court::find($match->court_id),
         ];
     }
 
@@ -70,6 +72,7 @@ class TenisMatchController extends Controller
                 'loser_points' => $loser_gains,
                 'set_score' => $match->set_score,
                 'game_score' => $match->game_score,
+                'court' => Court::find($match->court_id),
                 'date' => $match->match_date,
                 'location' => $match->match_location,
             ]);
@@ -100,6 +103,7 @@ class TenisMatchController extends Controller
             'game_score' => 'max:30',
             'date' => ['required', 'max:30'],
             'location' => 'required',
+            'court' => '',
         ], [
             'winner.required' => 'Ovo polje je obavezno.',
             'loser.required' => 'Ovo polje je obavezno.',
@@ -112,6 +116,9 @@ class TenisMatchController extends Controller
 
         $winner_id = $data['winner']['id'];
         $loser_id = $data['loser']['id'];
+        $court_id = null;
+        if(isset($data['court']))
+            $court_id = $data['court']['id'];
 
 
         if(!is_numeric($winner_id)){
@@ -137,7 +144,7 @@ class TenisMatchController extends Controller
             $winner->uri = $uri;
 
             $winner->save();
-            
+
             $winner_id = $winner->id;
         }
 
@@ -168,6 +175,15 @@ class TenisMatchController extends Controller
             $loser_id = $loser->id;
         }
 
+        if(!is_numeric($court_id) && $court_id != null){
+            $court = new Court();
+
+            $court->name = $data['court']['name'];
+            $court->link = '';
+            $court->save();
+            $court_id = $court->id;
+        }
+
         $match = new TenisMatch(
             [
                 'winner_id' => $winner_id,
@@ -178,6 +194,9 @@ class TenisMatchController extends Controller
                 'match_location' => $data['location'],
             ]
         );
+        if(isset($court_id)){
+            $match->court_id = $court_id;
+        }
 
         $match->save();
 
@@ -238,6 +257,7 @@ class TenisMatchController extends Controller
             'game_score' => 'max:30',
             'date' => ['required', 'max:30'],
             'location' => 'required',
+            'court' => '',
         ], [
             'winner.required' => 'Ovo polje je obavezno.',
             'loser.required' => 'Ovo polje je obavezno.',
@@ -257,6 +277,26 @@ class TenisMatchController extends Controller
         if($match->loser_id != $data['loser']['id']){
             $match->loser_id = $data['loser']['id'];
         }
+        if(isset($data['court'])){
+
+            if(!is_numeric($data['court']['id'])){
+                $court = new Court();
+
+                $court->name = $data['court']['name'];
+                $court->link = '';
+                $court->save();
+                $court_id = $court->id;
+            }
+            else{
+                $court_id = $data['court']['id'];
+                if($match->court_id != $court_id){
+                    $match->court_id = $court_id;
+                    }
+                }
+        }
+        else{
+            $match->court_id = 1;
+        }
 
         $match->set_score = $data['set_score'];
         $match->game_score = $data['game_score'];
@@ -266,7 +306,7 @@ class TenisMatchController extends Controller
         $match->save();
 
         return redirect()->back()->with('success', 'Meč je uspešno izmenjen.');
-        
+
     }
 
     /**
