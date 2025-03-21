@@ -1,8 +1,10 @@
 <h3>Novi meč:</h3>
 <p><b>Pobednik:</b> {{ $winner }} </p>
 <p><b>Gubitnik:</b> {{$loser}}</p>
-<p><b>Rezultat:</b> {{ $set_score }}, {{$game_score}}</p>
-<p><b>Lokacija:</b> {{ $location }}</p>
+<p><b>Rezultat:</b> {{ $set_score }}@if($game_score), {{$game_score}}@endif</p>
+<p><b>Opstina:</b> {{ $location }}</p>
+<p><b>Teren ili klub:</b>@if(!$court['link']) {{ $court['name'] }}@else <a href="{{$court['link']}}">{{$court['name']}}</a>@endif</p>
+<p><b>Liga:</b> {{ $league['name'] }}</p>
 <p><b>Datum</b> {{ $date }}</p>
 <br>
 

@@ -32,6 +32,20 @@ class TenisMatch extends Model
         return $match_number;
     }
 
+    public function getLeague(){
+        $league = League::where('id', $this->league_id)->first();
+        if(!$league){
+            return [
+                'name' => '',
+                'link' => '',
+            ];
+        }
+        return [
+            'name' => $league->name,
+            'link' => $league->link,
+        ];
+    }
+
     public function getCourt(){
         $court = Court::where('id', $this->court_id)->first();
         return [

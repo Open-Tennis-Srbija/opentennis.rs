@@ -6,7 +6,7 @@ import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import opstine from '../assets/opstine.json';
 
-const props = defineProps({players: Array,courts: Array});
+const props = defineProps({players: Array,courts: Array, leagues: Array});
 
 
 
@@ -18,6 +18,7 @@ const form = useForm({
     court: null,
     date: new Date(),
     location: 'Beograd',
+    league: null,
 });
 
 const formState = reactive({
@@ -163,6 +164,7 @@ const handleInputs = (event,isDate = false) => {
            <dropdown
               label="name"
               :options="props.players"
+              :disabledOption="form.loser"
               v-model="form.winner"
               :class="{'invalid': form.errors.winner}"
               :shouldreset="formState.shouldreset"
@@ -177,6 +179,7 @@ const handleInputs = (event,isDate = false) => {
               label="name"
               :options="props.players"
               v-model="form.loser"
+              :disabledOption="form.winner"
               :class="{'invalid': form.errors.loser}"
               :shouldReset="formState.shouldReset"
             />
@@ -187,10 +190,10 @@ const handleInputs = (event,isDate = false) => {
 
        <div class="form-section">
         <h2>Rezultat</h2>
-        <div class="form-row">
+        <div class="form-row three">
           <div class="form-group">
             <label for="full-score" class="input-label">
-              Konačni rezultat (2:0 u slučaju setova ili 9:4 u slučaju gemova) <span class="required">*</span>
+                Konačni rezultat <br>(2:0 u slučaju setova ili 9:4 u slučaju gemova) <span class="required">*</span>
             </label>
             <input v-model="form.set_score" @input="handleInputs($event)" :class="{'invalid': form.errors.set_score}" :disabled="formState.submitted" data-validate="true" id="set_score" type="text">
             <p class="error-message">{{ form.errors.set_score }}</p>
@@ -201,6 +204,20 @@ const handleInputs = (event,isDate = false) => {
             </label>
             <input v-model="form.game_score" @input="handleInputs($event)" :disabled="formState.submitted" id="game_score " type="text">
           </div>
+          <div class="form-group">
+            <label for="winner-fname" class="input-label">
+              Liga ili turnir
+            </label>
+            <Dropdown
+              label="name"
+              :options="props.leagues"
+              v-model="form.league"
+              :class="{'invalid': form.errors.league}"
+              :shouldReset="formState.shouldReset"
+            />
+            <p class="error-message">{{ form.errors.league }}</p>
+          </div>
+
         </div>
       </div>
 

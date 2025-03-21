@@ -26,22 +26,37 @@
 
         svg {
             position: absolute;
-            height: 25px;
+            height: 50px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
 
-            .st0 {
-                fill: #c63b41;
-            }
+            // .st0 {
+            //     fill: #c63b41;
+            // }
+            //
+            // .st1 {
+            //     fill: #1a497c;
+            // }
+            //
+            // .st2 {
+            //     fill: #929292;
+            // }
+            	.st0{fill:#C7373D;}
+	.st1{fill:#194477;}
+	.st2{fill:#8F8F8F;}
+	.st3{fill:#A2A1A1;}
+	.st4{display:none;fill:#8F8F8F;}
+	.st5{display:none;}
+	.st6{display:inline;}
+	.st7{font-family:'HelveticaNeueLTStd-BdEx';}
+	.st8{font-size:42.6403px;}
+	.st9{display:inline;fill:#194477;}
+	.st10{display:inline;fill:#8F8F8F;}
+	.st11{display:inline;fill:#A2A1A1;}
+	.st12{font-family:'HelveticaNeueLTPro-Ex';}
+	.st13{font-size:22.5px;}
 
-            .st1 {
-                fill: #1a497c;
-            }
-
-            .st2 {
-                fill: #929292;
-            }
         }
     }
 
@@ -75,6 +90,9 @@
                     padding-top: 2px;
                     text-transform: uppercase;
                     font-family: "Helvetica Neue";
+                    &.red{
+                        color: black;
+                    }
                 }
 
                 &:hover {
@@ -180,6 +198,9 @@
                 text-transform: uppercase;
                 font-size: 15px;
                 font-family: "Helvetica Neue";
+                &.red{
+                    color: black;
+                }
             }
 
             &:hover {
@@ -231,7 +252,7 @@
                 margin-top: -6px;
             }
             svg{
-                height: 15px;
+                height: 30px;
             }
         }
 

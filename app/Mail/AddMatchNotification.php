@@ -20,7 +20,7 @@ class AddMatchNotification extends Mailable
      */
     public function __construct(public TenisMatch $match)
     {
-        
+
     }
 
     /**
@@ -50,6 +50,8 @@ class AddMatchNotification extends Mailable
                     'game_score' => $this->match->game_score,
                     'date' => $this->match->getFormatedDate(),
                     'location' => $this->match->match_location,
+                    'court' => $this->match->getCourt(),
+                    'league' => $this->match->getLeague(),
                   ],
         );
     }

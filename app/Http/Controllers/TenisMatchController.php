@@ -7,6 +7,7 @@ use App\Mail\AddMatchNotification;
 use App\Models\Player;
 use App\Models\TenisMatch;
 use App\Models\Court;
+use App\Models\League;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -104,6 +105,7 @@ class TenisMatchController extends Controller
             'date' => ['required', 'max:30'],
             'location' => 'required',
             'court' => '',
+            'league' => '',
         ], [
             'winner.required' => 'Ovo polje je obavezno.',
             'loser.required' => 'Ovo polje je obavezno.',
@@ -119,7 +121,10 @@ class TenisMatchController extends Controller
         $court_id = null;
         if(isset($data['court']))
             $court_id = $data['court']['id'];
+        $league_id = null;
 
+        if(isset($data['league']))
+            $league_id = $data['league']['id'];
 
         if(!is_numeric($winner_id)){
             $winner = new Player();
@@ -198,12 +203,28 @@ class TenisMatchController extends Controller
             $match->court_id = $court_id;
         }
 
+        if(!is_numeric($league_id) && $league_id != null){
+            $league = new League();
+
+            $league->name = $data['court']['name'];
+            $league->link = '';
+            $league->save();
+            $league_id = $league->id;
+        }
+
+        if(isset($league_id)){
+            $match->league_id = $league_id;
+        }
+
+
         $match->save();
 
         if(env('APP_ENV') == 'production'){
             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
             Mail::to('nikola@openinnovation.me')->send(new AddMatchNotification($match));
         }
+        else
+            Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
 
         return redirect()->back()->with('success', 'Meč je uspešno dodat.');
     }
