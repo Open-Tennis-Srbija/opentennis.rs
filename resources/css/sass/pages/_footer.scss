@@ -30,7 +30,7 @@ $border-color: #a1a1a1;
     color: $footer-text-color;
     font-size: 20px;
     cursor: pointer;
-    
+
     &:hover {
       color: $footer-hover-color;
     }
@@ -45,7 +45,6 @@ $border-color: #a1a1a1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-left: 30px;
     gap: 66px;
 
     a {
@@ -63,7 +62,7 @@ $border-color: #a1a1a1;
 
   .icons-wrapper {
     display: flex;
-    gap: 70px;
+    gap: 62px;
 
     a {
       svg {
@@ -104,8 +103,9 @@ $border-color: #a1a1a1;
       a {
         display: grid;
         place-items: center;
-        width: 50%;
-        font-size: 13px;
+        width: 100%;
+        font-size: 15px;
+        padding-top: 3px;
       }
     }
 
