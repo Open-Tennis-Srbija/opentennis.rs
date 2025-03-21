@@ -9,6 +9,6 @@ class LeaguesController extends Controller
 {
     //
     public static function getLeagues(){
-        return League::where('id', '>', 1)->get();
+        return League::where('id', '>', 1)->orderBy('name')->get();
     }
 }
