@@ -112,7 +112,7 @@
         input{
           position: relative;
           height: 50px;
-          width: 500px;
+          width: 562px;
           font-size: 18px;
           padding-inline: 10px;
           border-radius: 0;
@@ -202,7 +202,7 @@
 
           button{
             width: auto;
-            padding-inline: 30px;
+            padding-inline: 20px;
             padding-top: 3px;
             font-size: 17px;
             height: 40px;
@@ -407,6 +407,7 @@
   .form-section{
     .form-row{
       &.three{
+        align-items: flex-end;
         .form-group{
           input{
             width: 350px;

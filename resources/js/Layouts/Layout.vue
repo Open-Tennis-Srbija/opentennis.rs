@@ -46,7 +46,7 @@
     switch( page.url) {
       case '/': return 'Rang lista';
       case '/mecevi': return 'mečevi';
-      case '/klubovi': return 'za klubove';
+      case '/dodaj-ligu': return 'dodaj ligu ili turnir';
       case '/dodaj': return 'dodaj meč';
       case '/teniseri': return 'nađi tenisera';
       case '/misija': return 'misija';
@@ -73,7 +73,7 @@
               <Link :href="route('leagueStats')" :class="{ 'active': $page.url === '/statistika' }">statistika</Link>
               <Link :href="route('mision')" :class="{ 'active': $page.url === '/misija' }">misija</Link>
               <Link :href="route('rules')" :class="{ 'active': $page.url === '/pravila' }">pravila</Link>
-              <Link :href="route('clubs')" :class="{ 'active': $page.url === '/klubovi' }">za klubove</Link>
+              <Link class="highlighted red" :href="route('clubs')" :class="{ 'active': $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
             </div>
           </div>
           <div class="mobile-underheader"  @click="toggleMenu" >
@@ -96,7 +96,7 @@
             <Link @click.prevent="mobileMenu.state=false" :href="route('leagueStats')" :class="{ 'active': $page.url === '/statistika' }">statistika</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('mision')" :class="{ 'active': $page.url === '/misija' }">misija</Link>
             <Link @click.prevent="mobileMenu.state=false" :href="route('rules')" :class="{ 'active': $page.url === '/pravila' }">pravila</Link>
-            <Link @click.prevent="mobileMenu.state=false" :href="route('clubs')" :class="{ 'active': $page.url === '/klubovi' }">za klubove</Link>
+            <Link @click.prevent="mobileMenu.state=false" class="highlighted red" :href="route('clubs')" :class="{ 'active': $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
             <Link @click.prevent="mobileMenu.state=false" class="logout-mobile" method="post" :href="route('logout')" v-if="$page.props.auth.user">odjavi se</Link>
             </div>
           </div>

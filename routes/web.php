@@ -5,6 +5,7 @@ use App\Http\Controllers\LeagueController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\TenisMatchController;
 use App\Http\Controllers\CourtsController;
+use App\Http\Controllers\LeaguesController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,7 +19,9 @@ Route::inertia('/mecevi', 'Matches',
 
 Route::inertia('/dodaj', 'AddMatch',
     ['players' => PlayerController::getPlayersForDropdown(),
-     'courts' => CourtsController::getCourts()]
+      'courts' => CourtsController::getCourts(),
+       'leagues' => LeaguesController::getLeagues(),
+    ]
 )->name('addMatch');
 Route::post('/dodaj', [TenisMatchController::class, 'store']);
 
@@ -27,7 +30,7 @@ Route::post('/dodaj', [TenisMatchController::class, 'store']);
 Route::inertia('/teniseri', 'Join')->name('join');
 
 
-Route::inertia('/klubovi', 'ForClubs')->name('clubs');
+Route::inertia('/dodaj-ligu', 'ForClubs')->name('clubs');
 
 Route::inertia('/misija', 'Mision')->name('mision');
 
