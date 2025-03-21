@@ -105,7 +105,6 @@
           <footer class="footer-wrapper" :class="{'hide': $page.url === '/teniseri'}">
             <p class="footer-text">
               <Link :href="route('addMatch')">dodaj meč</Link>
-              <Link :href="route('join')">nađi tenisera</Link>
             </p>
             <div class="icons-wrapper">
               <a class="viber" target="_blank" href="https://invite.viber.com/?g2=AQBO6Yhe7XWiGlQ11H197bPnIWHJjH2nT7C42UhORV%2F3VIU5EWEozbBE%2BLo11vym">
