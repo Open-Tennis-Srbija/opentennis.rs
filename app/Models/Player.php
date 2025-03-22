@@ -115,6 +115,8 @@ class Player extends Model
                 'game_score' => $match->game_score,
                 'date' => $match->match_date,
                 'location' => $match->match_location,
+                'court' => $match->getCourt(),
+                'league'=> $match->getLeague(),
             ]);
         }
 
@@ -136,6 +138,8 @@ class Player extends Model
                 'game_score' => $match->game_score,
                 'date' => $match->match_date,
                 'location' => $match->match_location,
+                'league'=> $match->getLeague(),
+                'court' => $match->getCourt(),
             ]);
         }
 
