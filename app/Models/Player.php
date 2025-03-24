@@ -79,12 +79,17 @@ class Player extends Model
             ]);
         }
         usort($matchups['wins'], function($a, $b) {
-         return strcmp($a['name'], $b['name']);
+            $comparison = $b['number'] <=> $a['number'];
+
+            return $comparison ?: strcmp($a['name'], $b['name']);
         });
         usort($matchups['loses'], function($a, $b) {
-         return strcmp($a['name'], $b['name']);
+            $comparison = $b['number'] <=> $a['number'];
+
+            return $comparison ?: strcmp($a['name'], $b['name']);
         });
         usort($matchups['notPlayedWith'], function($a, $b) {
+
          return strcmp($a['name'], $b['name']);
         });
         return $matchups;

@@ -103,6 +103,10 @@
           border-bottom: 2px solid #e2e0e1;
           margin-top: 70px;
 
+          &.big-margin{
+            margin-top: 110px;
+          }
+
           &.no-border{
               border: none;
           }

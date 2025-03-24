@@ -42,20 +42,65 @@
             // .st2 {
             //     fill: #929292;
             // }
-            	.st0{fill:#C7373D;}
-	.st1{fill:#194477;}
-	.st2{fill:#8F8F8F;}
-	.st3{fill:#A2A1A1;}
-	.st4{display:none;fill:#8F8F8F;}
-	.st5{display:none;}
-	.st6{display:inline;}
-	.st7{font-family:'HelveticaNeueLTStd-BdEx';}
-	.st8{font-size:42.6403px;}
-	.st9{display:inline;fill:#194477;}
-	.st10{display:inline;fill:#8F8F8F;}
-	.st11{display:inline;fill:#A2A1A1;}
-	.st12{font-family:'HelveticaNeueLTPro-Ex';}
-	.st13{font-size:22.5px;}
+            .st0 {
+                fill: #C7373D;
+            }
+
+            .st1 {
+                fill: #194477;
+            }
+
+            .st2 {
+                fill: #8F8F8F;
+            }
+
+            .st3 {
+                fill: #A2A1A1;
+            }
+
+            .st4 {
+                display: none;
+                fill: #8F8F8F;
+            }
+
+            .st5 {
+                display: none;
+            }
+
+            .st6 {
+                display: inline;
+            }
+
+            .st7 {
+                font-family: 'HelveticaNeueLTStd-BdEx';
+            }
+
+            .st8 {
+                font-size: 42.6403px;
+            }
+
+            .st9 {
+                display: inline;
+                fill: #194477;
+            }
+
+            .st10 {
+                display: inline;
+                fill: #8F8F8F;
+            }
+
+            .st11 {
+                display: inline;
+                fill: #A2A1A1;
+            }
+
+            .st12 {
+                font-family: 'HelveticaNeueLTPro-Ex';
+            }
+
+            .st13 {
+                font-size: 22.5px;
+            }
 
         }
     }
@@ -90,8 +135,13 @@
                     padding-top: 2px;
                     text-transform: uppercase;
                     font-family: "Helvetica Neue";
-                    &.red{
+
+                    &.red {
                         color: black;
+
+                        &:hover {
+                            color: $red;
+                        }
                     }
                 }
 
@@ -100,7 +150,7 @@
                 }
 
                 &.active {
-                    color: $red;
+                    color: $red !important;
                     pointer-events: none;
                 }
             }
@@ -198,8 +248,13 @@
                 text-transform: uppercase;
                 font-size: 15px;
                 font-family: "Helvetica Neue";
-                &.red{
+
+                &.red {
                     color: black;
+
+                    &:hover {
+                        color: $red;
+                    }
                 }
             }
 
@@ -208,7 +263,7 @@
             }
 
             &.active {
-                color: $red;
+                color: $red !important;
                 pointer-events: none;
             }
         }
@@ -251,7 +306,8 @@
                 height: 60px;
                 margin-top: -6px;
             }
-            svg{
+
+            svg {
                 height: 30px;
                 margin-top: 2px;
             }

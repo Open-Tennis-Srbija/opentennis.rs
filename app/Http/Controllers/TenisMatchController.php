@@ -121,6 +121,7 @@ class TenisMatchController extends Controller
         $court_id = null;
         if(isset($data['court']))
             $court_id = $data['court']['id'];
+
         $league_id = null;
 
         if(isset($data['league']))
@@ -180,7 +181,7 @@ class TenisMatchController extends Controller
             $loser_id = $loser->id;
         }
 
-        if(!is_numeric($court_id) && $court_id != null){
+        if(!is_numeric($court_id) && $court_id != null && $data['court']['name'] !== ''){
             $court = new Court();
 
             $court->name = $data['court']['name'];
@@ -203,10 +204,10 @@ class TenisMatchController extends Controller
             $match->court_id = $court_id;
         }
 
-        if(!is_numeric($league_id) && $league_id != null){
+        if(!is_numeric($league_id) && $league_id != null && $data['league']['name'] !== ''){
             $league = new League();
 
-            $league->name = $data['court']['name'];
+            $league->name = $data['league']['name'];
             $league->link = '';
             $league->save();
             $league_id = $league->id;

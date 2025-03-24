@@ -38,8 +38,10 @@ class LeagueController extends Controller
 
         $data['totals']['points'] = $points;
 
-        usort($players, function($a, $b) {
-            return $b['stats']['total_matches'] <=> $a['stats']['total_matches'];
+       usort($players, function($a, $b) {
+            $matchComparison = $b['stats']['total_matches'] <=> $a['stats']['total_matches'];
+
+            return $matchComparison ?: strcmp($a['name'], $b['name']);
         });
 
         for ($i=0; $i < 5; $i++) {
@@ -50,8 +52,10 @@ class LeagueController extends Controller
             ]);
         }
 
-        usort($players, function($a, $b) {
-            return $b['stats']['wins'] <=> $a['stats']['wins'];
+       usort($players, function($a, $b) {
+            $matchComparison = $b['stats']['wins'] <=> $a['stats']['wins'];
+
+            return $matchComparison ?: strcmp($a['name'], $b['name']);
         });
 
         for ($i=0; $i < 5; $i++) {
@@ -62,8 +66,10 @@ class LeagueController extends Controller
             ]);
         }
 
-        usort($players, function($a, $b) {
-            return $b['stats']['loses'] <=> $a['stats']['loses'];
+       usort($players, function($a, $b) {
+            $matchComparison = $b['stats']['loses'] <=> $a['stats']['loses'];
+
+            return $matchComparison ?: strcmp($a['name'], $b['name']);
         });
 
         for ($i=0; $i < 5; $i++) {
@@ -130,14 +136,21 @@ class LeagueController extends Controller
             }
         }
 
-        usort($data['courts'], function($a, $b) {
-            return $b['count'] <=> $a['count'];
+
+       usort($data['courts'], function($a, $b) {
+            $matchComparison = $b['count'] <=> $a['count'];
+
+            return $matchComparison ?: strcmp($a['name'], $b['name']);
         });
         usort($data['locations'], function($a, $b) {
-            return $b['count'] <=> $a['count'];
+            $comparison = $b['count'] <=> $a['count'];
+
+            return $comparison ?: strcmp($a['name'], $b['name']);
         });
         usort($data['leagues'], function($a, $b) {
-            return $b['count'] <=> $a['count'];
+            $comparison = $b['count'] <=> $a['count'];
+
+            return $comparison ?: strcmp($a['name'], $b['name']);
         });
         $data['courts'] = array_slice($data['courts'], 0, 5);
         $data['locations'] =  array_slice($data['locations'], 0, 5);
@@ -196,14 +209,20 @@ class LeagueController extends Controller
             }
         }
 
-        usort($data['courts'], function($a, $b) {
-            return $b['count'] <=> $a['count'];
+       usort($data['courts'], function($a, $b) {
+            $matchComparison = $b['count'] <=> $a['count'];
+
+            return $matchComparison ?: strcmp($a['name'], $b['name']);
         });
         usort($data['locations'], function($a, $b) {
-            return $b['count'] <=> $a['count'];
+            $comparison = $b['count'] <=> $a['count'];
+
+            return $comparison ?: strcmp($a['name'], $b['name']);
         });
         usort($data['leagues'], function($a, $b) {
-            return $b['count'] <=> $a['count'];
+            $comparison = $b['count'] <=> $a['count'];
+
+            return $comparison ?: strcmp($a['name'], $b['name']);
         });
 
         return $data;

@@ -21,7 +21,7 @@
 </script>
 <template>
     <Head :title="'Statistika -'"/>
-    <div class="static-wrapper player">
+    <div style="padding-bottom:0;margin-bottom:60px" class="static-wrapper player">
         <div class="dashboard-wrapper">
         <h1 class="hide-mobile">Statistika</h1>
             <h2 class="summary-title">ukupno</h2>
@@ -67,7 +67,7 @@
                     </p>
                 </div>
             </div>
-            <h2 class="summary-title">lokacije</h2>
+            <h2 class="summary-title big-margin">lokacije</h2>
             <div class="summary player three desktop col">
                 <div class="summary-item">
                     <h2 class="mb-10">najaktivnije opštine</h2>
@@ -91,7 +91,7 @@
                 </div>
                 <div class="summary-item">
                     <template v-if="locations.leagues.length == 0">
-                        <h2 class="mb-10">nema aktivnih liga</h2>
+                        <h2 class="mb-10">nema liga ili turnira</h2>
                     </template>
                     <template v-else>
                         <h2 class="mb-10">najaktivnije lige</h2>
@@ -109,7 +109,7 @@
                 </div>
             </div>
 
-            <h2 class="summary-title">Grafikoni</h2>
+            <h2 class="summary-title big-margin">Grafikoni</h2>
             <LeagueChart />
         </div>
     </div>
