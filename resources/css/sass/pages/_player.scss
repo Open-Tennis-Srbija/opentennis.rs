@@ -160,6 +160,9 @@
                   color: $dark-gray;
                   font-size: 17px;
                   font-weight: normal;
+                &.mb-10{
+                    margin-bottom: 10px;
+                }
               }
               p{
                   font-size: 40px;
@@ -169,6 +172,11 @@
                   }
                   &.smaller{
                       font-size: 30px;
+                     &.f20{
+                        margin-bottom: 0px !important;
+                        font-weight: normal !important;
+                        font-size: 20px !important;
+                    }
 
                       a{
                         color: black;

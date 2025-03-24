@@ -117,6 +117,7 @@ class PlayerController extends Controller
             'matchups' => $player->getMatchups(),
             'loses' => $loses,
             'location' => $player->location,
+            'locations' => LeagueController::getLocationsForPlayer($player->id),
         ];
     }
     public function deletePlayer(){
