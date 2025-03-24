@@ -43,16 +43,28 @@
             <h2 class="summary-title">teniseri</h2>
             <div class="summary player three desktop col">
                 <div class="summary-item">
-                    <h2>najviše mečeva</h2>
-                    <p class="smaller"><Link :href="`/${props.data.players.total.uri}`">{{ props.data.players.total.name }}</Link> ({{ props.data.players.total.count }})</p>
+                    <h2 class="mb-10">najviše mečeva</h2>
+                    <p class="smaller f20" v-for="player in props.data.players.total">
+                        <Link :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link> ({{ player.count }})
+                    </p>
                 </div>
                 <div class="summary-item">
-                    <h2>najviše pobeda</h2>
-                    <p class="smaller"><Link :href="`/${props.data.players.wins.uri}`">{{ props.data.players.wins.name }}</Link> ({{ props.data.players.wins.count }})</p>
+                    <h2 class="mb-10">najviše pobeda</h2>
+                    <p class="smaller f20" v-for="player in props.data.players.wins">
+                        <Link :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link> ({{ player.count }})
+                    </p>
                 </div>
                 <div class="summary-item">
-                    <h2>najviše gubitaka</h2>
-                    <p class="smaller"><Link :href="`/${props.data.players.loses.uri}`">{{ props.data.players.loses.name }}</Link>  ({{ props.data.players.loses.count }})</p>
+                    <h2 class="mb-10">najviše gubitaka</h2>
+                    <p class="smaller f20" v-for="player in props.data.players.loses">
+                        <Link :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link>  ({{ player.count }})
+                    </p>
                 </div>
             </div>
             <h2 class="summary-title">lokacije</h2>
