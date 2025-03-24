@@ -57,7 +57,7 @@ class LeagueController extends Controller
         for ($i=0; $i < 5; $i++) {
             array_push($data['players']['wins'], [
                 'name' => $players[$i]['name'],
-                'count' => $players[$i]['stats']['total_matches'],
+                'count' => $players[$i]['stats']['wins'],
                 'uri' => $players[$i]['uri'],
             ]);
         }
@@ -65,10 +65,11 @@ class LeagueController extends Controller
         usort($players, function($a, $b) {
             return $b['stats']['loses'] <=> $a['stats']['loses'];
         });
+
         for ($i=0; $i < 5; $i++) {
             array_push($data['players']['loses'], [
                 'name' => $players[$i]['name'],
-                'count' => $players[$i]['stats']['total_matches'],
+                'count' => $players[$i]['stats']['loses'],
                 'uri' => $players[$i]['uri'],
             ]);
         }
