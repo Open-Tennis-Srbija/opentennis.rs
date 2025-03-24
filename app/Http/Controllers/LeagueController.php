@@ -14,7 +14,15 @@ class LeagueController extends Controller
 
     public static function getStatistics(){
 
-        $data = [];
+        $data = [
+            'totals'=>[],
+            'players'=>[
+                'total'=>[],
+                'wins'=>[],
+                'loses'=>[]
+            ],
+            'locations'=>[]
+        ];
 
         $data['totals']['matches'] = TenisMatch::count();
         $data['totals']['players'] = Player::count();
@@ -34,33 +42,36 @@ class LeagueController extends Controller
             return $b['stats']['total_matches'] <=> $a['stats']['total_matches'];
         });
 
-        $data['players']['total'] = [
-            'name' => $players[0]['name'],
-            'count' => $players[0]['stats']['total_matches'],
-            'uri' => $players[0]['uri'],
-        ];
+        for ($i=0; $i < 5; $i++) {
+            array_push($data['players']['total'], [
+                'name' => $players[$i]['name'],
+                'count' => $players[$i]['stats']['total_matches'],
+                'uri' => $players[$i]['uri'],
+            ]);
+        }
 
         usort($players, function($a, $b) {
             return $b['stats']['wins'] <=> $a['stats']['wins'];
         });
 
-        $data['players']['wins'] = [
-            'name' => $players[0]['name'],
-            'count' => $players[0]['stats']['wins'],
-            'uri' => $players[0]['uri'],
-        ];
+        for ($i=0; $i < 5; $i++) {
+            array_push($data['players']['wins'], [
+                'name' => $players[$i]['name'],
+                'count' => $players[$i]['stats']['total_matches'],
+                'uri' => $players[$i]['uri'],
+            ]);
+        }
 
         usort($players, function($a, $b) {
             return $b['stats']['loses'] <=> $a['stats']['loses'];
         });
-
-        $data['players']['loses'] = [
-            'name' => $players[0]['name'],
-            'count' => $players[0]['stats']['loses'],
-            'uri' => $players[0]['uri'],
-        ];
-
-
+        for ($i=0; $i < 5; $i++) {
+            array_push($data['players']['loses'], [
+                'name' => $players[$i]['name'],
+                'count' => $players[$i]['stats']['total_matches'],
+                'uri' => $players[$i]['uri'],
+            ]);
+        }
 
         return $data;
 
