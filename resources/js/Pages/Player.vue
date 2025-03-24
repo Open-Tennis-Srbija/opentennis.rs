@@ -36,7 +36,7 @@ const getInteractionText = (number) =>{
 
 </script>
 <template>
-    <div class="static-wrapper player">
+    <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player">
         <div
             class="rank"
             :class="{

@@ -26,7 +26,7 @@ const props = defineProps({
         <div class="wins">pobede</div>
         <div class="loses">gubitci</div>
         <div class="win-precent">% pobeda</div>
-        <div class="place">mesto</div>
+        <div class="place">opština</div>
       </div>
       <div class="ranking-entry" v-for="(player, index) in players">
                 <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
