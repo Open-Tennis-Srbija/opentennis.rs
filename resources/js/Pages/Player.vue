@@ -19,6 +19,14 @@ const matchups = computed(() => {
         not_played: props.player.matchups.notPlayedWith,
     };
 });
+
+const locations = computed(()=>{
+    return {
+        courts: props.player.locations.courts,
+        locations: props.player.locations.locations,
+        leagues: props.player.locations.leagues,
+    };
+});
 const getInteractionText = (number) =>{
     if(number == 1 || (number>20 && number%10 == 1)){
         return "teniserom";
@@ -150,6 +158,55 @@ const getInteractionText = (number) =>{
                     </template>
                     <template v-else>
                         <h2>ovaj teniser je igrao sa svima &#128578;</h2>
+                    </template>
+                </div>
+            </div>
+            <h2 class="summary-title">lokacije</h2>
+            <div class="summary player three col">
+                <div class="summary-item players">
+                    <h2>najaktivnije opštine</h2>
+                    <template v-for="location in locations.locations">
+                        <p>
+                            {{location.name}}
+                            ({{ location.count }})
+                        </p>
+                    </template>
+                </div>
+                <div class="summary-item players">
+                        <h2>najkorišćeniji tereni</h2>
+                        <template v-for="court in locations.courts">
+                            <p>
+                                <template v-if="court.link != ''">
+                                    <a target="'_blank'" :href="court.link">
+                                        {{ court.name }}
+                                    </a>
+                                </template>
+                                <template v-else>
+                                    {{ court.name }}
+                                </template>
+                                ({{ court.count}})
+                            </p>
+                        </template>
+                </div>
+                <div class="summary-item players">
+                    <template v-if="locations.leagues.length > 0">
+                        <h2>najaktivnije lige</h2>
+                        <template v-for="league in locations.leagues">
+                            <p>
+                                <template v-if="league.link != ''">
+                                    <a target="'_blank'" :href="league.link">
+                                        {{ league.name }}
+                                    </a>
+                                </template>
+                                <template v-else>
+                                    {{ league.name }}
+                                </template>
+                                ({{ league.count }})
+                            </p>
+                        </template>
+                    </template>
+                    <template v-else>
+                        <h2>ovaj teniser nije učestvovao u ligama &#128577;</h2>
                     </template>
                 </div>
             </div>

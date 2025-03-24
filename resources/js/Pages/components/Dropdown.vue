@@ -125,8 +125,8 @@ const onEsc = () => {
 };
 
 const selectOption = (option, e) => {
-    if (!props.type || props.type !== "array") {
         console.log("here");
+    if (!props.type || props.type !== "array") {
         model.value.id = option.id;
         model.value.name = option.name;
         state.search = option.name;
