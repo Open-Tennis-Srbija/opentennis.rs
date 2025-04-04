@@ -1,0 +1,92 @@
+{
+  "\u0000plugin-vue:export-helper": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "node_modules/@vuepic/vue-datepicker/dist/main.css": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "node_modules/overlayscrollbars/styles/overlayscrollbars.css": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "node_modules/vue-select/dist/vue-select.css": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "public/LRlCNqLdgl.json": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Layouts/Layout.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Layouts/Layout.vue?vue&type=style&index=0&lang.scss": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Layouts/components/Logo.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/AddMatch.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/Dashboard.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/Login.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/Register.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/EditMatch.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/EditPlayer.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/ForClubs.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Home.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Join.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Matches.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Mision.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Player.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Rules.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Statistics.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/components/Dropdown.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/components/EditIcon.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/components/LeagueChart.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/components/PlayerChart.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/assets/opstine.json": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/ssr.js": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/utils.js": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "vendor/tightenco/ziggy/dist/index.js": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ]
+}

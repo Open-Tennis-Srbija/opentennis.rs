@@ -1,6 +1,6 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3'
-import {reactive} from 'vue';
+import {reactive, defineAsyncComponent} from 'vue';
 import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -9,6 +9,7 @@ import opstine from '../assets/opstine.json';
 const props = defineProps({players: Array,courts: Array, leagues: Array});
 
 
+const Lottie = defineAsyncComponent(() => import('vue3-lottie'));
 
 const form = useForm({
     winner: null,

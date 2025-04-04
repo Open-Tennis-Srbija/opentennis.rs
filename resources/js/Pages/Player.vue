@@ -14,17 +14,17 @@ onMounted(() => {
 
 const matchups = computed(() => {
     return {
-        wins: Object.values(props.player.matchups.wins),
-        loses: Object.values(props.player.matchups.loses),
-        not_played: props.player.matchups.notPlayedWith,
+        wins: Object.values(props.player.data.matchups.wins),
+        loses: Object.values(props.player.data.matchups.loses),
+        not_played: props.player.data.matchups.notPlayedWith,
     };
 });
 
 const locations = computed(()=>{
     return {
-        courts: props.player.locations.courts,
-        locations: props.player.locations.locations,
-        leagues: props.player.locations.leagues,
+        courts: props.player.data.locations.courts,
+        locations: props.player.data.locations.locations,
+        leagues: props.player.data.locations.leagues,
     };
 });
 const getInteractionText = (number) =>{
@@ -40,21 +40,21 @@ const getInteractionText = (number) =>{
         <div
             class="rank"
             :class="{
-                first: props.player.position == 1,
-                second: props.player.position == 2,
-                third: props.player.position == 3,
+                first: props.player.data.position == 1,
+                second: props.player.data.position == 2,
+                third: props.player.data.position == 3,
             }"
         >
-            <p :class="{ 'align-left': props.player.position > 9 }">
-                {{ player.position }}
+            <p :class="{ 'align-left': props.player.data.position > 9 }">
+                {{ props.player.data.position }}
             </p>
         </div>
         <h1>
-            {{ props.player.name
+            {{ props.player.data.name
             }}<Link
                 class="edit-btn"
                 v-if="$page.props.auth.user"
-                :href="`/teniser/izmeni/${props.player.id}`"
+                :href="`/teniser/izmeni/${props.player.data.id}`"
                 ><EditIcon
             /></Link>
         </h1>
@@ -70,45 +70,45 @@ const getInteractionText = (number) =>{
             <div class="summary player five desktop">
                 <div class="summary-item">
                     <h2>poeni</h2>
-                    <p>{{ utils.formatAsThousands(props.player.stats.elo) }}</p>
+                    <p>{{ utils.formatAsThousands(props.player.data.stats.elo) }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>svi mečevi</h2>
-                    <p>{{ props.player.stats.total_matches }}</p>
+                    <p>{{ props.player.data.stats.total_matches }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>pobede</h2>
-                    <p>{{ props.player.stats.wins }}</p>
+                    <p>{{ props.player.data.stats.wins }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>gubitci</h2>
-                    <p>{{ props.player.stats.loses }}</p>
+                    <p>{{ props.player.data.stats.loses }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>% pobeda</h2>
-                    <p>{{ props.player.stats.win_precentage }}%</p>
+                    <p>{{ props.player.data.stats.win_precentage }}%</p>
                 </div>
             </div>
             <div class="summary player five mobile">
                 <div class="summary-item half">
                     <h2>poeni</h2>
-                    <p>{{ utils.formatAsThousands(props.player.stats.elo) }}</p>
+                    <p>{{ utils.formatAsThousands(props.player.data.stats.elo) }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>% pobeda</h2>
-                    <p>{{ props.player.stats.win_precentage }}%</p>
+                    <p>{{ props.player.data.stats.win_precentage }}%</p>
                 </div>
                 <div class="summary-item">
                     <h2>svi mečevi</h2>
-                    <p>{{ props.player.stats.total_matches }}</p>
+                    <p>{{ props.player.data.stats.total_matches }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>pobede</h2>
-                    <p>{{ props.player.stats.wins }}</p>
+                    <p>{{ props.player.data.stats.wins }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>gubitci</h2>
-                    <p>{{ props.player.stats.loses }}</p>
+                    <p>{{ props.player.data.stats.loses }}</p>
                 </div>
             </div>
             <h2 class="summary-title">Teniseri</h2>
@@ -212,23 +212,23 @@ const getInteractionText = (number) =>{
             </div>
             <h2 class="summary-title">Grafikoni</h2>
             <div class="chart-wrapper">
-                <PlayerChart :player_id="props.player.id" />
+                <PlayerChart :data="props.player.charts" :player_id="props.player.data.id" />
             </div>
             <h2 class="summary-title no-border low-margin">pobede</h2>
             <div class="player-matches">
                 <MatchTable
-                    :showMessage="{ wins: props.player.wins == 0 }"
-                    :matches="props.player.wins"
+                    :showMessage="{ wins: props.player.data.wins == 0 }"
+                    :matches="props.player.data.wins"
                 />
             </div>
             <h2 class="summary-title no-border low-margin">gubitci</h2>
             <div class="player-matches">
                 <MatchTable
-                    :showMessage="{ loses: props.player.loses == 0 }"
-                    :matches="props.player.loses"
+                    :showMessage="{ loses: props.player.data.loses == 0 }"
+                    :matches="props.player.data.loses"
                 />
             </div>
         </div>
     </div>
-    <Head :title="`${props.player.name} -`" />
+    <Head :title="`${props.player.data.name} -`" />
 </template>

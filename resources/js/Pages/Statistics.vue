@@ -12,9 +12,9 @@
 
     const locations = computed(() => {
         return {
-            courts: props.data.locations.courts,
-            locations: props.data.locations.locations,
-            leagues: props.data.locations.leagues,
+            courts: props.data.stats.locations.courts,
+            locations: props.data.stats.locations.locations,
+            leagues: props.data.stats.locations.leagues,
         };
     });
 
@@ -28,15 +28,15 @@
             <div class="summary player three desktop">
                 <div class="summary-item">
                     <h2>poeni</h2>
-                    <p>{{ utils.formatAsThousands(props.data.totals.points) }}</p>
+                    <p>{{ utils.formatAsThousands(props.data.stats.totals.points) }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>teniseri</h2>
-                    <p>{{ props.data.totals.players }}</p>
+                    <p>{{ props.data.stats.totals.players }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>mečevi</h2>
-                    <p>{{ props.data.totals.matches }}</p>
+                    <p>{{ props.data.stats.totals.matches }}</p>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
             <div class="summary player three desktop col">
                 <div class="summary-item">
                     <h2 class="mb-10">najviše mečeva</h2>
-                    <p class="smaller f20" v-for="player in props.data.players.total">
+                    <p class="smaller f20" v-for="player in props.data.stats.players.total">
                         <Link :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link> ({{ player.count }})
@@ -52,7 +52,7 @@
                 </div>
                 <div class="summary-item">
                     <h2 class="mb-10">najviše pobeda</h2>
-                    <p class="smaller f20" v-for="player in props.data.players.wins">
+                    <p class="smaller f20" v-for="player in props.data.stats.players.wins">
                         <Link :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link> ({{ player.count }})
@@ -60,7 +60,7 @@
                 </div>
                 <div class="summary-item">
                     <h2 class="mb-10">najviše gubitaka</h2>
-                    <p class="smaller f20" v-for="player in props.data.players.loses">
+                    <p class="smaller f20" v-for="player in props.data.stats.players.loses">
                         <Link :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link>  ({{ player.count }})
@@ -110,7 +110,7 @@
             </div>
 
             <h2 class="summary-title big-margin">Grafikoni</h2>
-            <LeagueChart />
+            <LeagueChart :data="props.data.charts" />
         </div>
     </div>
 </template>

@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::inertia('/', 'Home',
-[ 'players' => PlayerController::getPlayers() ]
+[ 'players' => PlayerController::getCachedPlayers() ]
 )->name('home');
 
 Route::inertia('/mecevi', 'Matches',
-['matches' => TenisMatchController::getMatches()]
+['matches' => TenisMatchController::getCachedMatches()]
 )->name('matches');
 
 Route::inertia('/dodaj', 'AddMatch',
@@ -35,7 +35,7 @@ Route::inertia('/dodaj-ligu', 'ForClubs')->name('clubs');
 Route::inertia('/misija', 'Mision')->name('mision');
 
 Route::inertia('/statistika', 'Statistics',
-    ['data' => LeagueController::getStatistics()]
+    ['data' => LeagueController::getCachedStatistics()]
 )->name('leagueStats');
 
 Route::post('/leagueChart',[LeagueController::class, 'getChart'])->name('leagueChart');

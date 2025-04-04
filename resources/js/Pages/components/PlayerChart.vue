@@ -1,20 +1,21 @@
 <script setup>
-import { onBeforeMount } from 'vue';
-import VueApexCharts from 'vue3-apexcharts';
+import { onBeforeMount, defineAsyncComponent } from 'vue';
 import { reactive } from 'vue';
 import { computed } from 'vue';
 
 const props = defineProps({
-    player_id: Number
+    player_id: Number,
+    data: Array,
 });
 
+const VueApexCharts = defineAsyncComponent(() => import('vue3-apexcharts'));
+
 const data = reactive({
-    playerData: {}
+    playerData: props.data
 });
 
 onBeforeMount(() => {
-  
-    fetchPlayerData()
+
 
 });
 
@@ -48,18 +49,18 @@ const options = reactive({
 })
 
 
-const fetchPlayerData = async () => {
-    
-    await axios.post(route("playerChart"), {
-        id: props.player_id
-    }).then(res =>{
-        console.log(res.data)
-        data.playerData = res.data
-    }).catch(err => {
-        console.log(err)
-    })
-
-}
+// const fetchPlayerData = async () => {
+//
+//     await axios.post(route("playerChart"), {
+//         id: props.player_id
+//     }).then(res =>{
+//         console.log(res.data)
+//         data.playerData = res.data
+//     }).catch(err => {
+//         console.log(err)
+//     })
+//
+// }
 const points = computed(() => {
 
     if(data.playerData.points){
@@ -82,7 +83,7 @@ const points = computed(() => {
     }
     else{
         return [{data: []}]
-    } 
+    }
 })
 
 const ranks = computed(() => {
@@ -107,7 +108,7 @@ const ranks = computed(() => {
     }
     else{
         return [{data: []}]
-    } 
+    }
 })
 
 
@@ -119,9 +120,9 @@ const chartOptions = {
         id: 'fb',
         group: 'social',
         type: 'line',
-      
-       
-      
+
+
+
         zoom: {
             enabled: false
         },
@@ -152,14 +153,14 @@ const chartOptions = {
         min: 0,
     },
     xaxis:{
-       
+
         labels:{
             show: false
         },
         axisTicks: {
             show: true,
         },
-        
+
     },
     title:{
         text: 'poeni',
@@ -185,7 +186,7 @@ const maxRank = reactive(()=>{
 })
 
 
-const chartOptionsLine2 = { 
+const chartOptionsLine2 = {
     chart: {
         id: 'tw',
         group: 'social',
@@ -203,11 +204,11 @@ const chartOptionsLine2 = {
         max: maxRank,
     },
     xaxis:{
-        
+
         labels:{
             show: false
         },
-        
+
     },
     colors: ['#0d4075'],
     noData: {
