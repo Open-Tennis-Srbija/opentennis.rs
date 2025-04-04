@@ -19,6 +19,7 @@ class Player extends Model
         'location',
     ];
 
+
     public function getMatchups(){
         $matches = TenisMatch::where('winner_id', $this->id)
             ->orWhere('loser_id', $this->id)

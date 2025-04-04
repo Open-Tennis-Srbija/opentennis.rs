@@ -1,6 +1,6 @@
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
-import {reactive, onMounted} from 'vue';
+import {reactive, onMounted, defineAsyncComponent} from 'vue';
 import CircleLoader from '../../../../public/LRlCNqLdgl.json';
 
 import 'vue-select/dist/vue-select.css';
@@ -8,6 +8,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 const props = defineProps({players: Array});
 const page = usePage();
+const Lottie = defineAsyncComponent(() => import('vue3-lottie'));
 
 onMounted(() => {
     page.props['title'] = 'Admin';

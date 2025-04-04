@@ -1,6 +1,6 @@
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
-import {onMounted, reactive} from 'vue';
+import {onMounted, reactive, defineAsyncComponent} from 'vue';
 import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -8,6 +8,8 @@ import '@vuepic/vue-datepicker/dist/main.css'
 const props = defineProps({player: Object});
 
 const page = usePage();
+
+const Lottie = defineAsyncComponent(() => import('vue3-lottie'));
 
 onMounted(() => {
     page.props['title'] = `Izmeni tenisera`;
@@ -61,7 +63,7 @@ const submit = () =>{
 
 const handleInputs = (event,isDate = false) => {
   if(isDate) return form.errors['date'] = '';
-  
+
   if(event.data){
       form.errors[event.target.id] = '';
   }

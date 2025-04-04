@@ -1,10 +1,14 @@
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, onBeforeMount } from 'vue';
 import EditIcon from './components/EditIcon.vue';
 
 const props = defineProps({
   matches: Array,
   showMessage: Object,
+});
+
+onBeforeMount(() => {
+  console.log(props.matches);
 });
 
 const formatedMatchesDesktop = computed(() => {

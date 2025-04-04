@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Http\Controllers\PlayerController;
+use Illuminate\Support\Facades\Storage;
+
 
 class UpdateRankList extends Command
 {
@@ -25,6 +28,8 @@ class UpdateRankList extends Command
      */
     public function handle()
     {
-        //
+        $players = PlayerController::getPlayers();
+        Storage::disk('public')->put('players.json', json_encode($players));
+        $this->info('Players updated successfully.');
     }
 }

@@ -1,16 +1,20 @@
 <script setup>
-import { onBeforeMount } from 'vue';
-import VueApexCharts from 'vue3-apexcharts';
+import { onBeforeMount, defineAsyncComponent } from 'vue';
 import { reactive } from 'vue';
 import { computed } from 'vue';
 
+const VueApexCharts = defineAsyncComponent(() => import('vue3-apexcharts'));
+
+const props = defineProps({
+    data: Object,
+});
+
 const data = reactive({
-    leagueData: {}
+    leagueData: props.data
 });
 
 onBeforeMount(() => {
-  
-    fetchData()
+
 
 });
 
@@ -21,17 +25,6 @@ const formatDate = (d) => {
     return days[date.getDay()] + ' ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
 }
 
-const fetchData = async () => {
-    
-    await axios.post(route("leagueChart"))
-    .then(res =>{
-        console.log(res)
-        data.leagueData = res.data
-    }).catch(err => {
-        console.log(err)
-    })
-
-}
 const points = computed(() => {
 
     if(data.leagueData.points){
@@ -54,7 +47,7 @@ const points = computed(() => {
     }
     else{
         return [{data: []}]
-    } 
+    }
 })
 
 const players = computed(() => {
@@ -75,7 +68,7 @@ const players = computed(() => {
     }
     else{
         return [{data: []}]
-    } 
+    }
 })
 
 const matches = computed(() => {
@@ -96,7 +89,7 @@ if(data.leagueData.matches){
 }
 else{
     return [{data: []}]
-} 
+}
 })
 
 
@@ -108,9 +101,9 @@ const chartOptions = {
         id: 'fb',
         group: 'social',
         type: 'line',
-      
-       
-      
+
+
+
         zoom: {
             enabled: false
         },
@@ -141,14 +134,14 @@ const chartOptions = {
         min: 0,
     },
     xaxis:{
-       
+
         labels:{
             show: false
         },
         axisTicks: {
             show: true,
         },
-        
+
     },
     title:{
         text: 'poeni',
@@ -174,7 +167,7 @@ const maxRank = reactive(()=>{
 })
 
 
-const chartOptionsLine2 = { 
+const chartOptionsLine2 = {
     chart: {
         id: 'tw',
         group: 'social',
@@ -192,11 +185,11 @@ const chartOptionsLine2 = {
         forceNiceScale: true,
     },
     xaxis:{
-        
+
         labels:{
             show: false
         },
-        
+
     },
     colors: ['#0d4075'],
     noData: {
@@ -224,7 +217,7 @@ const chartOptionsLine2 = {
     },
 }
 
-const chartOptionsLine3 = { 
+const chartOptionsLine3 = {
     chart: {
         id: 'tw',
         group: 'social',
@@ -240,11 +233,11 @@ const chartOptionsLine3 = {
         min: 1,
     },
     xaxis:{
-        
+
         labels:{
             show: false
         },
-        
+
     },
     colors: ['#8f8f8f'],
     noData: {
