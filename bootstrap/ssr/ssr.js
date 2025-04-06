@@ -1,8 +1,8 @@
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-import { defineAsyncComponent, reactive, resolveComponent, withCtx, createTextVNode, unref, useSSRContext, mergeProps, onMounted, createVNode, toDisplayString, computed, onBeforeMount, mergeModels, useModel, getCurrentInstance, watch, createSSRApp, h as h$2 } from "vue";
-import { ssrRenderComponent, ssrRenderClass, ssrInterpolate, ssrRenderAttr, ssrIncludeBooleanAttr, ssrRenderAttrs, ssrRenderList, ssrRenderStyle, ssrRenderSlot } from "vue/server-renderer";
+import { reactive, resolveComponent, withCtx, createTextVNode, unref, useSSRContext, mergeProps, onMounted, createVNode, toDisplayString, onBeforeMount, computed, defineAsyncComponent, mergeModels, useModel, getCurrentInstance, watch, createSSRApp, h as h$2 } from "vue";
+import { ssrRenderComponent, ssrRenderClass, ssrInterpolate, ssrRenderAttr, ssrIncludeBooleanAttr, ssrRenderStyle, ssrRenderAttrs, ssrRenderList, ssrRenderSlot } from "vue/server-renderer";
 import { useForm, usePage, router, createInertiaApp, Head, Link } from "@inertiajs/vue3";
 import createServer from "@inertiajs/vue3/server";
 import { renderToString } from "@vue/server-renderer";
@@ -44,7 +44,6 @@ const _sfc_main$j = {
   props: { players: Array, courts: Array, leagues: Array },
   setup(__props) {
     const props = __props;
-    const Lottie = defineAsyncComponent(() => import("vue3-lottie"));
     const form = useForm({
       winner: null,
       loser: null,
@@ -91,6 +90,7 @@ const _sfc_main$j = {
       const _component_dropdown = resolveComponent("dropdown");
       const _component_Dropdown = resolveComponent("Dropdown");
       const _component_datepicker = resolveComponent("datepicker");
+      const _component_Lottie = resolveComponent("Lottie");
       _push(`<!--[-->`);
       _push(ssrRenderComponent(_component_Head, { title: "Dodaj meč -" }, null, _parent));
       _push(`<div class="static-wrapper"><h1 id="title" class="${ssrRenderClass({ "hide": formState.success })}">dodaj meč</h1><h1 id="success" class="${ssrRenderClass({ "show": formState.success })}">Meč je uspešno dodat</h1><div id="success-links" class="${ssrRenderClass({ "show": formState.success })}"><p class="add">dodaj još jedan meč</p>`);
@@ -192,11 +192,16 @@ const _sfc_main$j = {
         shouldReset: formState.shouldReset
       }, null, _parent));
       _push(`<p class="error-message">${ssrInterpolate(unref(form).errors.court)}</p></div></div></div><div class="form-section"><div class="form-row"><button id="submit"><span id="add-btn" class="${ssrRenderClass({ "hide": formState.submitted })}">Dodaj</span><span id="loader-submit" class="${ssrRenderClass([{ "show": formState.submitted }, "lottie-container"])}">`);
-      _push(ssrRenderComponent(unref(Lottie), {
+      _push(ssrRenderComponent(_component_Lottie, {
         height: 150,
         animationData: unref(CircleLoader)
       }, null, _parent));
-      _push(`</span></button></div></div></form></div><!--]-->`);
+      _push(`</span></button></div><div style="${ssrRenderStyle({ "width": "500px", "height": "50px", "background": "black" })}">`);
+      _push(ssrRenderComponent(_component_Lottie, {
+        height: 150,
+        animationData: unref(CircleLoader)
+      }, null, _parent));
+      _push(`</div></div></form></div><!--]-->`);
     };
   }
 };
@@ -247,7 +252,6 @@ const _sfc_main$h = {
   props: { players: Array },
   setup(__props) {
     const page = usePage();
-    const Lottie = defineAsyncComponent(() => import("vue3-lottie"));
     onMounted(() => {
       page.props["title"] = "Admin";
     });
@@ -260,8 +264,9 @@ const _sfc_main$h = {
       success: false
     });
     return (_ctx, _push, _parent, _attrs) => {
+      const _component_Lottie = resolveComponent("Lottie");
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "static-wrapper" }, _attrs))}><h1 id="title" class="${ssrRenderClass({ "hide": formState.success })}">Admin</h1><form id="form" class="${ssrRenderClass({ "hide": formState.success })}"><div class="form-section"><div class="form-row column"><div class="form-group center"><label for="full-score" class="input-label"> Korisničko ime <span class="required">*</span></label><input${ssrRenderAttr("value", unref(form).username)} class="${ssrRenderClass({ "invalid": unref(form).errors.username })}"${ssrIncludeBooleanAttr(formState.submitted) ? " disabled" : ""} id="username" type="text"><p class="error-message">${ssrInterpolate(unref(form).errors.username)}</p></div><div class="form-group center"><label for="games" class="input-label"> Lozinka <span class="required">*</span></label><input class="${ssrRenderClass({ "invalid": unref(form).errors.password })}"${ssrRenderAttr("value", unref(form).password)}${ssrIncludeBooleanAttr(formState.submitted) ? " disabled" : ""} id="game_score " type="password"><p class="error-message">${ssrInterpolate(unref(form).errors.password)}</p></div></div></div><div class="form-section"><div class="form-row"><button id="submit"><span id="add-btn" class="${ssrRenderClass({ "hide": formState.submitted })}">Uloguj se</span><span id="loader-submit" class="${ssrRenderClass([{ "show": formState.submitted }, "lottie-container"])}">`);
-      _push(ssrRenderComponent(unref(Lottie), {
+      _push(ssrRenderComponent(_component_Lottie, {
         height: 150,
         animationData: unref(CircleLoader)
       }, null, _parent));
@@ -313,7 +318,6 @@ const _sfc_main$f = {
   props: { players: Array, match: Object, courts: Array },
   setup(__props) {
     const props = __props;
-    const Lottie = defineAsyncComponent(() => import("vue3-lottie"));
     const page = usePage();
     onMounted(() => {
       page.props["title"] = `Izmeni meč`;
@@ -367,6 +371,7 @@ const _sfc_main$f = {
       const _component_dropdown = resolveComponent("dropdown");
       const _component_Dropdown = resolveComponent("Dropdown");
       const _component_datepicker = resolveComponent("datepicker");
+      const _component_Lottie = resolveComponent("Lottie");
       _push(`<!--[-->`);
       _push(ssrRenderComponent(_component_Head, { title: "Izmeni meč" }, null, _parent));
       _push(`<div class="static-wrapper"><h1 id="title" class="${ssrRenderClass({ "hide": formState.success })}">Izmeni meč</h1><h1 id="success" class="${ssrRenderClass({ "show": formState.success })}">Meč je uspešno izmenjen</h1><div id="success-links" class="${ssrRenderClass({ "show": formState.success })}">`);
@@ -457,7 +462,7 @@ const _sfc_main$f = {
         shouldReset: formState.shouldReset
       }, null, _parent));
       _push(`<p class="error-message">${ssrInterpolate(unref(form).errors.court)}</p></div></div></div><div class="form-section"><div class="form-row"><button id="submit"><span id="add-btn" class="${ssrRenderClass({ "hide": formState.submitted })}">izmeni</span><span id="loader-submit" class="${ssrRenderClass([{ "show": formState.submitted }, "lottie-container"])}">`);
-      _push(ssrRenderComponent(unref(Lottie), {
+      _push(ssrRenderComponent(_component_Lottie, {
         height: 150,
         animationData: unref(CircleLoader)
       }, null, _parent));
@@ -482,7 +487,6 @@ const _sfc_main$e = {
   setup(__props) {
     const props = __props;
     const page = usePage();
-    const Lottie = defineAsyncComponent(() => import("vue3-lottie"));
     onMounted(() => {
       page.props["title"] = `Izmeni tenisera`;
     });
@@ -499,10 +503,11 @@ const _sfc_main$e = {
     });
     return (_ctx, _push, _parent, _attrs) => {
       const _component_Head = resolveComponent("Head");
+      const _component_Lottie = resolveComponent("Lottie");
       _push(`<!--[-->`);
       _push(ssrRenderComponent(_component_Head, { title: "Izmeni tenisera -" }, null, _parent));
       _push(`<div class="static-wrapper"><h1 id="title" class="${ssrRenderClass({ "hide": formState.success })}">izmeni tenisera</h1><form id="form"><div class="form-section"><div class="form-row"><div class="form-group"><label for="winner-fname" class="input-label"> Ime<span class="required">*</span></label><input${ssrRenderAttr("value", unref(form).first_name)} class="${ssrRenderClass({ "invalid": unref(form).errors.first_name })}"${ssrIncludeBooleanAttr(formState.submitted) ? " disabled" : ""} id="first_name" type="text"><p class="error-message">${ssrInterpolate(unref(form).errors.first_name)}</p></div><div class="form-group"><label for="winner-fname" class="input-label"> Prezime<span class="required">*</span></label><input${ssrRenderAttr("value", unref(form).last_name)} class="${ssrRenderClass({ "invalid": unref(form).errors.last_name })}"${ssrIncludeBooleanAttr(formState.submitted) ? " disabled" : ""} id="last_name" type="text"><p class="error-message">${ssrInterpolate(unref(form).errors.last_name)}</p></div></div></div><div class="form-section"><div class="form-row"><div class="form-group"><label for="full-score" class="input-label"> Klub </label><input${ssrRenderAttr("value", unref(form).club)}${ssrIncludeBooleanAttr(formState.submitted) ? " disabled" : ""} id="club" type="text"><p class="error-message">${ssrInterpolate(unref(form).errors.club)}</p></div><div class="form-group"><label for="games" class="input-label"> Lokacija </label><input${ssrRenderAttr("value", unref(form).location)}${ssrIncludeBooleanAttr(formState.submitted) ? " disabled" : ""} id="location " type="text"></div></div></div><div class="form-section"><div class="form-row"><button id="submit"><span id="add-btn" class="${ssrRenderClass({ "hide": formState.submitted })}">izmeni</span><span id="loader-submit" class="${ssrRenderClass([{ "show": formState.submitted }, "lottie-container"])}">`);
-      _push(ssrRenderComponent(unref(Lottie), {
+      _push(ssrRenderComponent(_component_Lottie, {
         height: 150,
         animationData: unref(CircleLoader)
       }, null, _parent));
@@ -718,6 +723,9 @@ const _sfc_main$9 = {
   },
   setup(__props) {
     const props = __props;
+    onBeforeMount(() => {
+      console.log(props.matches);
+    });
     const formatedMatchesDesktop = computed(() => {
       let formated = props.matches.map((match, index) => {
         return {

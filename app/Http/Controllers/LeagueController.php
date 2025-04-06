@@ -83,14 +83,14 @@ class LeagueController extends Controller
 
         $updated_loses = false;
         for($i = 0; $i < count($cache_players_loses); $i++){
-            if($cache['players']['loses'][$i]['uri'] == $loser_data['uri']){
-                $cache['players']['loses'][$i]['count'] = $cache['players']['loses'][$i]['count'] + 1;
+            if($cache['stats']['players']['loses'][$i]['uri'] == $loser_data['uri']){
+                $cache['stats']['players']['loses'][$i]['count'] = $cache['stats']['players']['loses'][$i]['count'] + 1;
                 $updated_loses = true;
             }
         }
 
         if(!$updated_loses && $cache_players_loses[count($cache_players_loses)-1]['count'] < $loser_data['loses']){
-            $cache['players']['loses'][count($cache_players_loses)-1] = [
+            $cache['stats']['players']['loses'][count($cache_players_loses)-1] = [
                 'name' => $loser_data['name'],
                 'count' => $loser_data['loses'],
                 'uri' => $loser_data['uri'],
@@ -209,7 +209,7 @@ class LeagueController extends Controller
         Storage::disk('public')->put('statistics.json', json_encode($cache));
     }
 
-    public static function update_ranks_cache($winner, $loser, $winner_gains, $loser_gains){
+    public static function update_ranks_cache($winner, $loser, $winner_gains, $loser_gains, $new_winner, $new_loser){
         $data = json_decode(file_get_contents(storage_path('app/public/players.json')), true);
 
         $winner_data = null;
@@ -261,6 +261,50 @@ class LeagueController extends Controller
                 }
             }
         }
+        if($new_winner){
+            $winner_data = [
+                'id' => $winner->id,
+                'name' => $winner->first_name . ' ' . $winner->last_name,
+                'uri' => $winner->uri,
+                'stats' => [
+                    'elo' => $winner_gains,
+                    'wins' => 1,
+                    'loses' => 0,
+                    'total_matches' => 1,
+                    'win_precentage' => 100
+                ]
+            ];
+            array_push($data, $winner_data);
+        }
+        if($new_loser){
+            $loser_data = [
+                'id' => $loser->id,
+                'name' => $loser->first_name . ' ' . $loser->last_name,
+                'uri' => $loser->uri,
+                'stats' => [
+                    'elo' => $loser_gains,
+                    'wins' => 0,
+                    'loses' => 1,
+                    'total_matches' => 1,
+                    'win_precentage' => 0
+                ]];
+            array_push($data, $loser_data);
+        }
+        if($new_winner || $new_loser){
+            usort($data, function($a, $b) {
+                return $b['stats']['elo'] <=> $a['stats']['elo'];
+            });
+            for($i = 0; $i < count($data); $i++){
+                $data[$i]['rank'] = $i+1;
+                if($data[$i]['id'] == $winner->id){
+                    $winner_pos = $i+1;
+                }
+                if($data[$i]['id'] == $loser->id){
+                    $loser_pos = $i+1;
+                }
+            }
+        }
+
 
         Storage::disk('public')->put('players.json', json_encode($data));
 

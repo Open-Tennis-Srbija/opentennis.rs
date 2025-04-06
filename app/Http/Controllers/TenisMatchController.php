@@ -126,6 +126,9 @@ class TenisMatchController extends Controller
         $loser_id = $data['loser']['id'];
         $new_players = 0;
 
+        $new_winner = false;
+        $new_loser = false;
+
         $winner = null;
         $loser = null;;
 
@@ -167,7 +170,9 @@ class TenisMatchController extends Controller
 
             $winner->save();
 
+
             $new_players++;
+            $new_winner = true;
             $winner_id = $winner->id;
         }
         else{
@@ -198,7 +203,9 @@ class TenisMatchController extends Controller
 
             $loser->save();
 
+
             $new_players++;
+            $new_loser = true;
             $loser_id = $loser->id;
         }
         else{
@@ -255,14 +262,22 @@ class TenisMatchController extends Controller
 
         $match->save();
 
+        sleep(1);
+
+        if($new_winner)
+            PlayerController::cache_player($winner,$match->game_score,$match->set_score);
+        if($new_loser)
+            PlayerController::cache_player($loser,$match->game_score,$match->set_score);
 
         [$winner_gains, $loser_gains, $match_num] = Self::update_match_cache($match);
         $points = ['winner' => $winner_gains, 'loser' => $loser_gains];
 
-        $players_data = LeagueController::update_ranks_cache($winner, $loser, $winner_gains, $loser_gains);
+        $players_data = LeagueController::update_ranks_cache($winner, $loser, $winner_gains, $loser_gains,$new_winner, $new_loser);
 
-        PlayerController::update_player_cache_from_match($winner,$players_data['winner'],$loser,$match,$match_num,$points);
-        PlayerController::update_player_cache_from_match($loser,$players_data['loser'], $winner,$match,$match_num,$points);
+        if(!$new_winner)
+            PlayerController::update_player_cache_from_match($winner,$players_data['winner'],$loser,$match,$match_num,$points);
+        if(!$new_loser)
+            PlayerController::update_player_cache_from_match($loser,$players_data['loser'], $winner,$match,$match_num,$points);
 
         $winner_data = [
             'name' => $winner->first_name . ' ' . $winner->last_name,
@@ -296,8 +311,7 @@ class TenisMatchController extends Controller
             'link' => $match->getLeague()['link'],
             'count' => TenisMatch::where('league_id', $match->league_id)->count(),
         ];
-        LeagueController::update_league_cache($winner_data, $loser_data, $location_data, $court_data, $league_data, $match->match_date);
-
+        LeagueController::update_league_cache($winner_data, $loser_data, $location_data, $court_data, $league_data, $match->match_date, $new_players);
 
         if(env('APP_ENV') == 'production'){
             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
@@ -400,6 +414,7 @@ class TenisMatchController extends Controller
             'date' => ['required', 'max:30'],
             'location' => 'required',
             'court' => '',
+            'league' => '',
         ], [
             'winner.required' => 'Ovo polje je obavezno.',
             'loser.required' => 'Ovo polje je obavezno.',
@@ -412,15 +427,24 @@ class TenisMatchController extends Controller
 
         $match = TenisMatch::find($data['id']);
 
+
+        $old_data = [];
+        [$old_data['winner_gains'], $old_data['loser_gains']] = NikolaAlgoV1::getMatchEloGains($match);
+
         if($match->winner_id != $data['winner']['id']){
+            $old_data['winner'] = Player::find($match->winner_id);
             $match->winner_id = $data['winner']['id'];
         }
 
         if($match->loser_id != $data['loser']['id']){
+            $old_data['loser'] = Player::fild($match->loser_id);
             $match->loser_id = $data['loser']['id'];
         }
-        if(isset($data['court'])){
 
+        if($match->court_id > 1)
+            $old_data['court'] = $match->getCourt();
+
+        if(isset($data['court'])){
             if(!is_numeric($data['court']['id'])){
                 $court = new Court();
 
@@ -440,10 +464,25 @@ class TenisMatchController extends Controller
             $match->court_id = 1;
         }
 
-        $match->set_score = $data['set_score'];
-        $match->game_score = $data['game_score'];
-        $match->match_date = $data['date'];
-        $match->match_location = $data['location'];
+        if($data['set_score'] !== $match->set_score){
+            $old_data['set_score'] = $match->set_score;
+            $match->set_score = $data['set_score'];
+        }
+        if($data['game_score'] !== $match->game_score){
+            $old_data['game_score'] = $match->game_score;
+            $match->game_score = $data['game_score'];
+        }
+        if($data['date'] !== $match->match_date){
+            $old_data['date'] = $match->match_date;
+            $match->match_date = $data['date'];
+        }
+        if($data['location'] !== $match->match_location){
+            $old_data['location'] = $match->match_location;
+            $match->match_location = $data['location'];
+        }
+
+        $match_gains = Self::
+
 
         $match->save();
 

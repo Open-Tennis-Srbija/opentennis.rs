@@ -9,7 +9,6 @@ const props = defineProps({player: Object});
 
 const page = usePage();
 
-const Lottie = defineAsyncComponent(() => import('vue3-lottie'));
 
 onMounted(() => {
     page.props['title'] = `Izmeni tenisera`;
@@ -121,7 +120,7 @@ const handleInputs = (event,isDate = false) => {
         <div class="form-row">
           <button id="submit">
             <span id="add-btn" :class="{'hide': formState.submitted}">izmeni</span>
-            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Lottie :height="150" :animationData="CircleLoader"/></span>
+            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Vue3Lottie :height="150" :animationData="CircleLoader"/></span>
           </button>
         </div>
       </div>

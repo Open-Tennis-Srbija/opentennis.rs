@@ -1,15 +1,13 @@
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
-import { onMounted, reactive, defineAsyncComponent} from 'vue';
+import { onMounted, reactive} from 'vue';
 import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
-import { computed } from 'vue';
 import opstine from '../assets/opstine.json';
 
 const props = defineProps({players: Array, match: Object, courts: Array});
 
-const Lottie = defineAsyncComponent(() => import('vue3-lottie'));
 
 const page = usePage();
 
@@ -23,10 +21,12 @@ const form = useForm({
     loser: props.match.loser,
     set_score: props.match.set_score,
     game_score: props.match.game_score,
+    court: props.match.court,
     date: props.match.date,
     location: props.match.location,
-    court: props.match.court
+    league: props.match.league
 });
+
 const deleteMatch = () =>{
     if(confirm('Da li ste sigurni da želite da obrišete ovaj meč?')){
         form.post(`/mec/obrisi`,{
@@ -177,6 +177,7 @@ const handleInputs = (event,isDate = false) => {
            <dropdown
               label="name"
               :options="props.players"
+              :disabledOption="form.loser"
               v-model="form.winner"
               :class="{'invalid': form.errors.winner}"
               :shouldreset="formState.shouldreset"
@@ -187,10 +188,11 @@ const handleInputs = (event,isDate = false) => {
             <label for="winner-fname" class="input-label">
               Gubitnik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
-             <Dropdown
+            <Dropdown
               label="name"
               :options="props.players"
               v-model="form.loser"
+              :disabledOption="form.winner"
               :class="{'invalid': form.errors.loser}"
               :shouldReset="formState.shouldReset"
             />
@@ -201,10 +203,10 @@ const handleInputs = (event,isDate = false) => {
 
        <div class="form-section">
         <h2>Rezultat</h2>
-        <div class="form-row">
+        <div class="form-row three">
           <div class="form-group">
             <label for="full-score" class="input-label">
-              Konačni rezultat (primeri: 2:0 u slučaju setova ili 9:4 u slučaju gemova) <span class="required">*</span>
+                Konačni rezultat <br>(2:0 u slučaju setova ili 9:4 u slučaju gemova) <span class="required">*</span>
             </label>
             <input v-model="form.set_score" @input="handleInputs($event)" :class="{'invalid': form.errors.set_score}" :disabled="formState.submitted" data-validate="true" id="set_score" type="text">
             <p class="error-message">{{ form.errors.set_score }}</p>
@@ -215,6 +217,20 @@ const handleInputs = (event,isDate = false) => {
             </label>
             <input v-model="form.game_score" @input="handleInputs($event)" :disabled="formState.submitted" id="game_score " type="text">
           </div>
+          <div class="form-group">
+            <label for="winner-fname" class="input-label">
+              Liga ili turnir
+            </label>
+            <Dropdown
+              label="name"
+              :options="props.leagues"
+              v-model="form.league"
+              :class="{'invalid': form.errors.league}"
+              :shouldReset="formState.shouldReset"
+            />
+            <p class="error-message">{{ form.errors.league }}</p>
+          </div>
+
         </div>
       </div>
 
@@ -247,7 +263,7 @@ const handleInputs = (event,isDate = false) => {
           </div>
           <div class="form-group">
             <label for="winner-fname" class="input-label">
-              Opština <span class="required">*</span>
+              Opština (ili inostranstvo na dnu) <span class="required">*</span>
             </label>
             <Dropdown
               label="name"
@@ -278,8 +294,8 @@ const handleInputs = (event,isDate = false) => {
       <div class="form-section">
         <div class="form-row">
           <button id="submit">
-            <span id="add-btn" :class="{'hide': formState.submitted}">izmeni</span>
-            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Lottie :height="150" :animationData="CircleLoader"/></span>
+            <span id="add-btn" :class="{'hide': formState.submitted}">Dodaj</span>
+            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Vue3Lottie :height="150" :animationData="CircleLoader"/></span>
           </button>
         </div>
       </div>

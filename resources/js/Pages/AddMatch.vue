@@ -1,15 +1,12 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3'
-import {reactive, defineAsyncComponent} from 'vue';
+import {reactive} from 'vue';
 import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import opstine from '../assets/opstine.json';
 
 const props = defineProps({players: Array,courts: Array, leagues: Array});
-
-
-const Lottie = defineAsyncComponent(() => import('vue3-lottie'));
 
 const form = useForm({
     winner: null,
@@ -283,7 +280,7 @@ const handleInputs = (event,isDate = false) => {
         <div class="form-row">
           <button id="submit">
             <span id="add-btn" :class="{'hide': formState.submitted}">Dodaj</span>
-            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Lottie :height="150" :animationData="CircleLoader"/></span>
+            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Vue3Lottie :height="150" :animationData="CircleLoader"/></span>
           </button>
         </div>
       </div>

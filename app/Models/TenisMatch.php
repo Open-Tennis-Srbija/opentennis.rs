@@ -36,13 +36,11 @@ class TenisMatch extends Model
         $league = League::where('id', $this->league_id)->first();
         if(!$league){
             return [
-                'id' => 1,
                 'name' => '',
                 'link' => '',
             ];
         }
         return [
-            'id' => $league->id,
             'name' => $league->name,
             'link' => $league->link,
         ];
@@ -52,13 +50,11 @@ class TenisMatch extends Model
         $court = Court::where('id', $this->court_id)->first();
         if(!$court){
             return [
-                'id' => 1,
                 'name' => '',
                 'link' => '',
             ];
         }
         return [
-            'id' => $court->id,
             'name' => $court->name,
             'link' => $court->link,
         ];

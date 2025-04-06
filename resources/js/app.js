@@ -7,6 +7,7 @@ import {ZiggyVue} from '../../vendor/tightenco/ziggy'
 import VueSelect from 'vue-select';
 import VueDatepicker from '@vuepic/vue-datepicker';
 import Home from './Pages/Home.vue';
+import Vue3Lottie from 'vue3-lottie';
 import Matches from './Pages/Matches.vue';
 import eventBus, { bus } from 'vue3-eventbus';
 import Dropdown from './Pages/components/Dropdown.vue';
@@ -32,6 +33,7 @@ createInertiaApp({
       .use(plugin)
       .use(ZiggyVue)
       .use(eventBus)
+      .use(Vue3Lottie)
       .component('Head', Head)
       .component('Link', Link)
       .component('Dropdown', Dropdown)
