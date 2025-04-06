@@ -8,7 +8,6 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 const props = defineProps({players: Array});
 const page = usePage();
-const Lottie = defineAsyncComponent(() => import('vue3-lottie'));
 
 onMounted(() => {
     page.props['title'] = 'Admin';
@@ -81,7 +80,7 @@ const handleInputs = (event,isDate = false) => {
         <div class="form-row">
           <button id="submit">
             <span id="add-btn" :class="{'hide': formState.submitted}">Uloguj se</span>
-            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Lottie :height="150" :animationData="CircleLoader"/></span>
+            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Vue3Lottie :height="150" :animationData="CircleLoader"/></span>
           </button>
         </div>
       </div>

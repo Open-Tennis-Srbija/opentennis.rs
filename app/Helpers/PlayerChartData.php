@@ -15,7 +15,7 @@ Class PlayerChartData{
             'points' => [],
             'rankings' => [],
             'maxRank' => $total_players,
-            
+
         ];
 
         $data['points'] = self::getPointsChanges($matches, $player);
@@ -33,8 +33,13 @@ Class PlayerChartData{
     private static function getPointsChanges($matches,$player){
         $accumulative_points = 0;
         $changes_array = [];
-
-        $start = new DateTime($matches[0]->match_date);
+        $start = null;
+        if(count($matches) > 0){
+            $start = new DateTime($matches[0]->match_date);
+        }
+        else{
+            $start = new DateTime('now');
+        }
         $end = new DateTime('tomorrow');
 
         $interval = DateInterval::createFromDateString('1 day');
@@ -77,7 +82,9 @@ Class PlayerChartData{
         }
         $formated_changes = [];
         foreach($period as $day){
-            $most_recent = null;
+            $most_recent = [
+                'points' => 0,
+            ];
             foreach($changes_array as $change){
                 $date = new DateTime($change['date']);
                 $date = $date->format('Y-m-d');
@@ -99,7 +106,13 @@ Class PlayerChartData{
     }
 
     private static function getRankingsChanges($matches,$player){
-        $start = new DateTime($matches[0]->match_date);
+        $start = null;
+        if(count($matches) > 0){
+            $start = new DateTime($matches[0]->match_date);
+        }
+        else{
+            $start = new DateTime('now');
+        }
         $end = new DateTime('tomorrow');
         $changes_array = [];
 

@@ -1,9 +1,7 @@
 <script setup>
 import utils from '../utils';
 import EditBtn from './components/EditIcon.vue';
-
 const utl = utils;
-
 
 const props = defineProps({
   players: Array,

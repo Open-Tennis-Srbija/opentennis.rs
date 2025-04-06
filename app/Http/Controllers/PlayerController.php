@@ -32,6 +32,17 @@ class PlayerController extends Controller
         //
     }
 
+    public static function cache_player($player){
+        $data = [];
+
+        $initial = Self::getPlayerData($player->uri);
+        $data['data'] = $initial;
+
+        $data['charts'] = PlayerChartData::getChartData($player);
+
+        Storage::disk('public')->put('/players/'.$player->uri.'.json', json_encode($data));
+    }
+
     public static function getCachedPlayers(){
         return json_decode(file_get_contents(storage_path('app/public/players.json')), true);
 
@@ -198,8 +209,18 @@ class PlayerController extends Controller
         }
 
         return Inertia::render('Player', [
-            'player' => json_decode(file_get_contents(storage_path('app/public/players/'.$uri.'.json')), true),
+            'player' => Self::get_cached($uri),
         ]);
+    }
+    public static function get_cached($uri){
+        if(file_exists(storage_path('app/public/players/'.$uri.'.json'))){
+            $cache = json_decode(file_get_contents(storage_path('app/public/players/'.$uri.'.json')), true);
+        }
+        else{
+            $cache = Self::getPlayerData($uri);
+            Storage::disk('public')->put('/players/'.$uri.'.json', json_encode($cache));
+        }
+        return $cache;
     }
 
     public static function update_player_cache_from_match($player,$data,$opponent,$match,$match_number,$points){
@@ -261,10 +282,11 @@ class PlayerController extends Controller
         if($new_uri != null){
             for($i = 0; $i < count($matchups['notPlayedWith']); $i++){
                 if($matchups['notPlayedWith'][$i]['uri'] == $new_uri){
-                    unset($matchups['notPlayedWith'][$i]);
+                    array_splice ($matchups['notPlayedWith'], $i, 1);
                 }
             }
         }
+
 
         $cache['data']['matchups'] = $matchups;
 
@@ -291,7 +313,9 @@ class PlayerController extends Controller
             ]);
 
             usort($cache['data']['wins'], function($a, $b) {
-                return $b['number'] <=> $a['number'];
+                $matchComparison = $b['number'] <=> $a['number'];
+
+                return $matchComparison ?: strcmp($a['name'], $b['name']);
             });
         }
         else{
@@ -313,7 +337,9 @@ class PlayerController extends Controller
 
             ]);
             usort($cache['data']['loses'], function($a, $b) {
-                return $b['number'] <=> $a['number'];
+                $matchComparison = $b['number'] <=> $a['number'];
+
+                return $matchComparison ?: strcmp($a['name'], $b['name']);
             });
         }
 
