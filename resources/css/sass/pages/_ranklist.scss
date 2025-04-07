@@ -1,18 +1,4 @@
 @use '../abstracts' as *;
-.loader{
-  position: fixed;
-  top: 150px;
-  left: 0;
-  right: 0;
-  background-color: red;
-  height: calc(100vh - 150px);
-  z-index: 5;
-
-  &.close{
-    display: none !important;
-    pointer-events: none !important;
-  }
-}
 .rankings-wrapper {
   max-width: 1200px;
   margin: 0 auto 100px;

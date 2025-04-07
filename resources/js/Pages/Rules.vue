@@ -1,3 +1,5 @@
+<script setup>
+</script>
 <template>
     <Head title="Pravila -" />
     <div class="static-wrapper">
@@ -11,7 +13,7 @@
         <p>Rang tenisera se kalkulise dodavanjem poena za svaki pobedu, gubitak, i osvojeni gem. Dakle, izgubljeni meč takođe nosi poene, kao i gemovi koje je osvojio gubitnik. Ako ista dva tenisera igraju više puta u istih 30 dana onda dobijaju manje poena nego da su igrali sa različitim teniserima. Takođe dobijeni poeni opadaju za 10 % svakih 30 dana od dana meča. CIlj ovih pravila je da se motiviše što više igranja (čak i ako se gubi), da se nagrade gubitnici za osvojene gemove, a i da se motiviše različitost u izboru tenisera i konstantno igranje.</p>
         <p>Za sada se rangiraju samo singles mečevi.</p>
         <p>Muškarci i žene svih uzrasta se rangiraju zajedno.</p>
-        <p>Mečevi se dokumentuju tako što se dodaju preko <Link :href="route('addMatch')">dodaj meč forme</Link>. Može da se doda bilo koji meč igran bilo gde 12 meseci pre dodavanja.</p>
+        <p>Mečevi se dokumentuju tako što se dodaju preko <Link :href="'/dodaj'">dodaj meč forme</Link>. Može da se doda bilo koji meč igran bilo gde 12 meseci pre dodavanja.</p>
         <p>Ako se dodaju više mečeva odjednom kontaktirajte Nikolu na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.</p>
         <p>Ako imate predlog za poboljšanje Srpske Tenis Liga pošaljite Nikoli na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.</p>
     </div>

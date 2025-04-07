@@ -1,10 +1,17 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import utils from '../utils';
 import EditBtn from './components/EditIcon.vue';
 const utl = utils;
 
 const props = defineProps({
   players: Array,
+});
+
+const isCLient = ref(false);
+
+onMounted(() => {
+  isCLient.value = true;
 });
 
 </script>

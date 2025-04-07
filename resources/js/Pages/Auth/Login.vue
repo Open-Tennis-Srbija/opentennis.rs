@@ -80,7 +80,7 @@ const handleInputs = (event,isDate = false) => {
         <div class="form-row">
           <button id="submit">
             <span id="add-btn" :class="{'hide': formState.submitted}">Uloguj se</span>
-            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Vue3Lottie :height="150" :animationData="CircleLoader"/></span>
+            <span id="loader-submit" :class="{'show': formState.submitted}" class="loader"></span>
           </button>
         </div>
       </div>

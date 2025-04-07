@@ -28,6 +28,7 @@ watch(
     () => props.shouldReset,
     (value) => {
         console.log("reset");
+        console.log('reset now');
         if (value) {
             state.search = "";
             model.value = null;

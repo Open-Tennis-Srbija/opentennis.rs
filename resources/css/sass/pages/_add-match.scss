@@ -295,6 +295,9 @@
         &:hover {
           background: #c6373d;
         }
+        &.red{
+          background: #c6373d;
+        }
 
         .lottie-container{
           display: grid;
@@ -323,7 +326,7 @@
           display: none;
 
           &.show {
-            display: initial;
+            display: block;
           }
         }
       }

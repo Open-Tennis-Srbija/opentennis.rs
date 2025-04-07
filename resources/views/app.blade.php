@@ -18,11 +18,11 @@
     <meta property="og:description" content="SRPSKA TENIS LIGA"/>
     <meta property="og:site_name" content="srpskatenisliga.rs"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
-    @vite('resources/js/app.js')
     @inertiaHead
-    @routes
   </head>
   <body>
+    @vite('resources/js/app.js')
     @inertia
-  </body>
+    @routes
+</body>
 </html>
