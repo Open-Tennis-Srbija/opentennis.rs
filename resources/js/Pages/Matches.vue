@@ -117,7 +117,7 @@ function getDateDay(date){
           <div class="sep">:</div>
 
           <div class="info-wrapp">
-            <div class="text"><Link prefetch="false" prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
+            <div class="text"><Link prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
           </div>
         </div>
 
