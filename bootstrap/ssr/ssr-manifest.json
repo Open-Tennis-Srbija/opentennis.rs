@@ -11,9 +11,6 @@
   "node_modules/vue-select/dist/vue-select.css": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
-  "public/LRlCNqLdgl.json": [
-    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
-  ],
   "resources/js/Layouts/Layout.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
@@ -74,6 +71,12 @@
   "resources/js/Pages/components/LeagueChart.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
+  "resources/js/Pages/components/Lottie.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/components/Lottie.vue?vue&type=style&index=0&scoped=1ef65375&lang.css": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
   "resources/js/Pages/components/PlayerChart.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
@@ -84,9 +87,6 @@
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/utils.js": [
-    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
-  ],
-  "vendor/tightenco/ziggy/dist/index.js": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ]
 }

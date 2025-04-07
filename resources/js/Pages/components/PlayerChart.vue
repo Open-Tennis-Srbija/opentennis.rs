@@ -49,18 +49,6 @@ const options = reactive({
 })
 
 
-// const fetchPlayerData = async () => {
-//
-//     await axios.post(route("playerChart"), {
-//         id: props.player_id
-//     }).then(res =>{
-//         console.log(res.data)
-//         data.playerData = res.data
-//     }).catch(err => {
-//         console.log(err)
-//     })
-//
-// }
 const points = computed(() => {
 
     if(data.playerData.points){

@@ -1,6 +1,6 @@
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
-import { onMounted, reactive} from 'vue';
+import { onMounted, reactive, defineAsyncComponent} from 'vue';
 import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -162,8 +162,8 @@ const handleInputs = (event,isDate = false) => {
     <h1 id="title" :class="{'hide': formState.success}">Izmeni meč</h1>
     <h1 id="success" :class="{'show': formState.success}">Meč je uspešno izmenjen</h1>
     <div id="success-links" :class="{'show': formState.success}">
-      <Link class="blue" :href="route('matches')">vidi mečeve</Link>
-      <Link class="red" :href="route('home')">vidi rang listu</Link>
+      <Link class="blue" :href="'/mecevi'">vidi mečeve</Link>
+      <Link class="red" :href="'/'">vidi rang listu</Link>
     </div>
     <form id="form" @submit.prevent="submit" :class="{'hide': formState.success}">
 
@@ -295,7 +295,7 @@ const handleInputs = (event,isDate = false) => {
         <div class="form-row">
           <button id="submit">
             <span id="add-btn" :class="{'hide': formState.submitted}">Dodaj</span>
-            <span id="loader-submit" :class="{'show': formState.submitted}" class="lottie-container"><Vue3Lottie :height="150" :animationData="CircleLoader"/></span>
+            <span id="loader-submit" :class="{'show': formState.submitted}" class="loader"></span>
           </button>
         </div>
       </div>

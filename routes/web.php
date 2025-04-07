@@ -7,10 +7,10 @@ use App\Http\Controllers\TenisMatchController;
 use App\Http\Controllers\CourtsController;
 use App\Http\Controllers\LeaguesController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use Ziggy\Ziggy;
 
 Route::inertia('/', 'Home',
-[ 'players' => PlayerController::getCachedPlayers() ]
+    [ 'players' => PlayerController::getCachedPlayers()]
 )->name('home');
 
 Route::inertia('/mecevi', 'Matches',
