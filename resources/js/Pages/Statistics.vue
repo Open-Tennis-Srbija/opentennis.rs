@@ -45,7 +45,7 @@
                 <div class="summary-item">
                     <h2 class="mb-10">najviše mečeva</h2>
                     <p class="smaller f20" v-for="player in props.data.stats.players.total">
-                        <Link :href="`/${player.uri}`">
+                        <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link> ({{ player.count }})
                     </p>
@@ -53,7 +53,7 @@
                 <div class="summary-item">
                     <h2 class="mb-10">najviše pobeda</h2>
                     <p class="smaller f20" v-for="player in props.data.stats.players.wins">
-                        <Link :href="`/${player.uri}`">
+                        <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link> ({{ player.count }})
                     </p>
@@ -61,7 +61,7 @@
                 <div class="summary-item">
                     <h2 class="mb-10">najviše gubitaka</h2>
                     <p class="smaller f20" v-for="player in props.data.stats.players.loses">
-                        <Link :href="`/${player.uri}`">
+                        <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link>  ({{ player.count }})
                     </p>

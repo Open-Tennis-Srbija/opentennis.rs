@@ -51,7 +51,7 @@ const getInteractionText = (number) =>{
         </div>
         <h1>
             {{ props.player.data.name
-            }}<Link
+            }}<Link prefetch="false"
                 class="edit-btn"
                 v-if="$page.props.auth.user"
                 :href="`/teniser/izmeni/${props.player.data.id}`"
@@ -118,7 +118,7 @@ const getInteractionText = (number) =>{
                         <h2>pobedio {{ matchups.wins.length }} tenisera</h2>
                         <template v-for="player in matchups.wins">
                             <p>
-                                <Link :href="`/${player.uri}`">{{
+                                <Link prefetch="false" :href="`/${player.uri}`">{{
                                     player.name
                                 }}</Link>
                                 ({{ player.number }})
@@ -134,7 +134,7 @@ const getInteractionText = (number) =>{
                         <h2>izgubio od {{matchups.loses.length}} tenisera</h2>
                         <template v-for="player in matchups.loses">
                             <p>
-                                <Link :href="`/${player.uri}`">{{
+                                <Link prefetch="false" :href="`/${player.uri}`">{{
                                     player.name
                                 }}</Link>
                                 ({{ player.number }})
@@ -150,7 +150,7 @@ const getInteractionText = (number) =>{
                         <h2>nije igrao sa {{matchups.not_played.length}} {{getInteractionText(matchups.not_played.length)}}</h2>
                         <template v-for="player in matchups.not_played">
                             <p>
-                                <Link :href="`/${player.uri}`">{{
+                                <Link prefetch="false" :href="`/${player.uri}`">{{
                                     player.name
                                 }}</Link>
                             </p>
