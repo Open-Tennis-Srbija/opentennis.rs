@@ -34,12 +34,12 @@ onMounted(() => {
         <div class="place">opština</div>
       </div>
       <div class="ranking-entry" v-for="(player, index) in players">
-                <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
         <div class="rank"
         :class="{'first': index==0, 'second': index == 1, 'third': index==2, 'align-left': index+1 > 9}">
           {{ index+1}}
         </div>
-        <div class="name"><Link :href="`/${player.uri}`">{{player.name}}</Link></div>
+        <div class="name"><Link prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
         <div class="spacer"></div>
         <div class="elo">{{utl.formatAsThousands(player.stats.elo)}}</div>
         <div class="total-matches">{{player.stats.total_matches}}</div>
@@ -52,12 +52,12 @@ onMounted(() => {
 
     <div id="mobile">
       <div class="ranking-entry" v-for="(player, index) in players">
-                <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
         <div class="rank"
         :class="{'first': index==0, 'second': index == 1, 'third': index==2, 'align-left': index+1 > 9}">
           {{ index+1}}
         </div>
-        <div class="name"><Link :href="`/${player.uri}`">{{player.name}}</Link></div>
+        <div class="name"><Link prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
         <div class="info">
           <div class="info-wrapp">
             <div class="sup">poeni</div>

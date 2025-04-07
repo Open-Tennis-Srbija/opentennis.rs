@@ -75,20 +75,20 @@ const headerMessage = computed(() => {
 <template>
     <header class="header-wrapper" @scroll="console.log($event)">
         <div class="logo-wrapp" :style="{ marginTop: -topOffset + 'px' }">
-            <Link :href="'/'">
+            <Link prefetch="false" :href="'/'">
             <Logo />
             </Link>
         </div>
         <div class="links-wrapper">
             <div class="links">
-                <Link class="highlighted" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj
+                <Link prefetch="false" class="highlighted" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj
                 meč</Link>
-                <Link :href="'/'" :class="{ active: $page.url === '/' }">rang lista</Link>
-                <Link :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
-                <Link :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
-                <Link :href="'/misija'" :class="{ active: $page.url === '/misija' }">misija</Link>
-                <Link :href="'/pravila'" :class="{ active: $page.url === '/pravila' }">pravila</Link>
-                <Link class="highlighted red" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">
+                <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/' }">rang lista</Link>
+                <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
+                <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
+                <Link prefetch="false" :href="'/misija'" :class="{ active: $page.url === '/misija' }">misija</Link>
+                <Link prefetch="false" :href="'/pravila'" :class="{ active: $page.url === '/pravila' }">pravila</Link>
+                <Link prefetch="false" class="highlighted red" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">
                 dodaj ligu</Link>
             </div>
         </div>
@@ -105,21 +105,21 @@ const headerMessage = computed(() => {
     </header>
     <div id="mobile-menu" :class="{ open: mobileMenu.state }">
         <div class="links">
-            <Link @click.prevent="mobileMenu.state = false" class="highlighted" :href="'/dodaj'"
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="highlighted" :href="'/dodaj'"
                 :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
-            <Link @click.prevent="mobileMenu.state = false" :href="'/'"
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
                 :class="{ active: $page.url === '/' }">rang lista</Link>
-            <Link @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
                 :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
-            <Link @click.prevent="mobileMenu.state = false" :href="'/statistika'"
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
-            <Link @click.prevent="mobileMenu.state = false" :href="'/teniseri'"
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/teniseri'"
                 :class="{ active: $page.url === '/misija' }">misija</Link>
-            <Link @click.prevent="mobileMenu.state = false" :href="'/pravila'"
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/pravila'"
                 :class="{ active: $page.url === '/pravila' }">pravila</Link>
-            <Link @click.prevent="mobileMenu.state = false" class="highlighted red" :href="'/dodaj-ligu'"
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="highlighted red" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
-            <Link @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post" :href="'/logout'"
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post" :href="'/logout'"
                 v-if="$page.props.auth.user">odjavi se</Link>
         </div>
     </div>
@@ -130,7 +130,7 @@ const headerMessage = computed(() => {
         </main>
         <footer class="footer-wrapper" :class="{ hide: $page.url === '/teniseri' }">
             <p class="footer-text">
-                <Link :href="'/dodaj'">dodaj meč</Link>
+                <Link prefetch="false" :href="'/dodaj'">dodaj meč</Link>
             </p>
             <div class="icons-wrapper">
                 <a class="viber" target="_blank"
@@ -163,7 +163,7 @@ const headerMessage = computed(() => {
                     </svg>
                 </a>
             </div>
-            <Link class="logout" :href="'/logout'" method="post" as="button"
+            <Link prefetch="false" class="logout" :href="'/logout'" method="post" as="button"
                 :class="{ hide: !$page.props.auth.user }">odjavi se</Link>
         </footer>
     </div>

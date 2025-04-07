@@ -76,10 +76,10 @@ function getDateDay(date){
         <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
       </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
-                <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`"><EditIcon/></Link>
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`"><EditIcon/></Link>
         <div class="number">{{ match.number || matches.length - index }}</div>
-        <div class="winner"><Link :href="`/${match.winner_uri}`">{{ match.winner }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
-        <div class="loser"><Link :href="`/${match.loser_uri}`">{{ match.loser }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
+        <div class="winner"><Link prefetch="false" :href="`/${match.winner_uri}`">{{ match.winner }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
+        <div class="loser"><Link prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
         <div class="spacer"></div>
         <div class="score">{{ match.set_score }}<br><span class="gray">{{ match.game_score }}</span></div>
         <div class="date">{{match.day}} <br/> {{ match.date }}</div>
@@ -102,7 +102,7 @@ function getDateDay(date){
         <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
       </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesMobile" :key="index">
-                <Link class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`"><EditIcon/></Link>
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`"><EditIcon/></Link>
         <div class="score">
           {{ match.set_score }}
           <br />
@@ -111,13 +111,13 @@ function getDateDay(date){
 
         <div class="info">
           <div class="info-wrapp">
-            <div class="text"><Link :href="`/${match.winner_uri}`">{{ match.winner_first_name }}<br>{{ match.winner_last_name }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
+            <div class="text"><Link prefetch="false" :href="`/${match.winner_uri}`">{{ match.winner_first_name }}<br>{{ match.winner_last_name }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
           </div>
 
           <div class="sep">:</div>
 
           <div class="info-wrapp">
-            <div class="text"><Link :href="`/${match.loser_uri}`">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
+            <div class="text"><Link prefetch="false" prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
           </div>
         </div>
 
