@@ -11,14 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tenis_matches', function (Blueprint $table) {
+        Schema::create('tennis_matches', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('winner_id')->constrained('players')->cascadeOnDelete();
-            $table->foreignId('loser_id')->constrained('players')->cascadeOnDelete();
+
+            // Optional court and league
+            $table->foreignId('court_id')->nullable()->constrained('courts')->onDelete('set null');
+            $table->foreignId('league_id')->nullable()->constrained('leagues')->onDelete('set null');
+
             $table->string('set_score');
             $table->string('game_score')->nullable();
-            $table->date('match_date');
-            $table->string('match_location');
+            $table->date('date');
+            $table->string('county')->nullable();
+            $table->integer('winner_point_gain');
+            $table->integer('loser_point_gain');
+
             $table->timestamps();
         });
     }
@@ -28,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tenis_matches');
+        Schema::dropIfExists('tennis_matches');
     }
 };

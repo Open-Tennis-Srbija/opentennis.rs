@@ -14,28 +14,21 @@ class LeagueSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        $league = new League([
-            'name' => '',
-            'link' => '',
-        ]);
+        $data = json_decode(file_get_contents(__DIR__ . '/database_export.json'));
 
-        $league->save();
+        foreach ($data->leagues as $league) {
+            $model = new League();
 
-        $league = new League([
-            'name' => 'Topaco letnja liga',
-            'link' => '',
-        ]);
+            $model->name = $league->name;
+            $model->link = $league->link;
 
-        $league->save();
+            $model->save();
 
-        $league = new League([
-            'name' => 'Beogradski Teniski Klub letnja liga',
-            'link' => '',
-        ]);
+            $model->id = $league->id;
 
-        $league->save();
+            $model->save();
 
+        }
 
     }
 }

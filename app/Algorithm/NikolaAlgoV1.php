@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Player;
-use App\Models\TenisMatch;
 
 class NikolaAlgoV1
 {
@@ -39,11 +37,11 @@ class NikolaAlgoV1
     {
         $points = 0;
 
-        
+
         foreach ($matches as $match) {
             if ($match->winner_id == $player->id) {
                 $points += self::getMatchEloGains($match, 'winner');
-               
+
             } else {
                 $points += self::getMatchEloGains($match, 'loser');
             }
@@ -54,26 +52,26 @@ class NikolaAlgoV1
 
 
     public static function getMatchEloGains($match,$mode = null){
-        
+
         if($mode == 'winner'){
-            $winner = Player::find($match->winner_id);
-            $winner_matches = TenisMatch::where('winner_id', $winner->id)->get();
-            $winner_gain = self::getPlayerEloGain($match,$winner_matches,$match->winner_id);
+            $winner = $match->winners()->first();
+            $winner_matches = $winner->matches();
+            $winner_gain = self::getPlayerEloGain($match,$winner_matches,$winner->id);
             return $winner_gain;
         }
         else if($mode == 'loser'){
-            $loser = Player::find($match->loser_id);
-            $loser_matches = TenisMatch::where('loser_id', $loser->id)->get();
-            $loser_gain = self::getPlayerEloGain($match,$loser_matches, $match->loser_id, true);
+            $loser = $match->losers()->first();
+            $loser_matches = $loser->matches();
+            $loser_gain = self::getPlayerEloGain($match,$loser_matches, $loser->id, true);
             return $loser_gain;
         }
         else{
-            $winner = Player::find($match->winner_id);
-            $winner_matches = TenisMatch::where('winner_id', $winner->id)->get();
-            $winner_gain = self::getPlayerEloGain($match,$winner_matches,$match->winner_id);
-            $loser = Player::find($match->loser_id);
-            $loser_matches = TenisMatch::where('loser_id', $loser->id)->get();
-            $loser_gain = self::getPlayerEloGain($match,$loser_matches, $match->loser_id, true);
+            $winner = $match->winners()->first();
+            $winner_matches = $winner->matches();
+            $winner_gain = self::getPlayerEloGain($match,$winner_matches,$winner->id);
+            $loser = $match->losers()->first();
+            $loser_matches = $loser->matches();
+            $loser_gain = self::getPlayerEloGain($match,$loser_matches, $loser->id, true);
             return [$winner_gain, $loser_gain];
         }
     }
@@ -84,7 +82,7 @@ class NikolaAlgoV1
         $penalties = self::getPenalties($match, $matches, $player_id);
 
         if($loser == false){
-            $points += self::getBaseWinner($penalties['repetition_penalty']);
+           $points += self::getBaseWinner($penalties['repetition_penalty']);
 
             $games_raw = $match->game_score;
             if($games_raw && $games_raw !== ''){
@@ -116,44 +114,52 @@ class NikolaAlgoV1
             }
         }
 
-        
         return round($points * (1 - $penalties['time_penalty']));
     }
-    
+
     private static function getPenalties($match,$matches, $player_id){
         $today = date("Y-m-d");
-        $date_dif = strtotime($today) - strtotime($match->match_date);
+        $date_dif = strtotime($today) - strtotime($match->date);
         $days = floor($date_dif / (60 * 60 * 24));
-    
+
         $penalties['time_penalty'] = ($days > 30) ? min(self::$time_decay * ($days / 30), 1) : 0;
+
 
         $penalties['repetition_penalty'] = 0;
 
-        $winner = Player::find($match->winner_id);
-        $loser = Player::find($match->loser_id);
+        $winner = $match->winners()->first();
+        $loser = $match->losers()->first();
 
-        $match_key = ($match->winner_id == $player_id)
-                    ? $winner->first_name . ' ' . $winner->last_name . '-' . $loser->first_name . ' ' . $loser->last_name
-                    : $loser->first_name . ' ' . $loser->last_name . '-' . $winner->first_name . ' ' . $winner->last_name;
+        $match_key = '';
+        if($player_id == $match->winner_id){
+            $match_key = $winner->first_name . ' ' . $winner->last_name . '-' . $loser->first_name . ' ' . $loser->last_name;
+        }
+        else{
+            $match_key = $loser->first_name . ' ' . $loser->last_name . '-' . $winner->first_name . ' ' . $winner->last_name;
+        }
 
         foreach ($matches as $match_compare) {
             if ($match_compare->id != $match->id){
-                $winner = Player::find($match_compare->winner_id);
-                $loser = Player::find($match_compare->loser_id);
-        
-                $search_key = ($match_compare->winner_id == $player_id)
-                    ? $winner->first_name . ' ' . $winner->last_name . '-' . $loser->first_name . ' ' . $loser->last_name
-                    : $loser->first_name . ' ' . $loser->last_name . '-' . $winner->first_name . ' ' . $winner->last_name;
-        
+                $c_winner = $match_compare->winners()->first();
+                $c_loser = $match_compare->losers()->first();
+                $search_key = '';
+
+                if($player_id == $match_compare->winner_id){
+                    $search_key = $c_winner->first_name . ' ' . $c_winner->last_name . '-' . $c_loser->first_name . ' ' . $c_loser->last_name;
+                }
+                else{
+                    $search_key = $c_loser->first_name . ' ' . $c_loser->last_name . '-' . $c_winner->first_name . ' ' . $c_winner->last_name;
+                }
+
                 if ($search_key == $match_key) {
-                    $matchup_date_dif = strtotime($match->match_date) - strtotime($match_compare->match_date);
+                    $matchup_date_dif = strtotime($match->date) - strtotime($match_compare->date);
                     $matchup_days = floor($matchup_date_dif / (60 * 60 * 24));
                     if ($matchup_days < 30 && $matchup_days > 0) {
                         $penalties['repetition_penalty']++;
                     }
                 }
             }
-    
+
         }
 
 
