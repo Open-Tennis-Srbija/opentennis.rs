@@ -3,14 +3,14 @@ import { getCurrentInstance, watch } from "vue";
 import { computed, onBeforeMount, onMounted, reactive } from "vue";
 
 const model = defineModel();
-const instance = getCurrentInstance();
 
 onBeforeMount(() => {
     if (model.value && model.value.name && model.value.name != "") {
         state.search = model.value.name;
     }
-    if (model.value && !model.value.name && model.value.name !== "")
+    if (model.value && !model.value.name && model.value !== ""){
         state.search = model.value;
+    }
 });
 
 const props = defineProps({
@@ -43,6 +43,7 @@ const state = reactive({
     searching: false,
     selectedIndex: 0,
     isBlured: false,
+    placeholder: "",
     options: props.options,
 });
 
@@ -101,8 +102,8 @@ const onFocus = (e) => {
 const onBlur = (e) => {
     let input = e.target;
 
-    if (input.value == "" && input.placeholder != "" && !state.isBlured) {
-        state.search = input.placeholder;
+    if (input.value == "" && state.placeholder != "" && !state.isBlured) {
+        state.search = state.placeholder;
     }
     state.searching = false;
     state.isOpen = false;
@@ -131,10 +132,11 @@ const selectOption = (option, e) => {
         model.value.id = option.id;
         model.value.name = option.name;
         state.search = option.name;
-        e.target.placeholder = option.name;
+        state.placeholder = option.name;
     } else {
         model.value = option;
         state.search = option;
+        state.placeholder = option;
     }
     state.isBlured = true;
     e.target.blur();
@@ -144,6 +146,7 @@ const selectOption = (option, e) => {
     <div class="dropdown-wrapper">
         <input
             type="text"
+            :placeholder="state.placeholder"
             :value="state.search"
             @input="handleSearch"
             @focus="onFocus"
@@ -166,7 +169,7 @@ const selectOption = (option, e) => {
                         hovered: state.selectedIndex == index && (!props.disabledOption || props.disabledOption.id != option.id),
                     }"
                     @mouseover="state.selectedIndex = index"
-                    @click="selectOption(option, $event)"
+                    @click.native="selectOption(option, $event)"
                     @tap="selectOption(option, $event)"
                 >
                     <template v-if="option == 'dropdown-spacer' || option.name == 'dropdown-spacer'">
