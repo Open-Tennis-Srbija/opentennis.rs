@@ -57,27 +57,27 @@ class PlayerController extends Controller
     }
 
     public static function getPlayers(){
-        $raw_players = Player::all();
+        return Player::withCount([
+            'wins','losses'])
+            ->select('first_name', 'last_name', 'uri', 'location','rank','points')
+            ->withCount([
+            'wins','losses'])
+            ->orderBy('rank')
+            ->get()
+            ->map(function ($player) {
+                return [
+                    'uri' => $player->uri,
+                    'name' => $player->first_name . ' ' . $player->last_name,
+                    'location' => $player->location,
+                    'rank' => $player->rank,
+                    'points' => $player->points,
+                    'wins' => $player->wins_count,
+                    'loses' => $player->losses_count,
+                    'total_matches' => $player->wins_count + $player->losses_count,
+                    'win_precentage' => $player->wins_count + $player->losses_count == 0 ? 0 : round($player->wins_count / ($player->wins_count + $player->losses_count) * 100, 2),
+                ];
+            });
 
-        $players = [];
-        foreach($raw_players as $player){
-            array_push($players, [
-                'id' => $player->id,
-                'uri' => $player->uri,
-                'category' => $player->category,
-                'name' => $player->first_name . ' ' . $player->last_name,
-                'stats' => $player->getStats(),
-                'club' => $player->club,
-                'location' => $player->location,
-            ]);
-        }
-
-
-        usort($players, function($a, $b) {
-            return $b['stats']['elo'] <=> $a['stats']['elo'];
-        });
-
-        return $players;
     }
 
     public static function getPlayersOnDate($date){
@@ -220,9 +220,37 @@ class PlayerController extends Controller
         }
 
         return Inertia::render('Player', [
-            'player' => Self::get_cached($uri),
+            'player' => Self::get_player_by_uri($uri),
         ]);
     }
+
+    public static function get_player_by_uri($uri){
+        $p = Player::where('uri', $uri)
+            ->with('wins','losses')
+            ->get()
+            ->map(
+                function ($player) {
+                    return [
+                        'id' => $player->id,
+                        'name' => $player->first_name . ' ' . $player->last_name,
+                        'uri' => $player->uri,
+                        'location' => $player->location,
+                        'club' => $player->club,
+                        'rank' => $player->rank,
+                        'points' => $player->points,
+                        'wins' => $player->wins,
+                        'losses' => $player->losses,
+                        'wins_number' => count($player->wins),
+                        'losses_number' => count($player->losses),
+                        'total_matches' => count($player->wins) + count($player->losses),
+                        'win_precentage' => count($player->wins) + count($player->losses) == 0 ? 0 : round(count($player->wins) / (count($player->wins) + count($player->losses)) * 100, 2),
+                    ];
+                }
+            );
+
+        dd($p);
+    }
+
     public static function get_cached($uri){
         if(file_exists(storage_path('app/public/players/'.$uri.'.json'))){
             $cache = json_decode(file_get_contents(storage_path('app/public/players/'.$uri.'.json')), true);

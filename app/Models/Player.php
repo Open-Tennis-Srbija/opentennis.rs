@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use NikolaAlgoV1;
+use App\Models\TennisMatch;
+use Illuminate\Support\Facades\DB;
 
 class Player extends Model
 {
@@ -19,7 +21,87 @@ class Player extends Model
         'uri',
         'location',
     ];
+    public function matches()
+    {
+        return $this->belongsToMany(TennisMatch::class, 'match_players')
+                    ->withPivot('team')
+                    ->withTimestamps()->get();
+    }
 
+    public function wins()
+    {
+        return $this->belongsToMany(TennisMatch::class, 'match_players')
+                    ->withPivot('team')
+                    ->wherePivot('team', 'winner');
+    }
+    public function get_opponents_with_win_count()
+    {
+        return DB::table('match_players as winner')
+            ->join('match_players as loser', function ($join) {
+                $join->on('winner.tennis_match_id', '=', 'loser.tennis_match_id')
+                     ->where('loser.team', '=', 'loser');
+            })
+            ->where('winner.team', '=', 'winner')
+            ->where('winner.player_id', '=', $this->id)
+            ->groupBy('loser.player_id')
+            ->select('loser.player_id', DB::raw('count(*) as win_count'))
+            ->get();
+    }
+
+    public function get_opponents_with_los_count()
+    {
+        return DB::table('match_players as loser')
+            ->join('match_players as winner', function ($join) {
+                $join->on('loser.tennis_match_id', '=', 'winner.tennis_match_id')
+                     ->where('winner.team', '=', 'winner');
+            })
+            ->where('loser.team', '=', 'loser')
+            ->where('loser.player_id', '=', $this->id)
+            ->groupBy('winner.player_id')
+            ->select('winner.player_id', DB::raw('count(*) as loss_count'))
+            ->get();
+    }
+
+
+    public function losses()
+    {
+        return $this->belongsToMany(TennisMatch::class, 'match_players')
+                    ->withPivot('team')
+                    ->wherePivot('team', 'loser');
+    }
+
+    public function matchups()
+    {
+
+        $win_ids = $this->get_opponents_with_win_count()->pluck('player_id')->toArray();
+        $lose_ids = $this->get_opponents_with_los_count()->pluck('player_id')->toArray();
+
+        $wins = Player::whereIn('id', $win_ids)->select('uri', 'first_name', 'last_name')->get();
+        $loses = Player::whereIn('id', $lose_ids)->select('uri', 'first_name', 'last_name')->get();
+
+        $not_played = Player::whereNotIn('id', array_merge($win_ids, $lose_ids))->select('uri', 'first_name', 'last_name')->get();
+
+        $formated_wins = [];
+        $formated_loses = [];
+
+        for($index = 0; $index < count($wins); $index++){
+            array_push($formated_wins, [
+                ...$win, "count" => $win_ids[$index]['win_count']
+            ]);
+        }
+        for($index = 0; $index < count($loses); $index++){
+            array_push($formated_loses, [
+                ...$lose, "count" => $lose_ids[$index]['loss_count']
+            ]);
+        }
+
+        return [
+            'wins' => $formated_wins,
+            'loses' => $formated_loses,
+            'not_played' => $not_played,
+        ];
+
+    }
 
     public function getMatchups(){
         $matches = TenisMatch::where('winner_id', $this->id)

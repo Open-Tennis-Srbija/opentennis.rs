@@ -3,18 +3,16 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Http\Controllers\PlayerController;
-use App\Http\Controllers\TenisMatchController;
 use App\Models\Player;
 
-class Test extends Command
+class PopulateRanks extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:test';
+    protected $signature = 'app:populate-ranks';
 
     /**
      * The console command description.
@@ -28,12 +26,17 @@ class Test extends Command
      */
     public function handle()
     {
-        //
-        $p = Player::all();
+        $players = Player::all();
 
-        foreach($p as $player) {
-            $player->points = 0;
+        $players = $players->sortByDesc('points');
+
+        $rank = 1;
+
+        foreach ($players as $player) {
+            $player->rank = $rank;
             $player->save();
+            $rank++;
         }
+
     }
 }

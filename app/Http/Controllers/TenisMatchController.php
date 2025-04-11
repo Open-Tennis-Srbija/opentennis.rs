@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateTenisMatchRequest;
 use App\Mail\AddMatchNotification;
 use App\Models\Player;
 use App\Models\TenisMatch;
+use App\Models\TennisMatch;
 use App\Models\Court;
 use App\Models\League;
 use Helper;
@@ -60,35 +61,27 @@ class TenisMatchController extends Controller
     }
 
     public static function getMatches(){
-        $raw_matches = TenisMatch::all()->sortBy('created_at', SORT_REGULAR, true)->sortBy('match_date', SORT_REGULAR, true);
 
-        $matches = [];
-        foreach($raw_matches as $match){
-            $winner = Player::find($match->winner_id);
-            $loser = Player::find($match->loser_id);
-
-            [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
-
-            array_push($matches, [
-                'id' => $match->id,
-                'winner' => $winner->first_name . ' ' . $winner->last_name,
-                'winner_uri' => $winner->uri,
-                'winner_points' => $winner_gains,
-                'loser' => $loser->first_name . ' ' . $loser->last_name,
-                'loser_uri' => $loser->uri,
-                'loser_points' => $loser_gains,
-                'set_score' => $match->set_score,
-                'game_score' => $match->game_score,
-                'court' => Court::find($match->court_id),
-                'league' => League::find($match->league_id),
-                'date' => $match->match_date,
-                'location' => $match->match_location,
-            ]);
-        }
-
-
-
-        return $matches;
+    return TennisMatch::with(['winners', 'losers', 'court'])
+            ->orderByDesc('date')
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(function ($match) {
+                return [
+                    'winner_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
+                    'winner_uri' => $match->winners()->first()->uri,
+                    'loser_name' => $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name,
+                    'loser_uri' => $match->losers()->first()->uri,
+                    'winner_point_gain' => $match->winner_point_gain,
+                    'loser_point_gain' => $match->loser_point_gain,
+                    'set_score' => $match->set_score,
+                    'game_score' => $match->game_score,
+                    'county' => $match->county,
+                    'court' => $match->court ? $match->court->name : null,
+                    'court_link' => $match->court ? $match->court->link : null,
+                    'date' => $match->date,
+                ];
+            });
     }
 
     /**
