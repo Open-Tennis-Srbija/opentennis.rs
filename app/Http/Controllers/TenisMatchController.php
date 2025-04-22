@@ -80,6 +80,7 @@ class TenisMatchController extends Controller
                 'set_score' => $match->set_score,
                 'game_score' => $match->game_score,
                 'court' => Court::find($match->court_id),
+                'league' => League::find($match->league_id),
                 'date' => $match->match_date,
                 'location' => $match->match_location,
             ]);

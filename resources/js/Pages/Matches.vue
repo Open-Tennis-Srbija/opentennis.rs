@@ -65,11 +65,11 @@ function getDateDay(date){
         <div class="spacer number">#</div>
         <div class="winner">pobednik</div>
         <div class="loser">gubitnik</div>
-        <div class="spacer"></div>
         <div class="score">rezultat</div>
         <div class="date">datum</div>
         <div class="location">opština</div>
         <div class="location">teren</div>
+        <div class="location">liga</div>
       </div>
       <div v-if="props.showMessage">
         <p v-if="props.showMessage.wins"class="message">Ovaj teniser nikada nije pobedio &#128577;</p>
@@ -80,7 +80,6 @@ function getDateDay(date){
         <div class="number">{{ match.number || matches.length - index }}</div>
         <div class="winner"><Link prefetch="false" :href="`/${match.winner_uri}`">{{ match.winner }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
         <div class="loser"><Link prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
-        <div class="spacer"></div>
         <div class="score">{{ match.set_score }}<br><span class="gray">{{ match.game_score }}</span></div>
         <div class="date">{{match.day}} <br/> {{ match.date }}</div>
         <div class="location">{{ match.location }}</div>
@@ -94,6 +93,7 @@ function getDateDay(date){
                 </a>
             </template>
         </div>
+        <div class="location">{{ match.league.name }}</div>
       </div>
     </div>
     <div id="mobile">
@@ -130,6 +130,7 @@ function getDateDay(date){
         <template v-else>
                         {{ match.location }}, <a v-if="match.court.link !== ''" target="_blank" :href="match.court.link">{{ match.court.name }}</a> <span v-else>{{ match.court.name }}</span>
         </template>
+        <span>{{match.league.name != '' ? ',' : ''}} {{ match.league.name }}</span>
         </div>
       </div>
     </div>
