@@ -1,23 +1,61 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, reactive } from "vue";
 import utils from "../utils";
 import PlayerChart from "./components/PlayerChart.vue";
 import EditIcon from "./components/EditIcon.vue";
 
 const props = defineProps({ player: Object });
 const page = usePage();
+const isExpanded = reactive({
+    wins: false,
+    loses: false,
+    not_played: false,
+});
 
 onMounted(() => {
     page.props["title"] = "teniser";
+    console.log( props.player.data.matchups.notPlayedWith);
 });
 
 const matchups = computed(() => {
-    return {
-        wins: Object.values(props.player.data.matchups.wins),
-        loses: Object.values(props.player.data.matchups.loses),
-        not_played: props.player.data.matchups.notPlayedWith,
+    let data = {
     };
+
+    let wins = Object.values(props.player.data.matchups.wins);
+    let loses = Object.values(props.player.data.matchups.loses);
+
+    if (props.player.data.matchups.wins) {
+        if (wins.length <= 10 || isExpanded.wins) {
+            data = { ...data, wins: props.player.data.matchups.wins };
+        } else {
+            data = { ...data, wins: props.player.data.matchups.wins.slice(0, 10) };
+        }
+    } else {
+        data = { ...data, wins: [] };
+    }
+
+    if (props.player.data.matchups.loses) {
+        if (loses.length <= 10 || isExpanded.loses) {
+            data = { ...data, loses: props.player.data.matchups.loses };
+        } else {
+            data = { ...data, loses: props.player.data.matchups.loses.slice(0, 10) };
+        }
+    } else {
+        data = { ...data, loses: [] };
+    }
+
+    if (props.player.data.matchups.notPlayedWith) {
+        if(props.player.data.matchups.notPlayedWith.length <= 10 || isExpanded.not_played){
+            data = {...data, not_played: props.player.data.matchups.notPlayedWith}
+        }
+        else {
+            data = {...data ,not_played: props.player.data.matchups.notPlayedWith.slice(0, 10)}
+        }
+    } else {
+        data = {...data, not_played: []}
+    }
+    return data
 });
 
 const locations = computed(()=>{
@@ -115,7 +153,7 @@ const getInteractionText = (number) =>{
             <div class="summary player three col">
                 <div class="summary-item players">
                     <template v-if="matchups.wins.length > 0">
-                        <h2>pobedio {{ matchups.wins.length }} tenisera</h2>
+                        <h2>pobedio {{ Object.values(props.player.data.matchups.wins).length }} tenisera</h2>
                         <template v-for="player in matchups.wins">
                             <p>
                                 <Link prefetch="false" :href="`/${player.uri}`">{{
@@ -124,6 +162,12 @@ const getInteractionText = (number) =>{
                                 ({{ player.number }})
                             </p>
                         </template>
+                        <p
+                            v-if="Object.values(props.player.data.matchups.wins).length > 10"
+                            class="show-more"
+                            @click="isExpanded.wins = !isExpanded.wins">
+                            {{ !isExpanded.wins ? 'vidi sve' : 'vidi manje' }}
+                        </p>
                     </template>
                     <template v-else>
                         <h2>ovaj teniser nikada nije pobedio &#128577;</h2>
@@ -131,7 +175,7 @@ const getInteractionText = (number) =>{
                 </div>
                 <div class="summary-item players">
                     <template v-if="matchups.loses.length > 0">
-                        <h2>izgubio od {{matchups.loses.length}} tenisera</h2>
+                        <h2>izgubio od {{Object.values(props.player.data.matchups.loses).length}} tenisera</h2>
                         <template v-for="player in matchups.loses">
                             <p>
                                 <Link prefetch="false" :href="`/${player.uri}`">{{
@@ -140,6 +184,12 @@ const getInteractionText = (number) =>{
                                 ({{ player.number }})
                             </p>
                         </template>
+                        <p
+                            v-if="Object.values(props.player.data.matchups.loses).length > 10"
+                            class="show-more"
+                            @click="isExpanded.loses = !isExpanded.loses">
+                            {{ !isExpanded.loses ? 'vidi sve' : 'vidi manje' }}
+                        </p>
                     </template>
                     <template v-else>
                         <h2>ovaj teniser nikada nije izgubio &#128578;</h2>
@@ -147,7 +197,7 @@ const getInteractionText = (number) =>{
                 </div>
                 <div class="summary-item players">
                     <template v-if="matchups.not_played.length > 0">
-                        <h2>nije igrao sa {{matchups.not_played.length}} {{getInteractionText(matchups.not_played.length)}}</h2>
+                        <h2>nije igrao sa {{props.player.data.matchups.notPlayedWith.length}} {{getInteractionText(matchups.not_played.length)}}</h2>
                         <template v-for="player in matchups.not_played">
                             <p>
                                 <Link prefetch="false" :href="`/${player.uri}`">{{
@@ -155,6 +205,12 @@ const getInteractionText = (number) =>{
                                 }}</Link>
                             </p>
                         </template>
+                        <p
+                            v-if="props.player.data.matchups.notPlayedWith.length > 10"
+                            class="show-more"
+                            @click="isExpanded.not_played = !isExpanded.not_played">
+                            {{ !isExpanded.not_played ? 'vidi sve' : 'vidi manje' }}
+                        </p>
                     </template>
                     <template v-else>
                         <h2>ovaj teniser je igrao sa svima &#128578;</h2>

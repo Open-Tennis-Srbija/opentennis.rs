@@ -105,6 +105,10 @@ const onBlur = (e) => {
     if (input.value == "" && state.placeholder != "" && !state.isBlured) {
         state.search = state.placeholder;
     }
+    if (state.search == '' && state.placeholder != "") {
+        state.search = state.placeholder;
+    }
+
     state.searching = false;
     state.isOpen = false;
     state.isBlured = false;
