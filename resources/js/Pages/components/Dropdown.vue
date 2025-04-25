@@ -32,6 +32,7 @@ watch(
         if (value) {
             state.search = "";
             model.value = null;
+            state.placeholder = "";
             props.shouldReset = false;
         }
     },
