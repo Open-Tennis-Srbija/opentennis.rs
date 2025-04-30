@@ -1,8 +1,8 @@
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-import { reactive, resolveComponent, withCtx, createTextVNode, unref, useSSRContext, mergeProps, onMounted, ref, createVNode, toDisplayString, computed, defineAsyncComponent, onBeforeMount, mergeModels, useModel, watch, resolveDirective, createSSRApp, h } from "vue";
-import { ssrRenderComponent, ssrRenderClass, ssrInterpolate, ssrRenderAttr, ssrIncludeBooleanAttr, ssrRenderAttrs, ssrRenderList, ssrRenderStyle, ssrGetDirectiveProps, ssrRenderSlot } from "vue/server-renderer";
+import { reactive, resolveComponent, withCtx, createTextVNode, unref, useSSRContext, mergeProps, onMounted, ref, createVNode, toDisplayString, computed, defineAsyncComponent, onBeforeMount, mergeModels, useModel, watch, onUnmounted, createSSRApp, h } from "vue";
+import { ssrRenderComponent, ssrRenderClass, ssrInterpolate, ssrRenderAttr, ssrIncludeBooleanAttr, ssrRenderAttrs, ssrRenderList, ssrRenderStyle, ssrRenderSlot } from "vue/server-renderer";
 import { useForm, usePage, createInertiaApp, Head, Link } from "@inertiajs/vue3";
 import { renderToString } from "@vue/server-renderer";
 import createServer from "@inertiajs/vue3/server";
@@ -946,7 +946,7 @@ const _sfc_main$8 = {
   __ssrInlineRender: true,
   props: {
     player_id: Number,
-    data: Array
+    data: Object
   },
   setup(__props) {
     const props = __props;
@@ -1877,6 +1877,8 @@ const _sfc_main$3 = {
         state.search = model.value;
       }
     });
+    const dropdownInput = ref(null);
+    const dropdownDiv = ref(null);
     const props = __props;
     watch(
       () => props.shouldReset,
@@ -1910,30 +1912,53 @@ const _sfc_main$3 = {
           (option) => option.toLowerCase().includes(state.search.toLowerCase())
         );
     });
-    const onClickOutside = ref((e) => {
+    onMounted(() => {
+      if (typeof window !== "undefined") {
+        window.addEventListener("click", handleClickOutside);
+        window.addEventListener("focus", handleWindowFocus);
+        document.addEventListener("touchstart", handleInteraction, true);
+      }
     });
-    onClickOutside.value = (e) => {
-      if (state.isOpen) {
-        state.searching = false;
-        state.isOpen = false;
-        state.isBlured = false;
-        onBlur(e);
+    onUnmounted(() => {
+      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      document.removeEventListener("focus", handleWindowFocus);
+    });
+    ref((e) => {
+    });
+    ref(false);
+    const onVisibilityChange = () => {
+      if (!document.hidden) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+        }, 500);
       }
     };
-    const onBlur = (e) => {
-      let input = e.target;
-      if (input.value == "" && state.placeholder != "" && !state.isBlured && !state.isOpen) {
-        state.search = state.placeholder;
+    const handleWindowFocus = () => {
+    };
+    const handleInteraction = () => {
+      lastInteraction = Date.now();
+    };
+    const handleClickOutside = (event) => {
+      if (dropdownInput.value && !dropdownInput.value.contains(event.target) && dropdownDiv.value && !dropdownDiv.value.contains(event.target)) {
+        state.searching = false;
+        state.isOpen = false;
+        onBlur();
       }
-      if (state.search == "" && state.placeholder != "" && !state.isOpen) {
+    };
+    const onBlur = () => {
+      let input = dropdownInput.value;
+      if ((input.value == "" || state.search == "") && state.placeholder != "" && !state.isBlured && !state.isOpen) {
         state.search = state.placeholder;
+        input.value = state.placeholder;
+      }
+      if ((state.search == "" || input.value == "") && state.placeholder != "" && !state.isOpen) {
+        state.search = state.placeholder;
+        input.value = state.placeholder;
       }
     };
     return (_ctx, _push, _parent, _attrs) => {
-      const _directive_click_outside = resolveDirective("click-outside");
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "dropdown-wrapper" }, _attrs))}><input type="text"${ssrRenderAttr("placeholder", state.placeholder)}${ssrRenderAttr("value", state.search)}><div${ssrRenderAttrs(mergeProps({
-        class: ["dropdown", { open: state.isOpen }]
-      }, ssrGetDirectiveProps(_ctx, _directive_click_outside, onClickOutside.value)))}><ul><!--[-->`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "dropdown-wrapper" }, _attrs))}><input type="text"${ssrRenderAttr("placeholder", state.placeholder)}${ssrRenderAttr("value", state.search)}><div class="${ssrRenderClass([{ open: state.isOpen }, "dropdown"])}"><ul><!--[-->`);
       ssrRenderList(filteredOptions.value, (option, index) => {
         _push(`<li class="${ssrRenderClass({
           spacer: option == "dropdown-spacer" || option.name == "dropdown-spacer",
@@ -2131,8 +2156,9 @@ const _sfc_main = {
       }
     });
     const headerMessage = computed(() => {
+      var _a;
       let page = usePage();
-      if (page.props.title) return page.props.title;
+      if ((_a = page == null ? void 0 : page.props) == null ? void 0 : _a.title) return page.props.title;
       switch (page.url) {
         case "/":
           return "Rang lista";
@@ -2476,6 +2502,7 @@ _sfc_main.setup = (props, ctx) => {
 };
 const handlers = /* @__PURE__ */ new Map();
 function globalClickHandler(event) {
+  event.stopPropagation();
   for (const [el, getHandler] of handlers.entries()) {
     if (!(el === event.target || el.contains(event.target))) {
       const handler = typeof getHandler === "function" ? getHandler() : getHandler;

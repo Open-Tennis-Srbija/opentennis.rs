@@ -1,6 +1,6 @@
 <script setup>
 import { getCurrentInstance, watch, ref } from "vue";
-import { computed, onBeforeMount, onMounted, reactive } from "vue";
+import { computed, onBeforeMount, onMounted, onUnmounted, reactive } from "vue";
 
 const model = defineModel();
 
@@ -8,10 +8,13 @@ onBeforeMount(() => {
     if (model.value && model.value.name && model.value.name != "") {
         state.search = model.value.name;
     }
-    if (model.value && !model.value.name && model.value !== ""){
+    if (model.value && !model.value.name && model.value !== "") {
         state.search = model.value;
     }
 });
+
+const dropdownInput = ref(null);
+const dropdownDiv = ref(null);
 
 const props = defineProps({
     options: Array,
@@ -79,7 +82,15 @@ const onKeyDown = () => {
     }
 };
 
+let ignoreFocusUntil = 0;
+
 const onFocus = (e) => {
+    let now = Date.now();
+
+    if(now < ignoreFocusUntil) {
+        return;
+    }
+
     let input = e.target;
     let value = e.target.value;
     input.setSelectionRange(value.length, value.length);
@@ -96,28 +107,78 @@ const onFocus = (e) => {
 
     state.searching = true;
     state.selectedIndex = 0;
-    setTimeout(()=>{
+    setTimeout(() => {
         state.isOpen = true;
-    }, 50);
+    }, 70);
 };
-const onClickOutside = ref((e) => {})
 
-onClickOutside.value = (e) => {
-  if (state.isOpen) {
-    state.searching = false;
-    state.isOpen = false;
-    state.isBlured = false;
-    onBlur(e);
-  }
-}
-const onBlur = (e) => {
-    let input = e.target;
-
-    if (input.value == "" && state.placeholder != "" && !state.isBlured && !state.isOpen) {
-        state.search = state.placeholder;
+onMounted(() => {
+    if (typeof window !== "undefined") {
+        window.addEventListener("click", handleClickOutside);
+        window.addEventListener("focus", handleWindowFocus);
+        document.addEventListener('touchstart', handleInteraction, true);
     }
-    if (state.search == '' && state.placeholder != "" && !state.isOpen) {
+});
+
+onUnmounted(() => {
+    document.removeEventListener("click", handleClickOutside);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+    document.removeEventListener('focus', handleWindowFocus);
+});
+
+const onClickOutside = ref((e) => { });
+
+const ignoreNextFocus = ref(false);
+
+const onVisibilityChange = () => {
+  if (!document.hidden) {
+    ignoreNextFocus = true;
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      ignoreNextFocus = false;
+    }, 500); // Adjust if needed
+  }
+};
+
+const handleWindowFocus = () => {
+  const now = Date.now();
+  // If focus happens within 500ms of resuming the app, suppress it
+  ignoreFocusUntil = now + 500;
+};
+
+const handleInteraction = () => {
+  lastInteraction = Date.now();
+};
+
+const handleClickOutside = (event) => {
+    if (
+        dropdownInput.value &&
+        !dropdownInput.value.contains(event.target) &&
+        dropdownDiv.value &&
+        !dropdownDiv.value.contains(event.target)
+    ) {
+        state.searching = false;
+        state.isOpen = false;
+
+        onBlur();
+    }
+};
+
+const onBlur = () => {
+    let input = dropdownInput.value;
+
+    if (
+        (input.value == "" || state.search == '')&&
+        state.placeholder != "" &&
+        !state.isBlured &&
+        !state.isOpen
+    ) {
         state.search = state.placeholder;
+        input.value = state.placeholder;
+    }
+    if ((state.search == '' || input.value == "") && state.placeholder != "" && !state.isOpen) {
+        state.search = state.placeholder;
+        input.value = state.placeholder;
     }
 };
 
@@ -155,39 +216,34 @@ const selectOption = (option, e) => {
 </script>
 <template>
     <div class="dropdown-wrapper">
-        <input
-            type="text"
-            :placeholder="state.placeholder"
-            :value="state.search"
-            @input="handleSearch"
-            @focus="onFocus"
-            @blur="onBlur"
-            @keydown.down.prevent="onKeyDown"
-            @keydown.up.prevent="onKeyUp"
-            @keydown.esc.prevent="onEsc"
-            @keydown.tab.prevent="onTab"
-        />
-        <div class="dropdown" v-click-outside="onClickOutside" :class="{ open: state.isOpen }">
+        <input type="text" :placeholder="state.placeholder" :value="state.search" ref="dropdownInput"
+            @input="handleSearch" @focus="onFocus" @blur="onBlur" @keydown.down.prevent="onKeyDown"
+            @keydown.up.prevent="onKeyUp" @keydown.esc.prevent="onEsc" @keydown.tab.prevent="onTab" />
+        <div class="dropdown" ref="dropdownDiv" :class="{ open: state.isOpen }">
             <ul>
-                <li
-                    v-for="(option, index) in filteredOptions"
-                    :key="index"
-                    :class="{
-                        spacer: option=='dropdown-spacer' || option.name == 'dropdown-spacer',
-                        disabled:
-                            props.disabledOption &&
-                            props.disabledOption.id == option.id,
-                        hovered: state.selectedIndex == index && (!props.disabledOption || props.disabledOption.id != option.id),
-                    }"
-                    @mouseover="state.selectedIndex = index"
-                    @click.native="selectOption(option, $event)"
-                    @tap="selectOption(option, $event)"
-                >
-                    <template v-if="option == 'dropdown-spacer' || option.name == 'dropdown-spacer'">
+                <li v-for="(option, index) in filteredOptions" :key="index" :class="{
+                    spacer:
+                        option == 'dropdown-spacer' ||
+                        option.name == 'dropdown-spacer',
+                    disabled:
+                        props.disabledOption &&
+                        props.disabledOption.id == option.id,
+                    hovered:
+                        state.selectedIndex == index &&
+                        (!props.disabledOption ||
+                            props.disabledOption.id != option.id),
+                }" @mouseover="state.selectedIndex = index" @click.native="selectOption(option, $event)"
+                    @tap="selectOption(option, $event)">
+                    <template v-if="
+                        option == 'dropdown-spacer' ||
+                        option.name == 'dropdown-spacer'
+                    ">
                         <div class="spacer"></div>
                     </template>
                     <template v-else>
-                        {{ props.type == "array" ? option : option[props.label] }}
+                        {{
+                            props.type == "array" ? option : option[props.label]
+                        }}
                     </template>
                 </li>
             </ul>

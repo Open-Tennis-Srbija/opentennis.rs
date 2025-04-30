@@ -5,7 +5,7 @@ import { computed } from 'vue';
 
 const props = defineProps({
     player_id: Number,
-    data: Array,
+    data: Object,
 });
 
 const VueApexCharts = defineAsyncComponent(() => import('vue3-apexcharts'));

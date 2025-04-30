@@ -48,7 +48,7 @@ function toggleMenu() {
 const headerMessage = computed(() => {
     let page = usePage();
 
-    if (page.props.title) return page.props.title;
+    if (page?.props?.title) return page.props.title;
 
     switch (page.url) {
         case "/":
