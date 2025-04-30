@@ -2,6 +2,7 @@
 const handlers = new Map()
 
 function globalClickHandler(event) {
+  event.stopPropagation()
   for (const [el, getHandler] of handlers.entries()) {
     if (!(el === event.target || el.contains(event.target))) {
       const handler = typeof getHandler === 'function' ? getHandler() : getHandler
