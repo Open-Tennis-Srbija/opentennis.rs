@@ -9,6 +9,7 @@ import eventBus, { bus } from 'vue3-eventbus';
 import Dropdown from './Pages/components/Dropdown.vue';
 import Home from './Pages/Home.vue';
 import Matches from './Pages/Matches.vue';
+import clickOutside from './directives/click-outside.js';
 
 createServer((page) =>
   createInertiaApp({
@@ -31,6 +32,7 @@ createServer((page) =>
       app
         .use(plugin)
         .use(eventBus)
+        .directive('click-outside', clickOutside)
         .component('Head', Head)
         .component('Link', Link)
         .component('Dropdown', Dropdown)

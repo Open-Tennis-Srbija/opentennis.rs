@@ -15,7 +15,6 @@ const isExpanded = reactive({
 
 onMounted(() => {
     page.props["title"] = "teniser";
-    console.log( props.player.data.matchups.notPlayedWith);
 });
 
 const matchups = computed(() => {

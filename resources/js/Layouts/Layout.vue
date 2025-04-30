@@ -73,7 +73,7 @@ const headerMessage = computed(() => {
 });
 </script>
 <template>
-    <header class="header-wrapper" @scroll="console.log($event)">
+    <header class="header-wrapper">
         <div class="logo-wrapp" :style="{ marginTop: -topOffset + 'px' }">
             <Link prefetch="false" :href="'/'">
             <Logo />
@@ -123,7 +123,7 @@ const headerMessage = computed(() => {
                 v-if="$page.props.auth.user">odjavi se</Link>
         </div>
     </div>
-    <div id="os-holder" @scroll="console.log('scroll')" :class="{ high: $page.url === '/teniseri' }"
+    <div id="os-holder" :class="{ high: $page.url === '/teniseri' }"
         :style="{ height: 'calc(100vh - ' + 100 - topOffset + 50 + 'px)' }">
         <main id="main">
             <slot />

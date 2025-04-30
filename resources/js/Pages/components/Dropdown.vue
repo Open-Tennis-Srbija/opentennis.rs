@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, watch } from "vue";
+import { getCurrentInstance, watch, ref } from "vue";
 import { computed, onBeforeMount, onMounted, reactive } from "vue";
 
 const model = defineModel();
@@ -27,8 +27,6 @@ const props = defineProps({
 watch(
     () => props.shouldReset,
     (value) => {
-        console.log("reset");
-        console.log('reset now');
         if (value) {
             state.search = "";
             model.value = null;
@@ -50,6 +48,7 @@ const state = reactive({
 
 const handleSearch = (e) => {
     state.search = e.target.value;
+    state.placeholder = e.target.value;
     model.value.id = "temp";
     model.value.name = state.search;
 };
@@ -87,7 +86,6 @@ const onFocus = (e) => {
     input.placeholder = value;
     state.search = "";
     if (!model.value) {
-        console.log("model is empty");
         if (props.type !== "array")
             model.value = {
                 id: "temp",
@@ -97,22 +95,30 @@ const onFocus = (e) => {
     }
 
     state.searching = true;
-    state.isOpen = true;
     state.selectedIndex = 0;
+    setTimeout(()=>{
+        state.isOpen = true;
+    }, 50);
 };
-const onBlur = (e) => {
-    let input = e.target;
+const onClickOutside = ref((e) => {})
 
-    if (input.value == "" && state.placeholder != "" && !state.isBlured) {
-        state.search = state.placeholder;
-    }
-    if (state.search == '' && state.placeholder != "") {
-        state.search = state.placeholder;
-    }
-
+onClickOutside.value = (e) => {
+  if (state.isOpen) {
     state.searching = false;
     state.isOpen = false;
     state.isBlured = false;
+    onBlur(e);
+  }
+}
+const onBlur = (e) => {
+    let input = e.target;
+
+    if (input.value == "" && state.placeholder != "" && !state.isBlured && !state.isOpen) {
+        state.search = state.placeholder;
+    }
+    if (state.search == '' && state.placeholder != "" && !state.isOpen) {
+        state.search = state.placeholder;
+    }
 };
 
 const onTab = () => {
@@ -132,7 +138,6 @@ const onEsc = () => {
 };
 
 const selectOption = (option, e) => {
-        console.log("here");
     if (!props.type || props.type !== "array") {
         model.value.id = option.id;
         model.value.name = option.name;
@@ -145,6 +150,7 @@ const selectOption = (option, e) => {
     }
     state.isBlured = true;
     e.target.blur();
+    onClickOutside.value(e);
 };
 </script>
 <template>
@@ -161,7 +167,7 @@ const selectOption = (option, e) => {
             @keydown.esc.prevent="onEsc"
             @keydown.tab.prevent="onTab"
         />
-        <div class="dropdown" :class="{ open: state.isOpen }">
+        <div class="dropdown" v-click-outside="onClickOutside" :class="{ open: state.isOpen }">
             <ul>
                 <li
                     v-for="(option, index) in filteredOptions"
