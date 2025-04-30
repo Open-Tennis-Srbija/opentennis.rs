@@ -10,6 +10,7 @@ import Home from "./Pages/Home.vue";
 import Matches from "./Pages/Matches.vue";
 import eventBus, { bus } from "vue3-eventbus";
 import Dropdown from "./Pages/components/Dropdown.vue";
+import clickOutside from "./directives/click-outside.js";
 
 router.on("finish", () => {
     bus.emit("resetScroll");
@@ -34,6 +35,7 @@ createInertiaApp({
                 Ziggy: props.initialPage.props.ziggy, // THIS is key
             })
             .use(eventBus)
+            .directive("click-outside", clickOutside)
             .component("Head", Head)
             .component("Link", Link)
             .component("Dropdown", Dropdown)

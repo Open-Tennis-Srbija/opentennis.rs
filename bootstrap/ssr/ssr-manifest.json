@@ -83,6 +83,9 @@
   "resources/js/assets/opstine.json": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
+  "resources/js/directives/click-outside.js": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
   "resources/js/ssr.js": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],

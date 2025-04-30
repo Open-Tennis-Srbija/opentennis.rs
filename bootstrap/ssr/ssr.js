@@ -1,8 +1,8 @@
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-import { reactive, resolveComponent, withCtx, createTextVNode, unref, useSSRContext, mergeProps, onMounted, ref, createVNode, toDisplayString, onBeforeMount, computed, defineAsyncComponent, mergeModels, useModel, getCurrentInstance, watch, createSSRApp, h } from "vue";
-import { ssrRenderComponent, ssrRenderClass, ssrInterpolate, ssrRenderAttr, ssrIncludeBooleanAttr, ssrRenderAttrs, ssrRenderList, ssrRenderStyle, ssrRenderSlot } from "vue/server-renderer";
+import { reactive, resolveComponent, withCtx, createTextVNode, unref, useSSRContext, mergeProps, onMounted, ref, createVNode, toDisplayString, computed, defineAsyncComponent, onBeforeMount, mergeModels, useModel, watch, resolveDirective, createSSRApp, h } from "vue";
+import { ssrRenderComponent, ssrRenderClass, ssrInterpolate, ssrRenderAttr, ssrIncludeBooleanAttr, ssrRenderAttrs, ssrRenderList, ssrRenderStyle, ssrGetDirectiveProps, ssrRenderSlot } from "vue/server-renderer";
 import { useForm, usePage, createInertiaApp, Head, Link } from "@inertiajs/vue3";
 import { renderToString } from "@vue/server-renderer";
 import createServer from "@inertiajs/vue3/server";
@@ -10,7 +10,7 @@ import { OverlayScrollbars } from "overlayscrollbars";
 import eventBus, { bus } from "vue3-eventbus";
 import VueSelect from "vue-select";
 import VueDatepicker from "@vuepic/vue-datepicker";
-const data = ["Beograd", "dropdown-spacer", "Ada", "Aleksandrovac", "Aleksinac", "Alibunar", "Apatin", "Aranđelovac", "Arilje", "Babušnica", "Bač", "Bačka Palanka", "Bačka Topola", "Bački Petrovac", "Bajina Bašta", "Batočina", "Bečej", "Bela Crkva", "Bela Palanka", "Beočin", "Blace", "Bogatić", "Bojnik", "Boljevac", "Bor", "Bosilegrad", "Brus", "Bujanovac", "Čačak", "Čajetina", "Ćićevac", "Čoka", "Crna Trava", "Ćuprija", "Đakovica", "Dečani", "Despotovac", "Dimitrovgrad", "Doljevac", "Gadžin Han", "Glogovac", "Gnjilane", "Golubac", "Gora", "Gornji Milanovac", "Inđija", "Irig", "Istok", "Ivanjica", "Jagodina", "Kačanik", "Kanjiža", "Kikinda", "Kladovo", "Klina", "Knić", "Knjaževac", "Koceljeva", "Kosjerić", "Kosovo Polje", "Kosovska Kamenica", "Kosovska Mitrovica", "Kovačica", "Kovin", "Kragujevac", "Kraljevo", "Krupanj", "Kruševac", "Kučevo", "Kula", "Kuršumlija", "Lajkovac", "Lapovo", "Lebane", "Leposavić", "Leskovac", "Lipljan", "Ljig", "Ljubovija", "Loznica", "Lučani", "Majdanpek", "Mali Iđoš", "Mali Zvornik", "Malo Crniće", "Medveđa", "Merošina", "Mionica", "Negotin", "Niš", "Nova Crnja", "Nova Varoš", "Novi Bečej", "Novi Kneževac", "Novi Pazar", "Novi Sad", "Novo Brdo", "Obilić", "Odžaci", "Opovo", "Orahovac", "Osečina", "Pančevo", "Paraćin", "Peć", "Pećinci", "Petrovac na Mlavi", "Pirot", "Plandište", "Podujevo", "Požarevac", "Požega", "Preševo", "Priboj", "Prijepolje", "Priština", "Prizren", "Prokuplje", "Rača", "Raška", "Ražanj", "Rekovac", "Ruma", "Šabac", "Sečanj", "Senta", "Šid", "Sjenica", "Smederevo", "Smederevska Palanka", "Sokobanja", "Sombor", "Srbica", "Srbobran", "Sremska Mitrovica", "Sremski Karlovci", "Stara Pazova", "Štimlje", "Štrpce", "Subotica", "Surdulica", "Suva Reka", "Svilajnac", "Svrljig", "Temerin", "Titel", "Topola", "Trgovište", "Trstenik", "Tutin", "Ub", "Uroševac", "Užice", "Valjevo", "Varvarin", "Velika Plana", "Veliko Gradište", "Vitina", "Vladičin Han", "Vladimirci", "Vlasotince", "Vranje", "Vrbas", "Vrnjačka Banja", "Vršac", "Vučitrn", "Žabalj", "Žabari", "Žagubica", "Zaječar", "Žitište", "Žitorađa", "Zrenjanin", "Zubin Potok", "Zvečan", "dropdown-spacer", "inostranstvo"];
+const data = ["Beograd", "dropdown-spacer", "Ada", "Aleksandrovac", "Aleksinac", "Alibunar", "Apatin", "Aranđelovac", "Arilje", "Babušnica", "Bač", "Bačka Palanka", "Bačka Topola", "Bački Petrovac", "Bajina Bašta", "Batočina", "Bečej", "Bela Crkva", "Bela Palanka", "Beočin", "Blace", "Bogatić", "Bojnik", "Boljevac", "Bor", "Bosilegrad", "Brus", "Bujanovac", "Čačak", "Čajetina", "Ćićevac", "Čoka", "Crna Trava", "Ćuprija", "Đakovica", "Dečani", "Despotovac", "Dimitrovgrad", "Doljevac", "Gadžin Han", "Glogovac", "Gnjilane", "Golubac", "Gora", "Gornji Milanovac", "Inđija", "Irig", "Istok", "Ivanjica", "Jagodina", "Kačanik", "Kanjiža", "Kikinda", "Kladovo", "Klina", "Knić", "Knjaževac", "Koceljeva", "Kosjerić", "Kosovo Polje", "Kosovska Kamenica", "Kosovska Mitrovica", "Kovačica", "Kovin", "Kragujevac", "Kraljevo", "Krupanj", "Kruševac", "Kučevo", "Kula", "Kuršumlija", "Lajkovac", "Lapovo", "Lebane", "Leposavić", "Leskovac", "Lipljan", "Ljig", "Ljubovija", "Loznica", "Lučani", "Majdanpek", "Mali Iđoš", "Mali Zvornik", "Malo Crniće", "Medveđa", "Merošina", "Mionica", "Negotin", "Niš", "Nova Crnja", "Nova Varoš", "Novi Bečej", "Novi Kneževac", "Novi Pazar", "Novi Sad", "Novo Brdo", "Obilić", "Odžaci", "Opovo", "Orahovac", "Osečina", "Pančevo", "Paraćin", "Peć", "Pećinci", "Petrovac na Mlavi", "Pirot", "Plandište", "Podujevo", "Požarevac", "Požega", "Preševo", "Priboj", "Prijepolje", "Priština", "Prizren", "Prokuplje", "Rača", "Raška", "Ražanj", "Rekovac", "Ruma", "Šabac", "Sečanj", "Senta", "Šid", "Sjenica", "Smederevo", "Smederevska Palanka", "Sokobanja", "Sombor", "Srbica", "Srbobran", "Sremska Mitrovica", "Sremski Karlovci", "Stara Pazova", "Štimlje", "Štrpce", "Subotica", "Surdulica", "Suva Reka", "Svilajnac", "Svrljig", "Temerin", "Titel", "Topola", "Trgovište", "Trstenik", "Tutin", "Ub", "Uroševac", "Užice", "Valjevo", "Varvarin", "Velika Plana", "Veliko Gradište", "Vitina", "Vladičin Han", "Vladimirci", "Vlasotince", "Vranje", "Vrbas", "Vrnjačka Banja", "Vršac", "Vučitrn", "Žabalj", "Žabari", "Žagubica", "Zaječar", "Žitište", "Žitorađa", "Zrenjanin", "Zubin Potok", "Zvečan", "dropdown-spacer", "Italija", "inostranstvo"];
 const opstine = {
   data
 };
@@ -70,6 +70,7 @@ const _sfc_main$k = {
       _push(ssrRenderComponent(_component_Head, { title: "Dodaj meč -" }, null, _parent));
       _push(`<div class="static-wrapper"><h1 id="title" class="${ssrRenderClass({ "hide": formState.success })}">dodaj meč</h1><h1 id="success" class="${ssrRenderClass({ "show": formState.success })}">Meč je uspešno dodat</h1><div id="success-links" class="${ssrRenderClass({ "show": formState.success })}"><p class="add">dodaj još jedan meč</p>`);
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         class: "blue",
         href: "/mecevi"
       }, {
@@ -85,6 +86,7 @@ const _sfc_main$k = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         class: "red",
         href: "/"
       }, {
@@ -334,6 +336,7 @@ const _sfc_main$g = {
       _push(ssrRenderComponent(_component_Head, { title: "Izmeni meč" }, null, _parent));
       _push(`<div class="static-wrapper"><h1 id="title" class="${ssrRenderClass({ "hide": formState.success })}">Izmeni meč</h1><h1 id="success" class="${ssrRenderClass({ "show": formState.success })}">Meč je uspešno izmenjen</h1><div id="success-links" class="${ssrRenderClass({ "show": formState.success })}">`);
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         class: "blue",
         href: "/mecevi"
       }, {
@@ -349,6 +352,7 @@ const _sfc_main$g = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         class: "red",
         href: "/"
       }, {
@@ -571,6 +575,7 @@ const _sfc_main$c = {
         _push(`<div class="ranking-entry">`);
         if (_ctx.$page.props.auth.user) {
           _push(ssrRenderComponent(_component_Link, {
+            prefetch: "false",
             class: "edit-btn",
             href: `/teniser/izmeni/${player.id}`
           }, {
@@ -590,6 +595,7 @@ const _sfc_main$c = {
         }
         _push(`<div class="${ssrRenderClass([{ "first": index == 0, "second": index == 1, "third": index == 2, "align-left": index + 1 > 9 }, "rank"])}">${ssrInterpolate(index + 1)}</div><div class="name">`);
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           href: `/${player.uri}`
         }, {
           default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -610,6 +616,7 @@ const _sfc_main$c = {
         _push(`<div class="ranking-entry">`);
         if (_ctx.$page.props.auth.user) {
           _push(ssrRenderComponent(_component_Link, {
+            prefetch: "false",
             class: "edit-btn",
             href: `/teniser/izmeni/${player.id}`
           }, {
@@ -629,6 +636,7 @@ const _sfc_main$c = {
         }
         _push(`<div class="${ssrRenderClass([{ "first": index == 0, "second": index == 1, "third": index == 2, "align-left": index + 1 > 9 }, "rank"])}">${ssrInterpolate(index + 1)}</div><div class="name">`);
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           href: `/${player.uri}`
         }, {
           default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -685,9 +693,6 @@ const _sfc_main$a = {
   },
   setup(__props) {
     const props = __props;
-    onBeforeMount(() => {
-      console.log(props.matches);
-    });
     const formatedMatchesDesktop = computed(() => {
       let formated = props.matches.map((match, index) => {
         return {
@@ -703,9 +708,6 @@ const _sfc_main$a = {
         };
       });
       return formated;
-    });
-    onMounted(() => {
-      console.log(props.matches);
     });
     const formatedMatchesMobile = computed(() => {
       let formated = props.matches.map((match, index) => {
@@ -737,7 +739,7 @@ const _sfc_main$a = {
       const _component_Link = resolveComponent("Link");
       _push(`<!--[-->`);
       _push(ssrRenderComponent(_component_Head, { title: "Mečevi -" }, null, _parent));
-      _push(`<div class="matches-wrapper"><div id="desktop"><div class="matches-header"><div class="spacer number">#</div><div class="winner">pobednik</div><div class="loser">gubitnik</div><div class="spacer"></div><div class="score">rezultat</div><div class="date">datum</div><div class="location">opština</div><div class="location">teren</div></div>`);
+      _push(`<div class="matches-wrapper"><div id="desktop"><div class="matches-header"><div class="spacer number">#</div><div class="winner">pobednik</div><div class="loser">gubitnik</div><div class="score">rezultat</div><div class="date">datum</div><div class="location">opština</div><div class="location">teren</div><div class="location">liga</div></div>`);
       if (props.showMessage) {
         _push(`<div>`);
         if (props.showMessage.wins) {
@@ -759,6 +761,7 @@ const _sfc_main$a = {
         _push(`<div class="match-entry">`);
         if (_ctx.$page.props.auth.user) {
           _push(ssrRenderComponent(_component_Link, {
+            prefetch: "false",
             class: "edit-btn",
             href: `/izmeni/${match.id}`
           }, {
@@ -778,6 +781,7 @@ const _sfc_main$a = {
         }
         _push(`<div class="number">${ssrInterpolate(match.number || __props.matches.length - index)}</div><div class="winner">`);
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           href: `/${match.winner_uri}`
         }, {
           default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -793,6 +797,7 @@ const _sfc_main$a = {
         }, _parent));
         _push(`<br><span class="points">+${ssrInterpolate(match.winner_points)}</span></div><div class="loser">`);
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           href: `/${match.loser_uri}`
         }, {
           default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -806,13 +811,13 @@ const _sfc_main$a = {
           }),
           _: 2
         }, _parent));
-        _push(`<br><span class="points">+${ssrInterpolate(match.loser_points)}</span></div><div class="spacer"></div><div class="score">${ssrInterpolate(match.set_score)}<br><span class="gray">${ssrInterpolate(match.game_score)}</span></div><div class="date">${ssrInterpolate(match.day)} <br> ${ssrInterpolate(match.date)}</div><div class="location">${ssrInterpolate(match.location)}</div><div class="location">`);
+        _push(`<br><span class="points">+${ssrInterpolate(match.loser_points)}</span></div><div class="score">${ssrInterpolate(match.set_score)}<br><span class="gray">${ssrInterpolate(match.game_score)}</span></div><div class="date">${ssrInterpolate(match.day)} <br> ${ssrInterpolate(match.date)}</div><div class="location">${ssrInterpolate(match.location)}</div><div class="location">`);
         if (match.court.link == "") {
           _push(`<!--[-->${ssrInterpolate(match.court.name)}<!--]-->`);
         } else {
           _push(`<a target="_blank"${ssrRenderAttr("href", match.court.link)}>${ssrInterpolate(match.court.name)}</a>`);
         }
-        _push(`</div></div>`);
+        _push(`</div><div class="location">${ssrInterpolate(match.league.name)}</div></div>`);
       });
       _push(`<!--]--></div><div id="mobile">`);
       if (props.showMessage) {
@@ -836,6 +841,7 @@ const _sfc_main$a = {
         _push(`<div class="match-entry">`);
         if (_ctx.$page.props.auth.user) {
           _push(ssrRenderComponent(_component_Link, {
+            prefetch: "false",
             class: "edit-btn",
             href: `/izmeni/${match.id}`
           }, {
@@ -855,6 +861,7 @@ const _sfc_main$a = {
         }
         _push(`<div class="score">${ssrInterpolate(match.set_score)} <br><span class="games">${ssrInterpolate(match.game_score)}</span></div><div class="info"><div class="info-wrapp"><div class="text">`);
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           href: `/${match.winner_uri}`
         }, {
           default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -872,6 +879,7 @@ const _sfc_main$a = {
         }, _parent));
         _push(`<br><span class="points">+${ssrInterpolate(match.winner_points)}</span></div></div><div class="sep">:</div><div class="info-wrapp"><div class="text">`);
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           href: `/${match.loser_uri}`
         }, {
           default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -899,7 +907,7 @@ const _sfc_main$a = {
           }
           _push(`<!--]-->`);
         }
-        _push(`</div></div>`);
+        _push(`<span>${ssrInterpolate(match.league.name != "" ? "," : "")} ${ssrInterpolate(match.league.name)}</span></div></div>`);
       });
       _push(`<!--]--></div></div><!--]-->`);
     };
@@ -1164,15 +1172,46 @@ const _sfc_main$7 = {
   setup(__props) {
     const props = __props;
     const page = usePage();
+    const isExpanded = reactive({
+      wins: false,
+      loses: false,
+      not_played: false
+    });
     onMounted(() => {
       page.props["title"] = "teniser";
     });
     const matchups = computed(() => {
-      return {
-        wins: Object.values(props.player.data.matchups.wins),
-        loses: Object.values(props.player.data.matchups.loses),
-        not_played: props.player.data.matchups.notPlayedWith
-      };
+      let data2 = {};
+      let wins = Object.values(props.player.data.matchups.wins);
+      let loses = Object.values(props.player.data.matchups.loses);
+      if (props.player.data.matchups.wins) {
+        if (wins.length <= 10 || isExpanded.wins) {
+          data2 = { ...data2, wins: props.player.data.matchups.wins };
+        } else {
+          data2 = { ...data2, wins: props.player.data.matchups.wins.slice(0, 10) };
+        }
+      } else {
+        data2 = { ...data2, wins: [] };
+      }
+      if (props.player.data.matchups.loses) {
+        if (loses.length <= 10 || isExpanded.loses) {
+          data2 = { ...data2, loses: props.player.data.matchups.loses };
+        } else {
+          data2 = { ...data2, loses: props.player.data.matchups.loses.slice(0, 10) };
+        }
+      } else {
+        data2 = { ...data2, loses: [] };
+      }
+      if (props.player.data.matchups.notPlayedWith) {
+        if (props.player.data.matchups.notPlayedWith.length <= 10 || isExpanded.not_played) {
+          data2 = { ...data2, not_played: props.player.data.matchups.notPlayedWith };
+        } else {
+          data2 = { ...data2, not_played: props.player.data.matchups.notPlayedWith.slice(0, 10) };
+        }
+      } else {
+        data2 = { ...data2, not_played: [] };
+      }
+      return data2;
     });
     const locations = computed(() => {
       return {
@@ -1197,6 +1236,7 @@ const _sfc_main$7 = {
       }, "rank"])}"><p class="${ssrRenderClass({ "align-left": props.player.data.position > 9 })}">${ssrInterpolate(props.player.data.position)}</p></div><h1>${ssrInterpolate(props.player.data.name)}`);
       if (_ctx.$page.props.auth.user) {
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           class: "edit-btn",
           href: `/teniser/izmeni/${props.player.data.id}`
         }, {
@@ -1222,10 +1262,11 @@ const _sfc_main$7 = {
       }
       _push(`<p class="subtitle">${ssrInterpolate(__props.player.club)}${ssrInterpolate(__props.player.club ? ", " : " ")}${ssrInterpolate(__props.player.location)}</p><div class="dashboard-wrapper"><h2 class="summary-title">Statistika</h2><div class="summary player five desktop"><div class="summary-item"><h2>poeni</h2><p>${ssrInterpolate(unref(utils).formatAsThousands(props.player.data.stats.elo))}</p></div><div class="summary-item"><h2>svi mečevi</h2><p>${ssrInterpolate(props.player.data.stats.total_matches)}</p></div><div class="summary-item"><h2>pobede</h2><p>${ssrInterpolate(props.player.data.stats.wins)}</p></div><div class="summary-item"><h2>gubitci</h2><p>${ssrInterpolate(props.player.data.stats.loses)}</p></div><div class="summary-item"><h2>% pobeda</h2><p>${ssrInterpolate(props.player.data.stats.win_precentage)}%</p></div></div><div class="summary player five mobile"><div class="summary-item half"><h2>poeni</h2><p>${ssrInterpolate(unref(utils).formatAsThousands(props.player.data.stats.elo))}</p></div><div class="summary-item"><h2>% pobeda</h2><p>${ssrInterpolate(props.player.data.stats.win_precentage)}%</p></div><div class="summary-item"><h2>svi mečevi</h2><p>${ssrInterpolate(props.player.data.stats.total_matches)}</p></div><div class="summary-item"><h2>pobede</h2><p>${ssrInterpolate(props.player.data.stats.wins)}</p></div><div class="summary-item"><h2>gubitci</h2><p>${ssrInterpolate(props.player.data.stats.loses)}</p></div></div><h2 class="summary-title">Teniseri</h2><div class="summary player three col"><div class="summary-item players">`);
       if (matchups.value.wins.length > 0) {
-        _push(`<!--[--><h2>pobedio ${ssrInterpolate(matchups.value.wins.length)} tenisera</h2><!--[-->`);
+        _push(`<!--[--><h2>pobedio ${ssrInterpolate(Object.values(props.player.data.matchups.wins).length)} tenisera</h2><!--[-->`);
         ssrRenderList(matchups.value.wins, (player) => {
           _push(`<p>`);
           _push(ssrRenderComponent(_component_Link, {
+            prefetch: "false",
             href: `/${player.uri}`
           }, {
             default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -1241,16 +1282,23 @@ const _sfc_main$7 = {
           }, _parent));
           _push(` (${ssrInterpolate(player.number)}) </p>`);
         });
-        _push(`<!--]--><!--]-->`);
+        _push(`<!--]-->`);
+        if (Object.values(props.player.data.matchups.wins).length > 10) {
+          _push(`<p class="show-more">${ssrInterpolate(!isExpanded.wins ? "vidi sve" : "vidi manje")}</p>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`<!--]-->`);
       } else {
         _push(`<h2>ovaj teniser nikada nije pobedio 🙁</h2>`);
       }
       _push(`</div><div class="summary-item players">`);
       if (matchups.value.loses.length > 0) {
-        _push(`<!--[--><h2>izgubio od ${ssrInterpolate(matchups.value.loses.length)} tenisera</h2><!--[-->`);
+        _push(`<!--[--><h2>izgubio od ${ssrInterpolate(Object.values(props.player.data.matchups.loses).length)} tenisera</h2><!--[-->`);
         ssrRenderList(matchups.value.loses, (player) => {
           _push(`<p>`);
           _push(ssrRenderComponent(_component_Link, {
+            prefetch: "false",
             href: `/${player.uri}`
           }, {
             default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -1266,16 +1314,23 @@ const _sfc_main$7 = {
           }, _parent));
           _push(` (${ssrInterpolate(player.number)}) </p>`);
         });
-        _push(`<!--]--><!--]-->`);
+        _push(`<!--]-->`);
+        if (Object.values(props.player.data.matchups.loses).length > 10) {
+          _push(`<p class="show-more">${ssrInterpolate(!isExpanded.loses ? "vidi sve" : "vidi manje")}</p>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`<!--]-->`);
       } else {
         _push(`<h2>ovaj teniser nikada nije izgubio 🙂</h2>`);
       }
       _push(`</div><div class="summary-item players">`);
       if (matchups.value.not_played.length > 0) {
-        _push(`<!--[--><h2>nije igrao sa ${ssrInterpolate(matchups.value.not_played.length)} ${ssrInterpolate(getInteractionText(matchups.value.not_played.length))}</h2><!--[-->`);
+        _push(`<!--[--><h2>nije igrao sa ${ssrInterpolate(props.player.data.matchups.notPlayedWith.length)} ${ssrInterpolate(getInteractionText(matchups.value.not_played.length))}</h2><!--[-->`);
         ssrRenderList(matchups.value.not_played, (player) => {
           _push(`<p>`);
           _push(ssrRenderComponent(_component_Link, {
+            prefetch: "false",
             href: `/${player.uri}`
           }, {
             default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -1291,7 +1346,13 @@ const _sfc_main$7 = {
           }, _parent));
           _push(`</p>`);
         });
-        _push(`<!--]--><!--]-->`);
+        _push(`<!--]-->`);
+        if (props.player.data.matchups.notPlayedWith.length > 10) {
+          _push(`<p class="show-more">${ssrInterpolate(!isExpanded.not_played ? "vidi sve" : "vidi manje")}</p>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`<!--]-->`);
       } else {
         _push(`<h2>ovaj teniser je igrao sa svima 🙂</h2>`);
       }
@@ -1365,7 +1426,10 @@ function _sfc_ssrRender$1(_ctx, _push, _parent, _attrs) {
   _push(`<!--[-->`);
   _push(ssrRenderComponent(_component_Head, { title: "Pravila -" }, null, _parent));
   _push(`<div class="static-wrapper"><h1>PRAVILA</h1><p>Srpsku Tenis Ligu je osnovao Nikola Tošić 9 decembra 2024.</p><p>Cilj lige je da motiviše sve amatere u Srbiji da igraju više. Svako može da učestvuje, dovoljno je da dokumentuje jedan meč i biće rangiran. Liga nema kvalifikacije i besplatna je.</p><p>Da bi meč bio prihvaćen on mora da ima barem jednog takmičara koji je građanin Republike Srbije ili da se odigra na teritoriji Republike Srbije. Znači meč između građanina Srbije i stranca u stranoj državi može da bude dodat u Ligu. Takođe meč između dva stranca u Srbiji može da bude dodat.</p><p>Srpska Tenis Liga je besplatna fleksi liga - nema nikakve naplate, rokove, obaveze, niti format takmičenja. Na učesnicima je da igraju više, dodaju svoje mečeve i samim tim poboljšavaju svoj rang. Liga konstantno traje bez definisanog kraja i rang tenisera će se konstantno menjati.</p><p>Svi formati bodovanja mečeva su prihvaćeni dokle god je rezultat pobednika barem 4 gema. Znači minimalni rezultat da bi meč bio dokumentovan je 4:0. Primeri formata bodovanja su setovi do 4 gema, setovi do 6 gema, meč do 9 gemova, ili meč na vreme sa minimalnim rezultatom od 4:0.</p><p>Tie break treba da se doda kao jedan gem. Na primer, ako se u meču od 5:5 igra tie break koji je 10:8, onda se upisuje rezultat 6:5.</p><p>Rang tenisera se kalkulise dodavanjem poena za svaki pobedu, gubitak, i osvojeni gem. Dakle, izgubljeni meč takođe nosi poene, kao i gemovi koje je osvojio gubitnik. Ako ista dva tenisera igraju više puta u istih 30 dana onda dobijaju manje poena nego da su igrali sa različitim teniserima. Takođe dobijeni poeni opadaju za 10 % svakih 30 dana od dana meča. CIlj ovih pravila je da se motiviše što više igranja (čak i ako se gubi), da se nagrade gubitnici za osvojene gemove, a i da se motiviše različitost u izboru tenisera i konstantno igranje.</p><p>Za sada se rangiraju samo singles mečevi.</p><p>Muškarci i žene svih uzrasta se rangiraju zajedno.</p><p>Mečevi se dokumentuju tako što se dodaju preko `);
-  _push(ssrRenderComponent(_component_Link, { href: "/dodaj" }, {
+  _push(ssrRenderComponent(_component_Link, {
+    prefetch: "false",
+    href: "/dodaj"
+  }, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
         _push2(`dodaj meč forme`);
@@ -1682,6 +1746,7 @@ const _sfc_main$4 = {
       ssrRenderList(props.data.stats.players.total, (player) => {
         _push(`<p class="smaller f20">`);
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           href: `/${player.uri}`
         }, {
           default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -1701,6 +1766,7 @@ const _sfc_main$4 = {
       ssrRenderList(props.data.stats.players.wins, (player) => {
         _push(`<p class="smaller f20">`);
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           href: `/${player.uri}`
         }, {
           default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -1720,6 +1786,7 @@ const _sfc_main$4 = {
       ssrRenderList(props.data.stats.players.loses, (player) => {
         _push(`<p class="smaller f20">`);
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           href: `/${player.uri}`
         }, {
           default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -1802,23 +1869,22 @@ const _sfc_main$3 = {
   emits: ["update:modelValue"],
   setup(__props) {
     const model = useModel(__props, "modelValue");
-    getCurrentInstance();
     onBeforeMount(() => {
       if (model.value && model.value.name && model.value.name != "") {
         state.search = model.value.name;
       }
-      if (model.value && !model.value.name && model.value.name !== "")
+      if (model.value && !model.value.name && model.value !== "") {
         state.search = model.value;
+      }
     });
     const props = __props;
     watch(
       () => props.shouldReset,
       (value) => {
-        console.log("reset");
-        console.log("reset now");
         if (value) {
           state.search = "";
           model.value = null;
+          state.placeholder = "";
           props.shouldReset = false;
         }
       }
@@ -1829,6 +1895,7 @@ const _sfc_main$3 = {
       searching: false,
       selectedIndex: 0,
       isBlured: false,
+      placeholder: "",
       options: props.options
     });
     const filteredOptions = computed(() => {
@@ -1843,8 +1910,30 @@ const _sfc_main$3 = {
           (option) => option.toLowerCase().includes(state.search.toLowerCase())
         );
     });
+    const onClickOutside = ref((e) => {
+    });
+    onClickOutside.value = (e) => {
+      if (state.isOpen) {
+        state.searching = false;
+        state.isOpen = false;
+        state.isBlured = false;
+        onBlur(e);
+      }
+    };
+    const onBlur = (e) => {
+      let input = e.target;
+      if (input.value == "" && state.placeholder != "" && !state.isBlured && !state.isOpen) {
+        state.search = state.placeholder;
+      }
+      if (state.search == "" && state.placeholder != "" && !state.isOpen) {
+        state.search = state.placeholder;
+      }
+    };
     return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "dropdown-wrapper" }, _attrs))}><input type="text"${ssrRenderAttr("value", state.search)}><div class="${ssrRenderClass([{ open: state.isOpen }, "dropdown"])}"><ul><!--[-->`);
+      const _directive_click_outside = resolveDirective("click-outside");
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "dropdown-wrapper" }, _attrs))}><input type="text"${ssrRenderAttr("placeholder", state.placeholder)}${ssrRenderAttr("value", state.search)}><div${ssrRenderAttrs(mergeProps({
+        class: ["dropdown", { open: state.isOpen }]
+      }, ssrGetDirectiveProps(_ctx, _directive_click_outside, onClickOutside.value)))}><ul><!--[-->`);
       ssrRenderList(filteredOptions.value, (option, index) => {
         _push(`<li class="${ssrRenderClass({
           spacer: option == "dropdown-spacer" || option.name == "dropdown-spacer",
@@ -2068,7 +2157,10 @@ const _sfc_main = {
     return (_ctx, _push, _parent, _attrs) => {
       const _component_Link = resolveComponent("Link");
       _push(`<!--[--><header class="header-wrapper"><div class="logo-wrapp" style="${ssrRenderStyle({ marginTop: -topOffset.value + "px" })}">`);
-      _push(ssrRenderComponent(_component_Link, { href: "/" }, {
+      _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
+        href: "/"
+      }, {
         default: withCtx((_, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(ssrRenderComponent(Logo, null, null, _parent2, _scopeId));
@@ -2082,6 +2174,7 @@ const _sfc_main = {
       }, _parent));
       _push(`</div><div class="links-wrapper"><div class="links">`);
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         class: ["highlighted", { active: _ctx.$page.url === "/dodaj" }],
         href: "/dodaj"
       }, {
@@ -2097,6 +2190,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         href: "/",
         class: { active: _ctx.$page.url === "/" }
       }, {
@@ -2112,6 +2206,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         href: "/mecevi",
         class: { active: _ctx.$page.url === "/mecevi" }
       }, {
@@ -2127,6 +2222,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         href: "/statistika",
         class: { active: _ctx.$page.url === "/statistika" }
       }, {
@@ -2142,6 +2238,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         href: "/misija",
         class: { active: _ctx.$page.url === "/misija" }
       }, {
@@ -2157,6 +2254,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         href: "/pravila",
         class: { active: _ctx.$page.url === "/pravila" }
       }, {
@@ -2172,6 +2270,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         class: ["highlighted red", { active: _ctx.$page.url === "/dodaj-ligu" }],
         href: "/dodaj-ligu"
       }, {
@@ -2188,6 +2287,7 @@ const _sfc_main = {
       }, _parent));
       _push(`</div></div><div class="mobile-underheader"><h1>${ssrInterpolate(headerMessage.value)}</h1><div class="mobile-button"><div class="${ssrRenderClass([{ "open-left": mobileMenu.state }, "button"])}"></div><div class="${ssrRenderClass([{ "open-middle": mobileMenu.state }, "button"])}"></div><div class="${ssrRenderClass([{ "open-right": mobileMenu.state }, "button"])}"></div></div></div></header><div id="mobile-menu" class="${ssrRenderClass({ open: mobileMenu.state })}"><div class="links">`);
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         onClick: ($event) => mobileMenu.state = false,
         class: ["highlighted", { active: _ctx.$page.url === "/dodaj" }],
         href: "/dodaj"
@@ -2204,6 +2304,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         onClick: ($event) => mobileMenu.state = false,
         href: "/",
         class: { active: _ctx.$page.url === "/" }
@@ -2220,6 +2321,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         onClick: ($event) => mobileMenu.state = false,
         href: "/mecevi",
         class: { active: _ctx.$page.url === "/mecevi" }
@@ -2236,6 +2338,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         onClick: ($event) => mobileMenu.state = false,
         href: "/statistika",
         class: { active: _ctx.$page.url === "/statistika" }
@@ -2252,6 +2355,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         onClick: ($event) => mobileMenu.state = false,
         href: "/teniseri",
         class: { active: _ctx.$page.url === "/misija" }
@@ -2268,6 +2372,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         onClick: ($event) => mobileMenu.state = false,
         href: "/pravila",
         class: { active: _ctx.$page.url === "/pravila" }
@@ -2284,6 +2389,7 @@ const _sfc_main = {
         _: 1
       }, _parent));
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         onClick: ($event) => mobileMenu.state = false,
         class: ["highlighted red", { active: _ctx.$page.url === "/dodaj-ligu" }],
         href: "/dodaj-ligu"
@@ -2301,6 +2407,7 @@ const _sfc_main = {
       }, _parent));
       if (_ctx.$page.props.auth.user) {
         _push(ssrRenderComponent(_component_Link, {
+          prefetch: "false",
           onClick: ($event) => mobileMenu.state = false,
           class: "logout-mobile",
           method: "post",
@@ -2323,7 +2430,10 @@ const _sfc_main = {
       _push(`</div></div><div id="os-holder" class="${ssrRenderClass({ high: _ctx.$page.url === "/teniseri" })}" style="${ssrRenderStyle({ height: "calc(100vh - 100" - topOffset.value + 50 + "px)" })}"><main id="main">`);
       ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
       _push(`</main><footer class="${ssrRenderClass([{ hide: _ctx.$page.url === "/teniseri" }, "footer-wrapper"])}"><p class="footer-text">`);
-      _push(ssrRenderComponent(_component_Link, { href: "/dodaj" }, {
+      _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
+        href: "/dodaj"
+      }, {
         default: withCtx((_, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`dodaj meč`);
@@ -2337,6 +2447,7 @@ const _sfc_main = {
       }, _parent));
       _push(`</p><div class="icons-wrapper"><a class="viber" target="_blank" href="https://invite.viber.com/?g2=AQBO6Yhe7XWiGlQ11H197bPnIWHJjH2nT7C42UhORV%2F3VIU5EWEozbBE%2BLo11vym"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38.34 40.43"><defs></defs><path class="cls-1" d="M435.26,281.72c-1-.92-5.07-3.87-14.11-3.91,0,0-10.67-.65-15.86,4.12-2.9,2.9-3.91,7.13-4,12.38s-.25,15.1,9.24,17.76h0v4.07s-.06,1.65,1,2c1.32.41,2.09-.85,3.34-2.19.69-.74,1.64-1.84,2.35-2.67a36.72,36.72,0,0,0,12-.88c1.31-.43,8.72-1.38,9.92-11.22C440.44,291,438.59,284.61,435.26,281.72Zm1.1,18.72c-1,8.22-7,8.74-8.14,9.09a33.85,33.85,0,0,1-10.36.88s-4.11,5-5.39,6.24a.68.68,0,0,1-.6.25c-.22-.06-.28-.32-.27-.7l0-6.77c-8-2.22-7.56-10.6-7.47-15s.92-8,3.37-10.39c4.39-4,13.45-3.39,13.45-3.39,7.65,0,11.32,2.34,12.17,3.11C436,286.19,437.41,292,436.36,300.44Z" transform="translate(-401.24 -277.78)"></path><path class="cls-1" d="M421.92,300.93a1.36,1.36,0,0,0,1.1-.41l.76-.95a1.65,1.65,0,0,1,2.1-.29,20.72,20.72,0,0,1,3.62,2.59,1.44,1.44,0,0,1,.31,1.89h0a7.61,7.61,0,0,1-1.57,1.94h0a2.59,2.59,0,0,1-2.51.68v0a30.5,30.5,0,0,1-8.07-4.47,25.53,25.53,0,0,1-7.81-11.41l0,0a2.61,2.61,0,0,1,.68-2.51h0a8,8,0,0,1,1.94-1.57h0a1.43,1.43,0,0,1,1.89.3,21.46,21.46,0,0,1,2.6,3.62,1.66,1.66,0,0,1-.3,2.11l-.95.75a1.41,1.41,0,0,0-.41,1.1S416.66,299.59,421.92,300.93Z" transform="translate(-401.24 -277.78)"></path><path class="cls-1" d="M430.19,296.53a.53.53,0,0,0,.51-.52,10.86,10.86,0,0,0-3.07-8,10.46,10.46,0,0,0-7.49-3h0a.51.51,0,0,0,0,1,9.49,9.49,0,0,1,6.79,2.68,9.89,9.89,0,0,1,2.75,7.3.51.51,0,0,0,.51.51Z" transform="translate(-401.24 -277.78)"></path><path class="cls-1" d="M427.5,295.48h0A.51.51,0,0,1,427,295a5.9,5.9,0,0,0-1.53-4.32,6.35,6.35,0,0,0-4.46-1.94.51.51,0,0,1,.08-1,7.38,7.38,0,0,1,5.13,2.27,6.94,6.94,0,0,1,1.8,5A.53.53,0,0,1,427.5,295.48Z" transform="translate(-401.24 -277.78)"></path><path class="cls-1" d="M424.87,294.6a.52.52,0,0,1-.51-.49,2.42,2.42,0,0,0-2.57-2.67.52.52,0,0,1,0-1,3.43,3.43,0,0,1,3.54,3.65.51.51,0,0,1-.48.54Z" transform="translate(-401.24 -277.78)"></path></svg></a><a class="WhatsApp" target="_blank" href="https://chat.whatsapp.com/J67Pf7B7u127ZZBdMNl5FZ"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.24 40.43"><defs></defs><path class="cls-1" d="M400.61,318.07l2.84-10.39a20,20,0,1,1,7.78,7.6Zm11.11-6.42a16.87,16.87,0,0,0,9.09,2.69,16.62,16.62,0,1,0-13.71-7.18l-1.68,6.15Zm19.19-9.2c-.13-.21-.46-.33-1-.59s-3-1.46-3.43-1.62-.79-.26-1.12.25-1.3,1.63-1.59,2-.58.37-1.08.12a13.47,13.47,0,0,1-4-2.48,15,15,0,0,1-2.78-3.47c-.3-.5,0-.77.21-1s.51-.59.76-.88a3.53,3.53,0,0,0,.5-.83.91.91,0,0,0,0-.88c-.13-.25-1.13-2.71-1.54-3.72s-.82-.84-1.13-.86h-1a1.82,1.82,0,0,0-1.33.62,5.65,5.65,0,0,0-1.76,4.18,9.74,9.74,0,0,0,2.05,5.18c.25.33,3.53,5.39,8.55,7.56a30.15,30.15,0,0,0,2.85,1.05,6.85,6.85,0,0,0,3.15.2c1-.14,3-1.21,3.38-2.38A4.24,4.24,0,0,0,430.91,302.45Z" transform="translate(-400.61 -277.64)"></path></svg></a></div>`);
       _push(ssrRenderComponent(_component_Link, {
+        prefetch: "false",
         class: ["logout", { hide: !_ctx.$page.props.auth.user }],
         href: "/logout",
         method: "post",
@@ -2363,6 +2474,31 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/Layouts/Layout.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
+const handlers = /* @__PURE__ */ new Map();
+function globalClickHandler(event) {
+  for (const [el, getHandler] of handlers.entries()) {
+    if (!(el === event.target || el.contains(event.target))) {
+      const handler = typeof getHandler === "function" ? getHandler() : getHandler;
+      handler == null ? void 0 : handler(event);
+    }
+  }
+}
+const clickOutside = {
+  mounted(el, binding) {
+    if (typeof window === "undefined") return;
+    handlers.set(el, () => binding.value);
+    if (handlers.size === 1) {
+      document.addEventListener("click", globalClickHandler);
+    }
+  },
+  beforeUnmount(el) {
+    if (typeof window === "undefined") return;
+    handlers.delete(el);
+    if (handlers.size === 0) {
+      document.removeEventListener("click", globalClickHandler);
+    }
+  }
+};
 createServer((page) => createInertiaApp({
   page,
   render: renderToString,
@@ -2378,7 +2514,7 @@ createServer((page) => createInertiaApp({
   },
   setup({ App, props, plugin }) {
     const app = createSSRApp({ render: () => h(App, props) });
-    app.use(plugin).use(eventBus).component("Head", Head).component("Link", Link).component("Dropdown", _sfc_main$3).component("vSelect", VueSelect).component("datepicker", VueDatepicker).component("PlayerTable", _sfc_main$c).component("MatchTable", _sfc_main$a);
+    app.use(plugin).use(eventBus).directive("click-outside", clickOutside).component("Head", Head).component("Link", Link).component("Dropdown", _sfc_main$3).component("vSelect", VueSelect).component("datepicker", VueDatepicker).component("PlayerTable", _sfc_main$c).component("MatchTable", _sfc_main$a);
     return app;
   }
 }));

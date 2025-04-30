@@ -7,10 +7,6 @@ const props = defineProps({
   showMessage: Object,
 });
 
-onBeforeMount(() => {
-  console.log(props.matches);
-});
-
 const formatedMatchesDesktop = computed(() => {
   let formated = props.matches.map((match, index) => {
     return {
@@ -26,9 +22,6 @@ const formatedMatchesDesktop = computed(() => {
   });
   return formated;
 });
-onMounted(()=>{
-  console.log(props.matches);
-})
 const formatedMatchesMobile = computed(() => {
   let formated = props.matches.map((match, index) => {
     return {
