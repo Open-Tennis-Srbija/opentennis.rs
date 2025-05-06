@@ -70,6 +70,10 @@ const getInteractionText = (number) =>{
     else return "tenisera";
 }
 
+function containsGreek(text) {
+  return /[\u0370-\u03FF\u1F00-\u1FFF]/.test(text);
+}
+
 </script>
 <template>
     <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player">
@@ -85,7 +89,7 @@ const getInteractionText = (number) =>{
                 {{ props.player.data.position }}
             </p>
         </div>
-        <h1>
+        <h1 :class="{'fix-letters': containsGreek(props.player.data.name)}">
             {{ props.player.data.name
             }}<Link prefetch="false"
                 class="edit-btn"
