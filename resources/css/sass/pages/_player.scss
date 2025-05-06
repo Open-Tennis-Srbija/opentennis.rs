@@ -17,6 +17,12 @@
 
       >h1{
         position: relative;
+        &.fix-letters{
+            font-family: Arial !important;
+            text-transform: capitalize !important;
+            font-weight: bold !important;
+            font-size: 45px !important;
+        }
         .edit-btn{
             position: absolute;
             text-transform: uppercase;
