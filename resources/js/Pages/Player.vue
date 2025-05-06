@@ -18,8 +18,7 @@ onMounted(() => {
 });
 
 const matchups = computed(() => {
-    let data = {
-    };
+    let data = {};
 
     let wins = Object.values(props.player.data.matchups.wins);
     let loses = Object.values(props.player.data.matchups.loses);
