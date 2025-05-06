@@ -12,12 +12,9 @@ const formatedMatchesDesktop = computed(() => {
     return {
       ...match,
       day: getDateDay(match.date),
-      date: Intl.DateTimeFormat('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      timeZone: 'Europe/Belgrade' // Equivalent to GMT+1 (adjust based on daylight saving time)
-    }).format(new Date(match.date)),
+      month: getDateMonth(match.date),
+      date: new Date(match.date).getDate(),
+      year: new Date(match.date).getFullYear(),
     };
   });
   return formated;
@@ -31,12 +28,9 @@ const formatedMatchesMobile = computed(() => {
       loser_first_name: match.loser.split(' ')[0],
       loser_last_name: match.loser.split(' ')[1],
       day: getDateDay(match.date),
-      date: Intl.DateTimeFormat('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      timeZone: 'Europe/Belgrade' // Equivalent to GMT+1 (adjust based on daylight saving time)
-    }).format(new Date(match.date)),
+      month: getDateMonth(match.date),
+      year: new Date(match.date).getFullYear(),
+      date: new Date(match.date).getDate(),
     };
   });
   return formated;
@@ -47,6 +41,13 @@ function getDateDay(date){
   let day = new Date(date).getDay();
 
   return days[day]
+}
+
+function getDateMonth(date){
+  let months = ['jan','feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'];
+  let month = new Date(date).getMonth();
+
+  return months[month]
 }
 
 </script>
@@ -74,7 +75,7 @@ function getDateDay(date){
         <div class="winner"><Link prefetch="false" :href="`/${match.winner_uri}`">{{ match.winner }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
         <div class="loser"><Link prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
         <div class="score">{{ match.set_score }}<br><span class="gray">{{ match.game_score }}</span></div>
-        <div class="date">{{match.day}} <br/> {{ match.date }}</div>
+        <div class="date">{{match.day}} <br/> {{ match.date }} {{ match.month }} {{match.year}}</div>
         <div class="location">{{ match.location }}</div>
         <div class="location">
             <template v-if="match.court.link == ''">
@@ -115,7 +116,7 @@ function getDateDay(date){
         </div>
 
         <div class="location">
-          #{{ match.number || matches.length - index }}, {{ match.day }} {{ match.date }}
+                    #{{ match.number || matches.length - index }}, {{ match.day }} {{ match.date }} {{ match.month }} {{ match.year }}
          <br>
         <template v-if="match.court.id == 1">
           {{ match.location }}
