@@ -1,6 +1,6 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3'
-import {reactive,onMounted, defineAsyncComponent} from 'vue';
+import {reactive,onMounted, defineAsyncComponent, computed} from 'vue';
 import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -17,7 +17,7 @@ const form = useForm({
     court: null,
     date: new Date(),
     location: 'Beograd',
-    league: null,
+    league: {id: 1, name: 'sparing'},
 });
 
 
@@ -26,6 +26,7 @@ const formState = reactive({
     success: false,
     shouldReset: false,
 });
+
 
 const submit = () =>{
 
@@ -208,11 +209,11 @@ const handleInputs = (event,isDate = false) => {
           </div>
           <div class="form-group">
             <label for="winner-fname" class="input-label">
-              Liga ili turnir
+              Sparing, liga ili turnir
             </label>
             <Dropdown
               label="name"
-              :options="props.leagues"
+              :options="[{ id: 1, name: 'sparing' }, ...props.leagues]"
               v-model="form.league"
               :class="{'invalid': form.errors.league}"
               :shouldReset="formState.shouldReset"

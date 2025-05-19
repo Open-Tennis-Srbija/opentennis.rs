@@ -15,6 +15,7 @@ const isExpanded = reactive({
 
 onMounted(() => {
     page.props["title"] = "teniser";
+    console.log(props.player.data)
 });
 
 const matchups = computed(() => {
@@ -98,11 +99,11 @@ function containsGreek(text) {
                 ><EditIcon
             /></Link>
         </h1>
-        <p class="subtitle-spacer" v-if="!player.club && !player.location">
+        <p class="subtitle-spacer" v-if="!props.player.data.club && !props.player.data.location">
             &nbsp;
         </p>
         <p class="subtitle">
-            {{ player.club }}{{ player.club ? ", " : " " }}{{ player.location }}
+            {{ props.player.data.club }}{{ props.player.data.club ? ", " : " " }}{{ props.player.data.location }}
         </p>
 
         <div class="dashboard-wrapper">
