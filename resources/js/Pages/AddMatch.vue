@@ -213,7 +213,7 @@ const handleInputs = (event,isDate = false) => {
             </label>
             <Dropdown
               label="name"
-              :options="[{ id: 1, name: 'sparing' }, ...props.leagues]"
+              :options="[{ id: 1, name: 'sparing' },{ id: null, name: 'dropdown-spacer' }, ...props.leagues]"
               v-model="form.league"
               :class="{'invalid': form.errors.league}"
               :shouldReset="formState.shouldReset"
