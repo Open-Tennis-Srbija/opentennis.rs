@@ -9,9 +9,8 @@ use App\Http\Controllers\LeaguesController;
 use Illuminate\Support\Facades\Route;
 use Ziggy\Ziggy;
 
-Route::redirect('/', '/teniseri');
 
-Route::inertia('/teniseri', 'Home',
+Route::inertia('/', 'Home',
     [ 'players' => PlayerController::getCachedPlayers()]
 )->name('home');
 
