@@ -81,7 +81,7 @@ const headerMessage = computed(() => {
         </div>
         <div class="links-wrapper">
             <div class="links">
-                <Link prefetch="false" :href="'/teniseri'" :class="{ active: $page.url === '/teniseri' }">teniseri</Link>
+                <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/' }">teniseri</Link>
                 <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
                 <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
                 <Link prefetch="false" :href="'/misija'" :class="{ active: $page.url === '/misija' }">misija</Link>
@@ -105,8 +105,8 @@ const headerMessage = computed(() => {
     </header>
     <div id="mobile-menu" :class="{ open: mobileMenu.state }">
         <div class="links">
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/teniseri'"
-                :class="{ active: $page.url === '/teniseri' }">teniseri</Link>
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
+                :class="{ active: $page.url === '/' }">teniseri</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
                 :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
