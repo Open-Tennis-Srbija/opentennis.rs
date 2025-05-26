@@ -113,6 +113,9 @@ $border-color: #a1a1a1;
         width: 100%;
         font-size: 15px;
         padding-top: 3px;
+        &.hide-mobile {
+          display: none;
+        }
       }
       &.normal-font {
         display:none;
