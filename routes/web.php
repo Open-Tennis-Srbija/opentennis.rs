@@ -9,7 +9,9 @@ use App\Http\Controllers\LeaguesController;
 use Illuminate\Support\Facades\Route;
 use Ziggy\Ziggy;
 
-Route::inertia('/', 'Home',
+Route::redirect('/', '/teniseri');
+
+Route::inertia('/teniseri', 'Home',
     [ 'players' => PlayerController::getCachedPlayers()]
 )->name('home');
 
@@ -25,9 +27,6 @@ Route::inertia('/dodaj', 'AddMatch',
 )->name('addMatch');
 Route::post('/dodaj', [TenisMatchController::class, 'store']);
 
-
-
-Route::inertia('/teniseri', 'Join')->name('join');
 
 
 Route::inertia('/dodaj-ligu', 'ForClubs')->name('clubs');

@@ -52,7 +52,7 @@ const headerMessage = computed(() => {
 
     switch (page.url) {
         case "/":
-            return "Rang lista";
+            return "teniseri";
         case "/mecevi":
             return "mečevi";
         case "/dodaj-ligu":
@@ -60,7 +60,7 @@ const headerMessage = computed(() => {
         case "/dodaj":
             return "dodaj meč";
         case "/teniseri":
-            return "nađi tenisera";
+            return "teniseri";
         case "/misija":
             return "misija";
         case "/pravila":
@@ -81,13 +81,13 @@ const headerMessage = computed(() => {
         </div>
         <div class="links-wrapper">
             <div class="links">
-                <Link prefetch="false" class="highlighted" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj
-                meč</Link>
-                <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/' }">rang lista</Link>
+                <Link prefetch="false" :href="'/teniseri'" :class="{ active: $page.url === '/teniseri' }">teniseri</Link>
                 <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
                 <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
                 <Link prefetch="false" :href="'/misija'" :class="{ active: $page.url === '/misija' }">misija</Link>
                 <Link prefetch="false" :href="'/pravila'" :class="{ active: $page.url === '/pravila' }">pravila</Link>
+                <Link prefetch="false" class="highlighted" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj
+                meč</Link>
                 <Link prefetch="false" class="highlighted red" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">
                 dodaj ligu</Link>
             </div>
@@ -105,10 +105,8 @@ const headerMessage = computed(() => {
     </header>
     <div id="mobile-menu" :class="{ open: mobileMenu.state }">
         <div class="links">
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="highlighted" :href="'/dodaj'"
-                :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
-                :class="{ active: $page.url === '/' }">rang lista</Link>
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/teniseri'"
+                :class="{ active: $page.url === '/teniseri' }">teniseri</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
                 :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
@@ -117,18 +115,20 @@ const headerMessage = computed(() => {
                 :class="{ active: $page.url === '/misija' }">misija</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/pravila'"
                 :class="{ active: $page.url === '/pravila' }">pravila</Link>
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="highlighted" :href="'/dodaj'"
+                :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="highlighted red" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post" :href="'/logout'"
                 v-if="$page.props.auth.user">odjavi se</Link>
         </div>
     </div>
-    <div id="os-holder" :class="{ high: $page.url === '/teniseri' }"
+    <div id="os-holder" 
         :style="{ height: 'calc(100vh - ' + 100 - topOffset + 50 + 'px)' }">
         <main id="main">
             <slot />
         </main>
-        <footer class="footer-wrapper" :class="{ hide: $page.url === '/teniseri' }">
+        <footer class="footer-wrapper">
             <p class="footer-text">
                 <Link prefetch="false" :href="'/dodaj'">dodaj meč</Link>
             </p>
