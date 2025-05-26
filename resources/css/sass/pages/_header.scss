@@ -117,16 +117,16 @@
         top: 0;
 
         .links {
-            width: 100%;
-            max-width: 1200px;
+            width: 1200px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            gap:150px;
 
             a {
                 text-decoration: none;
                 color: $dark-gray;
-                font-size: 15px;
+                font-size: 18px;
                 font-family: "Helvetica Neue";
                 padding-top: 2px;
                 text-transform: uppercase;
