@@ -19,7 +19,7 @@ onMounted(() => {
   <!-- <div class="loader" :class="{'close' : isLoading}">
 
   </div> -->
-  <Head title="" />
+  <Head title="Teniseri -" />
   <div class="rankings-wrapper">
     <div id="desktop">
       <div class="rankings-header">
