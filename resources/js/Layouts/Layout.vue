@@ -85,7 +85,7 @@ const headerMessage = computed(() => {
                 <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
                 <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
                 <Link prefetch="false" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
-                <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
+                <!-- <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link> -->
             </div>
         </div>
         <div class="mobile-underheader" @click="toggleMenu">
@@ -127,6 +127,7 @@ const headerMessage = computed(() => {
         <footer class="footer-wrapper">
             <p class="footer-text">
                 <Link prefetch="false" :href="'/dodaj'">dodaj meč</Link>
+                <Link class="hide-mobile" prefetch="false" :href="'/dodaj-ligu'">dodaj ligu</Link>
             </p>
             <div class="icons-wrapper">
                 <a class="viber" target="_blank"
