@@ -163,7 +163,7 @@ const handleInputs = (event,isDate = false) => {
     <h1 id="success" :class="{'show': formState.success}">Meč je uspešno izmenjen</h1>
     <div id="success-links" :class="{'show': formState.success}">
       <Link prefetch="false" class="blue" :href="'/mecevi'">vidi mečeve</Link>
-      <Link prefetch="false" class="red" :href="'/'">vidi rang listu</Link>
+      <Link prefetch="false" class="red" :href="'/'">vidi tenisere</Link>
     </div>
     <form id="form" @submit.prevent="submit" :class="{'hide': formState.success}">
 

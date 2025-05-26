@@ -12,7 +12,7 @@
         <p>
             Klubovi mogu da nam pošalju rezultate sa svojih lokalnih liga i
             turnira koje možemo grupno da dodamo u bazu i samim tim dodamo sve
-            tenisere na rang listu.
+            tenisere.
         </p>
         <p>
             Da bi dodali više mečeva odjednom treba poslati email na
