@@ -58,6 +58,13 @@ $border-color: #a1a1a1;
         color: $footer-hover-color;
       }
     }
+    &.normal-font{
+      a{
+        font-family: Arial;
+        font-size: 25px;
+        text-transform: lowercase;
+      }
+    }
   }
 
   .icons-wrapper {
@@ -106,6 +113,9 @@ $border-color: #a1a1a1;
         width: 100%;
         font-size: 15px;
         padding-top: 3px;
+      }
+      &.normal-font {
+        display:none;
       }
     }
 

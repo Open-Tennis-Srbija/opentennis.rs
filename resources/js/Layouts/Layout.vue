@@ -84,12 +84,8 @@ const headerMessage = computed(() => {
                 <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/' }">teniseri</Link>
                 <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
                 <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
-                <Link prefetch="false" :href="'/misija'" :class="{ active: $page.url === '/misija' }">misija</Link>
-                <Link prefetch="false" :href="'/pravila'" :class="{ active: $page.url === '/pravila' }">pravila</Link>
-                <Link prefetch="false" class="highlighted" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj
-                meč</Link>
-                <Link prefetch="false" class="highlighted red" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">
-                dodaj ligu</Link>
+                <Link prefetch="false" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
+                <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
             </div>
         </div>
         <div class="mobile-underheader" @click="toggleMenu">
@@ -105,20 +101,20 @@ const headerMessage = computed(() => {
     </header>
     <div id="mobile-menu" :class="{ open: mobileMenu.state }">
         <div class="links">
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
                 :class="{ active: $page.url === '/' }">teniseri</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
                 :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/teniseri'"
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"
+                :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
+                :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/misija'"
                 :class="{ active: $page.url === '/misija' }">misija</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/pravila'"
                 :class="{ active: $page.url === '/pravila' }">pravila</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="highlighted" :href="'/dodaj'"
-                :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="highlighted red" :href="'/dodaj-ligu'"
-                :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post" :href="'/logout'"
                 v-if="$page.props.auth.user">odjavi se</Link>
         </div>
@@ -162,6 +158,10 @@ const headerMessage = computed(() => {
                             transform="translate(-400.61 -277.64)" />
                     </svg>
                 </a>
+            </div>
+            <div class="footer-text normal-font">
+                <Link prefetch="false" :href="'/misija'">misija</Link>
+                <Link prefetch="false" :href="'/pravila'">pravila</Link>
             </div>
             <Link prefetch="false" class="logout" :href="'/logout'" method="post" as="button"
                 :class="{ hide: !$page.props.auth.user }">odjavi se</Link>
