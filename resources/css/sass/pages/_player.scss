@@ -135,6 +135,34 @@
                   place-items: center;
               }
           }
+          &.six{
+              display: grid;
+              grid-template-columns: repeat(6, 16.6%);
+
+              .summary-item{
+                  display: grid;
+                  place-items: center;
+
+
+                  .category{
+                    position: relative;
+                    margin-bottom: 30px;
+                    .diamond{
+                        display: block;
+                        height: 45px;
+                        width: 45px;
+                        transform: scaleX(1.4) rotate(45deg);
+                    }
+                    .number{
+                        position: absolute;
+                        top: 47%;
+                        left: 46%;
+                        transform: translate(-50%, -50%);
+                        font-size: 34px;
+                    }
+                  }
+              }
+          }
           &.three{
             display: grid;
             grid-template-columns: repeat(3, 33.3%);
@@ -231,7 +259,12 @@
             right: 10px;
             top: -64px;
           }
+
         }
+        >.category{
+            left: 66%;
+            transform: translate(-50%, -78%);
+          }
 
           .low-margin{
               margin-bottom: 0px;
@@ -280,6 +313,11 @@
              }
             }
         }
+        .summary.player.six{
+            &.desktop{
+                display: none !important;
+            }
+        }
         .summary.player.five{
             &.desktop{
                 display: none !important;
@@ -290,13 +328,23 @@
                 display: flex;
                 .summary-item{
                     width: 33.3%;
-
-                    &.half{
-                        width: 50%;
+                   .category{
+                    position: relative;
+                    margin-bottom: 27px;
+                    .diamond{
+                        display: block;
+                        height: 35px;
+                        width: 35px;
+                        transform: scaleX(1.4) rotate(45deg);
                     }
-                    p{
-                        font-size: 35px;
+                    .number{
+                        position: absolute;
+                        top: 49%;
+                        left: 46%;
+                        transform: translate(-50%, -50%);
+                        font-size:30px;
                     }
+                  }
                 }
             }
 

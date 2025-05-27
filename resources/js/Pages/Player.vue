@@ -13,6 +13,35 @@ const isExpanded = reactive({
     not_played: false,
 });
 
+const categoryColors = {
+ 1: '#8dc73f',
+  2: '#38b64b',
+  3: '#00a99c',
+  4: '#01aef0',
+  5: '#0072bb',
+  6: '#92278f',
+  7: '#eb008b',
+  8: '#ee1d23',
+  9: '#f36621',
+  10: '#f7941d',
+  '?': 'transparent',
+  '?': 'transparent',
+}
+
+const categoryColorsRed = {
+  1: '#f9ebeb',
+  2: '#f4d7d9',
+  3: '#efc3c4',
+  4: '#e7afb2',
+  5: '#e29a9e',
+  6: '#dc878c',
+  7: '#d87377',
+  8: '#d16066',
+  9: '#cc4b4f',
+  10: '#c6373d',
+  '?': 'transparent',
+}
+
 onMounted(() => {
     page.props["title"] = "teniser";
     console.log(props.player.data)
@@ -108,7 +137,7 @@ function containsGreek(text) {
 
         <div class="dashboard-wrapper">
             <h2 class="summary-title">Statistika</h2>
-            <div class="summary player five desktop">
+            <div class="summary player six desktop">
                 <div class="summary-item">
                     <h2>poeni</h2>
                     <p>{{ utils.formatAsThousands(props.player.data.stats.elo) }}</p>
@@ -129,6 +158,13 @@ function containsGreek(text) {
                     <h2>% pobeda</h2>
                     <p>{{ props.player.data.stats.win_precentage }}%</p>
                 </div>
+                <div class="summary-item">
+                    <h2 style="margin-top: -10px;">kategorija</h2>
+                    <p class="category">
+                        <span class="diamond" :style="{ border: `1px solid ${categoryColors[props.player.data.category] || 'transparent'}` }"></span>
+                        <span class="number" :class="{'white': props.player.data.category > 5, 'unknown': props.player.data.category == '?'}">{{ props.player.data.category }}</span>
+                    </p>
+                </div>
             </div>
             <div class="summary player five mobile">
                 <div class="summary-item half">
@@ -138,6 +174,13 @@ function containsGreek(text) {
                 <div class="summary-item">
                     <h2>% pobeda</h2>
                     <p>{{ props.player.data.stats.win_precentage }}%</p>
+                </div>
+                <div class="summary-item">
+                    <h2 style="margin-top: -8px;">kategorija</h2>
+                    <p class="category">
+                        <span class="diamond" :style="{ border: `1px solid ${categoryColors[props.player.data.category] || 'transparent'}` }"></span>
+                        <span class="number" :class="{'white': props.player.data.category > 5, 'unknown': props.player.data.category == '?'}">{{ props.player.data.category }}</span>
+                    </p>
                 </div>
                 <div class="summary-item">
                     <h2>svi mečevi</h2>

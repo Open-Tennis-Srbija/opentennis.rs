@@ -161,7 +161,6 @@ const headerMessage = computed(() => {
                 </a>
             </div>
             <div class="footer-text normal-font">
-                <Link prefetch="false" :href="'/misija'">misija</Link>
                 <Link prefetch="false" :href="'/pravila'">pravila</Link>
             </div>
             <Link prefetch="false" class="logout" :href="'/logout'" method="post" as="button"
