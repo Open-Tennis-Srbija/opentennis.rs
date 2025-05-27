@@ -10,25 +10,16 @@
             Zato predlažemo da klubovi informišu svoje članove da mogu da koriste Ligu.
 </p> -->
         <p>
-            Klubovi mogu da nam pošalju rezultate sa svojih lokalnih liga i
-            turnira koje možemo grupno da dodamo u bazu i samim tim dodamo sve
-            tenisere.
+            <Link prefetch='false' :href="'/'">SrpskaTenisLiga.rs</Link> vlasnicima terena i klubova povećava broj mećeva, iznajmljivanje terena, i zapošljavanje trenera.
         </p>
         <p>
-            Da bi dodali više mečeva odjednom treba poslati email na
-            <a href="mailto:nikola@srpskatenisliga.rs"
-                >nikola@srpskatenisliga.rs</a
-            >
-            tekst ili spreadsheet fajl koji sadrži sledeće podatke za svaki meč:
-            ime i prezime pobednika, ime i prezime gubitnika, rezultat u
-            setovima i gemove, datum meča, opštinu, i teren.
+            Predlažemo da klubovi informišu svoje članove da mogu da koriste <Link prefetch='false' :href="'/'">SrpskaTenisLiga.rs</Link>.
         </p>
         <p>
-            Ako vam je potrebna pomoć pošaljite email na
-
-            <a href="mailto:nikola@srpskatenisliga.rs"
-                >nikola@srpskatenisliga.rs</a
-            >.
+                Takođe tereni i klubovi mogu da nam pošalju rezultate sa svojih turnira i liga koje možemo grupno da dodamo u bazu i samim tim dodamo sve tenisere na rang listu.
+            </p>
+        <p>
+            Da bi dodali rezutate sa lige ili turnira pošaljite email na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
         </p>
         <p>Hvala.</p>
     </div>

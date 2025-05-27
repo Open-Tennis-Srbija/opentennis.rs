@@ -10,6 +10,48 @@ const props = defineProps({
 
 const isCLient = ref(false);
 
+const categoryColorsAll = {
+  1: '#8dc73f',
+  2: '#38b64b',
+  3: '#00a99c',
+  4: '#01aef0',
+  5: '#0072bb',
+  6: '#92278f',
+  7: '#eb008b',
+  8: '#ee1d23',
+  9: '#f36621',
+  10: '#f7941d',
+  '?': 'transparent',
+}
+
+const categoryColors = {
+  1: '#e9ecf1',
+  2: '#d0dae3',
+  3: '#bac7d7',
+  4: '#a4b4cb',
+  5: '#8da1ba',
+  6: '#748fad',
+  7: '#5e7ca0',
+  8: '#486992',
+  9: '#315585',
+  10: '#194477',
+  '?': 'transparent',
+}
+
+const categoryColorsRed = {
+  1: '#f9ebeb',
+  2: '#f4d7d9',
+  3: '#efc3c4',
+  4: '#e7afb2',
+  5: '#e29a9e',
+  6: '#dc878c',
+  7: '#d87377',
+  8: '#d16066',
+  9: '#cc4b4f',
+  10: '#c6373d',
+  '?': 'transparent',
+}
+
 onMounted(() => {
   isCLient.value = true;
 });
@@ -31,7 +73,7 @@ onMounted(() => {
         <div class="wins">pobede</div>
         <div class="loses">gubitci</div>
         <div class="win-precent">% pobeda</div>
-        <div class="place">opština</div>
+        <div class="place">kategorija</div>
       </div>
       <div class="ranking-entry" v-for="(player, index) in players">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
@@ -46,7 +88,8 @@ onMounted(() => {
         <div class="wins">{{player.stats.wins}}</div>
         <div class="loses">{{player.stats.loses}}</div>
         <div class="win-precent">{{player.stats.win_precentage}}%</div>
-        <div class="place">{{player.location}}</div>
+        <!-- <div class="place"><span class="diamond" :style="`background: linear-gradient(-90deg,${categoryColorsAll[player.category]} 0%, rgba(255, 255, 255, 1) 10% 30%, ${categoryColorsAll[player.category]} 100%);`"></span><span class="number" :class="{'unknown': player.category == '?'}">{{player.category}}</span></div> -->
+        <div class="place"><span class="diamond" :style="`border: 1px solid ${categoryColorsAll[player.category]};`"></span><span class="number" :class="{'unknown': player.category == '?'}">{{player.category}}</span></div>
       </div>
     </div>
 
@@ -72,7 +115,7 @@ onMounted(() => {
             <div class="text">{{ player.stats.total_matches }} ({{ player.stats.wins }},{{ player.stats.loses }})</div>
           </div>
         </div>
-        <div class="place">{{player.location}}</div>
+        <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'white': player.category > 5, 'unknown': player.category == '?'}">{{player.category}}</span></div>
       </div>
     </div>
   </div>

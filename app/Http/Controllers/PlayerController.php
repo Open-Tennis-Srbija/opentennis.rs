@@ -55,6 +55,7 @@ class PlayerController extends Controller
             array_push($players, [
                 'id' => $player->id,
                 'uri' => $player->uri,
+                'category' => $player->category,
                 'name' => $player->first_name . ' ' . $player->last_name,
                 'stats' => $player->getStats(),
                 'club' => $player->club,
@@ -129,6 +130,7 @@ class PlayerController extends Controller
             'stats' => $player->getStats(),
             'club' => $player->club,
             'position' => $position,
+            'category' => $player->category,
             'wins' => $wins,
             'matchups' => $player->getMatchups(),
             'loses' => $loses,

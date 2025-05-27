@@ -26,6 +26,35 @@
   .win-precent,
   .place {
     place-self: center;
+    .unknown {
+      color: #949494;
+    }
+  }
+  
+  .place{
+    position : relative;
+    .diamond{
+      display: block;
+      width:25px;
+      height: 25px;
+      transform: scaleX(1.4) rotate(45deg);
+      
+    }
+      .number{
+        position: absolute;
+        top: 56%;
+        font-weight: bold;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        &.white{
+          color: white;
+        }
+      
+        &.unknown{
+          color: #949494;
+        }
+      }
   }
 
   .ranking-entry {
@@ -151,6 +180,17 @@
 
         font-weight: normal;
         font-size: 18px;
+      }
+
+
+      .place{
+        .diamond{
+          height: 25px;
+          width: 25px;
+        }
+        .number{
+          top: 55%
+        }
       }
     }
 
