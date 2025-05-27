@@ -111,8 +111,6 @@ const headerMessage = computed(() => {
                 :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/misija'"
-                :class="{ active: $page.url === '/misija' }">misija</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/pravila'"
                 :class="{ active: $page.url === '/pravila' }">pravila</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post" :href="'/logout'"
