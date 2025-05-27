@@ -115,7 +115,7 @@ onMounted(() => {
             <div class="text">{{ player.stats.total_matches }} ({{ player.stats.wins }},{{ player.stats.loses }})</div>
           </div>
         </div>
-        <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'white': player.category > 5, 'unknown': player.category == '?'}">{{player.category}}</span></div>
+        <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'unknown': player.category == '?'}">{{player.category}}</span></div>
       </div>
     </div>
   </div>
