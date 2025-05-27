@@ -176,7 +176,7 @@ function containsGreek(text) {
                     <p>{{ props.player.data.stats.win_precentage }}%</p>
                 </div>
                 <div class="summary-item">
-                    <h2 style="margin-top: -8px;">kategorija</h2>
+                    <h2 style="margin-top: -4px;">kategorija</h2>
                     <p class="category">
                         <span class="diamond" :style="{ border: `1px solid ${categoryColors[props.player.data.category] || 'transparent'}` }"></span>
                         <span class="number" :class="{'white': props.player.data.category > 5, 'unknown': props.player.data.category == '?'}">{{ props.player.data.category }}</span>
