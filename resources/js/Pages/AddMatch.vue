@@ -35,16 +35,17 @@ const submit = () =>{
   formState.submitted = true;
   if(form.winner){
     form.winner.name.trim();
-    form.winner.name.replace('  ', ' ');
+    form.winner.name = form.winner.name.replace(/  /g, ' ');
   }
   if(form.loser){
     form.loser.name.trim();
-    form.loser.name.replace('  ', ' ');
+    form.loser.name.replace(/  /g, ' ');
   }
 
   form.set_score.trim();
   form.game_score.trim();
-  form.game_score.replace(' ', '');
+  form.game_score = form.game_score.replace(/ /g, ',');
+  form.game_score = form.game_score.replace(/,,/g, ',');
 
   form.location.trim();
 

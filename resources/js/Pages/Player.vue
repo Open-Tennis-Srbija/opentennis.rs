@@ -115,7 +115,7 @@ function containsGreek(text) {
                 third: props.player.data.position == 3,
             }"
         >
-            <p :class="{ 'align-left': props.player.data.position > 9 }">
+            <p :class="{ 'align-left': props.player.data.position > 9,'n40': props.player.data.position >= 40 && props.player.data.position < 50 }">
                 {{ props.player.data.position }}
             </p>
         </div>
