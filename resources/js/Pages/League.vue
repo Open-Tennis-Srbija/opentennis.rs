@@ -1,6 +1,6 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
-import { onMounted, computed, reactive } from "vue";
+import { onMounted, computed, reactive, onBeforeMount } from "vue";
 import utils from "../utils";
 import PlayerChart from "./components/PlayerChart.vue";
 import EditIcon from "./components/EditIcon.vue";
@@ -11,11 +11,14 @@ const page = usePage();
 const isExpanded = reactive({
     players: false,
 });
+onBeforeMount(()=>{
 
+    console.log(props.league)
+
+})
 
 onMounted(() => {
     page.props["title"] = "Turnir";
-    console.log(props.league)
 });
 
 const formatDate = ((start, end) =>{
