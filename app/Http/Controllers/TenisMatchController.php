@@ -251,6 +251,11 @@ class TenisMatchController extends Controller
 
                 $league->name = $data['league']['name'];
                 $league->link = '';
+                $uri = str_replace(' - ','-',$league->name);
+                $uri = str_replace(' ','-',$uri);
+                $uri = str_replace(',','',$uri);
+                $uri = strtolower($uri);
+                $league->uri = $uri; 
                 $league->save();
                 $league_id = $league->id;
             }
