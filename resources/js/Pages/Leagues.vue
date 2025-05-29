@@ -22,7 +22,7 @@ const formatDate = ((start, end) =>{
         return `${utl.getDateDay(start)} ${raw_start.getDate()} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(start)} ${raw_end.getFullYear()}`
       }
       else{
-        return `${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(end)} ${raw_end.getFullYear()}}}`
+        return `${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(end)} ${raw_end.getFullYear()}`
       }
     }
     else{
@@ -57,7 +57,7 @@ onMounted(() => {
         <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
         <div class="spacer"></div>
         <div class="wins">{{formatDate(league.date_start, league.date_end)}}</div>
-        <div class="wins" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
+        <div style="text-align:center" class="wins" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
         <div class="total-matches">{{league.match_number}}</div>
         <div class="wins" :class="{'unknown': league.points == 0}">{{league.points}}</div>
         <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>

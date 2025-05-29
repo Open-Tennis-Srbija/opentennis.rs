@@ -18,7 +18,7 @@ class ResolverController extends Controller
 
         $league = League::where('uri', $uri)->first();
 
-        if($league) return Inertia::render('League', ['league'=>LeaguesController::returnLeague($league)]);
+        if($league) return Inertia::render('League', ['league'=>LeaguesController::returnCachedLeague($uri)]);
 
         return redirect('/');
 

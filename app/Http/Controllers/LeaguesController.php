@@ -30,9 +30,16 @@ class LeaguesController extends Controller
         ];
 
     }
+    public static function returnCachedLeague($uri){
+    if(file_exists(storage_path('app/public/leagues/'.$uri.'.json'))){
+                $cache = json_decode(file_get_contents(storage_path('app/public/leagues/'.$uri.'.json')), true);
+            return $cache;
+            }
+    else return redirect('/');
+    }
 
     public static function getLeaguesForList(){
-        $leagues = League::where('id', '>', 1)->orderBy('date_start')->get();
+        $leagues = League::where('id', '>', 1)->orderBy('date_begin','desc')->get();
 
         $response = [];
 
