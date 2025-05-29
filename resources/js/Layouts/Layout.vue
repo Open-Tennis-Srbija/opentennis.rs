@@ -65,6 +65,8 @@ const headerMessage = computed(() => {
             return "misija";
         case "/pravila":
             return "pravila";
+        case "/lige-turniri":
+            return 'Lige & turniri';
         case "/admin":
             return "admin";
         default:
@@ -84,6 +86,7 @@ const headerMessage = computed(() => {
                 <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/' }">teniseri</Link>
                 <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
                 <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
+                <Link prefetch="false" :href="'/lige-turniri'" :class="{ active: $page.url === '/lige-turniri' }">lige & turniri</Link>
                 <Link prefetch="false" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
                 <!-- <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link> -->
             </div>
@@ -107,6 +110,8 @@ const headerMessage = computed(() => {
                 :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige-turniri'"
+                :class="{ active: $page.url === '/lige-turniri' }">lige & turniri</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"
                 :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"

@@ -414,6 +414,7 @@ class LeagueController extends Controller
                     $data['leagues'][$league->id] = [
                         'name' => $league->name,
                         'link' => $league->link,
+                        'uri' => $league->uri,
                         'count' => 1
                     ];
                 }
@@ -485,6 +486,7 @@ class LeagueController extends Controller
                 if(!isset($data['leagues'][$league->id])){
                     $data['leagues'][$league->id] = [
                         'name' => $league->name,
+                        'uri' => $league->uri,
                         'link' => $league->link,
                         'count' => 1
                     ];

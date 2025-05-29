@@ -96,8 +96,8 @@
                     <template v-else>
                         <h2 class="mb-10">najaktivnije lige</h2>
                         <p class="smaller f20" v-for="league in locations.leagues">
-                            <template v-if="league.link != ''">
-                                <a target="'_blank'" :href="league.link">
+                            <template v-if="league.uri != ''">
+                                <a target="'_blank'" :href="`/${league.uri}`">
                                     {{ league.name }}
                                 </a>
                             </template>

@@ -124,6 +124,9 @@
 
           &.low-margin{
               margin-top: 70px;
+              &.league-players{
+                margin-bottom: -60px;
+              }
           }
       }
       .chart-wrapper{
@@ -276,6 +279,9 @@
 
           .low-margin{
               margin-bottom: 0px;
+              &.league-players{
+                margin-bottom: 0 !important;
+              }
           }
         .summary-item{
 
