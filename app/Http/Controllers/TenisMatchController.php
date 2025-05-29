@@ -280,6 +280,9 @@ class TenisMatchController extends Controller
         if(!$new_loser)
             PlayerController::update_player_cache_from_match($loser,$players_data['loser'], $winner,$match,$match_num,$points);
 
+        
+
+
         $winner_data = [
             'name' => $winner->first_name . ' ' . $winner->last_name,
             'uri' => $winner->uri,
@@ -313,6 +316,10 @@ class TenisMatchController extends Controller
             'count' => TenisMatch::where('league_id', $match->league_id)->count(),
         ];
         LeagueController::update_league_cache($winner_data, $loser_data, $location_data, $court_data, $league_data, $match->match_date, $new_players);
+        
+        LeaguesController::update_league_cache_from_match($match->getLeague()['uri'],$match,$match_num,$winner_gains + $loser_gains,$winner_data,$loser_data);
+
+        LeaguesController::update_league_list_cache($match->getLeague()['uri'],$match_num,$new_players,$winner_gains + $loser_gains);
 
         if(env('APP_ENV') == 'production'){
             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));

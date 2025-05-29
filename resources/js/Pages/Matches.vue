@@ -67,6 +67,7 @@ function getDateMonth(date){
       </div>
       <div v-if="props.showMessage">
         <p v-if="props.showMessage.wins"class="message">Ovaj teniser nikada nije pobedio &#128577;</p>
+        <p v-if="props.showMessage.league"class="message league">ovaj turnir nema mečeve &#128577;</p>
         <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
       </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
@@ -87,7 +88,16 @@ function getDateMonth(date){
                 </a>
             </template>
         </div>
-        <div class="location">{{ match.league.name }}</div>
+        <div class="location">
+            <template v-if="match.league.uri == ''">
+                    {{ match.league.name }}
+            </template>
+            <template v-else>
+                <a :href="`/${match.league.uri}`">
+                    {{ match.league.name }}
+                </a>
+            </template>
+      </div>
       </div>
     </div>
     <div id="mobile">

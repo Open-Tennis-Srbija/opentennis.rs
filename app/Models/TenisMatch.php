@@ -43,6 +43,7 @@ class TenisMatch extends Model
         return [
             'name' => $league->name,
             'link' => $league->link,
+            'uri' => $league->uri,
         ];
     }
 

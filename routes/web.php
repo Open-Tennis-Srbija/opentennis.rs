@@ -6,6 +6,7 @@ use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\TenisMatchController;
 use App\Http\Controllers\CourtsController;
 use App\Http\Controllers\LeaguesController;
+use App\Http\Controllers\ResolverController;
 use Illuminate\Support\Facades\Route;
 use Ziggy\Ziggy;
 
@@ -27,6 +28,11 @@ Route::inertia('/dodaj', 'AddMatch',
 Route::post('/dodaj', [TenisMatchController::class, 'store']);
 
 
+Route::inertia('/lige-turniri','Leagues',[
+    'leagues' => LeaguesController::getLeaguesForList()
+    ])->name('leagues');
+
+Route::get('/turnir/{league_id}', [LeaguesController::class, 'getLeague'])->name('league');
 
 Route::inertia('/dodaj-ligu', 'ForClubs')->name('clubs');
 
@@ -64,5 +70,5 @@ Route::middleware('auth')->group(function(){
 });
 
 
-Route::get('/{uri}',[PlayerController::class, 'show'])->name('player');
+Route::get('/{uri}',[ResolverController::class, 'resolveUri'])->name('player');
 

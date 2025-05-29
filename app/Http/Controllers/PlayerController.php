@@ -47,6 +47,15 @@ class PlayerController extends Controller
         return json_decode(file_get_contents(storage_path('app/public/players.json')), true);
 
     }
+
+    public static function getPlayerNumber($id){
+        $players = Self::getPlayers();
+
+        for($i = 0; $i<count($players);$i++){
+            if($players[$i]['id'] == $id) return $i+1;
+        }
+    }
+
     public static function getPlayers(){
         $raw_players = Player::all();
 
@@ -315,9 +324,8 @@ class PlayerController extends Controller
             ]);
 
             usort($cache['data']['wins'], function($a, $b) {
-                $matchComparison = $b['number'] <=> $a['number'];
+                return $b['number'] <=> $a['number'];
 
-                return $matchComparison ?: strcmp($a['name'], $b['name']);
             });
         }
         else{
@@ -339,9 +347,7 @@ class PlayerController extends Controller
 
             ]);
             usort($cache['data']['loses'], function($a, $b) {
-                $matchComparison = $b['number'] <=> $a['number'];
-
-                return $matchComparison ?: strcmp($a['name'], $b['name']);
+                return $b['number'] <=> $a['number'];
             });
         }
 

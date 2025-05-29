@@ -78,8 +78,8 @@ onMounted(() => {
       <div class="ranking-entry" v-for="(player, index) in players">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
         <div class="rank"
-        :class="{'first': index==0, 'second': index == 1, 'third': index==2, 'align-left': index+1 > 9}">
-          {{ index+1}}
+        :class="{'first': (index==0 && !player.rank) || player.rank == 1 , 'second': (index == 1  && !player.rank) || player.rank == 2, 'third': (index==2 && !player.rank) || player.rank == 3, 'align-left': index+1 > 9}">
+          {{player.rank ? player.rank : index+1}}
         </div>
         <div class="name"><Link prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
         <div class="spacer"></div>

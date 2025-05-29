@@ -1,0 +1,13 @@
+.leagues{
+    .rankings-header,
+    .ranking-entry{
+        grid-template-columns: 274px 50px 344px 133px 133px 133px 133px;
+
+
+        .unknown{
+            color: #949494;
+            font-weight: normal;
+        }
+    }
+
+}

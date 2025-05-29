@@ -1,0 +1,75 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+import utils from '../utils';
+import EditBtn from './components/EditIcon.vue';
+import { computed } from 'vue';
+const utl = utils;
+
+const props = defineProps({
+  leagues: Array,
+});
+
+const isCLient = ref(false);
+
+
+const formatDate = ((start, end) =>{
+
+    let raw_start = new Date(start);
+    let raw_end = new Date(end);
+
+    if(raw_start.getFullYear() == raw_end.getFullYear()){
+      if(raw_start.getMonth() == raw_end.getMonth()){
+        return `${utl.getDateDay(start)} ${raw_start.getDate()} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(start)} ${raw_end.getFullYear()}`
+      }
+      else{
+        return `${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(end)} ${raw_end.getFullYear()}}}`
+      }
+    }
+    else{
+      return `${utl.formatDate(start)} - ${utl.formatDate(end)}`
+    }
+})
+
+
+onMounted(() => {
+  isCLient.value = true;
+  console.log(props.leagues)
+});
+
+</script>
+<template>
+  <!-- <div class="loader" :class="{'close' : isLoading}">
+
+  </div> -->
+  <Head title="Teniseri -" />
+  <div class="rankings-wrapper leagues">
+    <div id="desktop">
+      <div class="rankings-header">
+        <div class="name">ime</div>
+        <div class="spacer"></div>
+        <div class="elo">datum početak - datum kraj</div>
+        <div class="elo">opština</div>
+        <div class="total-matches">svi mečevi</div>
+        <div class="wins">poeni</div>
+        <div class="loses">teniseri</div>
+      </div>
+      <div class="ranking-entry" v-for="(league, index) in props.leagues">
+        <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
+        <div class="spacer"></div>
+        <div class="wins">{{formatDate(league.date_start, league.date_end)}}</div>
+        <div class="wins" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
+        <div class="total-matches">{{league.match_number}}</div>
+        <div class="wins" :class="{'unknown': league.points == 0}">{{league.points}}</div>
+        <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
+      </div>
+    </div>
+    <div id="mobile">
+      <div class="ranking-entry" v-for="(league, index) in props.leagues">
+        <div class="name" style="font-weight: bold;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
+        <div class="date">{{formatDate(league.date_start, league.date_end)}}</div>
+        <div class="county" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
+
+      </div>
+    </div>
+  </div>
+</template>

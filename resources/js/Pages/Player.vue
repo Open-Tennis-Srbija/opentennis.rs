@@ -295,8 +295,8 @@ function containsGreek(text) {
                         <h2>najaktivnije lige</h2>
                         <template v-for="league in locations.leagues">
                             <p>
-                                <template v-if="league.link != ''">
-                                    <a target="'_blank'" :href="league.link">
+                                <template v-if="league.uri != ''">
+                                    <a target="'_blank'" :href="`/${league.uri}`">
                                         {{ league.name }}
                                     </a>
                                 </template>
