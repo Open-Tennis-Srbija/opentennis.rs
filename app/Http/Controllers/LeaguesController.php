@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\League;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use LeagueChartData;
 
 class LeaguesController extends Controller
 {
@@ -75,7 +76,15 @@ class LeaguesController extends Controller
     }
 
     public static function update_league_cache_from_match($league_uri,$match,$match_number,$gains,$winner_data, $loser_data){
-        $cache = json_decode(file_get_contents(storage_path('app/public/leagues/'.$league_uri.'.json')), true);
+        if(!file_exists(storage_path('app/public/leagues/'.$league_uri.'.json'))){
+            $league = League::where('uri',$league_uri)->first();
+            $cache = LeaguesController::returnLeague($league);
+            Storage::disk('public')->put('/leagues/'.$league_uri.'.json',json_encode($cache));
+        }
+        else{
+            $cache = json_decode(file_get_contents(storage_path('app/public/leagues/'.$league_uri.'.json')), true);
+        }
+
         
         $cache['points'] += $gains;
         $cache['match_number']+= 1;

@@ -330,8 +330,8 @@ class TenisMatchController extends Controller
             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
             Mail::to('nikola@openinnovation.me')->send(new AddMatchNotification($match));
         }
-        /* else */
-        /*     Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match)); */
+         else
+             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match)); 
 
         return redirect()->back()->with('success', 'Meč je uspešno dodat.');
     }
