@@ -18,7 +18,7 @@ onBeforeMount(()=>{
 })
 
 onMounted(() => {
-    page.props["title"] = "Turnir";
+    page.props["title"] = "Lige & Turniri";
 });
 
 const formatDate = ((start, end) =>{
@@ -31,7 +31,7 @@ const formatDate = ((start, end) =>{
         return `${utl.getDateDay(start)} ${raw_start.getDate()} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(start)} ${raw_end.getFullYear()}`
       }
       else{
-        return `${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(end)} ${raw_end.getFullYear()}}}`
+        return `${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(end)} ${raw_end.getFullYear()}`
       }
     }
     else{

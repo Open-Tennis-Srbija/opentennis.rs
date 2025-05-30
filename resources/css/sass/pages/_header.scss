@@ -120,12 +120,13 @@
             width: 1200px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            gap:100px; 
 
             a {
                 text-decoration: none;
                 color: $blue;
-                font-size: 18px;
+                font-size: 17px;
                 font-family: "Helvetica Neue";
                 padding-top: 2px;
                 text-transform: uppercase;
