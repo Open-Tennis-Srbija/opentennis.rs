@@ -1,21 +1,26 @@
 <script setup>
-import { onBeforeMount, defineAsyncComponent } from 'vue';
+import { onMounted, defineAsyncComponent } from 'vue';
 import { reactive } from 'vue';
 import { computed } from 'vue';
+import axios from 'axios';
 
 const props = defineProps({
     player_id: Number,
-    data: Object,
 });
 
 const VueApexCharts = defineAsyncComponent(() => import('vue3-apexcharts'));
 
 const data = reactive({
-    playerData: props.data
+    playerData: {}
 });
 
-onBeforeMount(() => {
-
+onMounted(() => {
+    axios.get(`/get-player-chart/${props.player_id}`).then((response) => {
+        data.playerData = response.data;
+        console.log('Player data:', data.playerData);
+    }).catch((error) => {
+        console.error('Error fetching player data:', error);
+    });
 
 });
 
@@ -25,28 +30,6 @@ const formatDate = (d) => {
     let months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'];
     return days[date.getDay()] + ' ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
 }
-const options = reactive({
-    chart: {
-        id: 'fb',
-        group: 'social',
-        type: 'line',
-        zoom: {
-            enabled: false
-        },
-        toolbar: {
-            show: false
-        },
-        min: 0,
-        max: 1000,
-        dataLabels: {
-              enabled: true,
-            },
-        xaxis: {
-            categories: []
-        },
-    },
-    colors: ['#008FFB'],
-})
 
 
 const points = computed(() => {

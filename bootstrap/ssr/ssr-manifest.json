@@ -17,6 +17,9 @@
   "resources/js/Layouts/Layout.vue?vue&type=style&index=0&lang.scss": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
+  "resources/js/Layouts/components/Loader.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
   "resources/js/Layouts/components/Logo.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
@@ -45,6 +48,12 @@
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/Join.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/League.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Leagues.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/Matches.vue": [

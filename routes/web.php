@@ -12,30 +12,33 @@ use Illuminate\Support\Facades\Route;
 Route::inertia('/', 'Home')->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);
 
-Route::inertia('/mecevi', 'Matches')->name('matches');
+Route::inertia('/mecevi', 'Matches', ['loadMatches' => true])->name('matches');
 Route::get('/get-matches', [TenisMatchController::class, 'getMatches']);
 
-/* Route::inertia('/dodaj', 'AddMatch', */
-/*     ['players' => PlayerController::getPlayersForDropdown(), */
-/*       'courts' => CourtsController::getCourts(), */
-/*        'leagues' => LeaguesController::getLeagues(), */
-/*     ] */
-/* )->name('addMatch'); */
-/* Route::post('/dodaj', [TenisMatchController::class, 'store']); */
-/**/
-/**/
-/**/
-Route::inertia('/teniseri', 'Join')->name('join');
+Route::get('/get-player/{uri}', [PlayerController::class, 'get_player_by_uri']);
+Route::get('/get-player-chart/{id}', [PlayerController::class, 'getChart']);
 
+ Route::inertia('/dodaj', 'AddMatch', 
+     ['players' => PlayerController::getPlayersForDropdown(), 
+       'courts' => CourtsController::getCourts(), 
+        'leagues' => LeaguesController::getLeagues(), 
+     ] 
+ )->name('addMatch'); 
+ Route::post('/dodaj', [TenisMatchController::class, 'store']); 
+
+Route::inertia('/lige-turniri', 'Leagues')->name('leagues');
+
+Route::get('/get-leagues', [LeaguesController::class, 'getLeaguesForList']);
+Route::get('/get-league/{uri}', [LeaguesController::class, 'returnLeague']);
 
 Route::inertia('/dodaj-ligu', 'ForClubs')->name('clubs');
 
 Route::inertia('/misija', 'Mision')->name('mision');
 
-/* Route::inertia('/statistika', 'Statistics', */
-/*     ['data' => LeagueController::getCachedStatistics()] */
-/* )->name('leagueStats'); */
-/**/
+Route::inertia('/statistika', 'Statistics')->name('leagueStats');
+Route::get('/get-statistics', [LeagueController::class, 'getStatistics']);
+Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
+
 /* Route::post('/leagueChart',[LeagueController::class, 'getChart'])->name('leagueChart'); */
 /**/
 
@@ -63,8 +66,7 @@ Route::inertia('/pravila', 'Rules')->name('rules');
 /*     Route::post('/logout',[AuthController::class, 'logout'])->name('logout'); */
 /* }); */
 /**/
-/**/
-Route::get('/{uri}',[PlayerController::class, 'show'])->name('player');
+Route::get('/{uri}',[ResolverController::class, 'resolveUri'])->name('player');
 
 /* Route::get('/{uri}','Player'); */
 /* Route::get('/{uri}',PlayerController::class, 'getPlayerByUri'); */

@@ -2,7 +2,10 @@
 
 namespace App\Mail;
 
+use App\Models\Court;
+use App\Models\League;
 use App\Models\TenisMatch;
+use App\Models\TennisMatch;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -18,7 +21,7 @@ class AddMatchNotification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public TenisMatch $match)
+    public function __construct(public TennisMatch $match)
     {
 
     }
@@ -30,7 +33,7 @@ class AddMatchNotification extends Mailable
     {
         return new Envelope(
             from: new Address('info@srpskatenisliga.rs', 'Srpska Tenis Liga'),
-            subject: 'Novi meč dodat na SrpskaTenisLiga.rs',
+            subject: 'Novi meč je dodat na SrpskaTenisLiga.rs',
 
         );
     }
@@ -42,16 +45,16 @@ class AddMatchNotification extends Mailable
     {
         return new Content(
             view: 'mail.match.added',
-            with: ['winner' => $this->match->getWinnerName(),
-                    'winner_uri' => $this->match->getPlayerUri('winner'),
-                    'loser' => $this->match->getLoserName(),
-                    'loser_uri' => $this->match->getPlayerUri('loser'),
+            with: ['winner' => $this->match->winners()->first()->first_name . ' ' . $this->match->winners()->first()->last_name,
+                    'winner_uri' => $this->match->winners()->first()->uri,
+                    'loser' => $this->match->losers()->first()->first_name . ' ' . $this->match->losers()->first()->last_name,
+                    'loser_uri' => $this->match->losers()->first()->uri,
                     'set_score' => $this->match->set_score,
                     'game_score' => $this->match->game_score,
                     'date' => $this->match->getFormatedDate(),
-                    'location' => $this->match->match_location,
-                    'court' => $this->match->getCourt(),
-                    'league' => $this->match->getLeague(),
+                    'location' => $this->match->county,
+                    'court' => Court::find($this->match->court_id),
+                    'league' => League::find($this->match->league_id),
                   ],
         );
     }

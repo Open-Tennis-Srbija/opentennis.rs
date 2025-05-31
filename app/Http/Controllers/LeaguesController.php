@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\League;
 use Illuminate\Support\Facades\Storage;
-use Inertia\Inertia;
-use LeagueChartData;
 
 class LeaguesController extends Controller
 {
-    //
     public static function getLeagues(){
         return League::where('id', '>', 1)->orderByRaw('LOWER(name)')->get();
     }
 
-    public static function returnLeague($league){
+    public static function returnLeague($league_uri){
+        $league = League::where('uri', $league_uri)->first();
         return [
             'name' => $league->name,
             'county' => $league->county,

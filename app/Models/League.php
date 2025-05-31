@@ -20,50 +20,39 @@ class League extends Model
 
     public function getMatchCount()
     {
-        return TenisMatch::where('league_id', $this->id)->count();
+        return TennisMatch::where('league_id', $this->id)->count();
     }
 
     public function getPlayerCount()
     {
-        return DB::table(function ($query) {
-            $query->select('winner_id as player_id')
-                ->from('tenis_matches')
-                ->where('league_id', $this->id)
-                ->union(
-                    DB::table('tenis_matches')
-                        ->select('loser_id as player_id')
-                        ->where('league_id', $this->id)
-                );
-        }, 'players')
-            ->selectRaw('COUNT(DISTINCT player_id) as count')
-            ->value('count');
+        return DB::table('match_players')
+            ->join('tennis_matches', 'match_players.tennis_match_id', '=', 'tennis_matches.id')
+            ->where('tennis_matches.league_id', $this->id)
+            ->distinct()
+            ->count('match_players.player_id');
     }
 
     public function getMatches(){
-        $matches = TenisMatch::where('league_id', $this->id)->get();
+        $matches = TennisMatch::where('league_id', $this->id)->get();
 
         $response = [];
 
         foreach($matches as $match){
             
-            $winner = Player::find($match->winner_id);
-            $loser = Player::find($match->loser_id);
-
             array_push($response, [
-                'id' => $match->id,
-                'winner_points' =>NikolaAlgoV1::getMatchEloGains($match,'winner'),
-                'loser_points' => NikolaAlgoV1::getMatchEloGains($match,'loser'),
-                'winner_uri' => $match->getPlayerUri('winner'),
-                'loser_uri' => $match->getPlayerUri('loser'),
-                'winner' => $winner->first_name . ' ' . $winner->last_name,
-                'loser' => $loser->first_name . ' ' . $loser->last_name,
+                'winner_point_gain' =>$match->winner_point_gain,
+                'loser_point_gain' => $match->loser_point_gain,
+                'winner_uri' => $match->winners()->first()->uri,
+                'loser_uri' => $match->losers()->first()->uri,
+                'winner_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
+                'loser_name' => $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name,
                 'set_score' => $match->set_score,
-                'number' => $match->getNumber(),
+                'number' => $match->number,
                 'game_score' => $match->game_score,
-                'date' => $match->match_date,
-                'location' => $match->match_location,
-                'court' => $match->getCourt(),
-                'league'=> $match->getLeague(),
+                'date' => $match->date,
+                'county' => $match->county,
+                'court' => Court::find($match->court_id),
+                'league'=> $this,
             ]);
             usort($response, function($a, $b) {
                 return $b['number'] <=> $a['number'];
@@ -93,19 +82,13 @@ class League extends Model
         return $players;
     }
 
-    private function playerIds(){
-            return DB::table(function ($query) {
-            $query->select('winner_id as player_id')
-                ->from('tenis_matches')
-                ->where('league_id', $this->id)
-                ->union(
-                    DB::table('tenis_matches')
-                        ->select('loser_id as player_id')
-                        ->where('league_id', $this->id)
-                );
-        }, 'players')
-        ->distinct()
-        ->pluck('player_id');
+    private function playerIds()
+    {
+        return DB::table('match_players')
+            ->join('tennis_matches', 'match_players.tennis_match_id', '=', 'tennis_matches.id')
+            ->where('tennis_matches.league_id', $this->id)
+            ->distinct()
+            ->pluck('match_players.player_id');
     }
 
 
@@ -113,11 +96,10 @@ class League extends Model
     {
         $points = 0;
 
-        $matches = TenisMatch::where('league_id', $this->id)->get();
+        $matches = TennisMatch::where('league_id', $this->id)->get();
 
         foreach ($matches as $match) {
-            $gains = NikolaAlgoV1::getMatchEloGains($match);
-            $points += $gains[0] + $gains[1];
+            $points += $match->winner_point_gain + $match->loser_point_gain;
         }
 
         return $points;

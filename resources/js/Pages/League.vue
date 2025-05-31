@@ -2,24 +2,37 @@
 import { usePage } from "@inertiajs/vue3";
 import { onMounted, computed, reactive, onBeforeMount } from "vue";
 import utils from "../utils";
-import PlayerChart from "./components/PlayerChart.vue";
-import EditIcon from "./components/EditIcon.vue";
+import axios from "axios";
+import bus from "vue3-eventbus";
+import { ref } from "vue";
 
 const utl = utils;
-const props = defineProps({ league: Object });
+const league = ref({});
+
 const page = usePage();
 const isExpanded = reactive({
     players: false,
 });
-onBeforeMount(()=>{
-
-    console.log(props.league)
-
-})
-
+const props = defineProps({
+    league_uri: String,
+});
 onMounted(() => {
     page.props["title"] = "Lige & Turniri";
+    axios.get(`/get-league/${props.league_uri}`).then((response) => {
+        league.value = response.data;
+        bus.emit("loading", false);
+    }).catch((error) => {
+        console.error("Error fetching league:", error);
+    });
 });
+const points = computed(() => {
+	if (!league.value.points) {
+		return 0;
+	}
+	return utils.formatAsThousands(league.value.points);
+});
+
+
 
 const formatDate = ((start, end) =>{
 
@@ -41,11 +54,11 @@ const formatDate = ((start, end) =>{
 
 const players = computed(()=>{
     let data = []
-    if(props.league.players.length <= 10 || isExpanded.players){
-            data =  props.league.players
+    if(league.value.players.length <= 10 || isExpanded.players){
+            data =  league.value.players
     }
     else {
-        data = props.league.players.slice(0, 10)
+        data = league.value.players.slice(0, 10)
     }
     return data;
 
@@ -58,11 +71,11 @@ function containsGreek(text) {
 </script>
 <template>
     <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player">
-        <h1 :class="{'fix-letters': containsGreek(props.league.name)}">
-            {{ props.league.name }}
+        <h1 :class="{'fix-letters': containsGreek(league.name)}">
+            {{ league.name }}
         </h1>
-     
-        <p class="subtitle">{{ props.league.county }}</p>
+
+        <p class="subtitle">{{ league.county }}</p>
         <p class="subtitle-spacer" >
             &nbsp;
         </p>
@@ -75,15 +88,15 @@ function containsGreek(text) {
             <div class="summary player three">
                 <div class="summary-item">
                     <h2>poeni</h2>
-                    <p>{{ utils.formatAsThousands(props.league.points) }}</p>
+                    <p>{{ points }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>teniseri</h2>
-                    <p>{{ props.league.player_number }}</p>
+                    <p>{{ league.player_number }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>svi mečevi</h2>
-                    <p>{{ props.league.match_number }}</p>
+                    <p>{{ league.match_number }}</p>
                 </div>
             </div>
             <h2 class="summary-title low-margin">teniseri</h2>
@@ -91,7 +104,7 @@ function containsGreek(text) {
                 <div class="summary-item players">
                 </div>
                 <div class="summary-item players">
-                    <template v-if="props.league.players.length > 0">
+                    <template v-if="league.players?.length > 0">
                         <template v-for="player in players">
                             <p>
                                 <Link prefetch="false" :href="`/${player.uri}`">{{
@@ -100,7 +113,7 @@ function containsGreek(text) {
                             </p>
                         </template>
                         <p
-                            v-if="Object.values(props.league.players).length > 10"
+                            v-if="Object.values(league.players).length > 10"
                             class="show-more"
                             @click="isExpanded.players = !isExpanded.players">
                             {{ !isExpanded.players ? 'vidi sve' : 'vidi manje' }}
@@ -116,10 +129,11 @@ function containsGreek(text) {
             <h2 class="summary-title no-border low-margin">mečevi</h2>
             <div class="player-matches">
                 <MatchTable
-                    :matches="props.league.matches":showMessage="{ league: props.league.match_number == 0 }"
+                v-if="league.matches"   
+                :propMatches="league.matches" :loadMatches="false" :showMessage="{ league: league.match_number == 0 }"
                 />
             </div>
         </div>
     </div>
-    <Head :title="`${props.league.name} -`" />
+    <Head :title="`${league.name} -`" />
 </template>

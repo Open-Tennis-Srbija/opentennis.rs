@@ -21,6 +21,9 @@ class LeagueSeeder extends Seeder
 
             $model->name = $league->name;
             $model->link = $league->link;
+            $model->county = $league->county;
+            $model->uri = $league->uri;
+            
 
             $model->save();
 
