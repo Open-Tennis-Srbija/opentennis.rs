@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use NikolaAlgoV1;
+use App\Models\TennisMatch;
+use App\Models\Court;
+use Illuminate\Support\Facades\DB;
 
 class Player extends Model
 {
@@ -19,87 +22,114 @@ class Player extends Model
         'uri',
         'location',
     ];
-
-
-    public function getMatchups(){
-        $matches = TenisMatch::where('winner_id', $this->id)
-            ->orWhere('loser_id', $this->id)
-            ->get();
-
-        $players = Player::all();
-
-        $matchups = [
-            'wins' => [],
-            'loses' => [],
-            'notPlayedWith' => [],
-        ];
-
-        foreach($matches as $match){
-            if($match->winner_id == $this->id){
-                $loser = Player::find($match->loser_id);
-
-                if(!isset($matchups['wins'][$loser->getName()])){
-                    $matchups['wins'][$loser->getName()] = [
-                        'name' => $loser->getName(),
-                        'uri' => $loser->uri,
-                        'number' => 1,
-                    ];
-                }
-                else{
-                    $matchups['wins'][$loser->getName()]['number']++;
-                }
-                foreach($players as $key=>$player){
-                    if($player->id == $loser->id || $player->id == $this->id){
-                        $players->forget($key);
-                    }
-                }
-            }
-            else{
-                $winner = Player::find($match->winner_id);
-                if(!isset($matchups['loses'][$winner->getName()])){
-                    $matchups['loses'][$winner->getName()] = [
-                        'name' => $winner->getName(),
-                        'uri' => $winner->uri,
-                        'number' => 1,
-                    ];
-                }
-                else{
-                    $matchups['loses'][$winner->getName()]['number']++;
-                }
-                   foreach($players as $key=>$player){
-                    if($player->id == $winner->id || $player->id == $this->id){
-                        $players->forget($key);
-                    }
-                }
-            }
-        }
-
-        foreach($players as $player){
-            array_push($matchups['notPlayedWith'], [
-                'name' => $player->getName(),
-                'uri' => $player->uri,
-            ]);
-        }
-        usort($matchups['wins'], function($a, $b) {
-            $comparison = $b['number'] <=> $a['number'];
-
-            return $comparison ?: strcmp($a['name'], $b['name']);
-        });
-        usort($matchups['loses'], function($a, $b) {
-            $comparison = $b['number'] <=> $a['number'];
-
-            return $comparison ?: strcmp($a['name'], $b['name']);
-        });
-        usort($matchups['notPlayedWith'], function($a, $b) {
-
-         return strcmp($a['name'], $b['name']);
-        });
-        return $matchups;
-
+    public function matches()
+    {
+        return $this->belongsToMany(TennisMatch::class, 'match_players')
+                    ->withPivot('team')
+                    ->withTimestamps()->get();
     }
+
+    public function wins()
+    {
+        return $this->belongsToMany(TennisMatch::class, 'match_players')
+                    ->withPivot('team')
+                    ->wherePivot('team', 'winner')
+					->orderByDesc('tennis_matches.number');
+    }
+
+    public function losses()
+    {
+        return $this->belongsToMany(TennisMatch::class, 'match_players')
+                    ->withPivot('team')
+                    ->wherePivot('team', 'loser')
+					->orderByDesc('tennis_matches.number');
+    }
+
+    /**
+     * Get players this player won against, with counts.
+     */
+    public function wonAgainstWithCounts()
+    {
+        return DB::table('match_players as winner')
+            ->join('match_players as loser', function ($join) {
+                $join->on('winner.tennis_match_id', '=', 'loser.tennis_match_id')
+                     ->where('loser.team', '=', 'loser');
+            })
+            ->where('winner.team', '=', 'winner')
+            ->where('winner.player_id', '=', $this->id)
+            ->groupBy('loser.player_id')
+            ->select('loser.player_id', DB::raw('count(*) as win_count'))
+            ->get()
+            ->map(function($row) {
+                $player = Player::find($row->player_id);
+                return [
+                    'uri' => $player ? $player->uri : 'unknown',
+                    'name' => $player ? $player->getName() : 'Unknown',
+                    'count' => $row->win_count,
+                ];
+            })->values();
+    }
+
+    /**
+     * Get players this player lost against, with counts.
+     */
+    public function lostAgainstWithCounts()
+    {
+        return DB::table('match_players as loser')
+            ->join('match_players as winner', function ($join) {
+                $join->on('loser.tennis_match_id', '=', 'winner.tennis_match_id')
+                     ->where('winner.team', '=', 'winner');
+            })
+            ->where('loser.team', '=', 'loser')
+            ->where('loser.player_id', '=', $this->id)
+            ->groupBy('winner.player_id')
+            ->select('winner.player_id', DB::raw('count(*) as loss_count'))
+            ->get()
+            ->map(function($row) {
+                $player = Player::find($row->player_id);
+                return [
+                    'uri' => $player ? $player->uri : 'unknown',
+                    'name' => $player ? $player->getName() : 'Unknown',
+                    'count' => $row->loss_count,
+                ];
+            })->values();
+    }
+
+    /**
+     * Get players this player has not played with.
+     */
+    public function notPlayedWith()
+    {
+        // Get all match IDs the player participated in
+        $matchIds = DB::table('match_players')
+            ->where('player_id', $this->id)
+            ->pluck('tennis_match_id');
+
+        // Get all opponent uris from those matches, excluding self
+        $opponentUris = DB::table('match_players')
+            ->whereIn('tennis_match_id', $matchIds)
+            ->where('player_id', '!=', $this->id)
+            ->join('players', 'match_players.player_id', '=', 'players.id')
+            ->pluck('players.uri')
+            ->unique();
+
+        // Add self uri to the exclusion list
+        $excludeUris = $opponentUris->merge([$this->uri])->unique();
+
+        // Return players not played with
+        return Player::whereNotIn('uri', $excludeUris)->get()->map(function($player) {
+            return [
+                'uri' => $player->uri,
+                'name' => $player->getName(),
+            ];
+        })->values();
+    }
+
+
     public function getName(){
         return $this->first_name . ' ' . $this->last_name;
     }
+
     public function getMatches(){
         $raw_wins =TenisMatch::where('winner_id', $this->id)->get()->sortBy('match_date', SORT_REGULAR,true)->sortBy('date_created', SORT_REGULAR);
         $raw_loses = TenisMatch::where('loser_id', $this->id)->get()->sortBy('match_date', SORT_REGULAR,true)->sortBy('date_created', SORT_REGULAR);;
@@ -155,39 +185,23 @@ class Player extends Model
         ];
     }
 
-    public function getStats()
+ 
+
+    public function getStatsOnDate($date)
     {
-        $total_matches = TenisMatch::where('winner_id', $this->id)
-            ->orWhere('loser_id', $this->id)->get();
+        // Get all match IDs the player participated in from the pivot table
+        $matchIds = $this->matches()->pluck('id');
+		        // Fetch those matches
+        $total_matches = TennisMatch::whereIn('id', $matchIds)->get();
 
-        $wins = TenisMatch::where('winner_id', $this->id)
-            ->count();
-
-        $loses = $total_matches->count() - $wins;
-
-        $win_precentage = $total_matches->count() > 0 ? ($wins / $total_matches->count()) * 100 : 0;
-
-        return [
-            'total_matches' => $total_matches->count(),
-            'wins' => $wins,
-            'loses' => $loses,
-            'win_precentage' => round($win_precentage),
-            'elo' => $this->getElo($total_matches),
-        ];
-    }
-
-    public function getStatsOnDate($date){
-        $total_matches = TenisMatch::where('winner_id', $this->id)
-            ->orWhere('loser_id', $this->id)
-            ->get();
-
+        // Filter matches by date
         $filtered_matches = [];
-
-        foreach($total_matches as $match){
-            if(strtotime($match->match_date) <= strtotime($date)){
-                array_push($filtered_matches, $match);
+        foreach ($total_matches as $match) {
+            if (strtotime($match->date) <= strtotime($date)) {
+                $filtered_matches[] = $match;
             }
         }
+
         return [
             'elo' => $this->getElo($filtered_matches),
         ];
@@ -198,6 +212,65 @@ class Player extends Model
         $elo = NikolaAlgoV1::calculatePoints($matches, $this);
 
         return $elo;
+    }
+
+    public function mostUsedCourts()
+    {
+        return DB::table('match_players')
+            ->join('tennis_matches', 'match_players.tennis_match_id', '=', 'tennis_matches.id')
+            ->where('match_players.player_id', $this->id)
+            ->whereNotNull('tennis_matches.court_id')
+            ->select('tennis_matches.court_id', DB::raw('count(*) as count'))
+            ->groupBy('tennis_matches.court_id')
+            ->orderByDesc('count')
+            ->get()
+            ->map(function($row) {
+                $court = Court::find($row->court_id);
+                return [
+                    'name' => $court ? $court->name : 'Nepoznat teren',
+                    'link' => $court && $court->link ? $court->link : '',
+                    'count' => $row->count,
+                ];
+            })
+            ->values();
+    }
+    public function mostUsedLeagues()
+    {
+        return DB::table('match_players')
+            ->join('tennis_matches', 'match_players.tennis_match_id', '=', 'tennis_matches.id')
+            ->where('match_players.player_id', $this->id)
+            ->whereNotNull('tennis_matches.league_id')
+            ->select('tennis_matches.league_id', DB::raw('count(*) as count'))
+            ->groupBy('tennis_matches.league_id')
+            ->orderByDesc('count')
+            ->get()
+            ->map(function($row) {
+                $league = \App\Models\League::find($row->league_id);
+                return [
+                    'name' => $league ? $league->name : 'Nepoznata liga',
+                    'link' => $league && $league->link ? $league->link : '',
+                    'count' => $row->count,
+                ];
+            })
+            ->values();
+    }
+    public function mostUsedCounties()
+    {
+        return DB::table('match_players')
+            ->join('tennis_matches', 'match_players.tennis_match_id', '=', 'tennis_matches.id')
+            ->where('match_players.player_id', $this->id)
+            ->whereNotNull('tennis_matches.county')
+            ->select('tennis_matches.county', DB::raw('count(*) as count'))
+            ->groupBy('tennis_matches.county')
+            ->orderByDesc('count')
+            ->get()
+            ->map(function($row) {
+                return [
+                    'county' => $row->county,
+                    'count' => $row->count,
+                ];
+            })
+            ->values();
     }
 
 }

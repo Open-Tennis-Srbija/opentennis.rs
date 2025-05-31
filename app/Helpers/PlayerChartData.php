@@ -3,12 +3,26 @@
 use App\Http\Controllers\PlayerController;
 use App\Models\Player;
 use App\Models\TenisMatch;
+use Illuminate\Support\Facades\Storage;
 
 Class PlayerChartData{
 
+    public static function get_cached_charts($uri){
+        $file = 'charts/' . $uri . '.php';
+        if(Storage::disk('public')->exists($file)){
+            return include(Storage::disk('public')->path($file));
+        }
+        else{
+            return null;
+        }
+    }
+
     public static function getChartData($player){
 
-        $matches = TenisMatch::where('winner_id', $player->id)->orWhere('loser_id', $player->id)->get()->sortBy('match_date');
+        $wins = $player->wins->reverse();
+        $losses = $player->losses->reverse();
+        $matches = $wins->merge($losses)->sortBy('number')->values();
+
         $total_players = Player::all()->count();
 
         $data = [
@@ -18,10 +32,27 @@ Class PlayerChartData{
 
         ];
 
-        $data['points'] = self::getPointsChanges($matches, $player);
-
-
-        $data['rankings'] = self::getRankingsChanges($matches, $player);
+        $check = count($matches) > 0;
+        $first_match = $check ? $matches->first() : null;
+        $start = new DateTime($first_match->date);
+        if(count($matches) == 1){
+            $data['points'] = [
+                [
+                    'points' => count($wins) > 0 ? $wins[0]->winner_point_gain : $losses[0]->loser_point_gain,
+                    'date' => $matches[0]->match_date,
+                ]
+            ];
+            $data['rankings'] = [
+                [
+                    'rank' => $player->rank,
+                    'date' => $matches[0]->match_date,
+                ]
+            ];
+        }
+        else{
+            $data['points'] = self::getPointsChanges($start,$matches, $player->id);
+            $data['rankings'] = self::getRankingsChanges($start,$player);
+        }
 
 
 
@@ -30,53 +61,27 @@ Class PlayerChartData{
     }
 
 
-    private static function getPointsChanges($matches,$player){
+    private static function getPointsChanges($start, $matches, $player_id){
         $accumulative_points = 0;
         $changes_array = [];
-        $start = null;
-        if(count($matches) > 0){
-            $start = new DateTime($matches[0]->match_date);
-        }
-        else{
-            $start = new DateTime('now');
-        }
         $end = new DateTime('tomorrow');
 
         $interval = DateInterval::createFromDateString('1 day');
         $period = new DatePeriod($start, $interval, $end);
 
-        if(count($matches) == 1){
-            if($matches[0]->winner_id == $player->id){
-                return [
-                    [
-                        'points' => NikolaAlgoV1::getMatchEloGains($matches[0])[0],
-                        'date' => $matches[0]->match_date,
-                    ]
-                ];
-            }
-            else{
-                return [
-                    [
-                        'points' => NikolaAlgoV1::getMatchEloGains($matches[0])[1],
-                        'date' => $matches[0]->match_date,
-                    ]
-                ];
-            }
-        }
-
         foreach($matches as $match){
-            if($match->winner_id == $player->id){
-                $accumulative_points += NikolaAlgoV1::getMatchEloGains($match)[0];
+            if($match->winners()->first()->id == $player_id){
+                $accumulative_points += $match->winner_point_gain;
                 array_push($changes_array, [
                     'points' => $accumulative_points,
-                    'date' => $match->match_date,
+                    'date' => $match->date,
                 ]);
             }
             else{
-                $accumulative_points += NikolaAlgoV1::getMatchEloGains($match)[1];
+                $accumulative_points += $match->loser_point_gain;
                 array_push($changes_array, [
                     'points' => $accumulative_points,
-                    'date' => $match->match_date,
+                    'date' => $match->date,
                 ]);
             }
         }
@@ -105,41 +110,17 @@ Class PlayerChartData{
         return $formated_changes;
     }
 
-    private static function getRankingsChanges($matches,$player){
-        $start = null;
-        if(count($matches) > 0){
-            $start = new DateTime($matches[0]->match_date);
-        }
-        else{
-            $start = new DateTime('now');
-        }
+    private static function getRankingsChanges($start,$player){
         $end = new DateTime('tomorrow');
         $changes_array = [];
 
         $interval = DateInterval::createFromDateString('1 day');
         $period = new DatePeriod($start, $interval, $end);
 
-        if(count($matches) == 1){
-            $players = PlayerController::getPlayersOnDate($matches[0]->match_date);
-
-            $rank = 0;
-
-            foreach($players as $key => $value){
-                if($value['uri'] == $player->uri){
-                    $rank = $key + 1;
-                }
-            }
-
-            return [
-                [
-                    'rank' => $rank,
-                    'date' => $matches[0]->match_date,
-                ]
-            ];
-        }
-
         foreach($period as $day){
-            $players = PlayerController::getPlayersOnDate($day->format('Y-m-d'));
+            $date = $day->format('Y-m-d');
+            echo 'calculating rank for date: ' . $date . PHP_EOL;
+            $players = PlayerController::getPlayersOnDate($date);
 
             $rank = 0;
 
@@ -148,7 +129,7 @@ Class PlayerChartData{
                     $rank = $key + 1;
                 }
             }
-
+            echo 'rank' . $rank . PHP_EOL;
             array_push($changes_array, [
                 'rank' => $rank,
                 'date' => $day->format('Y-m-d'),

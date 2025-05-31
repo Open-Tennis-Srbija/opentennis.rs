@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateTenisMatchRequest;
 use App\Mail\AddMatchNotification;
 use App\Models\Player;
 use App\Models\TenisMatch;
+use App\Models\TennisMatch;
 use App\Models\Court;
 use App\Models\League;
 use Helper;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use NikolaAlgoV1;
 use App\Http\Controllers\PlayerController;
+use Helpers;
 use Illuminate\Support\Facades\Storage;
 
 class TenisMatchController extends Controller
@@ -54,41 +56,30 @@ class TenisMatchController extends Controller
             'court' => Court::find($match->court_id),
         ];
     }
-    public static function getCachedMatches(){
-        return json_decode(file_get_contents(storage_path('app/public/matches.json')), true);
-
-    }
 
     public static function getMatches(){
-        $raw_matches = TenisMatch::all()->sortBy('created_at', SORT_REGULAR, true)->sortBy('match_date', SORT_REGULAR, true);
 
-        $matches = [];
-        foreach($raw_matches as $match){
-            $winner = Player::find($match->winner_id);
-            $loser = Player::find($match->loser_id);
-
-            [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
-
-            array_push($matches, [
-                'id' => $match->id,
-                'winner' => $winner->first_name . ' ' . $winner->last_name,
-                'winner_uri' => $winner->uri,
-                'winner_points' => $winner_gains,
-                'loser' => $loser->first_name . ' ' . $loser->last_name,
-                'loser_uri' => $loser->uri,
-                'loser_points' => $loser_gains,
-                'set_score' => $match->set_score,
-                'game_score' => $match->game_score,
-                'court' => Court::find($match->court_id),
-                'league' => League::find($match->league_id),
-                'date' => $match->match_date,
-                'location' => $match->match_location,
-            ]);
-        }
-
-
-
-        return $matches;
+    return TennisMatch::with(['winners', 'losers'])
+            ->orderByDesc('number')
+            ->get()
+            ->map(function ($match) {
+                return [
+                    'winner_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
+                    'winner_uri' => $match->winners()->first()->uri,
+                    'loser_name' => $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name,
+                    'loser_uri' => $match->losers()->first()->uri,
+                    'number' => $match->number,
+                    'winner_point_gain' => $match->winner_point_gain,
+                    'loser_point_gain' => $match->loser_point_gain,
+                    'set_score' => $match->set_score,
+                    'game_score' => $match->game_score,
+                    'county' => $match->county,
+                    'court' => Court::find($match->court_id),
+                    'league' => League::find($match->league_id),
+                    'court_link' => $match->court ? $match->court->link : null,
+                    'date' => $match->date,
+                ];
+            });
     }
 
     /**
@@ -127,11 +118,8 @@ class TenisMatchController extends Controller
         $loser_id = $data['loser']['id'];
         $new_players = 0;
 
-        $new_winner = false;
-        $new_loser = false;
-
         $winner = null;
-        $loser = null;;
+        $loser = null;
 
 
         $court_id = null;
@@ -228,16 +216,28 @@ class TenisMatchController extends Controller
             }
         }
 
-        $match = new TenisMatch(
-            [
-                'winner_id' => $winner_id,
-                'loser_id' => $loser_id,
-                'set_score' => $data['set_score'],
-                'game_score' => $data['game_score'],
-                'match_date' => $data['date'],
-                'match_location' => $data['location'],
-            ]
+        $match = new TennisMatch( 
         );
+        $match->date = date('Y-m-d', strtotime($data['date']));
+        $match->set_score = $data['set_score'];
+        $match->game_score = $data['game_score'];
+        $match->county = $data['location'];
+        $match->winner_point_gain = 0;
+        $match->loser_point_gain = 0;
+
+        $match->save();
+        $match->players()->attach($winner_id, ['team' => 'winner']);
+        $match->players()->attach($loser_id, ['team' => 'loser']);
+
+        $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
+        
+        $match->number = $compare->number + 1;
+
+        [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
+        $match->winner_point_gain = $winner_gains;
+        $match->loser_point_gain = $loser_gains;
+
+
         if(isset($court_id)){
             $match->court_id = $court_id;
         }
@@ -265,66 +265,19 @@ class TenisMatchController extends Controller
             $match->league_id = $league_id;
         }
 
-
         $match->save();
-
-        sleep(1);
-
-        if($new_winner)
-            PlayerController::cache_player($winner,$match->game_score,$match->set_score);
-        if($new_loser)
-            PlayerController::cache_player($loser,$match->game_score,$match->set_score);
-
-        [$winner_gains, $loser_gains, $match_num] = Self::update_match_cache($match);
-        $points = ['winner' => $winner_gains, 'loser' => $loser_gains];
-
-        $players_data = LeagueController::update_ranks_cache($winner, $loser, $winner_gains, $loser_gains,$new_winner, $new_loser);
-
-        if(!$new_winner)
-            PlayerController::update_player_cache_from_match($winner,$players_data['winner'],$loser,$match,$match_num,$points);
-        if(!$new_loser)
-            PlayerController::update_player_cache_from_match($loser,$players_data['loser'], $winner,$match,$match_num,$points);
-
         
+       $winner->points += $winner_gains;
+        $loser->points += $loser_gains; 
+        $winner->save();
+        $loser->save();
 
 
-        $winner_data = [
-            'name' => $winner->first_name . ' ' . $winner->last_name,
-            'uri' => $winner->uri,
-            'gains' => $winner_gains,
-            'total_matches' => $players_data['winner']['data']['stats']['total_matches'],
-            'wins' => $players_data['winner']['data']['stats']['wins'],
-            'loses' => $players_data['winner']['data']['stats']['loses'],
-        ];
-        $loser_data = [
-            'name' => $loser->first_name . ' ' . $loser->last_name,
-            'uri' => $loser->uri,
-            'gains' => $loser_gains,
-            'total_matches' => $players_data['loser']['data']['stats']['total_matches'],
-            'wins' => $players_data['loser']['data']['stats']['wins'],
-            'loses' => $players_data['loser']['data']['stats']['loses'],
-        ];
-        $location_data = [
-            'name' => $match->match_location,
-            'count' => TenisMatch::where('match_location', $match->match_location)->count(),
-        ];
-        $court_data = [
-            'id' => $match->court_id,
-            'name' => $match->getCourt()['name'],
-            'link' => $match->getCourt()['link'],
-            'count' => TenisMatch::where('court_id', $match->court_id)->count(),
-        ];
-        $league_data = [
-            'id' => $match->league_id,
-            'name' => $match->getLeague()['name'],
-            'link' => $match->getLeague()['link'],
-            'count' => TenisMatch::where('league_id', $match->league_id)->count(),
-        ];
-        LeagueController::update_league_cache($winner_data, $loser_data, $location_data, $court_data, $league_data, $match->match_date, $new_players);
-        
-        LeaguesController::update_league_cache_from_match($match->getLeague()['uri'],$match,$match_num,$winner_gains + $loser_gains,$winner_data,$loser_data);
+        Helpers::UpdateRanks();
+        Helpers::UpdatePlayerCharts($winner, $loser, $match);
+        Helpers::UpdateStatsChart($new_players, $winner_gains + $loser_gains, $match->date);
 
-        LeaguesController::update_league_list_cache($match->getLeague()['uri'],$match_num,$new_players,$winner_gains + $loser_gains);
+
 
         if(env('APP_ENV') == 'production'){
             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
@@ -336,47 +289,6 @@ class TenisMatchController extends Controller
         return redirect()->back()->with('success', 'Meč je uspešno dodat.');
     }
 
-    private static function update_match_cache($match){
-        $matches = json_decode(file_get_contents(storage_path('app/public/matches.json')), true);
-
-        $winner = Player::find($match->winner_id);
-        $loser = Player::find($match->loser_id);
-
-        [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
-
-        array_push($matches, [
-            'id' => $match->id,
-            'winner' => $winner->first_name . ' ' . $winner->last_name,
-            'winner_uri' => $winner->uri,
-            'winner_points' => $winner_gains,
-            'loser' => $loser->first_name . ' ' . $loser->last_name,
-            'loser_uri' => $loser->uri,
-            'loser_points' => $loser_gains,
-            'set_score' => $match->set_score,
-            'game_score' => $match->game_score,
-            'court' => Court::find($match->court_id),
-            'date' => $match->match_date,
-            'league' => League::find($match->league_id),
-            'location' => $match->match_location,
-        ]);
-
-        usort($matches, function($a, $b) {
-            return strtotime($b['date']) - strtotime($a['date']);
-        });
-
-        $match_num = count($matches);
-
-        for($k = 0; $k < count($matches); $k++){
-            if($matches[$k]['id'] == $match->id){
-                $match_num = count($matches) - $k;
-                break;
-            }
-        }
-
-        Storage::disk('public')->put('matches.json', json_encode($matches));
-
-        return [$winner_gains, $loser_gains, $match_num];
-    }
 
     public function deleteMatch(){
         $data = request()->validate([
@@ -494,8 +406,6 @@ class TenisMatchController extends Controller
             $old_data['location'] = $match->match_location;
             $match->match_location = $data['location'];
         }
-
-        $match_gains = Self::
 
 
         $match->save();

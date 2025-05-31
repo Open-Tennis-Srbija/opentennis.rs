@@ -1,14 +1,39 @@
 <script setup>
-import { computed, onMounted, onBeforeMount } from 'vue';
+import { computed, onMounted, onBeforeMount, ref } from 'vue';
 import EditIcon from './components/EditIcon.vue';
+import axios from 'axios';
+import bus from 'vue3-eventbus';
 
 const props = defineProps({
-  matches: Array,
+  loadMatches: Boolean || true,
   showMessage: Object,
+  propMatches: Array,
 });
 
+const matches = ref(props.propMatches || []);
+
+
+onMounted(()=>{
+  if(!props.loadMatches){
+    if(props.propMatches) {
+      console.log('using prop matches', props.propMatches);
+      matches.value = props.propMatches;
+    }
+    return;
+  };
+  console.log('loading matches');
+  axios.get('/get-matches').then(
+    res=>{
+      matches.value = res.data;
+      console.log('matches', matches.value);
+      bus.emit('loading', false);
+    }
+  )
+
+})
+
 const formatedMatchesDesktop = computed(() => {
-  let formated = props.matches.map((match, index) => {
+  let formated = matches.value.map((match, index) => {
     return {
       ...match,
       day: getDateDay(match.date),
@@ -20,13 +45,13 @@ const formatedMatchesDesktop = computed(() => {
   return formated;
 });
 const formatedMatchesMobile = computed(() => {
-  let formated = props.matches.map((match, index) => {
+  let formated = matches.value.map((match, index) => {
     return {
       ...match,
-      winner_first_name: match.winner.split(' ')[0],
-      winner_last_name: match.winner.split(' ')[1],
-      loser_first_name: match.loser.split(' ')[0],
-      loser_last_name: match.loser.split(' ')[1],
+      winner_first_name: match.winner_name.split(' ')[0],
+      winner_last_name: match.winner_name.split(' ')[1],
+      loser_first_name: match.loser_name.split(' ')[0],
+      loser_last_name: match.loser_name.split(' ')[1],
       day: getDateDay(match.date),
       month: getDateMonth(match.date),
       year: new Date(match.date).getFullYear(),
@@ -72,29 +97,29 @@ function getDateMonth(date){
       </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`"><EditIcon/></Link>
-        <div class="number">{{ match.number || matches.length - index }}</div>
-        <div class="winner"><Link prefetch="false" :href="`/${match.winner_uri}`">{{ match.winner }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
-        <div class="loser"><Link prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
+        <div class="number">{{ match.number }}</div>
+        <div class="winner"><Link prefetch="false" :href="`/${match.winner_uri}`">{{ match.winner_name }}</Link><br><span class="points">+{{ match.winner_point_gain }}</span></div>
+        <div class="loser"><Link prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser_name }}</Link><br><span class="points">+{{ match.loser_point_gain }}</span></div>
         <div class="score">{{ match.set_score }}<br><span class="gray">{{ match.game_score }}</span></div>
-        <div class="date">{{match.day}} <br/> {{ match.date }} {{ match.month }} {{match.year}}</div>
-        <div class="location">{{ match.location }}</div>
+        <div class="date">{{match.day}} <br/>{{ match.date }} {{ match.month }} {{ match.year }}</div>
+        <div class="location">{{ match.county }}</div>
         <div class="location">
-            <template v-if="match.court.link == ''">
+            <template v-if="match.court?.link == ''">
                     {{ match.court.name }}
             </template>
             <template v-else>
-                <a target="_blank" :href="match.court.link">
-                    {{ match.court.name }}
+                <a target="_blank" :href="match.court?.link">
+                    {{ match.court?.name }}
                 </a>
             </template>
         </div>
         <div class="location">
-            <template v-if="match.league.uri == ''">
-                    {{ match.league.name }}
+            <template v-if="match.league?.uri == ''">
+                    {{ match.league?.name }}
             </template>
             <template v-else>
-                <a :href="`/${match.league.uri}`">
-                    {{ match.league.name }}
+                <a :href="`/${match.league?.uri}`">
+                    {{ match.league?.name }}
                 </a>
             </template>
       </div>
@@ -115,26 +140,26 @@ function getDateMonth(date){
 
         <div class="info">
           <div class="info-wrapp">
-            <div class="text"><Link prefetch="false" :href="`/${match.winner_uri}`">{{ match.winner_first_name }}<br>{{ match.winner_last_name }}</Link><br><span class="points">+{{ match.winner_points }}</span></div>
+            <div class="text"><Link prefetch="false" :href="`/${match.winner_uri}`">{{ match.winner_first_name }}<br>{{ match.winner_last_name }}</Link><br><span class="points">+{{ match.winner_point_gain }}</span></div>
           </div>
 
           <div class="sep">:</div>
 
           <div class="info-wrapp">
-            <div class="text"><Link prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</Link><br><span class="points">+{{ match.loser_points }}</span></div>
+            <div class="text"><Link prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser_first_name }}<br>{{ match.loser_last_name }}</Link><br><span class="points">+{{ match.loser_point_gain }}</span></div>
           </div>
         </div>
 
         <div class="location">
                     #{{ match.number || matches.length - index }}, {{ match.day }} {{ match.date }} {{ match.month }} {{ match.year }}
          <br>
-        <template v-if="match.court.id == 1">
-          {{ match.location }}
+        <template v-if="match.court?.id == 1">
+          {{ match.county }}
         </template>
         <template v-else>
-                        {{ match.location }}, <a v-if="match.court.link !== ''" target="_blank" :href="match.court.link">{{ match.court.name }}</a> <span v-else>{{ match.court.name }}</span>
+                        {{ match.county }}, <a v-if="match.court?.link !== ''" target="_blank" :href="match.court?.link">{{ match.court?.name }}</a> <span v-else>{{ match.court?.name }}</span>
         </template>
-        <span>{{match.league.name != '' ? ',' : ''}} {{ match.league.name }}</span>
+        <span>{{match.league?.name != '' ? ',' : ''}} {{ match.league?.name }}</span>
         </div>
       </div>
     </div>

@@ -1,0 +1,120 @@
+<?php
+
+use App\Models\Player;
+use Illuminate\Support\Facades\Storage;
+
+Class Helpers{
+
+    public static function UpdateRanks(){
+        $players = Player::all();
+        $players = $players->sortByDesc('points');
+
+        $rank = 1;
+        foreach($players as $player){
+            $player->rank = $rank;
+            $player->save();
+            $rank++;
+        }
+    }
+
+    public static function UpdatePlayerCharts($winner, $loser, $match){
+        Self::update_player_chart($winner, $match->winner_point_gain, $match->date);
+        Self::update_player_chart($loser, $match->loser_point_gain, $match->date);
+    }
+
+    public static function UpdateStatsChart($new_players, $point_gain, $date){
+            $cache = include(Storage::disk('public')->path('charts/statistics.php'));
+            $cache = json_decode(json_encode($cache), true);
+
+
+            $points_updated = false;
+            for($i = 0; $i < count($cache['points']); $i++){
+                if($cache['points'][$i]['date'] == $date){
+                    $cache['points'][$i]['points'] += $point_gain;
+                    $points_updated = true;
+                }
+            }
+            if(!$points_updated){
+                array_push($cache['points'], [
+                    'date' => $date,
+                    'points' => $cache['points'][count($cache['points']) - 1]['points'] + $point_gain
+                ]);
+            }
+            $players_updated = false;
+            for($i = 0; $i < count($cache['players']); $i++){
+                if($cache['players'][$i]['date'] == $date){
+                    $cache['players'][$i]['count'] += $new_players;
+                    $players_updated = true;
+                }
+            }
+            if(!$players_updated){
+                array_push($cache['players'], [
+                    'date' => $date,
+                    'count' => $new_players
+                ]);
+            }
+
+            $matches_updated = false;
+            for($i = 0; $i < count($cache['matches']); $i++){
+                if($cache['matches'][$i]['date'] == $date){
+                    $cache['matches'][$i]['count'] += 1;
+                    $matches_updated = true;
+                }
+            }
+            if(!$matches_updated){
+                array_push($cache['matches'], [
+                    'date' => $date,
+                    'count' => 1
+                ]);
+            }
+
+            $export = "<?php\n\nreturn " . var_export($cache, true) . ";\n";
+            Storage::disk('public')->put('charts/statistics.php', $export);
+        }
+
+
+    private static function update_player_chart($player, $point_gain, $date){
+        $file = 'charts/' . $player->uri . '.php';
+        $cache = [];
+        if(Storage::disk('public')->exists($file)){
+            $cache = include(Storage::disk('public')->path($file));
+            $cache = json_decode(json_encode($cache), true);
+
+            $points_updated = false;
+            for($i = 0; $i < count($cache['points']); $i++){
+                if($cache['points'][$i]['date'] == $date){
+                   $cache['points'][$i]['points'] += $point_gain;
+                    $points_updated = true;
+                }
+            }
+            if(!$points_updated){
+                array_push($cache['points'], [
+                    'date' => $date,
+                    'points' => $cache['points'][count($cache['points']) - 1]['points'] + $point_gain
+                ]);
+            }
+
+            $rank_updated = false;
+            for($i = 0; $i < count($cache['rankings']); $i++){
+                if($cache['rankings'][$i]['date'] == $date){
+                    $cache['rankings'][$i]['rank'] = $player->rank;
+                    $rank_updated = true;
+                }
+            }
+            if(!$rank_updated){
+                array_push($cache['rankings'], [
+                    'date' => $date,
+                    'rank' => $player->rank
+                ]);
+            }
+        }
+        else{
+            $cache = PlayerChartData::getChartData($player);
+        }
+        $export = "<?php\n\nreturn " . var_export($cache, true) . ";\n";
+        Storage::disk('public')->put($file, $export);   
+    }
+
+
+}
+

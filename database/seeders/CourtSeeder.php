@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Court;
-use App\Models\TenisMatch;
 
 class CourtSeeder extends Seeder
 {
@@ -13,40 +12,21 @@ class CourtSeeder extends Seeder
      */
     public function run(): void
     {
-        $matches = TenisMatch::all();
-        $first_court = new Court();
-        $first_court->name = '';
-        $first_court->link= '';
-        $first_court->save();
+        $data = json_decode(file_get_contents(__DIR__ . '/database_export.json'));
 
-        foreach($matches as $match){
-            $courts = Court::all();
+        foreach ($data->courts as $court) {
+            $model = new Court();
 
-            $exists = false;
-            foreach($courts as $court){
-                if($court->name == $match->match_location){
-                    $exists = true;
-                    $match->court_id = $court->id;
-                    $match->match_location = 'Beograd';
-                }
-            }
-            if(!$exists){
-                $court = new Court();
+            $model->name = $court->name;
+            $model->link = $court->link;
 
-                if($match->match_location == "SC Karović Vrnjačka Banja"){
-                    $match->match_location = "Vrnjačka Banja";
-                    $court->name = 'SC Karović';
-                }
-                else{
-                    $court->name = $match->match_location;
-                    $match->match_location = 'Beograd';
-                }
+            $model->save();
 
-                $court->link = '';
-                $court->save();
-                $match->court_id = $court->id;
-            }
-            $match->save();
+            $model->id = $court->id;
+
+            $model->save();
+
         }
+
     }
 }

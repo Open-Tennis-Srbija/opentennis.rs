@@ -1,12 +1,14 @@
 <script setup>
 import { computed, reactive, ref, onMounted } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
 import "overlayscrollbars/overlayscrollbars.css";
 import { OverlayScrollbars } from "overlayscrollbars";
 import { bus } from "vue3-eventbus";
 import Logo from "./components/Logo.vue";
+import Loader from "./components/Loader.vue";
 
 const mobileMenu = reactive({ state: false });
+const loading = ref(true);
 
 const isClient = ref(false);
 
@@ -24,11 +26,17 @@ onMounted(() => {
                 },
             },
         );
-
+        router.on('start', (e) =>{
+            console.log(e)
+            loading.value=true
+        })
         bus.on("resetScroll", (e) => {
             document.querySelector(
                 "[data-overlayscrollbars-viewport]",
             ).scrollTop = 0;
+        });
+        bus.on("loading", (e) => {
+            loading.value = e;
         });
     }
 });
@@ -75,6 +83,7 @@ const headerMessage = computed(() => {
 });
 </script>
 <template>
+    <Loader :show="loading" />
     <header class="header-wrapper">
         <div class="logo-wrapp" :style="{ marginTop: -topOffset + 'px' }">
             <Link prefetch="false" :href="'/'">
@@ -122,7 +131,7 @@ const headerMessage = computed(() => {
                 v-if="$page.props.auth.user">odjavi se</Link>
         </div>
     </div>
-    <div id="os-holder" 
+    <div id="os-holder"
         :style="{ height: 'calc(100vh - ' + 100 - topOffset + 50 + 'px)' }">
         <main id="main">
             <slot />
