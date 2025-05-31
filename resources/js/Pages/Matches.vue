@@ -77,7 +77,7 @@ function getDateMonth(date){
 
 </script>
 <template>
-  <Head title="Mečevi -" />
+  <Head v-if="props.loadMatches" title="Mečevi -" />
   <div class="matches-wrapper">
     <div id="desktop">
       <div class="matches-header">

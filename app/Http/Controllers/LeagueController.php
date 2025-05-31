@@ -6,7 +6,7 @@ use App\Models\Player;
 use App\Models\TenisMatch;
 use App\Models\Court;
 use App\Models\League;
-use App\Models\TennisMatch;
+use Illuminate\Http\Request;
 use LeagueChartData;
 use Illuminate\Support\Facades\Storage;
 
@@ -320,18 +320,7 @@ class LeagueController extends Controller
         ];
      }
 
-    
-    
-    public function getLeagueChart(){
-        if(Storage::disk('public')->exists('charts/statistics.php')){
-            return include(Storage::disk('public')->path('charts/statistics.php'));
-        }
-        else{
-            return null;
-        }
-    }
-    
-     public static function getStatistics(){
+    public static function getStatistics(){
 
         $data = [
             'totals'=>[],
@@ -343,7 +332,7 @@ class LeagueController extends Controller
             'locations'=>[]
         ];
 
-        $data['totals']['matches'] = TennisMatch::count();
+        $data['totals']['matches'] = TenisMatch::count();
         $data['totals']['players'] = Player::count();
         $data['locations'] = Self::getLocations();
         $players = PlayerController::getPlayers();
@@ -352,13 +341,13 @@ class LeagueController extends Controller
         $points = 0;
 
         foreach($players as $player){
-            $points += $player['points'];
+            $points += $player['stats']['elo'];
         }
 
         $data['totals']['points'] = $points;
-        $players = $players->toArray();
+
        usort($players, function($a, $b) {
-            $matchComparison = $b['total_matches'] <=> $a['total_matches'];
+            $matchComparison = $b['stats']['total_matches'] <=> $a['stats']['total_matches'];
 
             return $matchComparison ?: strcmp($a['name'], $b['name']);
         });
@@ -366,13 +355,13 @@ class LeagueController extends Controller
         for ($i=0; $i < 5; $i++) {
             array_push($data['players']['total'], [
                 'name' => $players[$i]['name'],
-                'count' => $players[$i]['total_matches'],
+                'count' => $players[$i]['stats']['total_matches'],
                 'uri' => $players[$i]['uri'],
             ]);
         }
 
        usort($players, function($a, $b) {
-            $matchComparison = $b['wins'] <=> $a['wins'];
+            $matchComparison = $b['stats']['wins'] <=> $a['stats']['wins'];
 
             return $matchComparison ?: strcmp($a['name'], $b['name']);
         });
@@ -380,12 +369,13 @@ class LeagueController extends Controller
         for ($i=0; $i < 5; $i++) {
             array_push($data['players']['wins'], [
                 'name' => $players[$i]['name'],
-                'count' => $players[$i]['wins'],
+                'count' => $players[$i]['stats']['wins'],
                 'uri' => $players[$i]['uri'],
             ]);
         }
+
        usort($players, function($a, $b) {
-            $matchComparison = $b['loses'] <=> $a['loses'];
+            $matchComparison = $b['stats']['loses'] <=> $a['stats']['loses'];
 
             return $matchComparison ?: strcmp($a['name'], $b['name']);
         });
@@ -393,7 +383,7 @@ class LeagueController extends Controller
         for ($i=0; $i < 5; $i++) {
             array_push($data['players']['loses'], [
                 'name' => $players[$i]['name'],
-                'count' => $players[$i]['loses'],
+                'count' => $players[$i]['stats']['loses'],
                 'uri' => $players[$i]['uri'],
             ]);
         }
@@ -408,7 +398,7 @@ class LeagueController extends Controller
     }
 
     public static function getLocations(){
-        $matches = TennisMatch::all();
+        $matches = TenisMatch::all();
 
         $data = [
             'courts'=>[],
@@ -419,7 +409,7 @@ class LeagueController extends Controller
         foreach ($matches as $match) {
             $court = Court::find($match->court_id);
             $league = League::find($match->league_id);
-            if($league && $league->id != 1){
+            if($league->id != 1){
                 if(!isset($data['leagues'][$league->id])){
                     $data['leagues'][$league->id] = [
                         'name' => $league->name,
@@ -432,7 +422,7 @@ class LeagueController extends Controller
                     $data['leagues'][$league->id]['count']++;
                 }
             }
-            if($court && $court->id != 1){
+            if($court->id != 1){
                 if(!isset($data['courts'][$court->id])){
                     $data['courts'][$court->id] = [
                         'name' => $court->name,
@@ -444,14 +434,14 @@ class LeagueController extends Controller
                     $data['courts'][$court->id]['count']++;
                 }
             }
-            if(!isset($data['locations'][$match->county])){
-                $data['locations'][$match->county] = [
-                    'name' => $match->county,
+            if(!isset($data['locations'][$match->match_location])){
+                $data['locations'][$match->match_location] = [
+                    'name' => $match->match_location,
                     'count' => 1
                 ];
             }
             else{
-                $data['locations'][$match->county]['count']++;
+                $data['locations'][$match->match_location]['count']++;
             }
         }
 

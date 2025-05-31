@@ -1,4 +1,10 @@
 <script setup>
+import { nextTick, onMounted } from 'vue';
+import bus from 'vue3-eventbus';
+onMounted(async () => {
+    await nextTick();
+    bus.emit('loading', false);
+});
 </script>
 <template>
     <Head title="Pravila -" />

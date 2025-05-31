@@ -35,6 +35,7 @@ onMounted(() => {
 	page.props["title"] = "teniser";
 	axios.get(`/get-player/${props.player_uri}`).then((response) => {
 		player.value = response.data;
+		pageTitle.value = `${player.value.name} - Srpska Tenis Liga`;
 		bus.emit('loading', false)
 	}).catch((error) => {
 		console.error('Error fetching players:', error);
@@ -87,6 +88,7 @@ const matchups = computed(() => {
 	}
 	return data;
 });
+const pageTitle = ref('Teniser - Srpska Tenis Liga');
 
 const points = computed(() => {
 	if (!player.value.points) {
@@ -122,6 +124,7 @@ function containsGreek(text) {
 
 </script>
 <template>
+ 	<Head :title="pageTitle" />
 	<div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player">
 		<div
 			class="rank"
