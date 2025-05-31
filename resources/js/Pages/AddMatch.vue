@@ -1,11 +1,12 @@
 <script setup>
 import {useForm} from '@inertiajs/vue3'
-import {reactive,onMounted, defineAsyncComponent, computed} from 'vue';
+import {reactive,onMounted, defineAsyncComponent, computed, onUpdated} from 'vue';
 import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import opstine from '../assets/opstine.json';
-
+import bus from 'vue3-eventbus';
+import { nextTick } from 'vue';
 
 const props = defineProps({players: Array,courts: Array, leagues: Array});
 
@@ -26,6 +27,14 @@ const formState = reactive({
     success: false,
     shouldReset: false,
 });
+
+onMounted(async () => {
+    await nextTick();
+    bus.emit('loading', false);
+})
+onUpdated(()=>{
+bus.emit('loading', false);
+})
 
 
 const submit = () =>{

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Player;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Helper;
 
@@ -37,6 +36,8 @@ class PlayerSeeder extends Seeder
             $model->uri = $uri;
             $model->last_name = $player->last_name;
             $model->club = $player->club;
+            $model->category = $player->category;
+
             if($player->location)
                 $model->location = $player->location;
             else

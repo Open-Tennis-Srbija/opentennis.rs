@@ -29,11 +29,11 @@ class Test extends Command
     public function handle()
     {
         //
-        $p = Player::all();
+$data = json_decode(file_get_contents(__DIR__ . '/database_export.json'));
 
-        foreach($p as $player) {
-            $player->points = 0;
-            $player->save();
+foreach ($data->players as $player) {
+
+        echo $player->category; 
         }
     }
 }

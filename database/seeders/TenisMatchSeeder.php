@@ -15,6 +15,7 @@ class TenisMatchSeeder extends Seeder
     public function run(): void
     {
         $data = json_decode(file_get_contents(__DIR__ . '/matches.json'));
+        $number  = 1;
 
         foreach($data as $match){
             $model = new TenisMatch();
@@ -46,6 +47,8 @@ class TenisMatchSeeder extends Seeder
             $model->winner_id = $winner->id;
             $model->loser_id = $loser->id;
             $model->set_score = $match->set_score;
+            $model->number = $number;
+            $number++;
             $model->game_score = $match->game_score;
 
             $time = strtotime($match->date);

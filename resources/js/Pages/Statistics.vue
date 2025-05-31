@@ -3,19 +3,36 @@
     import utils from '../utils';
     import LeagueChart from './components/LeagueChart.vue';
     import { usePage } from '@inertiajs/vue3';
+    import axios from 'axios';
+    import bus from 'vue3-eventbus';
+import { ref } from 'vue';
 
-    const props = defineProps({data: Object})
     const page = usePage();
+
+    const data = ref({});
     onMounted(() => {
         page.props['title'] = 'statistika';
+        axios.get('/get-statistics').then((response) => {
+            data.value = response.data;
+            bus.emit('loading', false);
+        }).catch((error) => {
+            console.error('Error fetching statistics:', error);
+        });
     });
 
     const locations = computed(() => {
         return {
-            courts: props.data.stats.locations.courts,
-            locations: props.data.stats.locations.locations,
-            leagues: props.data.stats.locations.leagues,
+            courts: data.value.locations?.courts,
+            locations: data.value.locations?.locations,
+            leagues: data.value.locations?.leagues,
         };
+    });
+    const points = computed(() => {
+        if(!data.value || !data.value.totals) {
+            return 0;
+        }
+        else
+        return utils.formatAsThousands(data.value.totals.points);
     });
 
 </script>
@@ -28,15 +45,15 @@
             <div class="summary player three desktop">
                 <div class="summary-item">
                     <h2>poeni</h2>
-                    <p>{{ utils.formatAsThousands(props.data.stats.totals.points) }}</p>
+                    <p>{{ points }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>teniseri</h2>
-                    <p>{{ props.data.stats.totals.players }}</p>
+                    <p>{{ data.totals?.players }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>mečevi</h2>
-                    <p>{{ props.data.stats.totals.matches }}</p>
+                    <p>{{ data.totals?.matches }}</p>
                 </div>
             </div>
 
@@ -44,7 +61,7 @@
             <div class="summary player three desktop col">
                 <div class="summary-item">
                     <h2 class="mb-10">najviše mečeva</h2>
-                    <p class="smaller f20" v-for="player in props.data.stats.players.total">
+                    <p class="smaller f20" v-for="player in data.players?.total">
                         <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link> ({{ player.count }})
@@ -52,7 +69,7 @@
                 </div>
                 <div class="summary-item">
                     <h2 class="mb-10">najviše pobeda</h2>
-                    <p class="smaller f20" v-for="player in props.data.stats.players.wins">
+                    <p class="smaller f20" v-for="player in data.players?.wins">
                         <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link> ({{ player.count }})
@@ -60,7 +77,7 @@
                 </div>
                 <div class="summary-item">
                     <h2 class="mb-10">najviše gubitaka</h2>
-                    <p class="smaller f20" v-for="player in props.data.stats.players.loses">
+                    <p class="smaller f20" v-for="player in data.players?.loses">
                         <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link>  ({{ player.count }})
@@ -90,7 +107,7 @@
                         ({{ court.count }})</p>
                 </div>
                 <div class="summary-item">
-                    <template v-if="locations.leagues.length == 0">
+                    <template v-if="locations.leagues?.length == 0">
                         <h2 class="mb-10">nema liga ili turnira</h2>
                     </template>
                     <template v-else>
@@ -110,7 +127,7 @@
             </div>
 
             <h2 class="summary-title big-margin">Grafikoni</h2>
-            <LeagueChart :data="props.data.charts" />
+            <LeagueChart />
         </div>
     </div>
 </template>

@@ -14,11 +14,11 @@ class ResolverController extends Controller
     public static function resolveUri($uri){
         $player = Player::where('uri', $uri)->first();
 
-        if($player) return Inertia::render('Player',['player'=>PlayerController::get_cached($uri)]);
+        if($player) return Inertia::render('Player', ['player_uri' => $uri]);
 
         $league = League::where('uri', $uri)->first();
 
-        if($league) return Inertia::render('League', ['league'=>LeaguesController::returnCachedLeague($uri)]);
+        if($league) return Inertia::render('League', ['league_uri' => $uri]);
 
         return redirect('/');
 

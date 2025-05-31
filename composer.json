@@ -40,7 +40,8 @@
             "app/Algorithm/EloAlgoV1.php",
             "app/Helpers/FormatURI.php",
             "app/Helpers/PlayerChartData.php",
-            "app/Helpers/LeagueChartData.php"
+            "app/Helpers/LeagueChartData.php",
+            "app/Helpers/Helpers.php"
         ],
         "psr-4": {
             "Tests\\": "tests/"

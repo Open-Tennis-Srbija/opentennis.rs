@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('set_score');
             $table->string('game_score')->nullable();
             $table->date('date');
+            $table->integer('number')->nullable();
             $table->string('county')->nullable();
             $table->integer('winner_point_gain');
             $table->integer('loser_point_gain');

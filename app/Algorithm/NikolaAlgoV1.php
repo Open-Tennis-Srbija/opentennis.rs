@@ -39,7 +39,7 @@ class NikolaAlgoV1
 
 
         foreach ($matches as $match) {
-            if ($match->winner_id == $player->id) {
+            if ($match->winners()->first()->id == $player->id) {
                 $points += self::getMatchEloGains($match, 'winner');
 
             } else {

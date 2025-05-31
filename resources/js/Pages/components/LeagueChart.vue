@@ -1,23 +1,24 @@
 <script setup>
-import { onBeforeMount, defineAsyncComponent } from 'vue';
+import axios from 'axios';
+import { onBeforeMount, defineAsyncComponent, onMounted } from 'vue';
 import { reactive } from 'vue';
 import { computed } from 'vue';
 
 const VueApexCharts = defineAsyncComponent(() => import('vue3-apexcharts'));
 
-const props = defineProps({
-    data: Object,
-});
 
 const data = reactive({
-    leagueData: props.data
+    leagueData: {} 
 });
 
-onBeforeMount(() => {
-
-
-});
-
+onMounted(()=>{
+    axios.get(`/get-league-chart`).then((response) => {
+        data.leagueData = response.data;
+        console.log('League data:', data.leagueData);
+    }).catch((error) => {
+        console.error('Error fetching league data:', error);
+    });
+})
 const formatDate = (d) => {
     let date =  new Date(d)
     let days = ['ned', 'pon', 'uto', 'sre', 'čet', 'pet', 'sub'];

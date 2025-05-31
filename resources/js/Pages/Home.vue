@@ -3,14 +3,28 @@ import { ref, onMounted } from 'vue';
 import utils from '../utils';
 import EditBtn from './components/EditIcon.vue';
 import axios from 'axios';
+import { bus } from "vue3-eventbus";
 
 const players = ref([]);
 const utl = utils;
+const categoryColorsAll = {
+  1: '#8dc73f',
+  2: '#38b64b',
+  3: '#00a99c',
+  4: '#01aef0',
+  5: '#0072bb',
+  6: '#92278f',
+  7: '#eb008b',
+  8: '#ee1d23',
+  9: '#f36621',
+  10: '#f7941d',
+  '?': 'transparent',
+}
 
 onMounted(() => {
     axios.get('/get-players').then((response) => {
         players.value = response.data;
-        console.log(response);
+       bus.emit('loading',false)
     }).catch((error) => {
         console.error('Error fetching players:', error);
     });
@@ -48,7 +62,7 @@ onMounted(() => {
         <div class="wins">{{player.wins}}</div>
         <div class="loses">{{player.loses}}</div>
         <div class="win-precent">{{player.win_precentage}}%</div>
-        <div class="place">{{player.location}}</div>
+        <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'unknown': player.category == '?'}">{{player.category}}</span></div>
       </div>
     </div>
 

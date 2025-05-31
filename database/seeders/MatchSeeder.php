@@ -16,6 +16,7 @@ class MatchSeeder extends Seeder
     {
         $data = json_decode(file_get_contents(__DIR__ . '/database_export.json'));
 
+        $number  = 1;
         foreach ($data->tenis_matches as $match) {
 
             $model = new TennisMatch();
@@ -31,6 +32,8 @@ class MatchSeeder extends Seeder
             $model->county = $match->match_location;
             $model->winner_point_gain = 0;
             $model->loser_point_gain = 0;
+            $model->number = $number;
+            $number++;
 
             $model->save();
 

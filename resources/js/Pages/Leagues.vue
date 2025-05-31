@@ -1,16 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import utils from '../utils';
-import EditBtn from './components/EditIcon.vue';
-import { computed } from 'vue';
+import axios from 'axios';
+import bus from 'vue3-eventbus';
+
 const utl = utils;
 
-const props = defineProps({
-  leagues: Array,
-});
+const isClient = ref(false);
 
-const isCLient = ref(false);
-
+const leagues = ref([]);
 
 const formatDate = ((start, end) =>{
 
@@ -32,8 +30,13 @@ const formatDate = ((start, end) =>{
 
 
 onMounted(() => {
-  isCLient.value = true;
-  console.log(props.leagues)
+  isClient.value = true;
+  axios.get('/get-leagues').then((response) => {
+    leagues.value = response.data;
+    bus.emit('loading', false);
+  }).catch((error) => {
+    console.error('Error fetching leagues:', error);
+  });
 });
 
 </script>
@@ -41,7 +44,7 @@ onMounted(() => {
   <!-- <div class="loader" :class="{'close' : isLoading}">
 
   </div> -->
-  <Head title="Teniseri -" />
+  <Head title="Lige & Turniri -" />
   <div class="rankings-wrapper leagues">
     <div id="desktop">
       <div class="rankings-header">
@@ -53,7 +56,7 @@ onMounted(() => {
         <div class="wins">poeni</div>
         <div class="loses">teniseri</div>
       </div>
-      <div class="ranking-entry" v-for="(league, index) in props.leagues">
+      <div v-if="leagues.length" class="ranking-entry" v-for="(league, index) in leagues">
         <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
         <div class="spacer"></div>
         <div class="wins">{{formatDate(league.date_start, league.date_end)}}</div>
@@ -63,8 +66,8 @@ onMounted(() => {
         <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
       </div>
     </div>
-    <div id="mobile">
-      <div class="ranking-entry" v-for="(league, index) in props.leagues">
+    <div v-if="leagues" id="mobile">
+      <div class="ranking-entry" v-for="(league, index) in leagues">
         <div class="name" style="font-weight: bold;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
         <div class="date">{{formatDate(league.date_start, league.date_end)}}</div>
         <div class="county" :class="{'unknown': league.county == '?'}">{{league.county}}</div>

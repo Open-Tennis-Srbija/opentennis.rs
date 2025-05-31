@@ -15,6 +15,10 @@ class TennisMatch extends Model
         'league_id',
     ];
 
+    public function getFormatedDate(){
+        return date('D d M Y', strtotime($this->match_date));
+    }
+
     public function players()
     {
         return $this->belongsToMany(Player::class, 'match_players')
