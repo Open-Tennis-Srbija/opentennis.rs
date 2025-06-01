@@ -40,6 +40,7 @@ onMounted(() => {
     </div>
     <div v-if="courts" id="mobile">
       <div class="ranking-entry" v-for="(court, index) in courts">
+        <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
         <div class="name" style="font-weight: bold;">{{court.name}}</div>
       </div>
     </div>

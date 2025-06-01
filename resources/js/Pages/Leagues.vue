@@ -72,6 +72,7 @@ onMounted(() => {
       </div>
     </div>
     <div v-if="leagues" id="mobile">
+        <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-ligu/${league.uri}`"><EditBtn/></Link>
       <div class="ranking-entry" v-for="(league, index) in leagues">
         <div class="name" style="font-weight: bold;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
         <div :class="{'inactive' : isInactive(league.date_end)}" class="date">{{formatDate(league.date_start, league.date_end)}}</div>

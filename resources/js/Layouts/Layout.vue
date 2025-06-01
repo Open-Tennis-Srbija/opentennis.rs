@@ -134,8 +134,8 @@ watch(
                 :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige-turniri'"
                 :class="{ active: $page.url === '/lige-turniri' }">lige & turniri</Link>
-            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige-turniri'"
-                :class="{ active: $page.url === '/lige-turniri' }">tereni</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/tereni'"
+                :class="{ active: $page.url === '/tereni' }">tereni</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"
