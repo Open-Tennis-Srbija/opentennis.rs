@@ -58,8 +58,10 @@ class LeaguesController extends Controller
         if($league){
             $league->name = $data['name'];
             $league->county = $data['location'];
-            $league->date_begin = new DateTime($data['date_begin'])->format('Y-m-d');
-            $league->date_end = new DateTime($data['date_end'])->format('Y-m-d');
+            $date_begin = new DateTime($data['date_begin']);
+            $league->date_begin = $date_begin->format('Y-m-d');
+            $date_end = new DateTime($data['date_end']);
+            $league->date_end = $date_end->format('Y-m-d');
             $league->link = $data['link'] ?? '';
 
             $uri = str_replace(' ', '-', strtolower($data['name']));
