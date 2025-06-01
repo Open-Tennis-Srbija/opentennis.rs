@@ -57,6 +57,7 @@ Route::inertia('/pravila', 'Rules')->name('rules');
      Route::get('/izmeni-ligu/{uri}', [LeaguesController::class, 'getLeagueForEdit'])->name('editLeague');
      Route::get('/liga/{uri}', [LeaguesController::class, 'returnForEdit'])->name('leagueByUri');
      Route::post('/izmeni-ligu/{uri}', [LeaguesController::class, 'updateLeague']);
+     Route::post('/obrisi-ligu', [LeaguesController::class, 'deleteLeague']);
 
      Route::inertia('/tereni', 'Courts')->name('courts');
      Route::get('/get-courts', [CourtsController::class, 'getCourts']);

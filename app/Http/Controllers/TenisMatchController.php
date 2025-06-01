@@ -297,7 +297,11 @@ class TenisMatchController extends Controller
             'id' => ['required'],
         ]);
 
-        $match = TenisMatch::find($data['id']);
+        $match = TennisMatch::find($data['id']);
+
+        $match->players()->detach($match->winners()->first()->id);
+        $match->players()->detach($match->losers()->first()->id);
+
 
         $match->delete();
 

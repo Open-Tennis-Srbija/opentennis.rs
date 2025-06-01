@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref, onMounted, nextTick } from "vue";
+import { computed, reactive, ref, onMounted, nextTick, watch } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import "overlayscrollbars/overlayscrollbars.css";
 import { OverlayScrollbars } from "overlayscrollbars";
@@ -53,9 +53,10 @@ function toggleMenu() {
     mobileMenu.state = !mobileMenu.state;
 }
 
-const headerMessage = computed(() => {
-    let page = usePage();
+const page = usePage();
+const headerMessage = ref("");
 
+function computeHeaderMessage() {
     if (page?.props?.title) return page.props.title;
 
     switch (page.url) {
@@ -82,7 +83,18 @@ const headerMessage = computed(() => {
         default:
             return "";
     }
-});
+}
+
+// Set initial value
+headerMessage.value = computeHeaderMessage();
+
+// Watch for changes in url or title
+watch(
+    () => [page.url, page.props.title],
+    () => {
+        headerMessage.value = computeHeaderMessage();
+    }
+);
 </script>
 <template>
     <Loader :show="loading" />

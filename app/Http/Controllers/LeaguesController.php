@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Court;
 use App\Models\League;
+use App\Models\TennisMatch;
 use DateTime;
 use Helper;
 use Illuminate\Http\Request;
@@ -89,6 +90,36 @@ class LeaguesController extends Controller
             'courts' => CourtsController::getCourts(),
 		]);
     }
+
+    public static function deleteLeague(Request $request){
+        $league = League::find($request->input('id'));
+        if(!$league){
+            return response()->json(['error' => 'League not found'], 404);
+        }
+
+        // Delete the league's cache file
+        $cacheFilePath = storage_path('app/public/leagues/'.$league->uri.'.json');
+        if(file_exists($cacheFilePath)){
+            unlink($cacheFilePath);
+        }
+
+        $matches = TennisMatch::where('league_id', $league->id)->get();
+
+        if($matches->count() > 0){
+            // Delete all matches associated with the league
+            foreach($matches as $match){
+                $match->league_id = 1;
+                $match->save();
+            }
+        }
+
+        // Delete the league
+        $league->delete();
+
+        return redirect('/lige-turniri');
+    }
+
+
     public static function returnForEdit($league_uri){
         $league = League::where('uri', $league_uri)->first();
         return [

@@ -72,9 +72,9 @@ const formState = reactive({
 });
 const deleteLeague = () =>{
     if(confirm('Da li ste sigurni da želite da obrišete ovu ligu?')){
-        form.post(`/liga/obrisi`,{
+        form.post(`/obrisi-ligu`,{
             onSuccess: () => {
-                location.href = '/';
+                location.href = '/lige-turniri';
             },
             onError: (errors) => {
                 formState.submitted = false;
@@ -233,6 +233,6 @@ const handleInputs = (event,isDate = false) => {
       </div>
 
     </form>
-    <!-- <button @click.prevent="deletePlayer()" class="delete">obriši</button> -->
+    <button @click.prevent="deleteLeague()" class="delete">obriši</button>
   </div>
 </template>
