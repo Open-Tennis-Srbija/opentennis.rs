@@ -10,6 +10,7 @@ use App\Models\Player;
 use App\Models\TenisMatch;
 use App\Models\TennisMatch;
 use DateTime;
+use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -156,11 +157,14 @@ class PlayerController extends Controller
 		//
 	}
 
-	public function getPlayer($id){
+	public function getPlayer($uri){
 		return Inertia::render('EditPlayer', [
-			'player' => Player::find($id),
+			'uri' => $uri,
 		]);
 
+	}
+	public function getPlayerForEdit($uri){
+		return Player::where('uri', $uri)->first();
 	}
 
 	public function getChart(Request $request){
@@ -178,6 +182,7 @@ class PlayerController extends Controller
 			'last_name' => ['required', 'max:30'],
 			'club' => ['max:30'],
 			'location' => ['max:30'],
+			'category' => ['required', 'in: 1,2,3,4,5,6,7,8,9,10,?'],
 		], [
 			'first_name.required' => 'Ovo polje je obavezno.',
 			'first_name.max' => 'Maksimalan broj karaktera je 30.',
@@ -185,6 +190,8 @@ class PlayerController extends Controller
 			'last_name.max' => 'Maksimalan broj karaktera je 30.',
 			'club.max' => 'Maksimalan broj karaktera je 30.',
 			'location.max' => 'Maksimalan broj karaktera je 30.',
+			'category.required' => 'Ovo polje je obavezno.',
+			'category.in' => 'Kategorija mora biti jedna od: 1,2,3,4,5,6,7,8,9,10 ili ?',
 		]);
 
 		$player = Player::find($data['id']);
@@ -193,7 +200,12 @@ class PlayerController extends Controller
 		$player->last_name = $data['last_name'];
 		$player->club = $data['club'];
 		$player->location = $data['location'];
+		$player->category = $data['category'];
 
+		$uri_firstname = Helper::formatName($data['first_name']);
+		$uri_lastname = Helper::formatName($data['last_name']);
+		$uri = $uri_firstname . '-' . $uri_lastname;
+		
 		$player->save();
 		$uri = '/'.$player->uri;
 		return redirect($uri);

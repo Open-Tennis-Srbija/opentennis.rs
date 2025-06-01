@@ -5,11 +5,15 @@ import { computed, onBeforeMount, onMounted, onUnmounted, reactive } from "vue";
 const model = defineModel();
 
 onBeforeMount(() => {
+    
     if (model.value && model.value.name && model.value.name != "") {
         state.search = model.value.name;
     }
     if (model.value && !model.value.name && model.value !== "") {
         state.search = model.value;
+    }
+    if(model.value && model.value.id && model.value.name == ''){
+        state.search = model.value.name;
     }
 });
 

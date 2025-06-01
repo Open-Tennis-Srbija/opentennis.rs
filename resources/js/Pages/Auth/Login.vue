@@ -1,7 +1,7 @@
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
-import {reactive, onMounted, defineAsyncComponent} from 'vue';
-import CircleLoader from '../../../../public/LRlCNqLdgl.json';
+import {reactive, onMounted, defineAsyncComponent, nextTick} from 'vue';
+import bus from 'vue3-eventbus';
 
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -9,8 +9,10 @@ import '@vuepic/vue-datepicker/dist/main.css'
 const props = defineProps({players: Array});
 const page = usePage();
 
-onMounted(() => {
-    page.props['title'] = 'Admin';
+onMounted(async () => {
+   page.props['title'] = 'Admin';
+   await nextTick
+   bus.emit('loading', false);
 });
 
 const form = useForm({

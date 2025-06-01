@@ -96,7 +96,7 @@ function getDateMonth(date){
         <p v-if="props.showMessage.loses" class="message">Ovaj teniser nikada nije izgubio &#128578;</p>
       </div>
       <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
-                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.id}`"><EditIcon/></Link>
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`"><EditIcon/></Link>
         <div class="number">{{ match.number }}</div>
         <div class="winner"><Link prefetch="false" :href="`/${match.winner_uri}`">{{ match.winner_name }}</Link><br><span class="points">+{{ match.winner_point_gain }}</span></div>
         <div class="loser"><Link prefetch="false" :href="`/${match.loser_uri}`">{{ match.loser_name }}</Link><br><span class="points">+{{ match.loser_point_gain }}</span></div>

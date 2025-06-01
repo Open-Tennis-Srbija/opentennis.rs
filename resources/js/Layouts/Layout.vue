@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref, onMounted } from "vue";
+import { computed, reactive, ref, onMounted, nextTick } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import "overlayscrollbars/overlayscrollbars.css";
 import { OverlayScrollbars } from "overlayscrollbars";
@@ -64,7 +64,7 @@ const headerMessage = computed(() => {
         case "/mecevi":
             return "mečevi";
         case "/dodaj-ligu":
-            return "dodaj ligu ili turnir";
+            return "dodaj ligu & turnir";
         case "/dodaj":
             return "dodaj meč";
         case "/teniseri":
@@ -73,6 +73,8 @@ const headerMessage = computed(() => {
             return "misija";
         case "/pravila":
             return "pravila";
+        case "/tereni":
+            return "tereni";
         case "/lige-turniri":
             return 'Lige & turniri';
         case "/admin":
@@ -96,6 +98,7 @@ const headerMessage = computed(() => {
                 <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
                 <Link prefetch="false" :href="'/lige-turniri'" :class="{ active: $page.url === '/lige-turniri' }">lige & turniri</Link>
                 <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
+                <Link v-if="$page.props.auth.user" prefetch="false" :href="'/tereni'" :class="{ active: $page.url === '/tereni' }">tereni</Link>
                 <Link prefetch="false" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
                 <!-- <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link> -->
             </div>
@@ -119,6 +122,8 @@ const headerMessage = computed(() => {
                 :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige-turniri'"
                 :class="{ active: $page.url === '/lige-turniri' }">lige & turniri</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige-turniri'"
+                :class="{ active: $page.url === '/lige-turniri' }">tereni</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"

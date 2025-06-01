@@ -1,24 +1,40 @@
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
-import {onMounted, reactive, defineAsyncComponent} from 'vue';
-import CircleLoader from '../../../public/LRlCNqLdgl.json';
+import {onMounted, reactive} from 'vue';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
+import { ref } from 'vue';
+import axios from 'axios';
+import bus from 'vue3-eventbus';
 
-const props = defineProps({player: Object});
+const props = defineProps({uri: String});
 
 const page = usePage();
+const player = ref({});
 
 onMounted(() => {
     page.props['title'] = `Izmeni tenisera`;
+    axios.get(`/teniser/${props.uri}`).then((response) => {
+       form.id = response.data.id;
+        form.first_name = response.data.first_name;
+        form.last_name = response.data.last_name;
+        form.club = response.data.club;
+        form.location = response.data.location;
+        form.category = response.data.category;
+        player.value = response.data; 
+        bus.emit('loading', false);
+    }).catch((error) => {
+        console.error('Error fetching player:', error);
+    });
 });
 
 const form = useForm({
-    id: props.player.id,
-    first_name: props.player.first_name,
-    last_name: props.player.last_name,
-    club: props.player.club,
-    location: props.player.location,
+    id: null,
+    first_name: null,
+    last_name: null,
+    club: null,
+    location: null,
+    category: null,
 });
 
 const formState = reactive({
@@ -111,6 +127,21 @@ const handleInputs = (event,isDate = false) => {
               Lokacija
             </label>
             <input v-model="form.location" @input="handleInputs($event)" :disabled="formState.submitted" id="location " type="text">
+          </div>
+        </div>
+      </div>
+       <div class="form-section">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="full-score" class="input-label">
+              Kategorija
+            </label>
+            <Dropdown v-if="form.category" :label="'name'" :type="'array'" v-model="form.category" :options="['?','dropdown-spacer','1','2','3','4','5','6','7','8','9','10']" :disabled="formState.submitted" id="category" />
+            <p class="error-message">{{ form.errors.category }}</p>
+          </div>
+          <div class="form-group">
+            <label for="games" class="input-label">
+            </label>
           </div>
         </div>
       </div>

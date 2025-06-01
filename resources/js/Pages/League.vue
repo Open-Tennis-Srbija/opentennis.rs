@@ -5,6 +5,7 @@ import utils from "../utils";
 import axios from "axios";
 import bus from "vue3-eventbus";
 import { ref } from "vue";
+import EditIcon from "./components/EditIcon.vue";
 
 const utl = utils;
 const league = ref({});
@@ -64,22 +65,34 @@ const players = computed(()=>{
 
 })
 
+const isInactive = (date_end) => {
+  const end = new Date(date_end);
+  const now = new Date();
+  return end < now.setHours(0,0,0,0);
+};
+
 function containsGreek(text) {
   return /[\u0370-\u03FF\u1F00-\u1FFF]/.test(text);
 }
 
 </script>
 <template>
-    <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player">
+    <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player league">
         <h1 :class="{'fix-letters': containsGreek(league.name)}">
-            {{ league.name }}
+            {{ league.name }}<Link prefetch="false"
+				class="edit-btn"
+				v-if="$page.props.auth.user"
+				:href="`/izmeni-ligu/${league.uri}`"
+				><EditIcon
+                class="league"
+			/></Link>
         </h1>
 
         <p class="subtitle">{{ league.county }}</p>
         <p class="subtitle-spacer" >
             &nbsp;
         </p>
-        <p style="color: black" class="subtitle">
+        <p :style="{color: isInactive(league.date_end) ? '#949494' : 'black'}" class="subtitle">
             {{formatDate(league.date_start, league.date_end)}} 
         </p>
 

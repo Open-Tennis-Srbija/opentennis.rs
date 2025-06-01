@@ -44,28 +44,38 @@ Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
 
 Route::inertia('/pravila', 'Rules')->name('rules');
 
-/* Route::inertia('/admin/login', 'Auth/Login')->name('login'); */
-/* Route::post('/admin/login', [AuthController::class, 'login']); */
-/**/
-/* Route::post('/getChart',[PlayerController::class, 'getChart'])->name('playerChart'); */
-/**/
-/**/
-/* Route::middleware('auth')->group(function(){ */
-/**/
-/*     Route::get('/izmeni/{id}',[TenisMatchController::class, 'editMatch'])->name('editMatch'); */
-/*     Route::post('/izmeni', [TenisMatchController::class, 'updateMatch']); */
-/**/
-/*     Route::get('/teniser/izmeni/{id}',[PlayerController::class, 'getPlayer'])->name('editPlayer'); */
-/*     Route::post('/teniser/izmeni',[PlayerController::class, 'updatePlayer']); */
-/*     Route::post('/teniser/obrisi',[PlayerController::class, 'deletePlayer']); */
-/*     Route::post('/mec/obrisi',[TenisMatchController::class, 'deleteMatch']); */
-/**/
-/*     Route::inertia('/admin', 'Auth/Dashboard', */
-/*     ['data' => AuthController::getDashboardData()])->name('admin'); */
-/**/
-/*     Route::post('/logout',[AuthController::class, 'logout'])->name('logout'); */
-/* }); */
-/**/
+ Route::inertia('/admin/login', 'Auth/Login')->name('login'); 
+ Route::post('/admin/login', [AuthController::class, 'login']); 
+
+    Route::post('/getChart',[PlayerController::class, 'getChart'])->name('playerChart');
+    Route::middleware('auth')->group(function(){
+
+     Route::get('/izmeni/{number}',[TenisMatchController::class, 'editMatch'])->name('editMatch');
+     Route::post('/izmeni', [TenisMatchController::class, 'updateMatch']);
+
+     
+     Route::get('/izmeni-ligu/{uri}', [LeaguesController::class, 'getLeagueForEdit'])->name('editLeague');
+     Route::get('/liga/{uri}', [LeaguesController::class, 'returnForEdit'])->name('leagueByUri');
+     Route::post('/izmeni-ligu/{uri}', [LeaguesController::class, 'updateLeague']);
+
+     Route::inertia('/tereni', 'Courts')->name('courts');
+     Route::get('/get-courts', [CourtsController::class, 'getCourts']);
+     Route::get('/izmeni-teren/{id}',[CourtsController::class, 'getEditCourt'])->name('editCourt');
+     Route::get('/teren/{id}',[CourtsController::class, 'getCourtForEdit'])->name('courtById');
+     Route::post('/teren/izmeni', [CourtsController::class, 'updateCourt']);
+     Route::post('/teren/obrisi', [CourtsController::class, 'deleteCourt']);
+
+     Route::get('/{uri}/izmeni',[PlayerController::class, 'getPlayer'])->name('editPlayer');
+     Route::get('/teniser/{uri}',[PlayerController::class, 'getPlayerForEdit'])->name('playerByUri');
+     Route::post('/teniser/izmeni',[PlayerController::class, 'updatePlayer']);
+     Route::post('/{uri}/obrisi',[PlayerController::class, 'deletePlayer']);
+    //  Route::post('/mec/obrisi',[TenisMatchController::class, 'deleteMatch']);
+
+     Route::inertia('/admin', 'Home')->name('admin'); 
+
+     Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
+ }); 
+
 Route::get('/{uri}',[ResolverController::class, 'resolveUri'])->name('player');
 
 /* Route::get('/{uri}','Player'); */

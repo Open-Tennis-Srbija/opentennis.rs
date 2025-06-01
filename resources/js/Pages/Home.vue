@@ -50,7 +50,7 @@ onMounted(() => {
         <div class="place">kategorija</div>
       </div>
       <div class="ranking-entry" v-for="player in players">
-                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/teniser/izmeni/${player.id}`"><EditBtn/></Link>
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
         <div class="rank"
         :class="{'first': player.rank == 1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
           {{ player.rank}}

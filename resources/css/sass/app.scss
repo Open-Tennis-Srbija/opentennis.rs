@@ -3,3 +3,12 @@
 @use './pages';
 
 
+.show-mobile{
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .show-mobile {
+        display: block;
+    }
+}

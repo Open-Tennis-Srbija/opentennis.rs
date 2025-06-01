@@ -30,7 +30,11 @@
       color: #949494;
     }
   }
-  
+    .inactive {
+        color: #949494;
+      }
+
+
   .place{
     position : relative;
     .diamond{
@@ -181,8 +185,7 @@
         font-weight: normal;
         font-size: 18px;
       }
-
-
+    
       .place{
         .diamond{
           height: 25px;
@@ -190,7 +193,7 @@
         }
         .number{
           top: 53%;
-          left: 50%;
+          left: 47%;
         }
       }
     }

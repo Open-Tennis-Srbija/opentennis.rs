@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import utils from '../utils';
 import axios from 'axios';
 import bus from 'vue3-eventbus';
+import EditBtn from './components/EditIcon.vue';
 
 const utl = utils;
 
@@ -27,6 +28,11 @@ const formatDate = ((start, end) =>{
       return `${utl.formatDate(start)} - ${utl.formatDate(end)}`
     }
 })
+const isInactive = (date_end) => {
+  const end = new Date(date_end);
+  const now = new Date();
+  return end < now.setHours(0,0,0,0);
+};
 
 
 onMounted(() => {
@@ -49,7 +55,6 @@ onMounted(() => {
     <div id="desktop">
       <div class="rankings-header">
         <div class="name">ime</div>
-        <div class="spacer"></div>
         <div class="elo">datum početak - datum kraj</div>
         <div class="elo">opština</div>
         <div class="total-matches">svi mečevi</div>
@@ -57,9 +62,9 @@ onMounted(() => {
         <div class="loses">teniseri</div>
       </div>
       <div v-if="leagues.length" class="ranking-entry" v-for="(league, index) in leagues">
+        <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-ligu/${league.uri}`"><EditBtn/></Link>
         <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
-        <div class="spacer"></div>
-        <div class="wins">{{formatDate(league.date_start, league.date_end)}}</div>
+        <div :class="{'inactive' : isInactive(league.date_end)}" class="wins">{{formatDate(league.date_start, league.date_end)}}</div>
         <div style="text-align:center" class="wins" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
         <div class="total-matches">{{league.match_number}}</div>
         <div class="wins" :class="{'unknown': league.points == 0}">{{league.points}}</div>
@@ -69,7 +74,7 @@ onMounted(() => {
     <div v-if="leagues" id="mobile">
       <div class="ranking-entry" v-for="(league, index) in leagues">
         <div class="name" style="font-weight: bold;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
-        <div class="date">{{formatDate(league.date_start, league.date_end)}}</div>
+        <div :class="{'inactive' : isInactive(league.date_end)}" class="date">{{formatDate(league.date_start, league.date_end)}}</div>
         <div class="county" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
 
       </div>

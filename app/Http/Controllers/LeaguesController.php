@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Court;
 use App\Models\League;
+use DateTime;
+use Helper;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
+
+use function PHPUnit\Framework\isNumeric;
 
 class LeaguesController extends Controller
 {
@@ -16,6 +23,7 @@ class LeaguesController extends Controller
         return [
             'name' => $league->name,
             'county' => $league->county,
+            'uri' => $league->uri,
             'points' => $league->getPoints(),
             'date_start'=>$league->date_begin,
             'date_end' => $league->date_end,
@@ -28,6 +36,71 @@ class LeaguesController extends Controller
         ];
 
     }
+
+    public function updateLeague(Request $request){
+        $data = $request->validate([
+            'id' => 'required',
+            'name' => 'required',
+            'location' => 'required',
+            'date_begin' => 'required',
+            'date_end' => 'required',
+            'link' => '',
+            'court' => '',
+        ], [
+            'name.required' => 'Ime je obavezno.',
+            'county.required' => 'Opština je obavezna.',
+            'date_begin.required' => 'Datum početka je obavezan.',
+            'date_end.required' => 'Datum završetka je obavezan.',
+        ]);
+
+        $league = League::find($data['id']);
+        if($league){
+            $league->name = $data['name'];
+            $league->county = $data['location'];
+            $league->date_begin = new DateTime($data['date_begin'])->format('Y-m-d');
+            $league->date_end = new DateTime($data['date_end'])->format('Y-m-d');
+            $league->link = $data['link'] ?? '';
+
+            $uri = str_replace(' ', '-', strtolower($data['name']));
+            $uri = str_replace('--', '-', $uri);
+            $uri = Helper::formatName($uri);
+            
+            $league->uri = $uri;
+
+            if(!isNumeric($data['court']['id'])){
+                $court = new Court();
+                $court->name = $data['court']['name'];
+                $court->link = '';
+                $court->save();
+                
+                $league->court_id = $court->id;
+            } else {
+                $league->court_id = $data['court']['id'];
+            }
+            $league->save();
+            $uri = '/'.$league->uri;
+            return redirect($uri);
+        }
+    }
+
+    public static function getLeagueForEdit($uri){
+		return Inertia::render('EditLeague', [
+			'uri' => $uri,
+            'courts' => CourtsController::getCourts(),
+		]);
+    }
+    public static function returnForEdit($league_uri){
+        $league = League::where('uri', $league_uri)->first();
+        return [
+            'id' => $league->id,
+            'name' => $league->name,
+            'county' => $league->county,
+            'date_begin' => $league->date_begin,
+            'date_end' => $league->date_end,
+            'link' => $league->link,
+            'court' => Court::find($league->court_id),
+        ];
+    }
     public static function returnCachedLeague($uri){
     if(file_exists(storage_path('app/public/leagues/'.$uri.'.json'))){
                 $cache = json_decode(file_get_contents(storage_path('app/public/leagues/'.$uri.'.json')), true);
@@ -37,7 +110,15 @@ class LeaguesController extends Controller
     }
 
     public static function getLeaguesForList(){
-        $leagues = League::where('id', '>', 1)->orderBy('date_begin','desc')->get();
+        $today = date('Y-m-d');
+        $leagues = League::where('id', '>', 1)
+            // Inactive at the bottom
+            ->orderByRaw("date_end < ? ASC", [$today])
+            // For active leagues, sort by duration (longest first)
+            ->orderByRaw("CASE WHEN date_end >= ? THEN DATEDIFF(date_end, date_begin) END DESC", [$today])
+            // For inactive leagues, you can sort by date_end descending (most recently ended first)
+            ->orderByRaw("CASE WHEN date_end < ? THEN date_end END DESC", [$today])
+            ->get();
 
         $response = [];
 

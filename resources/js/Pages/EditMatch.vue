@@ -1,18 +1,21 @@
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
-import { onMounted, reactive, defineAsyncComponent} from 'vue';
+import { onMounted, reactive, defineAsyncComponent, nextTick} from 'vue';
 import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import opstine from '../assets/opstine.json';
+import bus from 'vue3-eventbus';
 
-const props = defineProps({players: Array, match: Object, courts: Array});
+const props = defineProps({players: Array, match: Object, courts: Array, leagues: Array});
 
 
 const page = usePage();
 
-onMounted(() => {
+onMounted(async () => {
     page.props['title'] = `Izmeni meč`;
+    await nextTick();
+    bus.emit('loading', false);
 });
 
 const form = useForm({
@@ -54,26 +57,31 @@ const submit = () =>{
   formState.submitted = true;
   if(form.winner){
     form.winner.name.trim();
-    form.winner.name.replace('  ', ' ');
+    form.winner.name = form.winner.name.replace(/  /g, ' ');
+
   }
   if(form.loser){
     form.loser.name.trim();
-    form.loser.name.replace('  ', ' ');
+    form.winner.name = form.winner.name.replace(/  /g, ' ');
   }
 
   form.set_score.trim();
   if(form.game_score){
       form.game_score.trim();
-      form.game_score.replace(' ', '');
+   form.game_score = form.game_score.replace(/ /g, ',');
+  form.game_score = form.game_score.replace(/,,/g, ',');
+      console.log(form.game_score);
   }
   form.location.trim();
 
     form.post(`/izmeni`,{
         onSuccess: () => {
+          bus.emit('loading', false);
           formState.submitted = false;
           formState.success = true;
         },
         onError: (errors) => {
+            bus.emit('loading', false);
           formState.submitted = false;
         },
     });
@@ -175,6 +183,7 @@ const handleInputs = (event,isDate = false) => {
               Pobednik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
            <dropdown
+              v-if="props.players"
               label="name"
               :options="props.players"
               :disabledOption="form.loser"
@@ -189,6 +198,7 @@ const handleInputs = (event,isDate = false) => {
               Gubitnik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
             <Dropdown
+              v-if="props.players"
               label="name"
               :options="props.players"
               v-model="form.loser"
@@ -222,8 +232,9 @@ const handleInputs = (event,isDate = false) => {
               Liga ili turnir
             </label>
             <Dropdown
+              v-if="props.leagues"
               label="name"
-              :options="props.leagues"
+              :options="[{ id: 1, name: 'sparing' },{ id: null, name: 'dropdown-spacer' }, ...props.leagues]"
               v-model="form.league"
               :class="{'invalid': form.errors.league}"
               :shouldReset="formState.shouldReset"
@@ -266,6 +277,7 @@ const handleInputs = (event,isDate = false) => {
               Opština (ili inostranstvo na dnu) <span class="required">*</span>
             </label>
             <Dropdown
+              v-if="opstine.data"
               label="name"
               :options="opstine.data"
               :type="'array'"
@@ -294,13 +306,13 @@ const handleInputs = (event,isDate = false) => {
       <div class="form-section">
         <div class="form-row">
           <button id="submit">
-            <span id="add-btn" :class="{'hide': formState.submitted}">Dodaj</span>
+            <span id="add-btn" :class="{'hide': formState.submitted}">Sačuvaj</span>
             <span id="loader-submit" :class="{'show': formState.submitted}" class="loader"></span>
           </button>
         </div>
       </div>
 
     </form>
-    <button @click.prevent="deleteMatch()" class="delete">obriši</button>
+    <button v-if="!formState.success" @click.prevent="deleteMatch()" class="delete">obriši</button>
   </div>
 </template>

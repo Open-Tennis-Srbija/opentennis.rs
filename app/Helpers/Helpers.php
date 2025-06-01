@@ -26,6 +26,7 @@ Class Helpers{
             $cache = include(Storage::disk('public')->path('charts/statistics.php'));
             $cache = json_decode(json_encode($cache), true);
 
+            $cache['maxRank']+= $new_players;
 
             $points_updated = false;
             for($i = 0; $i < count($cache['points']); $i++){

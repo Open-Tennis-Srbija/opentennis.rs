@@ -138,12 +138,12 @@ function containsGreek(text) {
 				{{ player.rank }}
 			</p>
 		</div>
-		<h1 :class="{'fix-letters': containsGreek(player.name)}">
-			{{ player.name
-			}}<Link prefetch="false"
+		<h1 v-if="player.name" :class="{'fix-letters': containsGreek(player.name)}">
+			{{ player.name.split(' ')[0]}} <br class="show-mobile"> {{  player.name.split(' ')[1] }}
+			<Link prefetch="false"
 				class="edit-btn"
 				v-if="$page.props.auth.user"
-				:href="`/teniser/izmeni/${player.id}`"
+				:href="`/${player.uri}/izmeni`"
 				><EditIcon
 			/></Link>
 		</h1>
