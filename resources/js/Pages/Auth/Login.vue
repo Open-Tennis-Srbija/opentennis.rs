@@ -36,6 +36,7 @@ const submit = () =>{
           formState.success = true;
         },
         onError: (errors) => {
+          bus.emit('loading', false);
           formState.submitted = false;
         },
     });
