@@ -35,6 +35,7 @@ onMounted(() => {
 	page.props["title"] = "teniser";
 	axios.get(`/get-player/${props.player_uri}`).then((response) => {
 		player.value = response.data;
+		console.log('Player data:', player.value);
 		pageTitle.value = `${player.value.name} - Srpska Tenis Liga`;
 		bus.emit('loading', false)
 	}).catch((error) => {
@@ -315,7 +316,7 @@ function containsGreek(text) {
 						<template v-for="league in locations.leagues">
 							<p>
 								<template v-if="league.uri != ''">
-									<a target="'_blank'" :href="`/${league.uri}`">
+									<a :href="`/${league.uri}`">
 										{{ league.name }}
 									</a>
 								</template>
@@ -339,16 +340,16 @@ function containsGreek(text) {
 			<div class="player-matches">
 				<MatchTable
 					v-if="player.wins"
-					:showMessage="{ wins: player.wins == 0 }"
+					:showMessage="{ wins: player.wins_number == 0 }"
 					:propMatches="player.wins"
 					:loadMatches="false"
 				/>
 			</div>
 			<h2 class="summary-title no-border low-margin">gubitci</h2>
-			<div class="player-matches">
+			<div class="player-matches mobile-mb-200">
 				<MatchTable
 					v-if="player.losses"
-					:showMessage="{ losses: player.losses == 0 }"
+					:showMessage="{ loses: player.losses_number == 0 }"
 					:propMatches="player.losses"
 					:loadMatches="false"
 				/>

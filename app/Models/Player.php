@@ -248,7 +248,7 @@ class Player extends Model
                 $league = \App\Models\League::find($row->league_id);
                 return [
                     'name' => $league ? $league->name : 'Nepoznata liga',
-                    'link' => $league && $league->link ? $league->link : '',
+                    'uri' => $league && $league->uri ? $league->uri : '',
                     'count' => $row->count,
                 ];
             })
