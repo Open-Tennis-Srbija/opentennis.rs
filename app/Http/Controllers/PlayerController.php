@@ -251,7 +251,7 @@ class PlayerController extends Controller
 									'county' => $win->county,
 									'court' => Court::find($win->court_id),
 									'league' => League::find($win->league_id),
-									'date' => $win->match_date,
+									'date' => $win->date,
 								];
 							}
 						),
@@ -270,7 +270,7 @@ class PlayerController extends Controller
 									'county' => $loss->county,
 									'court' => Court::find($loss->court_id),
 									'league' => League::find($loss->league_id),
-									'date' => $loss->match_date,
+									'date' => $loss->date,
 								];
 							}
 						),

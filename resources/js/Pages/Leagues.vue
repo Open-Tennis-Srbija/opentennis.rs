@@ -35,6 +35,7 @@ const isInactive = (date_end) => {
 };
 
 
+
 onMounted(() => {
   isClient.value = true;
   axios.get('/get-leagues').then((response) => {
@@ -67,7 +68,7 @@ onMounted(() => {
         <div :class="{'inactive' : isInactive(league.date_end)}" class="wins">{{formatDate(league.date_start, league.date_end)}}</div>
         <div style="text-align:center" class="wins" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
         <div class="total-matches">{{league.match_number}}</div>
-        <div class="wins" :class="{'unknown': league.points == 0}">{{league.points}}</div>
+        <div class="wins" :class="{'unknown': league.points == 0}">{{utl.formatAsThousands(league.points)}}</div>
         <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
       </div>
     </div>

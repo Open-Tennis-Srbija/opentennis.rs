@@ -269,7 +269,7 @@ class TenisMatchController extends Controller
 
         $match->save();
         
-       $winner->points += $winner_gains;
+        $winner->points += $winner_gains;
         $loser->points += $loser_gains; 
         $winner->save();
         $loser->save();
