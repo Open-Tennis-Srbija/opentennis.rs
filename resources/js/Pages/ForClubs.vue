@@ -7,7 +7,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-    <Head title="Za klubove -" />
+    <Head title="Dodaj ligu ili turnir -" />
     <div class="static-wrapper">
         <h1>DODAJ LIGU ILI TURNIR</h1>
         <!-- <p>
