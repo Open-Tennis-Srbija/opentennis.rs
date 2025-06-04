@@ -42,7 +42,7 @@ Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
 /* Route::post('/leagueChart',[LeagueController::class, 'getChart'])->name('leagueChart'); */
 /**/
 
-Route::inertia('/pravila', 'Rules')->name('rules');
+Route::inertia('/uputstva', 'Rules')->name('rules');
 
  Route::inertia('/admin/login', 'Auth/Login')->name('login'); 
  Route::post('/admin/login', [AuthController::class, 'login']); 

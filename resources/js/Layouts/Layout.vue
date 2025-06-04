@@ -72,8 +72,8 @@ function computeHeaderMessage() {
             return "teniseri";
         case "/misija":
             return "misija";
-        case "/pravila":
-            return "pravila";
+        case "/uputstva":
+            return "uputstva";
         case "/tereni":
             return "tereni";
         case "/lige-turniri":
@@ -142,8 +142,8 @@ watch(
                 :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/pravila'"
-                :class="{ active: $page.url === '/pravila' }">pravila</Link>
+            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
+                :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post" :href="'/logout'"
                 v-if="$page.props.auth.user">odjavi se</Link>
         </div>
@@ -190,7 +190,7 @@ watch(
                 </a>
             </div>
             <div class="footer-text normal-font">
-                <Link prefetch="false" :href="'/pravila'">pravila</Link>
+                <Link prefetch="false" :href="'/uputstva'">uputstva</Link>
             </div>
             <Link prefetch="false" class="logout" :href="'/logout'" method="post" as="button"
                 :class="{ hide: !$page.props.auth.user }">odjavi se</Link>

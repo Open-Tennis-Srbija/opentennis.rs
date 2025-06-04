@@ -18,16 +18,16 @@ onMounted(async () => {
             Zato predlažemo da klubovi informišu svoje članove da mogu da koriste Ligu.
 </p> -->
         <p>
-            <Link prefetch='false' :href="'/'">SrpskaTenisLiga.rs</Link> vlasnicima terena i klubova povećava broj mećeva, iznajmljivanje terena, i zapošljavanje trenera.
+            Organizatori teniskih takmičenja mogu da nam pošalju podatke o svojim takmičenjima kako bi ih dodali na <Link prefetch='false' :href="'/'">SrpskaTenisLiga.rs</Link>. 
         </p>
         <p>
-            Predlažemo da klubovi informišu svoje članove da mogu da koriste <Link prefetch='false' :href="'/'">SrpskaTenisLiga.rs</Link>.
+            Da dodate ligu ili turnir pošaljite ime takmičenja, početni datum, završni datum, opštinu, terene, i link ili email za kontakt na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
         </p>
         <p>
-                Takođe tereni i klubovi mogu da nam pošalju rezultate sa svojih turnira i liga koje možemo grupno da dodamo u bazu i samim tim dodamo sve tenisere na rang listu.
-            </p>
+            Da dodate sve mečeve sa lige ili turnira popunite <a href="/storage/SrpskaTenisLiga.rs prijava turnira i liga - šablon.xlsx" target="_blank">ovaj spreadsheet</a> i pošaljite ga na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
+        </p>
         <p>
-            Da bi dodali rezutate sa lige ili turnira pošaljite email na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
+            Takođe možete da nam samo pošaljete i fotografije rezultata na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
         </p>
         <p>Hvala.</p>
     </div>
