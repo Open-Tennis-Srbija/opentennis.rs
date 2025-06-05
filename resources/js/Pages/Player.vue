@@ -182,7 +182,7 @@ function containsGreek(text) {
 					<h2 style="margin-top: -10px;">kategorija</h2>
 					<p class="category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
-						<span class="number" :class="{'white': player.category > 5, 'unknown': player.category == '?'}">{{ player.category }}</span>
+						<span class="number" :class="{'white': player.category > 5,'fix': player.category==7, 'unknown': player.category == '?'}">{{ player.category }}</span>
 					</p>
 				</div>
 			</div>
@@ -199,7 +199,7 @@ function containsGreek(text) {
 					<h2 style="margin-top: -4px;">kategorija</h2>
 					<p class="category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
-						<span class="number" :class="{'white': player.category > 5, 'unknown': player.category == '?'}">{{ player.category }}</span>
+						<span class="number" :class="{'white': player.category > 5,'fix': player.category == 7, 'unknown': player.category == '?'}">{{ player.category }}</span>
 					</p>
 				</div>
 				<div class="summary-item">

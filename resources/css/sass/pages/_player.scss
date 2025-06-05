@@ -177,6 +177,9 @@
                         left: 44%;
                         transform: translate(-50%, -50%);
                         font-size: 40px;
+                        &.fix{
+                            left: 53%;
+                        }
                         &.unknown{
                             color: #949494;
                         }
@@ -368,6 +371,10 @@
                         left: 46%;
                         transform: translate(-50%, -50%);
                         font-size:33px;
+                        &.fix{
+                            left: 53%;
+                            top:52%;
+                        }
                         &.unknown{
                             color: #949494;
                         }

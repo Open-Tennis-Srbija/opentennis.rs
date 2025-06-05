@@ -182,7 +182,7 @@ const chartOptionsLine2 = {
     },
     yaxis:{
         min: 2,
-        max: maxRank,
+        tickAmount: (maxRank.value ? maxRank.value - 1 : 8), // e.g., 10-2=8 steps
         forceNiceScale: true,
     },
     xaxis:{

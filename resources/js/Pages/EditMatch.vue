@@ -306,8 +306,7 @@ const handleInputs = (event,isDate = false) => {
       <div class="form-section">
         <div class="form-row">
           <button id="submit">
-            <span id="add-btn" :class="{'hide': formState.submitted}">Sačuvaj</span>
-            <span id="loader-submit" :class="{'show': formState.submitted}" class="loader"></span>
+            <span id="add-btn">Sačuvaj</span>
           </button>
         </div>
       </div>
