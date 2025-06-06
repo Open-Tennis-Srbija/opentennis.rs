@@ -96,7 +96,6 @@ class BatchImportMatches extends Command
 
                     foreach($rest_matches as $m){
                         if($m->id !== $match->id){
-                            $this->comment($m->number. ' > '. $m->number + 1 . PHP_EOL).
                             $m->number = $m->number + 1;
                             $m->save();
                         }
@@ -129,6 +128,7 @@ class BatchImportMatches extends Command
                     $loser->points += $loser_gains; 
                     $winner->save();
                     $loser->save();
+
                     Helpers::UpdateRanks();
                     Helpers::UpdatePlayerCharts($winner, $loser, $match);
                     Helpers::UpdateStatsChart($new_players, $winner_gains + $loser_gains, $match->date);

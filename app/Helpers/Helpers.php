@@ -30,7 +30,7 @@ Class Helpers{
 
             $points_updated = false;
             for($i = 0; $i < count($cache['points']); $i++){
-                if($cache['points'][$i]['date'] == $date){
+                if($cache['points'][$i]['date'] >= $date){
                     $cache['points'][$i]['points'] += $point_gain;
                     $points_updated = true;
                 }
@@ -43,7 +43,7 @@ Class Helpers{
             }
             $players_updated = false;
             for($i = 0; $i < count($cache['players']); $i++){
-                if($cache['players'][$i]['date'] == $date){
+                if($cache['players'][$i]['date'] >= $date){
                     $cache['players'][$i]['count'] += $new_players;
                     $players_updated = true;
                 }
@@ -57,7 +57,7 @@ Class Helpers{
 
             $matches_updated = false;
             for($i = 0; $i < count($cache['matches']); $i++){
-                if($cache['matches'][$i]['date'] == $date){
+                if($cache['matches'][$i]['date'] >= $date){
                     $cache['matches'][$i]['count'] += 1;
                     $matches_updated = true;
                 }
@@ -83,7 +83,7 @@ Class Helpers{
 
             $points_updated = false;
             for($i = 0; $i < count($cache['points']); $i++){
-                if($cache['points'][$i]['date'] == $date){
+                if($cache['points'][$i]['date'] >= $date){
                    $cache['points'][$i]['points'] += $point_gain;
                     $points_updated = true;
                 }
@@ -97,7 +97,7 @@ Class Helpers{
 
             $rank_updated = false;
             for($i = 0; $i < count($cache['rankings']); $i++){
-                if($cache['rankings'][$i]['date'] == $date){
+                if($cache['rankings'][$i]['date'] >= $date){
                     $cache['rankings'][$i]['rank'] = $player->rank;
                     $rank_updated = true;
                 }
@@ -110,7 +110,19 @@ Class Helpers{
             }
         }
         else{
-            $cache = PlayerChartData::getChartData($player);
+            $rank = Player::where('points','<',$point_gain)->first()->rank;
+            $cache = [
+                'points' => [[
+                    'points' => $point_gain,
+                    'date' => $date
+                ]],
+                'rankings' => [
+                    [
+                    'rank' => $rank,
+                    'date' => $date
+                ]],
+                'maxRank' => Player::all()->count()
+            ];
         }
         $export = "<?php\n\nreturn " . var_export($cache, true) . ";\n";
         Storage::disk('public')->put($file, $export);   

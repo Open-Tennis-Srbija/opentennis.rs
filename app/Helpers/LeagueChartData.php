@@ -3,12 +3,13 @@
 use App\Http\Controllers\PlayerController;
 use App\Models\Player;
 use App\Models\TenisMatch;
+use App\Models\TennisMatch;
 
 Class LeagueChartData{
 
     public static function getChartData(){
 
-        $matches = TenisMatch::all()->sortBy('match_date');
+        $matches = TennisMatch::all()->sortBy('date');
         $total_players = Player::all()->count();
 
         $data = [
@@ -36,7 +37,7 @@ Class LeagueChartData{
         $accumulative_points = 0;
         $changes_array = [];
 
-        $start = new DateTime($matches[0]->match_date);
+        $start = new DateTime($matches[0]->date);
         $end = new DateTime('tomorrow');
 
         $interval = DateInterval::createFromDateString('1 day');
@@ -45,7 +46,7 @@ Class LeagueChartData{
         foreach($matches as $match){
                 $accumulative_points += NikolaAlgoV1::getMatchEloGains($match)[0];
                 $accumulative_points += NikolaAlgoV1::getMatchEloGains($match)[1];
-                $date = new DateTime($match->match_date);
+                $date = new DateTime($match->date);
                 $date = $date->format('Y-m-d');
                 array_push($changes_array, [
                     'points' => $accumulative_points,
@@ -72,7 +73,7 @@ Class LeagueChartData{
     }
 
     private static function getPlayerChanges($matches){
-        $start = new DateTime($matches[0]->match_date);
+        $start = new DateTime($matches[0]->date);
         $end = new DateTime('tomorrow');
         $changes_array = [];
 
@@ -93,7 +94,7 @@ Class LeagueChartData{
     }
 
     private static function getMatchChanges($matches){
-        $start = new DateTime($matches[0]->match_date);
+        $start = new DateTime($matches[0]->date);
         $end = new DateTime('tomorrow');
         $changes_array = [];
 
@@ -103,7 +104,7 @@ Class LeagueChartData{
         foreach($period as $day){
             $count = 0;
             foreach($matches as $match){
-                $date = new DateTime($match->match_date);
+                $date = new DateTime($match->date);
                 $date = $date->format('Y-m-d');
                 if(strtotime($date) <= strtotime($day->format('Y-m-d'))){
                     $count++;
