@@ -44,7 +44,7 @@ Class Helpers{
             $players_updated = false;
             for($i = 0; $i < count($cache['players']); $i++){
                 if($cache['players'][$i]['date'] >= $date){
-                    $cache['players'][$i]['count'] += $new_players;
+                    $cache['players'][$i]['players'] += $new_players;
                     $players_updated = true;
                 }
             }
@@ -58,7 +58,7 @@ Class Helpers{
             $matches_updated = false;
             for($i = 0; $i < count($cache['matches']); $i++){
                 if($cache['matches'][$i]['date'] >= $date){
-                    $cache['matches'][$i]['count'] += 1;
+                    $cache['matches'][$i]['matches'] += 1;
                     $matches_updated = true;
                 }
             }
