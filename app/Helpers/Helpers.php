@@ -65,7 +65,7 @@ Class Helpers{
             if(!$matches_updated){
                 array_push($cache['matches'], [
                     'date' => $date,
-                    'players' => 1
+                    'matches' => 1
                 ]);
             }
 

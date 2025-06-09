@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Court;
+use App\Models\League;
 use App\Models\Player;
 use App\Models\TennisMatch;
 use DateTime;
@@ -17,7 +19,7 @@ class BatchImportMatches extends Command
      *
      * @var string
      */
-    protected $signature = 'app:batch-import-matches';
+    protected $signature = 'app:batch-import-matches {file_name}';
 
     /**
      * The console command description.
@@ -31,13 +33,13 @@ class BatchImportMatches extends Command
      */
     public function handle()
     {
-        $filePath = storage_path('app/batch_matches.csv');;
+        $file_name = $this->argument('file_name');
+        $filePath = storage_path('app/'. $file_name . '.csv');
 
         if (!file_exists($filePath)) {
             $this->error("File not found: $filePath");
             return 1;
         }
-        $existing = TennisMatch::where('league_id', 12)->get();
 
         if (($handle = fopen($filePath, 'r')) !== false) {
             $header = null;
@@ -48,13 +50,49 @@ class BatchImportMatches extends Command
                 }
 
                 $data = array_combine($header, $row);
-
+                $league_name = $data['Ime lige ili turnira'];
+                $court_name = $data['teren ili klub'];
+                $county = $data['opština'];
                 $winner_name = $data['pobednik (ime i prezime)'];
                 $loser_name = $data['gubitnik (ime i prezime)'];
                 $set_score = $data['rezultat u setovima (2:0)'];
                 $game_score = $data['rezultat u gemovima (6:3,4:2)'];
                 $date = new DateTime($data['datum meča (dd mm gggg)']);
                 
+                $league = League::where('name', $league_name)->first();
+
+                if(!$league){
+                    $league = new League();
+                    $league->name = $league_name;
+
+                    $league->link = '';
+
+                    $uri = str_replace(' - ','-',$league->name);
+                    $uri = str_replace(' ','-',$uri);
+                    $uri = str_replace(',','',$uri);
+                    $uri = strtolower($uri);
+                    $league->uri = $uri; 
+
+                    $league->county = $county;
+
+                    $league->save();
+                }
+
+                $court = Court::where('name', $court_name)->first();
+
+                if(!$court){
+                    $court = new Court();
+                    $court->name = $court_name;
+
+                    $court->link = '';
+
+                    $court->save();
+                }
+                
+                
+                
+                
+                $existing = TennisMatch::where('league_id', $league->id)->get();
                 $existing_match = null;
                 
                 foreach($existing as $match){
@@ -76,12 +114,12 @@ class BatchImportMatches extends Command
                 }
                 else{
                     $match = new TennisMatch();
-                    $match->court_id = 20;
-                    $match->league_id = 12;
+                    $match->court_id = $court->id;
+                    $match->league_id = $league->id;
                     $match->date = $date->format('Y-m-d');
                     $match->set_score = $set_score;
                     $match->game_score = $game_score;
-                    $match->county = 'Novi Sad';
+                    $match->county = 'Pančevo';
 
 
                     $match->winner_point_gain = 0;
