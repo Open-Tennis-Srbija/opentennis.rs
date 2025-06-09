@@ -119,7 +119,7 @@ class BatchImportMatches extends Command
                     $match->date = $date->format('Y-m-d');
                     $match->set_score = $set_score;
                     $match->game_score = $game_score;
-                    $match->county = 'Pančevo';
+                    $match->county = $league->county;
 
 
                     $match->winner_point_gain = 0;
