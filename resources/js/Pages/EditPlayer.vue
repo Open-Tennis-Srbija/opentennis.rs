@@ -41,18 +41,6 @@ const formState = reactive({
     submitted: false,
     success: false,
 });
-const deletePlayer = () =>{
-    if(confirm('Da li ste sigurni da želite da obrišete ovog tenisera?')){
-        form.post(`/teniser/obrisi`,{
-            onSuccess: () => {
-                location.href = '/';
-            },
-            onError: (errors) => {
-                formState.submitted = false;
-            },
-        });
-    }
-}
 const submit = () =>{
 
   formState.submitted = true;

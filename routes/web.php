@@ -69,7 +69,7 @@ Route::inertia('/uputstva', 'Rules')->name('rules');
      Route::get('/{uri}/izmeni',[PlayerController::class, 'getPlayer'])->name('editPlayer');
      Route::get('/teniser/{uri}',[PlayerController::class, 'getPlayerForEdit'])->name('playerByUri');
      Route::post('/teniser/izmeni',[PlayerController::class, 'updatePlayer']);
-     Route::post('/{uri}/obrisi',[PlayerController::class, 'deletePlayer']);
+    //  Route::post('/{uri}/obrisi',[PlayerController::class, 'deletePlayer']);
     //  Route::post('/mec/obrisi',[TenisMatchController::class, 'deleteMatch']);
 
      Route::inertia('/admin', 'Home')->name('admin'); 
