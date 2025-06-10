@@ -111,7 +111,7 @@ import { ref } from 'vue';
                         <h2 class="mb-10">nema liga ili turnira</h2>
                     </template>
                     <template v-else>
-                        <h2 class="mb-10">najaktivnije lige</h2>
+                        <h2 class="mb-10">najaktivnije lige i turniri</h2>
                         <p class="smaller f20" v-for="league in locations.leagues">
                             <template v-if="league.uri != ''">
                                 <a target="'_blank'" :href="`/${league.uri}`">

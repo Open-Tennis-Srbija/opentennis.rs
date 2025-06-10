@@ -12,6 +12,8 @@ const props = defineProps({uri: String});
 const page = usePage();
 const player = ref({});
 
+const focusInput = ref(null);
+
 onMounted(() => {
     page.props['title'] = `Izmeni tenisera`;
     axios.get(`/teniser/${props.uri}`).then((response) => {
@@ -23,6 +25,7 @@ onMounted(() => {
         form.category = response.data.category;
         player.value = response.data; 
         bus.emit('loading', false);
+        focusInput.value.focus();
     }).catch((error) => {
         console.error('Error fetching player:', error);
     });
@@ -88,7 +91,7 @@ const handleInputs = (event,isDate = false) => {
             <label for="winner-fname" class="input-label">
               Ime<span class="required">*</span>
             </label>
-            <input v-model="form.first_name" @input="handleInputs($event)" :class="{'invalid': form.errors.first_name}" :disabled="formState.submitted" id="first_name" type="text">
+            <input ref="focusInput" v-model="form.first_name" @input="handleInputs($event)" :class="{'invalid': form.errors.first_name}" :disabled="formState.submitted" id="first_name" type="text">
             <p class="error-message">{{ form.errors.first_name }}</p>
           </div>
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">

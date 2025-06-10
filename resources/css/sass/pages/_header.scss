@@ -123,6 +123,10 @@
             justify-content: center;
             gap:100px; 
 
+            &.admin{
+                width: 1500px;
+            }
+
             a {
                 text-decoration: none;
                 color: $blue;

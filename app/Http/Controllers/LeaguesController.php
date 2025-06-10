@@ -87,7 +87,7 @@ class LeaguesController extends Controller
     }
 
     public static function getLeagueForEdit($uri){
-		return Inertia::render('EditLeague', [
+		return Inertia::render('Auth/EditLeague', [
 			'uri' => $uri,
             'courts' => CourtsController::getCourts(),
 		]);

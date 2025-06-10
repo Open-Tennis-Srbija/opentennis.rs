@@ -11,7 +11,7 @@ const page = usePage();
 
 onMounted(async () => {
    page.props['title'] = 'Admin';
-   await nextTick
+   await nextTick();
    bus.emit('loading', false);
 });
 
@@ -66,7 +66,7 @@ const handleInputs = (event,isDate = false) => {
             <label for="full-score" class="input-label">
               Korisničko ime <span class="required">*</span>
             </label>
-            <input v-model="form.username" @input="handleInputs($event)" :class="{'invalid': form.errors.username}" :disabled="formState.submitted" id="username" type="text">
+            <input autofocus v-model="form.username" @input="handleInputs($event)" :class="{'invalid': form.errors.username}" :disabled="formState.submitted" id="username" type="text">
             <p class="error-message">{{ form.errors.username }}</p>
           </div>
           <div class="form-group center">

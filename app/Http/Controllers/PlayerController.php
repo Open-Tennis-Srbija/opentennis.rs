@@ -158,7 +158,7 @@ class PlayerController extends Controller
 	}
 
 	public function getPlayer($uri){
-		return Inertia::render('EditPlayer', [
+		return Inertia::render('Auth/EditPlayer', [
 			'uri' => $uri,
 		]);
 

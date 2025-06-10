@@ -6,13 +6,14 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import { ref } from 'vue';
 import axios from 'axios';
 import bus from 'vue3-eventbus';
-import Dropdown from './components/Dropdown.vue';
-import opstine from '../assets/opstine.json';
+import Dropdown from '../components/Dropdown.vue';
+import opstine from '../../assets/opstine.json';
 
 const props = defineProps({uri: String, courts: Array});
 
 const page = usePage();
 const league = ref({});
+const focusInput = ref(null);
 
 onMounted(() => {
     page.props['title'] = `Izmeni ligu`;
@@ -27,6 +28,7 @@ onMounted(() => {
         form.court = response.data.court;
         league.value = response.data; 
         bus.emit('loading', false);
+        focusInput.value.focus();
     }).catch((error) => {
         console.error('Error fetching league:', error);
     });
@@ -127,7 +129,7 @@ const handleInputs = (event,isDate = false) => {
             <label for="winner-fname" class="input-label">
               Ime<span class="required">*</span>
             </label>
-            <input v-model="form.name" @input="handleInputs($event)" :class="{'invalid': form.errors.first_name}" :disabled="formState.submitted" id="first_name" type="text">
+            <input ref="focusInput" v-model="form.name" @input="handleInputs($event)" :class="{'invalid': form.errors.first_name}" :disabled="formState.submitted" id="first_name" type="text">
             <p class="error-message">{{ form.errors.first_name }}</p>
           </div>
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">

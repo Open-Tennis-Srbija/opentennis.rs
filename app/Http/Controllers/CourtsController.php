@@ -38,7 +38,7 @@ class CourtsController extends Controller
         return $respons;
     }
     public static function getEditCourt($id){
-        return Inertia::render('EditCourt', [
+        return Inertia::render('Auth/EditCourt', [
             'id' => $id 
         ]);
     }

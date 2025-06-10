@@ -53,7 +53,7 @@ onMounted(async () => {
             Kategorija 8) Juniorski i mlađi takmičari.
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 9) Seniorski, ATP, ITF takmičari.
+            Kategorija 9) Seniorski takmičari.
         </p>
         <p>
             Kategorija 10) Novak Djoković.

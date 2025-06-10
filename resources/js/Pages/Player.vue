@@ -286,7 +286,7 @@ function containsGreek(text) {
 			<h2 class="summary-title">lokacije</h2>
 			<div class="summary player three col">
 				<div class="summary-item players">
-					<h2>najaktivnije opštine</h2>
+					<h2>opštine</h2>
 					<template v-for="location in locations.locations">
 						<p>
 							{{location.county}}
@@ -295,7 +295,7 @@ function containsGreek(text) {
 					</template>
 				</div>
 				<div class="summary-item players">
-						<h2>najkorišćeniji tereni</h2>
+						<h2>tereni</h2>
 						<template v-for="court in locations.courts">
 							<p>
 								<template v-if="court.link != ''">
@@ -312,7 +312,7 @@ function containsGreek(text) {
 				</div>
 				<div class="summary-item players">
 					<template v-if="locations.leagues.length > 0">
-						<h2>najaktivnije lige</h2>
+						<h2>lige i turniri</h2>
 						<template v-for="league in locations.leagues">
 							<p>
 								<template v-if="league.uri != ''">

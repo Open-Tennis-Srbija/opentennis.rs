@@ -175,6 +175,7 @@ const handleInputs = (event,isDate = false) => {
               Pobednik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
            <dropdown
+              :autofocus="true"
               label="name"
               :options="props.players"
               :disabledOption="form.loser"

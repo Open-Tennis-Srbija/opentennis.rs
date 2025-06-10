@@ -240,6 +240,7 @@ class Player extends Model
             ->join('tennis_matches', 'match_players.tennis_match_id', '=', 'tennis_matches.id')
             ->where('match_players.player_id', $this->id)
             ->whereNotNull('tennis_matches.league_id')
+            ->where('tennis_matches.league_id' , '>', 1)
             ->select('tennis_matches.league_id', DB::raw('count(*) as count'))
             ->groupBy('tennis_matches.league_id')
             ->orderByDesc('count')

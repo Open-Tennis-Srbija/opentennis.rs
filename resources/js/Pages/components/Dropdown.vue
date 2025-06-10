@@ -19,8 +19,8 @@ onBeforeMount(() => {
 
 const dropdownInput = ref(null);
 const dropdownDiv = ref(null);
-
 const props = defineProps({
+    autofocus: Boolean,
     options: Array,
     label: String,
     value: String,
@@ -121,6 +121,9 @@ onMounted(() => {
         window.addEventListener("click", handleClickOutside);
         window.addEventListener("focus", handleWindowFocus);
         document.addEventListener('touchstart', handleInteraction, true);
+    
+        if(props.autofocus)
+        dropdownInput.value.focus();
     }
 });
 
@@ -136,10 +139,10 @@ const ignoreNextFocus = ref(false);
 
 const onVisibilityChange = () => {
   if (!document.hidden) {
-    ignoreNextFocus = true;
+    ignoreNextFocus.value = true;
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
-      ignoreNextFocus = false;
+      ignoreNextFocus.value = false;
     }, 500); // Adjust if needed
   }
 };

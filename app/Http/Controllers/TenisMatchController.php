@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use NikolaAlgoV1;
 use App\Http\Controllers\PlayerController;
+use DateTime;
 use Helpers;
 use Illuminate\Support\Facades\Storage;
+
+use function PHPUnit\Framework\isNumeric;
 
 class TenisMatchController extends Controller
 {
@@ -29,12 +32,251 @@ class TenisMatchController extends Controller
     }
 
     public function editMatch($number){
-        return Inertia::render('EditMatch', [
+        return Inertia::render('Auth/EditMatch', [
             'players' => PlayerController::getPlayersForDropdown(),
             'match' => TenisMatchController::getMatchForEdit($number),
             'courts' => CourtsController::getCourts(),
             'leagues' => LeaguesController::getLeagues(),
         ]);
+    }
+
+    public function batchImport(){
+        return Inertia::render('Auth/BatchMatches', [
+            'players' => PlayerController::getPlayersForDropdown(),
+            'courts' => CourtsController::getCourts(),
+            'leagues' => LeaguesController::getLeagues(),
+        ]);
+    }
+
+    public function importMatches(Request $request){
+        $data = $request->validate([
+            'league' => '',
+            'court' => '',
+            'csvData' => 'required'
+        ],[
+            'csvData.required' => 'CSV fajl je obavezan.'
+        ]);
+
+        $league_id = null;
+        $court_id = null;
+        
+        if(isset($data['league'])){
+            if(!is_numeric($data['league']['id'])){
+                $league = new League();
+
+                $league->name = $data['league']['name'];
+                $league->link = '';
+                $uri = str_replace(' - ','-',$league->name);
+                $uri = str_replace(' ','-',$uri);
+                $uri = str_replace(',','',$uri);
+                $uri = strtolower($uri);
+                $league->uri = $uri; 
+                $league->save();
+                $league_id = $league->id;
+            }
+            else{
+                $league_id = $data['league']['id'];
+            }
+        }
+
+        if(isset($data['court'])){
+            if(!is_numeric($data['court']['id'])){
+                $court = new Court();
+
+                $court->name = $data['court']['name'];
+                $court->link = '';
+                
+                $court->save();
+                $court_id = $court->id;
+            }
+            else{
+                $court_id = $data['court']['id'];
+            }
+        }
+
+        $csvString = $data['csvData']; // your CSV text
+
+        $handle = fopen('php://memory', 'r+');
+        fwrite($handle, $csvString);
+        rewind($handle);
+
+        $header = null;
+        while (($row = fgetcsv($handle)) !== false) {
+            if (!$header) {
+                $header = $row;
+                continue;
+            }
+            $rowData = array_combine($header, $row);
+
+            $league_name = $rowData['Ime lige ili turnira'];
+            $court_name = $rowData['teren ili klub'];
+            $county = $rowData['opština'];
+            $winner_name = $rowData['pobednik (ime i prezime)'];
+            $loser_name = $rowData['gubitnik (ime i prezime)'];
+            $set_score = $rowData['rezultat u setovima (2:0)'];
+            $game_score = $rowData['rezultat u gemovima (6:3,4:2)'];
+            $date = new DateTime($rowData['datum meča (dd mm gggg)']);
+            
+            if(!isset($league_id)){
+                $league = League::where('name', $league_name)->first();
+            }
+            else{
+                $league = League::find($league_id);
+            }
+
+            if(!$league){
+                $league = new League();
+                $league->name = $league_name;
+
+                $league->link = '';
+
+                $uri = str_replace(' - ','-',$league->name);
+                $uri = str_replace(' ','-',$uri);
+                $uri = str_replace(',','',$uri);
+                $uri = strtolower($uri);
+                $league->uri = $uri; 
+
+                $league->county = $county;
+
+                $league->save();
+            }
+
+            if(!isset($court_id)){
+                $court = Court::where('name', $court_name)->first();          
+            }
+            else{
+                $court = Court::find($court_id);
+            }
+
+            if(!$court){
+                $court = new Court();
+                $court->name = $court_name;
+
+                $court->link = '';
+
+                $court->save();
+            }
+            
+            
+            
+            $existing = TennisMatch::where('league_id', $league->id)->get();
+            $existing_match = null;
+            
+            foreach($existing as $match){
+                $match_winner_name = $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name;
+                $match_loser_name = $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name;
+            
+                if($match_winner_name == $winner_name 
+                    && $match_loser_name == $loser_name 
+                    && $match->set_score == $set_score
+                    && $match->game_score == $game_score){
+                        $existing_match = $match;
+                    }
+            }
+
+            if(isset($existing_match)){
+                $existing_match->date = $date;
+                $existing_match->save();
+            }
+            else{
+                $match = new TennisMatch();
+                $match->court_id = $court->id;
+                $match->league_id = $league->id;
+                $match->date = $date->format('Y-m-d');
+                $match->set_score = $set_score;
+                $match->game_score = $game_score;
+                $match->county = $league->county;
+
+
+                $match->winner_point_gain = 0;
+                $match->loser_point_gain = 0;
+                $match->save();
+                
+                $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
+                
+                $match->number = $compare->number + 1;
+                
+                $rest_matches = TennisMatch::where('number', '>=', $match->number)->get();
+
+                foreach($rest_matches as $m){
+                    if($m->id !== $match->id){
+                        $m->number = $m->number + 1;
+                        $m->save();
+                    }
+                }
+
+                
+                if(count(explode(' ',$winner_name)) > 1){
+                    $winner_first_name = explode(' ',$winner_name)[0];
+                    $winner_last_name = explode(' ',$winner_name)[1];
+                } 
+                else{
+                    $winner_first_name = $winner_name;
+                    $winner_last_name = ' ';
+                }
+
+                if(count(explode(' ', $loser_name))> 1){
+                    $loser_first_name = explode(' ',$loser_name)[0];
+                    $loser_last_name = explode(' ',$loser_name)[1];
+                }
+                else{
+                    $loser_first_name = $loser_name;
+                    $loser_last_name = ' ';
+                }
+
+                $new_winner = $this->check_existing_player($match,$winner_first_name, $winner_last_name, 'winner');
+                $new_loser = $this->check_existing_player($match,$loser_first_name, $loser_last_name, 'loser');
+
+                $new_players = $new_winner + $new_loser;
+
+                $winner = $match->winners()->first();
+                $loser = $match->losers()->first();
+                $match->save();
+
+                    [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
+                $match->winner_point_gain = $winner_gains;
+                $match->loser_point_gain = $loser_gains;
+
+                $match->save();
+    
+                $winner->points += $winner_gains;
+                $loser->points += $loser_gains; 
+                $winner->save();
+                $loser->save();
+
+                Helpers::UpdateRanks();
+                Helpers::UpdatePlayerCharts($winner, $loser, $match);
+                Helpers::UpdateStatsChart($new_players, $winner_gains + $loser_gains, $match->date);
+
+        }
+    }
+        fclose($handle);
+
+    }
+
+    private function check_existing_player($match,$first_name,$last_name,$mode){
+        $player = Player::where('first_name', $first_name)->where('last_name', $last_name)->first();
+        $new = 0;
+
+        if(!$player){
+            $player = new Player();
+            $player->first_name = $first_name;
+            $player->last_name = $last_name;
+
+            $uri_firistname = Helper::formatName($first_name);
+            $uri_lastname = Helper::formatName($last_name);
+            
+            $player->uri = strtolower($uri_firistname) . '-' . strtolower($uri_lastname);
+
+            $player->save();
+
+            $new = 1;
+        }
+
+
+        $match->players()->attach($player->id,['team'=>$mode]);
+        return $new;
+
     }
 
     private function getMatchForEdit($number){

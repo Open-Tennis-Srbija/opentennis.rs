@@ -1,10 +1,9 @@
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
 import { onMounted, reactive, defineAsyncComponent, nextTick} from 'vue';
-import CircleLoader from '../../../public/LRlCNqLdgl.json';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
-import opstine from '../assets/opstine.json';
+import opstine from '../../assets/opstine.json';
 import bus from 'vue3-eventbus';
 
 const props = defineProps({players: Array, match: Object, courts: Array, leagues: Array});

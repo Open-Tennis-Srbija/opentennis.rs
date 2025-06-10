@@ -88,7 +88,7 @@ function getDateMonth(date){
         <div class="date">datum</div>
         <div class="location">opština</div>
         <div class="location">teren</div>
-        <div class="location">liga</div>
+        <div class="location">liga ili turnir</div>
       </div>
       <div v-if="props.showMessage">
         <p v-if="props.showMessage.wins"class="message">Ovaj teniser nikada nije pobedio &#128577;</p>
