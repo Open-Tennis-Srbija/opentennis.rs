@@ -26,7 +26,25 @@
   "resources/js/Pages/AddMatch.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
+  "resources/js/Pages/Auth/BatchMatches.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/BatchMatches.vue?vue&type=style&index=0&scoped=b3a6f82c&lang.scss": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
   "resources/js/Pages/Auth/Dashboard.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/EditCourt.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/EditLeague.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/EditMatch.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/EditPlayer.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/Auth/Login.vue": [
@@ -35,10 +53,7 @@
   "resources/js/Pages/Auth/Register.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
-  "resources/js/Pages/EditMatch.vue": [
-    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
-  ],
-  "resources/js/Pages/EditPlayer.vue": [
+  "resources/js/Pages/Courts.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/ForClubs.vue": [

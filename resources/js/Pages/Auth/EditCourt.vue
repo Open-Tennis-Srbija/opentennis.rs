@@ -90,7 +90,7 @@ const handleInputs = (event,isDate = false) => {
             <label for="winner-fname" class="input-label">
               Ime<span class="required">*</span>
             </label>
-            <input autofocus="true" v-model="form.name" @input="handleInputs($event)" :class="{'invalid': form.errors.name}" :disabled="formState.submitted" id="name" type="text">
+            <input v-model="form.name" @input="handleInputs($event)" :class="{'invalid': form.errors.name}" :disabled="formState.submitted" id="name" type="text">
             <p class="error-message">{{ form.errors.name }}</p>
           </div>
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">

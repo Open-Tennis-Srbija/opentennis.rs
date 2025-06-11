@@ -38,6 +38,9 @@ onMounted(() => {
         bus.on("loading", (e) => {
             loading.value = e;
         });
+        bus.on('headTitle', (e)=>{
+            headerMessage.value = e;
+        })
     }
 });
 
@@ -79,7 +82,7 @@ function computeHeaderMessage() {
         case "/import-meceva":
             return "Import mečeva";
         case "/lige-turniri":
-            return 'Lige & turniri';
+            return 'Lige i turniri';
         case "/admin":
             return "admin";
         default:
@@ -91,12 +94,7 @@ function computeHeaderMessage() {
 headerMessage.value = computeHeaderMessage();
 
 // Watch for changes in url or title
-watch(
-    () => [page.url, page.props.title],
-    () => {
-        headerMessage.value = computeHeaderMessage();
-    }
-);
+
 </script>
 <template>
     <Loader :show="loading" />

@@ -32,8 +32,8 @@ const categoryColors = {
   '?': 'transparent',
 }
 onMounted(() => {
-	page.props["title"] = "teniser";
 	axios.get(`/get-player/${props.player_uri}`).then((response) => {
+	bus.emit('headTitle', 'teniser')
 		player.value = response.data;
 		console.log('Player data:', player.value);
 		pageTitle.value = `${player.value.name} - Srpska Tenis Liga`;
