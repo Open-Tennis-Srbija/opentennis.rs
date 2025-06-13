@@ -16,6 +16,7 @@ onMounted(() => {
   axios.get('/get-courts').then((response) => {
     courts.value = response.data;
     bus.emit('loading', false);
+
   }).catch((error) => {
     console.error('Error fetching courts:', error);
   });
