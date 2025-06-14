@@ -41,6 +41,12 @@ onMounted(() => {
         bus.on('headTitle', (e)=>{
             headerMessage.value = e;
         })
+window.addEventListener('pageshow', (event) => {
+  // If coming from bfcache and user is not logged in, reload to get fresh state
+  if (event.persisted && !$page.props.auth.user) {
+    window.location.reload();
+  }
+});
     }
 });
 
@@ -93,6 +99,12 @@ function computeHeaderMessage() {
 // Set initial value
 headerMessage.value = computeHeaderMessage();
 
+watch(
+  () => [page.url, page.props.title, page.props.auth?.user],
+  () => {
+    headerMessage.value = computeHeaderMessage();
+  }
+);
 // Watch for changes in url or title
 
 </script>

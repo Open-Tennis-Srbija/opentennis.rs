@@ -13,6 +13,33 @@
         }
     }
 
+        .edit-btn{
+            &.mobile{
+                display: none;
+                position: absolute;
+                text-transform: uppercase;
+                color: black;
+                left: 75%;
+                transform: translateX(-50%);
+                font-size: 50px;
+                padding: 5px 10px;
+                top: 10px;
+                font-weight: normal;
+    
+               
+    
+                svg{
+                    width: 50px;
+                    height: 50px;
+                }
+    
+                &:hover {
+                    svg{
+                        fill: $red;
+                    }
+                }
+            }
+        }
 
 
       >h1{
@@ -268,6 +295,14 @@
 @media only screen and (max-width: 1200px) {
     .static-wrapper.player{
         padding-inline: 0;
+        .edit-btn{
+            &.desktop{
+                display: none;
+            }
+            &.mobile{
+                display: block !important;
+            }
+          }
         h1{
             display: block;
             margin-bottom: 0;
@@ -280,6 +315,12 @@
             }
 
         .edit-btn{
+            &.desktop{
+                display: none;
+            }
+            &.mobile{
+                display: block !important;
+            }
             right: 10px !important;
             top: -64px !important;
           }

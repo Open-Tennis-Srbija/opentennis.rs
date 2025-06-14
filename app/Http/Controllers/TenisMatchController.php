@@ -18,6 +18,7 @@ use App\Http\Controllers\PlayerController;
 use DateTime;
 use Helpers;
 use Illuminate\Support\Facades\Storage;
+use PlayerCaching;
 
 use function PHPUnit\Framework\isNumeric;
 
@@ -530,7 +531,11 @@ class TenisMatchController extends Controller
          else
              Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match)); 
 
-        return redirect()->back()->with('success', 'Meč je uspešno dodat.');
+        return redirect()->back()->with('data',[
+            'players' => PlayerController::getPlayersForDropdown(),
+            'courts' => CourtsController::getCourts(),
+            'leagues' => LeaguesController::getLeagues()
+        ]);
     }
 
 

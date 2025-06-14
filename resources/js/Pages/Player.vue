@@ -127,6 +127,12 @@ function containsGreek(text) {
 <template>
  	<Head :title="pageTitle" />
 	<div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player">
+			<Link prefetch="false"
+				class="edit-btn mobile"
+				v-if="$page.props.auth.user"
+				:href="`/${player.uri}/izmeni`"
+				><EditIcon
+			/></Link>
 		<div
 			class="rank"
 			:class="{
@@ -142,7 +148,7 @@ function containsGreek(text) {
 		<h1 v-if="player.name" :class="{'fix-letters': containsGreek(player.name)}">
 			{{ player.name.split(' ')[0]}} <br class="show-mobile"> {{  player.name.split(' ')[1] }}
 			<Link prefetch="false"
-				class="edit-btn"
+				class="edit-btn desktop"
 				v-if="$page.props.auth.user"
 				:href="`/${player.uri}/izmeni`"
 				><EditIcon

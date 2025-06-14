@@ -52,14 +52,16 @@ const submit = () =>{
   }
 
   form.set_score.trim();
+  form.set_score = form.set_score.replace(/-/g, ':');
   form.game_score.trim();
   form.game_score = form.game_score.replace(/ /g, ',');
   form.game_score = form.game_score.replace(/,,/g, ',');
+  form.game_score = form.game_score.replace(/-/g, ':');
 
   form.location.trim();
 
     form.post('/dodaj',{
-        onSuccess: () => {
+        onSuccess: (data) => {
           formState.shouldReset = true;
           form.reset('game_score');
           form.reset('set_score');
@@ -67,9 +69,11 @@ const submit = () =>{
           form.loser = null;
           formState.submitted = false;
           formState.success = true;
+          console.log(data)
           setTimeout(()=>{
             formState.shouldReset = false;
           }, 1000);
+          updateDropDowns(data)
           form.location = 'Beograd';
         },
         onError: (errors) => {
@@ -81,6 +85,11 @@ const submit = () =>{
     });
 }
 
+  const updateDropDowns = (data =>{
+    props.players = data.props.players;
+    props.courts = data.props.courts;
+    props.leagues = data.props.leagues;
+  })
 const validateNames = (()=>{
   let check = true;
   if(!form.winner){

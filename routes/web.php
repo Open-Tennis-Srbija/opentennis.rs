@@ -7,6 +7,7 @@ use App\Http\Controllers\TenisMatchController;
 use App\Http\Controllers\CourtsController;
 use App\Http\Controllers\LeaguesController;
 use App\Http\Controllers\ResolverController;
+use App\Http\Middleware\RedirectLoggedIn;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Home')->name('home');
@@ -44,7 +45,7 @@ Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
 
 Route::inertia('/uputstva', 'Rules')->name('rules');
 
- Route::inertia('/admin/login', 'Auth/Login')->name('login'); 
+ Route::inertia('/admin/login', 'Auth/Login')->middleware(RedirectLoggedIn::class)->name('login'); 
  Route::post('/admin/login', [AuthController::class, 'login']); 
 
     Route::post('/getChart',[PlayerController::class, 'getChart'])->name('playerChart');

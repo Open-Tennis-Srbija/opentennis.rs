@@ -28,6 +28,9 @@ onMounted(() => {
     }).catch((error) => {
         console.error('Error fetching players:', error);
     });
+     window.addEventListener('pageshow', () => {
+        bus.emit('loading', false);
+    });
 });
 
 </script>
