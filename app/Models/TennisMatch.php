@@ -16,7 +16,19 @@ class TennisMatch extends Model
     ];
 
     public function getFormatedDate(){
-        return date('D d M Y', strtotime($this->match_date));
+        $days = ['pon', 'uto', 'sre', 'čet', 'pet', 'sub', 'ned']; 
+        $months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'];
+
+        $timestamp = strtotime($this->date);
+
+        $dayOfWeek = date('w', $timestamp); // 0 (Sunday) to 6 (Saturday)
+        $day = date('j', $timestamp);       // Day of the month without leading zeros
+        $month = date('n', $timestamp);     // 1-12
+        $year = date('Y', $timestamp);
+
+        return "{$days[$dayOfWeek]} {$day} {$months[$month-1]} {$year}";
+            
+        return $date;
     }
 
     public function players()

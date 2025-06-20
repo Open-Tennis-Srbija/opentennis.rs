@@ -69,10 +69,9 @@ const submit = () =>{
 const handleInputs = (event,isDate = false) => {
   if(isDate) return form.errors['date'] = '';
 
-  if(event.data){
-      form.errors[event.target.id] = '';
-  }
-  else{
+  if (event.target.value && event.target.value.trim() !== '') {
+    form.errors[event.target.id] = '';
+  } else {
     form.errors[event.target.id] = 'Ovo polje je obavezno';
   }
 
