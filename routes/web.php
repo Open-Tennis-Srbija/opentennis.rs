@@ -19,13 +19,13 @@ Route::get('/get-matches', [TenisMatchController::class, 'getMatches']);
 Route::get('/get-player/{uri}', [PlayerController::class, 'get_player_by_uri']);
 Route::get('/get-player-chart/{id}', [PlayerController::class, 'getChart']);
 
- Route::inertia('/dodaj', 'AddMatch', 
-     ['players' => PlayerController::getPlayersForDropdown(), 
-       'courts' => CourtsController::getCourts(), 
-        'leagues' => LeaguesController::getLeagues(), 
-     ] 
- )->name('addMatch'); 
- Route::post('/dodaj', [TenisMatchController::class, 'store']); 
+ Route::inertia('/dodaj', 'AddMatch',
+     ['players' => PlayerController::getPlayersForDropdown(),
+       'courts' => CourtsController::getCourts(),
+        'leagues' => LeaguesController::getLeagues(),
+     ]
+ )->name('addMatch');
+ Route::post('/dodaj', [TenisMatchController::class, 'store']);
 
 Route::inertia('/lige-turniri', 'Leagues')->name('leagues');
 
@@ -45,16 +45,17 @@ Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
 
 Route::inertia('/uputstva', 'Rules')->name('rules');
 
- Route::inertia('/admin/login', 'Auth/Login')->middleware(RedirectLoggedIn::class)->name('login'); 
- Route::post('/admin/login', [AuthController::class, 'login']); 
+ Route::inertia('/admin/login', 'Auth/Login')->middleware(RedirectLoggedIn::class)->name('login');
+ Route::post('/admin/login', [AuthController::class, 'login']);
 
     Route::post('/getChart',[PlayerController::class, 'getChart'])->name('playerChart');
     Route::middleware('auth')->group(function(){
 
      Route::get('/izmeni/{number}',[TenisMatchController::class, 'editMatch'])->name('editMatch');
      Route::post('/izmeni', [TenisMatchController::class, 'updateMatch']);
+     Route::post('/mec/obrisi',[TenisMatchController::class, 'deleteMatch']);
 
-     
+
      Route::get('/izmeni-ligu/{uri}', [LeaguesController::class, 'getLeagueForEdit'])->name('editLeague');
      Route::get('/liga/{uri}', [LeaguesController::class, 'returnForEdit'])->name('leagueByUri');
      Route::post('/izmeni-ligu/{uri}', [LeaguesController::class, 'updateLeague']);
@@ -70,17 +71,16 @@ Route::inertia('/uputstva', 'Rules')->name('rules');
      Route::get('/{uri}/izmeni',[PlayerController::class, 'getPlayer'])->name('editPlayer');
      Route::get('/teniser/{uri}',[PlayerController::class, 'getPlayerForEdit'])->name('playerByUri');
      Route::post('/teniser/izmeni',[PlayerController::class, 'updatePlayer']);
-    
+
 
      Route::get('/import-meceva', [TenisMatchController::class, 'batchImport'])->name('batchImport');
      Route::post('/import-matches', [TenisMatchController::class, 'importMatches']);
     //  Route::post('/{uri}/obrisi',[PlayerController::class, 'deletePlayer']);
-    //  Route::post('/mec/obrisi',[TenisMatchController::class, 'deleteMatch']);
 
-     Route::inertia('/admin', 'Home')->name('admin'); 
+     Route::inertia('/admin', 'Home')->name('admin');
 
      Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
- }); 
+ });
 
 Route::get('/{uri}',[ResolverController::class, 'resolveUri'])->name('player');
 

@@ -26,7 +26,7 @@ onMounted(() => {
         form.date_end = response.data.date_end;
         form.link = response.data.link;
         form.court = response.data.court;
-        league.value = response.data; 
+        league.value = response.data;
         bus.emit('loading', false);
         focusInput.value.focus();
     }).catch((error) => {
@@ -149,6 +149,32 @@ const handleInputs = (event,isDate = false) => {
         </div>
       </div>
 
+
+      <div class="form-section">
+        <div class="form-row">
+          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
+            <label for="winner-fname" class="input-label">
+              Organizator (link)
+            </label>
+            <input v-model="form.link" @input="handleInputs($event)" :class="{'invalid': form.errors.link}" :disabled="formState.submitted" id="link" type="text">
+            <p class="error-message">{{ form.errors.link }}</p>
+          </div>
+          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
+            <label for="winner-fname" class="input-label">
+              Teren
+            </label>
+            <Dropdown
+              v-if="form.court"
+              label="name"
+              :options="courts"
+              v-model="form.court"
+              :class="{'invalid': form.errors.court}"
+              :shouldReset="formState.shouldReset"
+            ></Dropdown>
+            <p class="error-message">{{ form.errors.court }}</p>
+          </div>
+        </div>
+      </div>
        <div class="form-section">
         <div class="form-row">
           <div class="form-group">
@@ -194,32 +220,6 @@ const handleInputs = (event,isDate = false) => {
               :day-names="['pon', 'uto', 'sre', 'čet', 'pet', 'sub', 'ned']"
             ></datepicker>
             <p class="error-message">{{ form.errors.date_begin }}</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="form-section">
-        <div class="form-row">
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
-            <label for="winner-fname" class="input-label">
-              Organizator (link)
-            </label>
-            <input v-model="form.link" @input="handleInputs($event)" :class="{'invalid': form.errors.link}" :disabled="formState.submitted" id="link" type="text">
-            <p class="error-message">{{ form.errors.link }}</p>
-          </div>
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
-            <label for="winner-fname" class="input-label">
-              Teren
-            </label>
-            <Dropdown
-              v-if="form.court"
-              label="name"
-              :options="courts"
-              v-model="form.court"
-              :class="{'invalid': form.errors.court}"
-              :shouldReset="formState.shouldReset"
-            ></Dropdown>
-            <p class="error-message">{{ form.errors.court }}</p>
           </div>
         </div>
       </div>

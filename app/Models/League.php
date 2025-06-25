@@ -15,6 +15,8 @@ class League extends Model
     protected $fillable = [
         'name',
         'link',
+        'date_begin',
+        'date_end'
     ];
 
 
@@ -38,7 +40,7 @@ class League extends Model
         $response = [];
 
         foreach($matches as $match){
-            
+
             array_push($response, [
                 'winner_point_gain' =>$match->winner_point_gain,
                 'loser_point_gain' => $match->loser_point_gain,

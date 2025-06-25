@@ -19,6 +19,7 @@ use DateTime;
 use Helpers;
 use Illuminate\Support\Facades\Storage;
 use PlayerCaching;
+use Carbon\Carbon;
 
 use function PHPUnit\Framework\isNumeric;
 
@@ -60,7 +61,7 @@ class TenisMatchController extends Controller
 
         $league_id = null;
         $court_id = null;
-        
+
         if(isset($data['league'])){
             if(!is_numeric($data['league']['id'])){
                 $league = new League();
@@ -71,8 +72,11 @@ class TenisMatchController extends Controller
                 $uri = str_replace(' ','-',$uri);
                 $uri = str_replace(',','',$uri);
                 $uri = strtolower($uri);
-                $league->uri = $uri; 
+                $league->uri = $uri;
                 $league->save();
+                $date = Carbon::now();
+                $league->date_begin = $date->format('Y-m-d');
+                $league->date_end = $date->addDay()->format('Y-m-d');
                 $league_id = $league->id;
             }
             else{
@@ -86,7 +90,7 @@ class TenisMatchController extends Controller
 
                 $court->name = $data['court']['name'];
                 $court->link = '';
-                
+
                 $court->save();
                 $court_id = $court->id;
             }
@@ -117,7 +121,7 @@ class TenisMatchController extends Controller
             $set_score = $rowData['rezultat u setovima (2:0)'];
             $game_score = $rowData['rezultat u gemovima (6:3,4:2)'];
             $date = new DateTime($rowData['datum meča (dd mm gggg)']);
-            
+
             if(!isset($league_id)){
                 $league = League::where('name', $league_name)->first();
             }
@@ -135,7 +139,7 @@ class TenisMatchController extends Controller
                 $uri = str_replace(' ','-',$uri);
                 $uri = str_replace(',','',$uri);
                 $uri = strtolower($uri);
-                $league->uri = $uri; 
+                $league->uri = $uri;
 
                 $league->county = $county;
 
@@ -143,7 +147,7 @@ class TenisMatchController extends Controller
             }
 
             if(!isset($court_id)){
-                $court = Court::where('name', $court_name)->first();          
+                $court = Court::where('name', $court_name)->first();
             }
             else{
                 $court = Court::find($court_id);
@@ -157,18 +161,18 @@ class TenisMatchController extends Controller
 
                 $court->save();
             }
-            
-            
-            
+
+
+
             $existing = TennisMatch::where('league_id', $league->id)->get();
             $existing_match = null;
-            
+
             foreach($existing as $match){
                 $match_winner_name = $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name;
                 $match_loser_name = $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name;
-            
-                if($match_winner_name == $winner_name 
-                    && $match_loser_name == $loser_name 
+
+                if($match_winner_name == $winner_name
+                    && $match_loser_name == $loser_name
                     && $match->set_score == $set_score
                     && $match->game_score == $game_score){
                         $existing_match = $match;
@@ -192,11 +196,11 @@ class TenisMatchController extends Controller
                 $match->winner_point_gain = 0;
                 $match->loser_point_gain = 0;
                 $match->save();
-                
+
                 $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
-                
+
                 $match->number = $compare->number + 1;
-                
+
                 $rest_matches = TennisMatch::where('number', '>=', $match->number)->get();
 
                 foreach($rest_matches as $m){
@@ -206,11 +210,11 @@ class TenisMatchController extends Controller
                     }
                 }
 
-                
+
                 if(count(explode(' ',$winner_name)) > 1){
                     $winner_first_name = explode(' ',$winner_name)[0];
                     $winner_last_name = explode(' ',$winner_name)[1];
-                } 
+                }
                 else{
                     $winner_first_name = $winner_name;
                     $winner_last_name = ' ';
@@ -239,9 +243,9 @@ class TenisMatchController extends Controller
                 $match->loser_point_gain = $loser_gains;
 
                 $match->save();
-    
+
                 $winner->points += $winner_gains;
-                $loser->points += $loser_gains; 
+                $loser->points += $loser_gains;
                 $winner->save();
                 $loser->save();
 
@@ -266,7 +270,7 @@ class TenisMatchController extends Controller
 
             $uri_firistname = Helper::formatName($first_name);
             $uri_lastname = Helper::formatName($last_name);
-            
+
             $player->uri = strtolower($uri_firistname) . '-' . strtolower($uri_lastname);
 
             $player->save();
@@ -461,7 +465,7 @@ class TenisMatchController extends Controller
             }
         }
 
-        $match = new TennisMatch( 
+        $match = new TennisMatch(
         );
         $match->date = date('Y-m-d', strtotime($data['date']));
         $match->set_score = $data['set_score'];
@@ -475,7 +479,7 @@ class TenisMatchController extends Controller
         $match->players()->attach($loser_id, ['team' => 'loser']);
 
         $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
-        
+
         $match->number = $compare->number + 1;
 
         [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
@@ -500,7 +504,10 @@ class TenisMatchController extends Controller
                 $uri = str_replace(' ','-',$uri);
                 $uri = str_replace(',','',$uri);
                 $uri = strtolower($uri);
-                $league->uri = $uri; 
+                $league->uri = $uri;
+                $date = Carbon::now();
+                $league->date_begin = $date->format('Y-m-d');
+                $league->date_end = $date->addDay()->format('Y-m-d');
                 $league->save();
                 $league_id = $league->id;
             }
@@ -511,9 +518,9 @@ class TenisMatchController extends Controller
         }
 
         $match->save();
-        
+
         $winner->points += $winner_gains;
-        $loser->points += $loser_gains; 
+        $loser->points += $loser_gains;
         $winner->save();
         $loser->save();
 
@@ -529,7 +536,7 @@ class TenisMatchController extends Controller
             Mail::to('nikola@openinnovation.me')->send(new AddMatchNotification($match));
         }
          else
-             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match)); 
+             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
 
         return redirect()->back()->with('data',[
             'players' => PlayerController::getPlayersForDropdown(),
@@ -695,14 +702,43 @@ class TenisMatchController extends Controller
             $match->court_id = 1;
         }
 
+        if(isset($data['league'])){
+            if(!is_numeric($data['league']['id'])){
+                $league = new League();
+
+                $league->name = $data['league']['name'];
+                $league->link = '';
+                $uri = str_replace(' - ','-',$league->name);
+                $uri = str_replace(' ','-',$uri);
+                $uri = str_replace(',','',$uri);
+                $uri = strtolower($uri);
+                $league->uri = $uri;
+                $date = Carbon::now();
+                $league->date_begin = $date->format('Y-m-d');
+                $league->date_end = $date->addDay()->format('Y-m-d');
+                $league->save();
+                $league_id = $league->id;
+                $match->league_id = $league_id;
+            }
+            else{
+                $league_id = $data['court']['id'];
+                if($match->league_id != $league_id){
+                    $match->league_id = $league_id;
+                    }
+                }
+        }
+        else{
+            $match->league_id = 1;
+        }
         if($data['set_score'] !== $match->set_score){
             $match->set_score = $data['set_score'];
         }
         if($data['game_score'] !== $match->game_score){
             $match->game_score = $data['game_score'];
         }
-        if($data['date'] !== $match->date){
-            $match->date = $data['date'];
+        $date = date('Y-m-d', strtotime($data['date']));
+        if($date !== $match->date){
+            $match->date = $date;
         }
         if($data['location'] !== $match->county){
             $match->county = $data['location'];
@@ -712,7 +748,7 @@ class TenisMatchController extends Controller
         [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
         $match->winner_point_gain = $winner_gains;
         $match->loser_point_gain = $loser_gains;
-        
+
         $winner->points += $winner_gains;
         $loser->points += $loser_gains;
         $winner->save();
