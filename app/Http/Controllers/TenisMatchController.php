@@ -534,6 +534,7 @@ class TenisMatchController extends Controller
         if(env('APP_ENV') == 'production'){
             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
             Mail::to('nikola@openinnovation.me')->send(new AddMatchNotification($match));
+            Mail::to('')->send(new AddMatchNotification($match));
         }
          else
              Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
