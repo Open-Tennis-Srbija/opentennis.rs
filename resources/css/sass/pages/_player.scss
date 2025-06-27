@@ -252,6 +252,44 @@
                 }
             }
         }
+         &.two{
+            display: grid;
+            grid-template-columns: repeat(2, 50%);
+
+            .summary-item{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                &.players{
+                    h2{
+                        margin-bottom: 10px;
+                    }
+                    p{
+                        margin-bottom: 0;
+                        font-size: 20px;
+                        font-weight: normal;
+                        &.show-more{
+                            font-family: 'Helvetica Neue';
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            color: $blue;
+                            margin-top: 12px;
+                            cursor: pointer;
+
+                            &:hover{
+                                color: $red;
+                            }
+                        }
+                        a{
+                            color: black;
+                            &:hover{
+                                color: $red;
+                            }
+                        }
+                    }
+                }
+            }
+        }
           &.mobile{
               display: none;
           }

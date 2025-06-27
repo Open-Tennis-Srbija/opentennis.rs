@@ -203,6 +203,10 @@
       width: 100%;
       grid-auto-flow: column;
       grid-template-columns: repeat(3, 33.3%);
+
+      &.two {
+        grid-template-columns: repeat(2, 50%);
+      }
     }
 
     .info-wrapp {

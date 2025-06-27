@@ -169,7 +169,7 @@ function containsGreek(text) {
 					<p>{{ points}}</p>
 				</div>
 				<div class="summary-item">
-					<h2>svi mečevi</h2>
+					<h2>mečevi</h2>
 					<p>{{ player.total_matches }}</p>
 				</div>
 				<div class="summary-item">
@@ -209,7 +209,7 @@ function containsGreek(text) {
 					</p>
 				</div>
 				<div class="summary-item">
-					<h2>svi mečevi</h2>
+					<h2>mečevi</h2>
 					<p>{{ player.total_matches }}</p>
 				</div>
 				<div class="summary-item">

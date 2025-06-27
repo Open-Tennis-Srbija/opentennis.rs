@@ -37,6 +37,38 @@ class CourtsController extends Controller
 
         return $respons;
     }
+    public static function getCourtList(){
+        $courts = Court::where('id', '>', 1)->get();
+
+        $serbianLatinAlphabet = [
+            'a','b','c','č','ć','d','dž','đ','e','f','g','h','i','j','k','l','lj',
+            'm','n','nj','o','p','r','s','š','t','u','v','w','x','y','z','ž'
+        ];
+
+        $respons = [];
+
+        foreach($courts as $c){
+            array_push($respons,[
+                'name' => $c->name,
+                'id' => $c->id,
+                'points' => $c->get_points(),
+                'matches_number' => $c->matches->count(),
+                'player_number' => $c->getPlayerCount(),
+                'link' => $c->link,
+            ]);
+        }
+
+        $alphabetMap = [];
+        foreach ($serbianLatinAlphabet as $i => $letter) {
+            $alphabetMap[$letter] = $i;
+        }
+
+        usort($respons, function($a, $b) {
+            return $b['points'] - $a['points']; // Descending by points only
+        });
+
+        return $respons;
+    }
     public static function getEditCourt($id){
         return Inertia::render('Auth/EditCourt', [
             'id' => $id 
@@ -53,6 +85,46 @@ class CourtsController extends Controller
             'link' => $court->link
         ]);
     }
+
+    public static function getCourt($id){
+        $court = Court::find($id);
+        if(!$court){
+            return response()->json(['error' => 'Court not found'], 404);
+        }
+
+        $matches = TennisMatch::where('court_id', $court->id)->get();
+        $players = [];
+
+        foreach($matches as $match){
+            if(!in_array($match->winner, $players)){
+                array_push($players, $match->winner);
+            }
+            if(!in_array($match->loser, $players)){
+                array_push($players, $match->loser);
+            }
+        }
+
+        return Inertia::render('Court', [
+            'court_id' => $court->id     
+        ]);
+    }
+       public static function get_court($id){
+        $court = Court::where('id', $id)->first();
+
+        return [
+            'name' => $court->name,
+            'points' => $court->get_points(),
+            'player_number' => $court->getPlayerCount(),
+            'match_number' => $court->getMatchCount(),
+            'link' => $court->link,
+            'leagues' => $court->getLeagues(),
+            'position' => $court->getPosition(),
+            'players' => $court->getPlayers(),
+            'matches' => $court->getMatches(),
+        ];
+
+    }
+
     public static function updateCourt(Request $request){
         $court = Court::find($request->input('id'));
         if(!$court){

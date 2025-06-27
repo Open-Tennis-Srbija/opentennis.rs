@@ -108,6 +108,7 @@ Class Helpers{
                     'rank' => $player->rank
                 ]);
             }
+            $cache['maxRank'] = Player::all()->count();
         }
         else{
             $rank = Player::where('points','<',$point_gain)->first()->rank;

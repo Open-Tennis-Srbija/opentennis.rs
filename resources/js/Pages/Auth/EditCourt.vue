@@ -14,7 +14,7 @@ const court = ref({});
 
 onMounted(() => {
     page.props['title'] = `Izmeni teren`;
-    axios.get(`/teren/${props.id}`).then((response) => {
+    axios.get(`/get-court-for-edit/${props.id}`).then((response) => {
        console.log(response.data);
        form.id = response.data.id;
        form.name = response.data.name;

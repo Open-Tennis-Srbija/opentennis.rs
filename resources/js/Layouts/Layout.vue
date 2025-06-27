@@ -121,8 +121,8 @@ watch(
                 <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/' }">teniseri</Link>
                 <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
                 <Link prefetch="false" :href="'/lige-turniri'" :class="{ active: $page.url === '/lige-turniri' }">lige i turniri</Link>
+                <Link  prefetch="false" :href="'/tereni'" :class="{ active: $page.url === '/tereni' }">tereni</Link>
                 <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
-                <Link v-if="$page.props.auth.user" prefetch="false" :href="'/tereni'" :class="{ active: $page.url === '/tereni' }">tereni</Link>
                 <Link prefetch="false" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
                 <Link v-if="$page.props.auth.user" prefetch="false" :href="'/import-meceva'" :class="{ active: $page.url === '/import-meceva' }">Import mečeva</Link>
                 <!-- <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link> -->
@@ -147,7 +147,7 @@ watch(
                 :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige-turniri'"
                 :class="{ active: $page.url === '/lige-turniri' }">lige i turniri</Link>
-            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/tereni'"
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/tereni'"
                 :class="{ active: $page.url === '/tereni' }">tereni</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>

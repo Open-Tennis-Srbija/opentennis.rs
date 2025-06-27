@@ -28,22 +28,55 @@ onMounted(() => {
 
   </div> -->
   <Head title="Tereni -" />
-  <div class="rankings-wrapper leagues">
+<div class="rankings-wrapper">
     <div id="desktop">
       <div class="rankings-header">
-        <div class="name">ime</div>
-      </div>
-      <div v-if="courts.length" class="ranking-entry" v-for="(court, index) in courts">
-        <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
-        <div class="name">{{court.name}}</div>
         <div class="spacer"></div>
+        <div class="name">ime</div>
+        <div class="spacer"></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div class="elo">poeni</div>
+        <div class="total-matches">mečevi</div>
+        <div class="total-matches">teniseri</div>
+      </div>
+      <div class="ranking-entry" v-for="(court, index) in courts">
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
+        <div class="rank"
+        :class="{'first': index+1 == 1, 'second': index+1 == 2, 'third': index+1 == 3, 'align-left': index+1 > 3}">
+          {{ index+1 }}
+        </div>
+        <div class="name"><Link prefetch="false" :href="`/teren/${court.id}`">{{court.name}}</Link></div>
+        <div class="spacer"></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div class="elo">{{utl.formatAsThousands(court.points)}}</div>
+        <div class="total-matches">{{court.matches_number}}</div>
+        <div class="total-matches">{{court.player_number}}</div>
       </div>
     </div>
-    <div v-if="courts" id="mobile">
+
+    <div id="mobile">
       <div class="ranking-entry" v-for="(court, index) in courts">
-        <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
-        <div class="name" style="font-weight: bold;">{{court.name}}</div>
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
+        <div class="rank"
+                    :class="{'first': index+1 ==1, 'second': index+1 == 2, 'third': index+1 ==3, 'align-left': index+1 > 3}">
+          {{ index+1 }}
+        </div>
+        <div class="name"><Link prefetch="false" :href="`/teren/${court.id}`">{{court.name}}</Link></div>
+        <div class="info two">
+          <div class="info-wrapp">
+            <div class="sup">poeni</div>
+            <div class="text">{{ utl.formatAsThousands(court.points) }}</div>
+          </div>
+          <div class="info-wrapp">
+            <div class="sup">mečevi</div>
+            <div class="text">{{ court.matches_number }}</div>
+          </div>
       </div>
     </div>
   </div>
+</div>
 </template>

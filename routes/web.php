@@ -44,6 +44,11 @@ Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
 /**/
 
 Route::inertia('/uputstva', 'Rules')->name('rules');
+Route::inertia('/tereni', 'Courts')->name('courts');
+Route::get('/teren/{id}',[CourtsController::class, 'getCourt'])->name('court');
+Route::get('/get-court/{id}',[CourtsController::class, 'get_court'])->name('court');
+Route::get('/get-courts', [CourtsController::class, 'getCourtList']);
+
 
  Route::inertia('/admin/login', 'Auth/Login')->middleware(RedirectLoggedIn::class)->name('login');
  Route::post('/admin/login', [AuthController::class, 'login']);
@@ -61,10 +66,8 @@ Route::inertia('/uputstva', 'Rules')->name('rules');
      Route::post('/izmeni-ligu/{uri}', [LeaguesController::class, 'updateLeague']);
      Route::post('/obrisi-ligu', [LeaguesController::class, 'deleteLeague']);
 
-     Route::inertia('/tereni', 'Courts')->name('courts');
-     Route::get('/get-courts', [CourtsController::class, 'getCourts']);
      Route::get('/izmeni-teren/{id}',[CourtsController::class, 'getEditCourt'])->name('editCourt');
-     Route::get('/teren/{id}',[CourtsController::class, 'getCourtForEdit'])->name('courtById');
+     Route::get('/get-court-for-id/{id}',[CourtsController::class, 'getCourtForEdit'])->name('courtById');
      Route::post('/teren/izmeni', [CourtsController::class, 'updateCourt']);
      Route::post('/teren/obrisi', [CourtsController::class, 'deleteCourt']);
 

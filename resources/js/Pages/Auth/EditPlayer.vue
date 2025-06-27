@@ -6,6 +6,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import { ref } from 'vue';
 import axios from 'axios';
 import bus from 'vue3-eventbus';
+import opstine from '../../assets/opstine.json'
 
 const props = defineProps({uri: String});
 
@@ -106,32 +107,25 @@ const handleInputs = (event,isDate = false) => {
        <div class="form-section">
         <div class="form-row">
           <div class="form-group">
-            <label for="full-score" class="input-label">
-              Klub
+            <label for="winner-fname" class="input-label">
+              Opština (ili inostranstvo na dnu) <span class="required">*</span>
             </label>
-            <input v-model="form.club" :disabled="formState.submitted" id="club" type="text">
-            <p class="error-message">{{ form.errors.club }}</p>
+            <Dropdown
+              v-if="form.location"
+              label="name"
+              :options="opstine.data"
+              :type="'array'"
+              v-model="form.location"
+              :class="{'invalid': form.errors.location}"
+            />
+            <p class="error-message">{{ form.errors.location }}</p>
           </div>
-          <div class="form-group">
-            <label for="games" class="input-label">
-              Lokacija
-            </label>
-            <input v-model="form.location" @input="handleInputs($event)" :disabled="formState.submitted" id="location " type="text">
-          </div>
-        </div>
-      </div>
-       <div class="form-section">
-        <div class="form-row">
           <div class="form-group">
             <label for="full-score" class="input-label">
               Kategorija
             </label>
             <Dropdown v-if="form.category" :label="'name'" :type="'array'" v-model="form.category" :options="['?','dropdown-spacer','1','2','3','4','5','6','7','8','9','10']" :disabled="formState.submitted" id="category" />
             <p class="error-message">{{ form.errors.category }}</p>
-          </div>
-          <div class="form-group">
-            <label for="games" class="input-label">
-            </label>
           </div>
         </div>
       </div>

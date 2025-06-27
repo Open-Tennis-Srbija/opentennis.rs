@@ -722,7 +722,7 @@ class TenisMatchController extends Controller
                 $match->league_id = $league_id;
             }
             else{
-                $league_id = $data['court']['id'];
+                $league_id = $data['league']['id'];
                 if($match->league_id != $league_id){
                     $match->league_id = $league_id;
                     }

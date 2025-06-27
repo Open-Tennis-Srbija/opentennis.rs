@@ -104,11 +104,11 @@ function getDateMonth(date){
         <div class="date">{{match.day}} <br/>{{ match.date }} {{ match.month }} {{ match.year }}</div>
         <div class="location">{{ match.county }}</div>
         <div class="location">
-            <template v-if="match.court?.link == ''">
+            <template v-if="match.court?.id == 1">
                     {{ match.court.name }}
             </template>
             <template v-else>
-                <a target="_blank" :href="match.court?.link">
+                <a :href="`/teren/${match.court?.id}`">
                     {{ match.court?.name }}
                 </a>
             </template>
@@ -157,7 +157,7 @@ function getDateMonth(date){
           {{ match.county }}
         </template>
         <template v-else>
-                        {{ match.county }}, <a v-if="match.court?.link !== ''" target="_blank" :href="match.court?.link">{{ match.court?.name }}</a> <span v-else>{{ match.court?.name }}</span>
+                        {{ match.county }}, <a  :href="`/teren/${match.court?.id}`">{{ match.court?.name }}</a> 
         </template>
         <span>, <a v-if="match.league?.uri !== ''" :href="`/${match.league?.uri}`">{{ match.league?.name}}</a><span v-if="match.league?.id == 1"> {{ match.league?.name }}</span></span>
         </div>

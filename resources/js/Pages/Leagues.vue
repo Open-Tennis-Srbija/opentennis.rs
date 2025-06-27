@@ -58,7 +58,7 @@ onMounted(() => {
         <div class="name">ime</div>
         <div class="elo">datum početak - datum kraj</div>
         <div class="elo">opština</div>
-        <div class="total-matches">svi mečevi</div>
+        <div class="total-matches">mečevi</div>
         <div class="wins">poeni</div>
         <div class="loses">teniseri</div>
       </div>
