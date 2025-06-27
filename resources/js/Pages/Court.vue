@@ -91,13 +91,7 @@ function containsGreek(text) {
 <template>
     <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player league">
         <div
-			class="rank"
-			:class="{
-				first: court.position == 1,
-				second: court.position == 2,
-				third: court.position == 3,
-			}"
-		>
+			class="rank">
 			<p :class="{ 'align-left': court.position > 9,'n40': court.position >= 40 && court.position < 50 }">
 				{{ court.position }}
 			</p>

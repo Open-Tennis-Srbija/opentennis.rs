@@ -51,11 +51,14 @@
       
 
         a{
-          color: $mid-gray;
+          color: $red;
           text-decoration: none;
+          font-family: 'Helvetica Neue';
+          text-transform: uppercase;
+
 
           &:hover {
-            color: $red;
+            color: $blue;
           }
         }
       }

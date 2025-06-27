@@ -19,6 +19,15 @@
     padding-bottom: 5px;
   }
 
+  &.courts-list{
+    .rankings-header,
+    .ranking-entry {
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-columns: 100px 435px 133px 133px 133px 133px 133px;
+    }
+  }
+
   .elo,
   .total-matches,
   .wins,
@@ -94,6 +103,14 @@
     .elo,
     .name {
       font-weight: bold;
+
+      &.helvetica {
+        a{
+          font-family: 'Helvetica Neue';
+          text-transform: uppercase;
+        }
+      }
+
       a{
         text-decoration: none;
         color: #000;
@@ -154,7 +171,7 @@
     margin-bottom: 250px;
 
     .ranking-entry {
-      display: flex;
+      display: flex !important;
       height: auto;
       flex-direction: column;
       gap: 20px;
@@ -184,6 +201,13 @@
 
         font-weight: normal;
         font-size: 18px;
+      }
+
+      .name{
+        &.helvetica a{
+          text-transform: uppercase;
+          font-family: 'Helvetica Neue';
+        }
       }
     
       .place{

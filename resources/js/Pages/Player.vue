@@ -158,7 +158,7 @@ function containsGreek(text) {
 			&nbsp;
 		</p>
 		<p class="subtitle">
-			{{ player.club }}{{ player.club ? ", " : " " }}{{ player.location }}
+			{{ player.location }}
 		</p>
 
 		<div class="dashboard-wrapper">

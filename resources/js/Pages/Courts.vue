@@ -28,14 +28,12 @@ onMounted(() => {
 
   </div> -->
   <Head title="Tereni -" />
-<div class="rankings-wrapper">
+<div class="rankings-wrapper courts-list">
     <div id="desktop">
       <div class="rankings-header">
         <div class="spacer"></div>
         <div class="name">ime</div>
         <div class="spacer"></div>
-        <div></div>
-        <div></div>
         <div></div>
         <div class="elo">poeni</div>
         <div class="total-matches">mečevi</div>
@@ -43,14 +41,11 @@ onMounted(() => {
       </div>
       <div class="ranking-entry" v-for="(court, index) in courts">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
-        <div class="rank"
-        :class="{'first': index+1 == 1, 'second': index+1 == 2, 'third': index+1 == 3, 'align-left': index+1 > 3}">
+        <div class="rank">
           {{ index+1 }}
         </div>
-        <div class="name"><Link prefetch="false" :href="`/teren/${court.id}`">{{court.name}}</Link></div>
+        <div class="name helvetica"><Link prefetch="false" :href="`/teren/${court.id}`">{{court.name}}</Link></div>
         <div class="spacer"></div>
-        <div></div>
-        <div></div>
         <div></div>
         <div class="elo">{{utl.formatAsThousands(court.points)}}</div>
         <div class="total-matches">{{court.matches_number}}</div>
@@ -61,11 +56,10 @@ onMounted(() => {
     <div id="mobile">
       <div class="ranking-entry" v-for="(court, index) in courts">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
-        <div class="rank"
-                    :class="{'first': index+1 ==1, 'second': index+1 == 2, 'third': index+1 ==3, 'align-left': index+1 > 3}">
+        <div class="rank">
           {{ index+1 }}
         </div>
-        <div class="name"><Link prefetch="false" :href="`/teren/${court.id}`">{{court.name}}</Link></div>
+        <div class="name helvetica"><Link prefetch="false" :href="`/teren/${court.id}`">{{court.name}}</Link></div>
         <div class="info">
           <div class="info-wrapp">
             <div class="sup">poeni</div>
