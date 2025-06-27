@@ -66,7 +66,7 @@ onMounted(() => {
           {{ index+1 }}
         </div>
         <div class="name"><Link prefetch="false" :href="`/teren/${court.id}`">{{court.name}}</Link></div>
-        <div class="info two">
+        <div class="info">
           <div class="info-wrapp">
             <div class="sup">poeni</div>
             <div class="text">{{ utl.formatAsThousands(court.points) }}</div>
@@ -74,6 +74,10 @@ onMounted(() => {
           <div class="info-wrapp">
             <div class="sup">mečevi</div>
             <div class="text">{{ court.matches_number }}</div>
+          </div>
+          <div class="info-wrapp">
+            <div class="sup">teniseri</div>
+            <div class="text">{{ utl.formatAsThousands(court.player_number) }}</div>
           </div>
       </div>
     </div>
