@@ -155,8 +155,8 @@ $border-color-dark: #e2e0e1;
     }
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding: 14px 0 12px 0;
+    gap: 10px;
+    padding: 10px 0 12px 0;
 
     .location {
       padding-inline: 10px;
@@ -179,7 +179,11 @@ $border-color-dark: #e2e0e1;
     .score {
       font-size: 25px;
       line-height: 1.2;
-      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 66px;
 
       .games {
         font-size: 23px;

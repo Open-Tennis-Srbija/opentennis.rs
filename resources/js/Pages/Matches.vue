@@ -195,7 +195,7 @@ function getDateMonth(date) {
                 </Link>
                 <div class="score">
                     {{ match.set_score }}
-                    <br>
+                    <br v-if="match.game_score && match.game_score !== ''" />
                     <span class="games">{{ match.game_score }}</span>
                 </div>
 
