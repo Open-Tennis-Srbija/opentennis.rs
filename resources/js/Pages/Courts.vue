@@ -32,7 +32,7 @@ onMounted(() => {
     <div id="desktop">
       <div class="rankings-header">
         <div class="spacer"></div>
-        <div class="name">ime</div>
+        <div class="name">teren</div>
         <div class="spacer"></div>
         <div></div>
         <div class="elo">poeni</div>

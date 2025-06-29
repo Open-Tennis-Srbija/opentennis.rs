@@ -143,7 +143,7 @@ $border-color-dark: #e2e0e1;
   }
 
   .matches-wrapper .match-entry {
-    min-height: 250px;
+    height: max-content;
     position: relative;
     .edit-btn{
       top: 40px;
@@ -154,31 +154,31 @@ $border-color-dark: #e2e0e1;
       right: unset;
     }
     display: flex;
-    height: auto;
     flex-direction: column;
-    gap: 29px;
-    padding: 26px 0 34px 0;
+    gap: 20px;
+    padding: 20px 0 20px 0;
 
     .location {
-      position: absolute;
-      bottom: 10px;
       padding-inline: 10px;
       font-size: 15px;
       color: $text-color-gray;
       line-height: 1.7;
       a{
+
         color: $text-color-gray;
         &:hover {
           color: $red;
+        }
+
+        &.black{
+            color: black;
         }
       }
     }
 
     .score {
-      font-size: 30px;
+      font-size: 25px;
       line-height: 1.2;
-      position: absolute;
-      top: 14px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -186,17 +186,11 @@ $border-color-dark: #e2e0e1;
       min-height: 72px;
 
       .games {
-        font-size: 25px;
+        font-size: 23px;
         color: $text-color-gray;
       }
     }
 
-    .info{
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
 
   }
 
@@ -224,16 +218,14 @@ $border-color-dark: #e2e0e1;
       line-height: 1.2;
       text-align: center;
       position: relative;
+      display: flex;
+        flex-direction: column;
+            gap: 5px;
 
         .points{
           color: $mid-gray;
           font-weight: normal;
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          bottom: -25px;
           text-align: center;
-          margin-top: 10px;
       }
     }
   }

@@ -67,7 +67,7 @@ Route::get('/get-courts', [CourtsController::class, 'getCourtList']);
      Route::post('/obrisi-ligu', [LeaguesController::class, 'deleteLeague']);
 
      Route::get('/izmeni-teren/{id}',[CourtsController::class, 'getEditCourt'])->name('editCourt');
-     Route::get('/get-court-for-id/{id}',[CourtsController::class, 'getCourtForEdit'])->name('courtById');
+     Route::get('/get-court-for-edit/{id}',[CourtsController::class, 'getCourtForEdit'])->name('courtById');
      Route::post('/teren/izmeni', [CourtsController::class, 'updateCourt']);
      Route::post('/teren/obrisi', [CourtsController::class, 'deleteCourt']);
 
