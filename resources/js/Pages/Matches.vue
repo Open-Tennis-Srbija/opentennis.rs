@@ -195,7 +195,7 @@ function getDateMonth(date) {
                 </Link>
                 <div class="score">
                     {{ match.set_score }}
-                    <br />
+                    <br>
                     <span class="games">{{ match.game_score }}</span>
                 </div>
 
@@ -207,8 +207,9 @@ function getDateMonth(date) {
                                 :href="`/${match.winner_uri}`"
                                 >{{ match.winner_first_name }}<br />{{
                                     match.winner_last_name
-                                }}</Link
-                            ><span class="points"
+                                }}
+                            </Link>
+                            <span class="points"
                                 >+{{ match.winner_point_gain }}</span
                             >
                         </div>
@@ -235,7 +236,7 @@ function getDateMonth(date) {
                             match.league?.name
                         }}</a>
                     </span>
-                    <br v-if="match.league?.uri !== ''" />
+                    <br/>
                     {{ match.number || matches.length - index }},
                     {{ match.day }} {{ match.date }} {{ match.month }}
                     {{ match.year }}
