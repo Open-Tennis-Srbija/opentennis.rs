@@ -20,6 +20,8 @@ onMounted(() => {
        form.name = response.data.name;
        form.link = response.data.link;
        form.uri = response.data.uri;
+       form.phone = response.data.phone;
+        form.location = response.data.location;
         court.value = response.data;
         bus.emit('loading', false);
     }).catch((error) => {
@@ -31,6 +33,8 @@ const form = useForm({
     id: null,
     name: null,
     link: null,
+    phone: null,
+    location: null,
     uri: null,
 });
 
@@ -94,6 +98,17 @@ const handleInputs = (event,isDate = false) => {
             <input v-model="form.name" @input="handleInputs($event)" :class="{'invalid': form.errors.name}" :disabled="formState.submitted" id="name" type="text">
             <p class="error-message">{{ form.errors.name }}</p>
           </div>
+ <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
+            <label for="winner-fname" class="input-label">
+              URI (srpskatenisliga.rs/tereni/URI)<span class="required">*</span>
+            </label>
+            <input v-model="form.uri" @input="handleInputs($event)" :class="{'invalid': form.errors.uri}" :disabled="formState.submitted" id="uri" type="text">
+            <p class="error-message">{{ form.errors.uri }}</p>
+          </div>
+        </div>
+      </div>
+       <div class="form-section">
+        <div class="form-row">
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
             <label for="winner-fname" class="input-label">
               Link
@@ -101,16 +116,24 @@ const handleInputs = (event,isDate = false) => {
             <input v-model="form.link" @input="handleInputs($event)" :class="{'invalid': form.errors.link}" :disabled="formState.submitted" id="link" type="text">
             <p class="error-message">{{ form.errors.link }}</p>
           </div>
+         
+          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
+          <label for="winner-fname" class="input-label">
+              Lokacija
+            </label>
+            <input v-model="form.location" @input="handleInputs($event)" :class="{'invalid': form.errors.location}" :disabled="formState.submitted" id="location" type="text">
+            <p class="error-message">{{ form.errors.location }}</p>
+          </div>
         </div>
       </div>
-       <div class="form-section">
+      <div class="form-section">
         <div class="form-row">
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
             <label for="winner-fname" class="input-label">
-              URI (srpskatenisliga.rs/tereni/URI)<span class="required">*</span>
+              Telefon
             </label>
-            <input v-model="form.uri" @input="handleInputs($event)" :class="{'invalid': form.errors.uri}" :disabled="formState.submitted" id="uri" type="text">
-            <p class="error-message">{{ form.errors.uri }}</p>
+            <input v-model="form.phone" @input="handleInputs($event)" :class="{'invalid': form.errors.phone}" :disabled="formState.submitted" id="phone" type="text">
+            <p class="error-message">{{ form.errors.phone }}</p>
           </div>
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
           </div>

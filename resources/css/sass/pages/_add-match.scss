@@ -48,8 +48,15 @@
         color: $mid-gray;
         text-align: center;
         margin-top: -70px;
-      
-
+        
+        .court-links-wrapp{
+          display: flex;
+          width: max-content;
+          margin: 0 auto;
+          gap: 20px;
+          justify-content: center;
+          align-items: center;
+        }
         a{
           color: $red;
           text-decoration: none;

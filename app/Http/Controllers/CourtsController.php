@@ -53,6 +53,8 @@ class CourtsController extends Controller
                 'name' => $c->name,
                 'uri' => $c->uri,
                 'id' => $c->id,
+                'location' => $c->location,
+                'phone' => $c->phone,
                 'points' => $c->get_points(),
                 'matches_number' => $c->matches->count(),
                 'player_number' => $c->getPlayerCount(),
@@ -85,6 +87,8 @@ class CourtsController extends Controller
             'name' => $court->name,
             'uri' => $court->uri,
             'id' => $court->id,
+            'location' => $court->location,
+            'phone' => $court->phone,
             'link' => $court->link
         ]);
     }
@@ -121,6 +125,8 @@ class CourtsController extends Controller
             'player_number' => $court->getPlayerCount(),
             'match_number' => $court->getMatchCount(),
             'link' => $court->link,
+            'phone' => $court->phone,
+            'location' => $court->location,
             'leagues' => $court->getLeagues(),
             'position' => $court->getPosition(),
             'players' => $court->getPlayers(),
@@ -142,6 +148,8 @@ class CourtsController extends Controller
         $court->name = $request->input('name');
         $court->link = $request->input('link');
         $court->uri = Str::slug($request->input('uri'));
+        $court->phone = $request->input('phone');
+        $court->location = $request->input('location');
         $court->save();
 
         return redirect('/tereni');
