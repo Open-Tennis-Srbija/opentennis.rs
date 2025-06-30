@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Court;
 use App\Models\TennisMatch;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class CourtsController extends Controller
 {
@@ -50,6 +51,7 @@ class CourtsController extends Controller
         foreach($courts as $c){
             array_push($respons,[
                 'name' => $c->name,
+                'uri' => $c->uri,
                 'id' => $c->id,
                 'points' => $c->get_points(),
                 'matches_number' => $c->matches->count(),
@@ -81,13 +83,14 @@ class CourtsController extends Controller
         }
         return response()->json([
             'name' => $court->name,
+            'uri' => $court->uri,
             'id' => $court->id,
             'link' => $court->link
         ]);
     }
 
-    public static function getCourt($id){
-        $court = Court::find($id);
+    public static function getCourt($uri){
+        $court = Court::where('uri', $uri)->first();
         if(!$court){
             return response()->json(['error' => 'Court not found'], 404);
         }
@@ -113,6 +116,7 @@ class CourtsController extends Controller
 
         return [
             'name' => $court->name,
+            'uri' => $court->uri,
             'points' => $court->get_points(),
             'player_number' => $court->getPlayerCount(),
             'match_number' => $court->getMatchCount(),
@@ -137,6 +141,7 @@ class CourtsController extends Controller
 
         $court->name = $request->input('name');
         $court->link = $request->input('link');
+        $court->uri = Str::slug($request->input('uri'));
         $court->save();
 
         return redirect('/tereni');

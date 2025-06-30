@@ -228,6 +228,8 @@ class Player extends Model
                 $court = Court::find($row->court_id);
                 return [
                     'name' => $court ? $court->name : 'Nepoznat teren',
+                    'uri' => $court ? $court->uri : '',
+                    'id' => $court ? $court->id : 0,
                     'link' => $court && $court->link ? $court->link : '',
                     'count' => $row->count,
                 ];

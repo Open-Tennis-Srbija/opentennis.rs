@@ -17,11 +17,8 @@ use NikolaAlgoV1;
 use App\Http\Controllers\PlayerController;
 use DateTime;
 use Helpers;
-use Illuminate\Support\Facades\Storage;
-use PlayerCaching;
 use Carbon\Carbon;
-
-use function PHPUnit\Framework\isNumeric;
+use Illuminate\Support\Str;
 
 class TenisMatchController extends Controller
 {
@@ -460,6 +457,7 @@ class TenisMatchController extends Controller
 
                 $court->name = $data['court']['name'];
                 $court->link = '';
+                $court->uri = Str::slug($court->name);
                 $court->save();
                 $court_id = $court->id;
             }
@@ -689,6 +687,7 @@ class TenisMatchController extends Controller
 
                 $court->name = $data['court']['name'];
                 $court->link = '';
+                $court->uri = Str::slug($court->name);
                 $court->save();
                 $court_id = $court->id;
             }

@@ -154,7 +154,7 @@ function getDateMonth(date) {
                         {{ match.court.name }}
                     </template>
                     <template v-else>
-                        <a :href="`/teren/${match.court?.id}`">
+                        <a :href="`/tereni/${match.court?.uri}`">
                             {{ match.court?.name }}
                         </a>
                     </template>
@@ -243,7 +243,7 @@ function getDateMonth(date) {
                     <br />
                     {{ match.county }}
                     <span v-if="match.court?.id >= 1">,
-                        <a :href="`/teren/${match.court?.id}`">{{
+                        <a :href="`/tereni/${match.court?.uri}`">{{
                             match.court.name
                         }}</a>
                     </span>

@@ -436,7 +436,8 @@ class LeagueController extends Controller
                 if(!isset($data['courts'][$court->id])){
                     $data['courts'][$court->id] = [
                         'name' => $court->name,
-                        'link' => $court->link,
+                        'id' => $court->id,
+                        'uri' => $court->uri,
                         'count' => 1
                     ];
                 }

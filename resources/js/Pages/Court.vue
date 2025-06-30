@@ -100,7 +100,7 @@ function containsGreek(text) {
             {{ court.name }}<Link prefetch="false"
 				class="edit-btn"
 				v-if="$page.props.auth.user"
-				:href="`/izmeni-teren/${court.id}`"
+				:href="`/izmeni-teren/${props.court_id}`"
 				><EditIcon
                 class="league"
 			/></Link>

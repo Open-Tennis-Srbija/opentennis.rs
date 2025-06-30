@@ -44,7 +44,7 @@ onMounted(() => {
         <div class="rank">
           {{ index+1 }}
         </div>
-        <div class="name helvetica"><Link prefetch="false" :href="`/teren/${court.id}`">{{court.name}}</Link></div>
+        <div class="name helvetica"><Link prefetch="false" :href="`/tereni/${court.uri}`">{{court.name}}</Link></div>
         <div class="spacer"></div>
         <div></div>
         <div class="elo">{{utl.formatAsThousands(court.points)}}</div>
@@ -59,7 +59,7 @@ onMounted(() => {
         <div class="rank">
           {{ index+1 }}
         </div>
-        <div class="name helvetica"><Link prefetch="false" :href="`/teren/${court.id}`">{{court.name}}</Link></div>
+        <div class="name helvetica"><Link prefetch="false" :href="`/tereni/${court.uri}`">{{court.name}}</Link></div>
         <div class="info">
           <div class="info-wrapp">
             <div class="sup">poeni</div>

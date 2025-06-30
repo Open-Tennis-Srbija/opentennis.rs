@@ -96,8 +96,8 @@ import { ref } from 'vue';
                 <div class="summary-item">
                     <h2 class="mb-10">najkorišćeniji tereni</h2>
                     <p class="smaller f20" v-for="court in locations.courts">
-                        <template v-if="court.link != ''">
-                            <a target="'_blank'" :href="court.link">
+                        <template v-if="court.id > 1">
+                            <a target="'_blank'" :href="`/tereni/${court.uri}`">
                                 {{ court.name }}
                             </a>
                         </template>

@@ -304,8 +304,8 @@ function containsGreek(text) {
 						<h2>tereni</h2>
 						<template v-for="court in locations.courts">
 							<p>
-								<template v-if="court.link != ''">
-									<a target="'_blank'" :href="court.link">
+								<template v-if="court.id > 1">
+									<a  :href="`/tereni/${court.uri}`">
 										{{ court.name }}
 									</a>
 								</template>

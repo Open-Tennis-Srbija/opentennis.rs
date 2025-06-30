@@ -45,7 +45,7 @@ Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
 
 Route::inertia('/uputstva', 'Rules')->name('rules');
 Route::inertia('/tereni', 'Courts')->name('courts');
-Route::get('/teren/{id}',[CourtsController::class, 'getCourt'])->name('court');
+Route::get('/tereni/{uri}',[CourtsController::class, 'getCourt'])->name('court');
 Route::get('/get-court/{id}',[CourtsController::class, 'get_court'])->name('court');
 Route::get('/get-courts', [CourtsController::class, 'getCourtList']);
 
