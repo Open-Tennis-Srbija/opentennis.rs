@@ -112,13 +112,13 @@ function containsGreek(text) {
 		<p class="subtitle">
             <div class="court-links-wrapp">
                 <a v-if="court.link" :href="court.link" target="_blank" rel="noopener noreferrer">
-                    websajt
+                    vebsajt
                 </a>
                 <a v-if="court.location" :href="court.location" target="_blank" rel="noopener noreferrer">
                     lokacija
                 </a>
                 <a v-if="court.phone" :href="`tel:${court.phone}`" target="_blank" rel="noopener noreferrer">
-                   telefon 
+                   telefon
                 </a>
             </div>
 		</p>
