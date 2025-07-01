@@ -202,5 +202,5 @@ function containsGreek(text) {
             </div>
         </div>
     </div>
-    <Head :title="`${court.name} -`" />
+    <Head v-if="court && court.name" :title="`${court.name} -`" />
 </template>

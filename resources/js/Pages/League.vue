@@ -148,5 +148,5 @@ function containsGreek(text) {
             </div>
         </div>
     </div>
-    <Head :title="`${league.name} -`" />
+    <Head v-if="league && league.name" :title="`${league.name} -`" />
 </template>

@@ -89,7 +89,7 @@ const matchups = computed(() => {
 	}
 	return data;
 });
-const pageTitle = ref('Teniser - Srpska Tenis Liga');
+const pageTitle = ref('Srpska Tenis Liga');
 
 const points = computed(() => {
 	if (!player.value.points) {
