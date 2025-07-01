@@ -89,7 +89,7 @@ function getDateMonth(date) {
     <div class="matches-wrapper">
         <div id="desktop">
             <div class="matches-header">
-                <div class="spacer number">#</div>
+                <div class="spacer number"></div>
                 <div class="winner">pobednik</div>
                 <div class="loser">gubitnik</div>
                 <div class="score">rezultat</div>

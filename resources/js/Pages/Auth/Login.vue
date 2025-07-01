@@ -57,6 +57,11 @@ const handleInputs = (event,isDate = false) => {
 
 </script>
 <template>
+    <Head>
+      <title>Admin Login</title>
+      <meta name="robots" content="noindex, nofollow">
+      <meta name="googlebot" content="noindex, nofollow">
+  </Head>
     <div class="static-wrapper">
     <h1 id="title" :class="{'hide': formState.success}">Admin</h1>
     <form id="form" @submit.prevent="submit" :class="{'hide': formState.success}">

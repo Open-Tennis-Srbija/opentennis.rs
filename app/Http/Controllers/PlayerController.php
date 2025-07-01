@@ -55,7 +55,7 @@ class PlayerController extends Controller
 					'category' => $player->category,
 					'loses' => $player->losses_count,
 					'total_matches' => $player->wins_count + $player->losses_count,
-					'win_precentage' => $player->wins_count + $player->losses_count == 0 ? 0 : round($player->wins_count / ($player->wins_count + $player->losses_count) * 100, 2),
+					'win_precentage' => $player->wins_count + $player->losses_count == 0 ? 0 : round($player->wins_count / ($player->wins_count + $player->losses_count) * 100),
 				];
 			});
 
@@ -205,7 +205,7 @@ class PlayerController extends Controller
 		$uri_firstname = Helper::formatName($data['first_name']);
 		$uri_lastname = Helper::formatName($data['last_name']);
 		$uri = $uri_firstname . '-' . $uri_lastname;
-		
+
 		$player->save();
 		$uri = '/'.$player->uri;
 		return redirect($uri);
@@ -287,7 +287,7 @@ class PlayerController extends Controller
 						'wins_number' => count($player->wins),
 						'losses_number' => count($player->losses),
 						'total_matches' => count($player->wins) + count($player->losses),
-						'win_precentage' => count($player->wins) + count($player->losses) == 0 ? 0 : round(count($player->wins) / (count($player->wins) + count($player->losses)) * 100, 2),
+						'win_precentage' => count($player->wins) + count($player->losses) == 0 ? 0 : round(count($player->wins) / (count($player->wins) + count($player->losses)) * 100),
 					];
 				}
 			);
