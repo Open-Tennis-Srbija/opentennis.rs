@@ -21,6 +21,11 @@ Class Helpers{
         Self::update_player_chart($winner, $match->winner_point_gain, $match->date);
         Self::update_player_chart($loser, $match->loser_point_gain, $match->date);
     }
+    
+    public static function UpdatePlayerChartsDouble($winner, $loser, $match){
+        Self::update_player_chart($winner, $match->winner_point_gain/2, $match->date);
+        Self::update_player_chart($loser, $match->loser_point_gain/2, $match->date);
+    }
 
     public static function UpdateStatsChart($new_players, $point_gain, $date){
             $cache = include(Storage::disk('public')->path('charts/statistics.php'));

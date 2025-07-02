@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use NikolaAlgoV1;
 use App\Http\Controllers\PlayerController;
+use App\Mail\DoubleMatchNotification;
 use DateTime;
 use Helpers;
 use Carbon\Carbon;
+use Hamcrest\Type\IsNumeric;
 use Illuminate\Support\Str;
 
 class TenisMatchController extends Controller
@@ -31,12 +33,31 @@ class TenisMatchController extends Controller
     }
 
     public function editMatch($number){
-        return Inertia::render('Auth/EditMatch', [
-            'players' => PlayerController::getPlayersForDropdown(),
-            'match' => TenisMatchController::getMatchForEdit($number),
-            'courts' => CourtsController::getCourts(),
-            'leagues' => LeaguesController::getLeagues(),
-        ]);
+        
+        $match = TennisMatch::where('number', $number)->first();
+
+        $winner_count = $match->winners()->count();
+        $loser_count = $match->losers()->count();
+
+        $isDoubles = ($winner_count == 2 && $loser_count == 2);
+
+        if($isDoubles){
+            return Inertia::render('Auth/EditDouble', [
+                'players' => PlayerController::getPlayersForDropdown(),
+                'match' => TenisMatchController::getDoubleForEdit($number),
+                'courts' => CourtsController::getCourts(),
+                'leagues' => LeaguesController::getLeagues(),
+            ]);
+        }
+        else{
+            return Inertia::render('Auth/EditMatch', [
+                'players' => PlayerController::getPlayersForDropdown(),
+                'match' => TenisMatchController::getMatchForEdit($number),
+                'courts' => CourtsController::getCourts(),
+                'leagues' => LeaguesController::getLeagues(),
+            ]);
+        }
+
     }
 
     public function batchImport(){
@@ -87,6 +108,7 @@ class TenisMatchController extends Controller
 
                 $court->name = $data['court']['name'];
                 $court->link = '';
+                $court->county = $data['location'];
 
                 $court->save();
                 $court_id = $court->id;
@@ -155,6 +177,8 @@ class TenisMatchController extends Controller
                 $court->name = $court_name;
 
                 $court->link = '';
+                $court->uri = Str::slug($court->name);
+                $court->county = $county;
 
                 $court->save();
             }
@@ -256,6 +280,40 @@ class TenisMatchController extends Controller
 
     }
 
+    private function check_for_existing($id,$first_name,$last_name){
+        if(is_numeric($id)){
+            $player = Player::find($id);
+            if($player){
+                return [$player, false];
+            }
+        }
+        else{
+            $player = new Player();
+            $player->first_name = $first_name;
+            $player->last_name = $last_name;
+            $uri_firistname = Helper::formatName($first_name);
+            $uri_lastname = Helper::formatName($last_name);
+           
+            $index = 0;
+            $uri = strtolower($uri_firistname) . '-' . strtolower($uri_lastname);
+            
+            $check = false;
+            while(!$check){
+                if(Player::where('uri', $uri)->exists()){
+                    $uri = strtolower($uri_firistname) . '-' . strtolower($uri_lastname) . $index;
+                    $index++;
+                }
+                else{
+                    $check = true;
+                }
+            }
+            $player->uri = $uri;
+            $player->save();
+            return [$player, true];
+        }
+
+    }
+
     private function check_existing_player($match,$first_name,$last_name,$mode){
         $player = Player::where('first_name', $first_name)->where('last_name', $last_name)->first();
         $new = 0;
@@ -303,6 +361,35 @@ class TenisMatchController extends Controller
         ];
     }
 
+    private function getDoubleForEdit($number){
+        $match = TennisMatch::where('number', $number)->first();
+
+        return [
+            'id' => $match->id,
+            'winner1' => [
+                'id' => $match->winners()->first()->id,
+                'name' => Player::find($match->winners()->first()->id)->first_name . ' ' . Player::find($match->winners()->first()->id)->last_name,
+            ],
+            'winner2' => [
+                'id' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->id : null,
+                'name' => $match->winners()->skip(1)->first() ? Player::find($match->winners()->skip(1)->first()->id)->first_name . ' ' . Player::find($match->winners()->skip(1)->first()->id)->last_name : null,
+            ],
+            'loser1' => [
+                'id' => $match->losers()->first()->id,
+                'name' => Player::find($match->losers()->first()->id)->first_name . ' ' . Player::find($match->losers()->first()->id)->last_name,
+            ],
+            'loser2' => [
+                'id' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->id : null,
+                'name' => $match->losers()->skip(1)->first() ? Player::find($match->losers()->skip(1)->first()->id)->first_name . ' ' . Player::find($match->losers()->skip(1)->first()->id)->last_name : null,
+            ],
+            'set_score' => $match->set_score,
+            'game_score' => $match->game_score,
+            'date' => $match->date,
+            'location' => $match->county,
+            'league' => League::find($match->league_id),
+            'court' => Court::find($match->court_id),
+        ];
+    }
     public static function getMatches(){
 
     return TennisMatch::with(['winners', 'losers'])
@@ -310,10 +397,18 @@ class TenisMatchController extends Controller
             ->get()
             ->map(function ($match) {
                 return [
-                    'winner_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
-                    'winner_uri' => $match->winners()->first()->uri,
-                    'loser_name' => $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name,
-                    'loser_uri' => $match->losers()->first()->uri,
+                    'winner1_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
+                    'winner1_uri' => $match->winners()->first()->uri,
+                    'winner1_category' => $match->winners()->first()->category,
+                    'winner2_name' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->first_name . ' ' . $match->winners()->skip(1)->first()->last_name : null,
+                    'winner2_uri' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->uri : null,
+                    'winner2_category' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->category : null,
+                    'loser1_name' => $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name,
+                    'loser1_uri' => $match->losers()->first()->uri,
+                    'loser1_category' => $match->losers()->first()->category,
+                    'loser2_name' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->first_name . ' ' . $match->losers()->skip(1)->first()->last_name : null,
+                    'loser2_uri' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->uri : null,
+                    'loser2_category' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->category : null,
                     'number' => $match->number,
                     'winner_point_gain' => $match->winner_point_gain,
                     'loser_point_gain' => $match->loser_point_gain,
@@ -458,6 +553,7 @@ class TenisMatchController extends Controller
                 $court->name = $data['court']['name'];
                 $court->link = '';
                 $court->uri = Str::slug($court->name);
+                $court->county = $data['location'];
                 $court->save();
                 $court_id = $court->id;
             }
@@ -543,6 +639,176 @@ class TenisMatchController extends Controller
             'leagues' => LeaguesController::getLeagues()
         ]);
     }
+ public function storeDouble(Request $request)
+    {
+        $data = $request->validate([
+            'winner1' => 'required',
+            'winner2' => 'required',
+            'loser1' => 'required',
+            'loser2' => 'required',
+            'set_score' => ['required', 'max:30'],
+            'game_score' => 'max:30',
+            'date' => ['required', 'max:30'],
+            'location' => 'required',
+            'court' => '',
+            'league' => '',
+        ], [
+            'winner.required' => 'Ovo polje je obavezno.',
+            'loser.required' => 'Ovo polje je obavezno.',
+            'set_score.required' => 'Ovo polje je obavezno.',
+            'date.required' => 'Ovo polje je obavezno.',
+            'location.required' => 'Ovo polje je obavezno.',
+            'set_score.max' => 'Maksimalan broj karaktera je 30.',
+            'date.max' => 'Maksimalan broj karaktera je 30.',
+        ]);
+
+        $winner1_id = $data['winner1']['id'];
+        $winner2_id = $data['winner2']['id'];
+        $loser1_id = $data['loser1']['id'];
+        $loser2_id = $data['loser2']['id'];
+        $new_players = 0;
+
+        $winner1 = null;
+        $winner2 = null;
+        $loser1 = null;
+        $loser2 = null;
+
+        $court_id = null;
+        if(isset($data['court']))
+            $court_id = $data['court']['id'];
+        else
+            $court_id = 1;
+
+        $league_id = null;
+
+        if(isset($data['league']))
+            $league_id = $data['league']['id'];
+        else
+            $league_id = 1;
+
+        [$winner1, $new_winner1] = $this->check_for_existing($winner1_id, explode(' ', $data['winner1']['name'])[0], explode(' ', $data['winner1']['name'])[1]);
+        if($new_winner1){
+            $new_players++;
+            $winner1_id = $winner1->id;
+        }   
+        [$winner2, $new_winner2] = $this->check_for_existing($winner2_id, explode(' ', $data['winner2']['name'])[0], explode(' ', $data['winner2']['name'])[1]);
+        if($new_winner2){
+            $new_players++;
+            $winner2_id = $winner2->id;
+        }
+        [$loser1, $new_loser1] = $this->check_for_existing($loser1_id, explode(' ', $data['loser1']['name'])[0], explode(' ', $data['loser1']['name'])[1]);
+        if($new_loser1){
+            $new_players++;
+            $loser1_id = $loser1->id;
+        }
+        [$loser2, $new_loser2] = $this->check_for_existing($loser2_id, explode(' ', $data['loser2']['name'])[0], explode(' ', $data['loser2']['name'])[1]);
+        if($new_loser2){
+            $new_players++;
+            $loser2_id = $loser2->id;
+        }
+
+        if(!is_numeric($court_id) && $court_id != null && $data['court']['name'] !== ''){
+            if($data['court']['name'] == null){
+                $court_id = 1;
+            }
+            else{
+                $court_id = null;
+                $court = new Court();
+
+                $court->name = $data['court']['name'];
+                $court->link = '';
+                $court->uri = Str::slug($court->name);
+                $court->county = $data['location'];
+                $court->save();
+                $court_id = $court->id;
+            }
+        }
+
+        $match = new TennisMatch(
+        );
+        $match->date = date('Y-m-d', strtotime($data['date']));
+        $match->set_score = $data['set_score'];
+        $match->game_score = $data['game_score'];
+        $match->county = $data['location'];
+        $match->winner_point_gain = 0;
+        $match->loser_point_gain = 0;
+
+        $match->save();
+        $match->players()->attach($winner1_id, ['team' => 'winner']);
+        $match->players()->attach($winner2_id, ['team' => 'winner']);
+        $match->players()->attach($loser1_id, ['team' => 'loser']);
+        $match->players()->attach($loser2_id, ['team' => 'loser']);
+
+        $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
+
+        $match->number = $compare->number + 1;
+
+        [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
+        $match->winner_point_gain = $winner_gains;
+        $match->loser_point_gain = $loser_gains;
+
+
+        if(isset($court_id)){
+            $match->court_id = $court_id;
+        }
+
+        if(!is_numeric($league_id) && $league_id != null && $data['league']['name'] !== ''){
+            if($data['league']['name'] == null){
+                $league_id = 1;
+            }
+            else{
+                $league = new League();
+
+                $league->name = $data['league']['name'];
+                $league->link = '';
+                $uri = str_replace(' - ','-',$league->name);
+                $uri = str_replace(' ','-',$uri);
+                $uri = str_replace(',','',$uri);
+                $uri = strtolower($uri);
+                $league->uri = $uri;
+                $date = Carbon::now();
+                $league->date_begin = $date->format('Y-m-d');
+                $league->date_end = $date->addDay()->format('Y-m-d');
+                $league->save();
+                $league_id = $league->id;
+            }
+        }
+
+        if(isset($league_id)){
+            $match->league_id = $league_id;
+        }
+
+        $match->save();
+
+        $winner1->points += $winner_gains/2;
+        $winner2->points += $winner_gains/2;
+        $loser1->points += $loser_gains/2;
+        $loser2->points += $loser_gains/2;
+        $winner1->save();
+        $loser1->save();
+
+
+        Helpers::UpdateRanks();
+        Helpers::UpdatePlayerChartsDouble($winner1, $loser1, $match);
+        Helpers::UpdatePlayerChartsDouble($winner2, $loser2, $match);
+        Helpers::UpdateStatsChart($new_players, $winner_gains + $loser_gains, $match->date);
+
+
+
+        if(env('APP_ENV') == 'production'){
+            Mail::to('bogdan@openinnovation.me')->send(new DoubleMatchNotification($match));
+            Mail::to('nikola@openinnovation.me')->send(new DoubleMatchNotification($match));
+            Mail::to('')->send(new DoubleMatchNotification($match));
+        }
+         else
+             Mail::to('bogdan@openinnovation.me')->send(new DoubleMatchNotification($match));
+
+        return redirect()->back()->with('data',[
+            'players' => PlayerController::getPlayersForDropdown(),
+            'courts' => CourtsController::getCourts(),
+            'leagues' => LeaguesController::getLeagues()
+        ]);
+    }
 
 
     public function deleteMatch(){
@@ -552,9 +818,35 @@ class TenisMatchController extends Controller
 
         $match = TennisMatch::find($data['id']);
 
-        $match->players()->detach($match->winners()->first()->id);
-        $match->players()->detach($match->losers()->first()->id);
+        $winners = $match->winners()->get();
+        $losers = $match->losers()->get();
 
+        $winner_points = $match->winner_point_gain;
+        $loser_points = $match->loser_point_gain;
+
+        if($winners->count() > 1){
+            foreach($winners as $winner){
+                $winner->points -= $winner_points;
+                $winner->save();
+            }
+        }
+        else{
+            $winners->first()->points -= $winner_points;
+            $winners->first()->save();
+        }
+
+        if($losers->count() > 1){
+            foreach($losers as $loser){
+                $loser->points -= $loser_points;
+                $loser->save();
+            }
+        }
+        else{
+            $losers->first()->points -= $loser_points;
+            $losers->first()->save();
+        }
+
+        $match->players()->detach();
 
         $match->delete();
 
@@ -589,6 +881,241 @@ class TenisMatchController extends Controller
         // return redirect()->back()->with('success', 'Meč je uspešno izmenjen.');
     }
 
+    public function updateDouble(Request $request){
+        $data = $request->validate([
+            'id' => 'required',
+            'winner1' => 'required',
+            'winner2' => 'required',
+            'loser1' => 'required',
+            'loser2' => 'required',
+            'set_score' => ['required', 'max:30'],
+            'game_score' => 'max:30',
+            'date' => ['required', 'max:30'],
+            'location' => 'required',
+            'court' => '',
+            'league' => '',
+        ], [
+            'winner.required' => 'Ovo polje je obavezno.',
+            'loser.required' => 'Ovo polje je obavezno.',
+            'set_score.required' => 'Ovo polje je obavezno.',
+            'date.required' => 'Ovo polje je obavezno.',
+            'location.required' => 'Ovo polje je obavezno.',
+            'set_score.max' => 'Maksimalan broj karaktera je 30.',
+            'date.max' => 'Maksimalan broj karaktera je 30.',
+        ]);
+
+        $match = TennisMatch::find($data['id']);
+
+
+        $old_winner1 = $match->winners()->first();
+        $old_loser1 = $match->losers()->first();
+        $old_winner2 = $match->winners()->skip(1)->first();
+        $old_loser2 = $match->losers()->skip(1)->first();
+
+        $old_points_winner = $match->winner_point_gain / 2;
+        $old_points_loser = $match->loser_point_gain /2;
+
+        $old_winner1->points -= $old_points_winner;
+        $old_winner2->points -= $old_points_winner;
+        $old_loser1->points -= $old_points_loser;
+        $old_loser2->points -= $old_points_loser;
+
+        $old_winner1->save();
+        $old_winner2->save();
+        $old_loser1->save();
+        $old_loser2->save();
+
+        $winner1 = Player::find($data['winner1']['id']);
+        $winner2 = Player::find($data['winner2']['id']);
+        $loser1 = Player::find($data['loser1']['id']);
+        $loser2 = Player::find($data['loser2']['id']);
+
+        $new_players = 0;
+
+        if(!$winner1){
+            $winner1 = new Player();
+            $first_name = explode(' ', $data['winner1']['name'])[0];
+            $last_name = explode(' ', $data['winner1']['name'])[1];
+            $uri_firstname = Helper::formatName($first_name);
+            $uri_lastname = Helper::formatName($last_name);
+            $uri = strtolower($uri_firstname) . '-' . strtolower($uri_lastname);
+            $index = 0;
+            while (Player::where('uri', $uri)->exists()) {
+                $uri = $uri . $index;
+                $index++;
+            }
+            $winner1->first_name = $first_name;
+            $winner1->last_name = $last_name;
+            $winner1->uri = $uri;
+            $winner1->save();
+            $new_players++;
+        }
+        if(!$winner2){
+            $winner2 = new Player();
+            $first_name = explode(' ', $data['winner2']['name'])[0];
+            $last_name = explode(' ', $data['winner2']['name'])[1];
+            $uri_firstname = Helper::formatName($first_name);
+            $uri_lastname = Helper::formatName($last_name);
+            $uri = strtolower($uri_firstname) . '-' . strtolower($uri_lastname);
+            $index = 0;
+            while (Player::where('uri', $uri)->exists()) {
+                $uri = $uri . $index;
+                $index++;
+            }
+            $winner2->first_name = $first_name;
+            $winner2->last_name = $last_name;
+            $winner2->uri = $uri;
+            $winner2->save();
+            $new_players++;
+        }
+
+        if(!$loser1){
+            $loser1 = new Player();
+            $first_name = explode(' ', $data['loser1']['name'])[0];
+            $last_name = explode(' ', $data['loser1']['name'])[1];
+            $uri_firstname = Helper::formatName($first_name);
+            $uri_lastname = Helper::formatName($last_name);
+            $uri = strtolower($uri_firstname) . '-' . strtolower($uri_lastname);
+            $index = 0;
+            while (Player::where('uri', $uri)->exists()) {
+                $uri = $uri . $index;
+                $index++;
+            }
+            $loser1->first_name = $first_name;
+            $loser1->last_name = $last_name;
+            $loser1->uri = $uri;
+            $loser1->save();
+            $new_players++;
+        }
+
+        if(!$loser2){
+            $loser2 = new Player();
+            $first_name = explode(' ', $data['loser2']['name'])[0];
+            $last_name = explode(' ', $data['loser2']['name'])[1];
+            $uri_firstname = Helper::formatName($first_name);
+            $uri_lastname = Helper::formatName($last_name);
+            $uri = strtolower($uri_firstname) . '-' . strtolower($uri_lastname);
+            $index = 0;
+            while (Player::where('uri', $uri)->exists()) {
+                $uri = $uri . $index;
+                $index++;
+            }
+            $loser2->first_name = $first_name;
+            $loser2->last_name = $last_name;
+            $loser2->uri = $uri;
+            $loser2->save();
+            $new_players++;
+        }
+
+
+        if($old_loser1->id != $loser1->id){
+            $match->players()->detach($old_loser1->id);
+            $match->players()->attach($loser1->id, ['team' => 'loser']);
+        }
+        if($old_loser2->id != $loser2->id){
+            $match->players()->detach($old_loser2->id);
+            $match->players()->attach($loser2->id, ['team' => 'loser']);
+        }
+        if($old_winner1->id != $winner1->id){
+            $match->players()->detach($old_winner1->id);
+            $match->players()->attach($winner1->id, ['team' => 'winner']);
+        }
+        if($old_winner2->id != $winner2->id){
+            $match->players()->detach($old_winner2->id);
+            $match->players()->attach($winner2->id, ['team' => 'winner']);
+        }
+
+
+
+        if(isset($data['court'])){
+            if(!is_numeric($data['court']['id'])){
+                $court = new Court();
+
+                $court->name = $data['court']['name'];
+                $court->link = '';
+                $court->uri = Str::slug($court->name);
+                $court->county = $data['location'];
+                $court->save();
+                $court_id = $court->id;
+            }
+            else{
+                $court_id = $data['court']['id'];
+                if($match->court_id != $court_id){
+                    $match->court_id = $court_id;
+                    }
+                }
+        }
+        else{
+            $match->court_id = 1;
+        }
+
+        if(isset($data['league'])){
+            if(!is_numeric($data['league']['id'])){
+                $league = new League();
+
+                $league->name = $data['league']['name'];
+                $league->link = '';
+                $uri = str_replace(' - ','-',$league->name);
+                $uri = str_replace(' ','-',$uri);
+                $uri = str_replace(',','',$uri);
+                $uri = strtolower($uri);
+                $league->uri = $uri;
+                $date = Carbon::now();
+                $league->date_begin = $date->format('Y-m-d');
+                $league->date_end = $date->addDay()->format('Y-m-d');
+                $league->save();
+                $league_id = $league->id;
+                $match->league_id = $league_id;
+            }
+            else{
+                $league_id = $data['league']['id'];
+                if($match->league_id != $league_id){
+                    $match->league_id = $league_id;
+                    }
+                }
+        }
+        else{
+            $match->league_id = 1;
+        }
+        if($data['set_score'] !== $match->set_score){
+            $match->set_score = $data['set_score'];
+        }
+        if($data['game_score'] !== $match->game_score){
+            $match->game_score = $data['game_score'];
+        }
+        $date = date('Y-m-d', strtotime($data['date']));
+        if($date !== $match->date){
+            $match->date = $date;
+        }
+        if($data['location'] !== $match->county){
+            $match->county = $data['location'];
+        }
+        $match->save();
+
+        [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
+        $match->winner_point_gain = $winner_gains;
+        $match->loser_point_gain = $loser_gains;
+
+        $winner1->points += $winner_gains /2;
+        $winner2->points += $winner_gains /2;
+        $loser1->points += $loser_gains /2;
+        $loser2->points += $loser_gains /2;
+        $winner1->save();
+        $winner2->save();
+        $loser1->save();
+        $loser2->save();
+
+        $match->save();
+
+        Helpers::UpdatePlayerChartsDouble($winner1, $loser1, $match);
+        Helpers::UpdatePlayerChartsDouble($winner2, $loser2, $match);
+        Helpers::UpdateRanks();
+        Helpers::UpdateStatsChart($new_players, $winner_gains + $loser_gains, $match->date);
+
+
+        return redirect()->back()->with('success', 'Meč je uspešno izmenjen.');
+
+    }
     public function updateMatch(Request $request){
         $data = $request->validate([
             'id' => 'required',
@@ -688,6 +1215,7 @@ class TenisMatchController extends Controller
                 $court->name = $data['court']['name'];
                 $court->link = '';
                 $court->uri = Str::slug($court->name);
+                $court->county = $data['location'];
                 $court->save();
                 $court_id = $court->id;
             }

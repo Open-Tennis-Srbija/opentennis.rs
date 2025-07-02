@@ -8,6 +8,7 @@ import Logo from "./components/Logo.vue";
 import Loader from "./components/Loader.vue";
 
 const mobileMenu = reactive({ state: false });
+const adminMenu = reactive({ state: false });
 const loading = ref(true);
 
 const isClient = ref(false);
@@ -62,6 +63,10 @@ function toggleMenu() {
     mobileMenu.state = !mobileMenu.state;
 }
 
+
+function toggleAdmin() {
+    adminMenu.state = !adminMenu.state;
+}
 const page = usePage();
 const headerMessage = ref("");
 
@@ -124,8 +129,12 @@ watch(
                 <Link  prefetch="false" :href="'/tereni'" :class="{ active: $page.url === '/tereni' }">tereni</Link>
                 <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
                 <Link prefetch="false" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
-                <Link v-if="$page.props.auth.user" prefetch="false" :href="'/import-meceva'" :class="{ active: $page.url === '/import-meceva' }">Import mečeva</Link>
                 <!-- <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link> -->
+                <div v-if="$page.props.auth.user" @click="toggleAdmin" class="admin-button">
+                    <div class="button" :class="{ 'open-left': adminMenu.state }"></div>
+                    <div class="button" :class="{ 'open-middle': adminMenu.state }"></div>
+                    <div class="button" :class="{ 'open-right': adminMenu.state }"></div>
+                </div>
             </div>
         </div>
         <div class="mobile-underheader" @click="toggleMenu">
@@ -139,6 +148,14 @@ watch(
             </div>
         </div>
     </header>
+    <div v-if="$page.props.auth.user" class="admin-menu" :style="{ top: 150 - topOffset + 'px', height: 'calc(100vh - ' + (150 - topOffset) + 'px)' }" :class="{open: adminMenu.state}">
+        <div class="links">
+            <Link @click="toggleAdmin()"  prefetch="false" :href="'/dodaj-teren'" :class="{ active: $page.url === '/dodaj-teren' }">Dodaj teren</Link>
+            <Link @click="toggleAdmin()"  prefetch="false" :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">Dodaj turnir</Link>
+            <Link @click="toggleAdmin()"  prefetch="false" :href="'/import-meceva'" :class="{ active: $page.url === '/import-meceva' }">Import mečeva</Link>
+            <Link  :href="'/logout'" class="logout" method="post">odjavi se</Link>
+        </div>
+    </div>
     <div id="mobile-menu" :class="{ open: mobileMenu.state }">
         <div class="links">
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
@@ -153,14 +170,23 @@ watch(
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"
                 :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
-            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/import-meceva'"
-                :class="{ active: $page.url === '/import-meceva' }">import mečeva</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
+                <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
+                <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
                 :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
-            <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post" :href="'/logout'"
-                v-if="$page.props.auth.user">odjavi se</Link>
+            
+            <div class="admin-links">
+                <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-turnir'"
+                        :class="{ active: $page.url === '/dodaj-turnir' }">dodaj turnir</Link>
+                <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-teren'"
+                        :class="{ active: $page.url === '/dodaj-teren' }">dodaj teren</Link>
+                <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/import-meceva'"
+                        :class="{ active: $page.url === '/import-meceva' }">import mečeva</Link>
+                    
+                <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post" :href="'/logout'"
+                    v-if="$page.props.auth.user">odjavi se</Link>
+
+            </div>
         </div>
     </div>
     <div id="os-holder"
@@ -207,8 +233,6 @@ watch(
             <div class="footer-text normal-font">
                 <Link prefetch="false" :href="'/uputstva'">uputstva</Link>
             </div>
-            <Link prefetch="false" class="logout" :href="'/logout'" method="post" as="button"
-                :class="{ hide: !$page.props.auth.user }">odjavi se</Link>
         </footer>
     </div>
 </template>

@@ -9,7 +9,19 @@ const props = defineProps({
     showMessage: Object,
     propMatches: Array,
 });
-
+const categoryColorsAll = {
+    1: '#8dc73f',
+    2: '#38b64b',
+    3: '#00a99c',
+    4: '#01aef0',
+    5: '#0072bb',
+    6: '#92278f',
+    7: '#eb008b',
+    8: '#ee1d23',
+    9: '#f36621',
+    10: '#f7941d',
+    '?': 'transparent',
+}
 const matches = ref(props.propMatches || []);
 
 onMounted(() => {
@@ -44,10 +56,14 @@ const formatedMatchesMobile = computed(() => {
     let formated = matches.value.map((match, index) => {
         return {
             ...match,
-            winner_first_name: match.winner_name.split(" ")[0],
-            winner_last_name: match.winner_name.split(" ")[1],
-            loser_first_name: match.loser_name.split(" ")[0],
-            loser_last_name: match.loser_name.split(" ")[1],
+            winner1_first_name: match.winner1_name.split(" ")[0],
+            winner1_last_name: match.winner1_name.split(" ")[1],
+            winner2_first_name: match.winner2_name ? match.winner2_name.split(" ")[0] : null,
+            winner2_last_name: match.winner2_name ? match.winner2_name.split(" ")[1] : null,
+            loser1_first_name: match.loser1_name.split(" ")[0],
+            loser1_last_name: match.loser1_name.split(" ")[1],
+            loser2_first_name: match.loser2_name ? match.loser2_name.split(" ")[0] : null,
+            loser2_last_name: match.loser2_name ? match.loser2_name.split(" ")[1] : null,
             day: getDateDay(match.date),
             month: getDateMonth(match.date),
             year: new Date(match.date).getFullYear(),
@@ -85,6 +101,7 @@ function getDateMonth(date) {
 }
 </script>
 <template>
+
     <Head v-if="props.loadMatches" title="Mečevi -" />
     <div class="matches-wrapper">
         <div id="desktop">
@@ -109,40 +126,77 @@ function getDateMonth(date) {
                     Ovaj teniser nikada nije izgubio &#128578;
                 </p>
             </div>
-            <div
-                class="match-entry"
-                v-for="(match, index) in formatedMatchesDesktop"
-                :key="index"
-            >
-                <Link
-                    prefetch="false"
-                    class="edit-btn"
-                    v-if="$page.props.auth.user"
-                    :href="`/izmeni/${match.number}`"
-                >
-                    <EditIcon />
+            <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
+                <EditIcon />
                 </Link>
                 <div class="number">{{ match.number }}</div>
                 <div class="winner">
-                    <Link prefetch="false" :href="`/${match.winner_uri}`">{{
-                        match.winner_name
-                    }}</Link
-                    ><br /><span class="points"
-                        >+{{ match.winner_point_gain }}</span
-                    >
+                    <div class="players">
+                        <div class="player-1" :class="{ 'mt-10': match.winner2_name }">
+                            <Link prefetch="false" :href="`/${match.winner1_uri}`">{{
+                                match.winner1_name
+                            }}</Link>
+                            <div class="category-wrapp">
+                                <span class="diamond"
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.winner1_category] || 'transparent'}` }"></span><span
+                                    class="category"
+                                    :class="{ 'unknown': match.winner1_category == '?' }">{{ match.winner1_category }}</span>
+
+                            </div> <br /><span class="points">+{{ match.winner2_name ?
+                                Math.round(match.winner_point_gain / 2) : match.winner_point_gain }}</span>
+                        </div>
+                        <div v-if="match.winner2_name" class="player-2">
+                            <Link prefetch="false" :href="`/${match.winner2_uri}`">{{
+                                match.winner2_name
+                            }}</Link>
+                            <div class="category-wrapp">
+                                <span class="diamond"
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.winner2_category] || 'transparent'}` }"></span><span
+                                    class="category"
+                                    :class="{ 'unknown': match.winner2_category == '?' }">{{ match.winner2_category }}</span>
+
+                            </div>
+                            <br /><span class="points">+{{ Math.round(match.winner_point_gain / 2) }}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="loser">
-                    <Link prefetch="false" :href="`/${match.loser_uri}`">{{
-                        match.loser_name
-                    }}</Link
-                    ><br /><span class="points"
-                        >+{{ match.loser_point_gain }}</span
-                    >
+                    <div class="players">
+                        <div class="player-1" :class="{ 'mt-10': match.loser2_name }">
+                            <Link prefetch="false" :href="`/${match.loser1_uri}`">{{
+                                match.loser1_name
+                            }}</Link>
+                            <div class="category-wrapp">
+                                <span class="diamond"
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.loser1_category] || 'transparent'}` }"></span><span
+                                    class="category"
+                                    :class="{ 'unknown': match.loser1_category == '?' }">{{ match.loser1_category }}</span>
+
+                            </div>
+
+                            <br /> <span class="points">+{{ match.loser2_name ? Math.round(match.loser_point_gain / 2) :
+                                match.loser_point_gain }}</span>
+                        </div>
+                        <div v-if="match.loser2_name" class="player-2">
+                            <Link prefetch="false" :href="`/${match.loser2_uri}`">{{
+                                match.loser2_name
+                            }}</Link>
+                            <div class="category-wrapp">
+                                <span class="diamond"
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.loser2_category] || 'transparent'}` }"></span><span
+                                    class="category"
+                                    :class="{ 'unknown': match.loser2_category == '?' }">{{ match.loser2_category }}</span>
+
+                            </div>
+                            <br /><span class="points">+{{ Math.round(match.loser_point_gain / 2) }}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="score">
                     {{ match.set_score }}<br /><span class="gray">{{
                         match.game_score
-                    }}</span>
+                        }}</span>
                 </div>
                 <div class="date">
                     {{ match.day }} <br />{{ match.date }} {{ match.month }}
@@ -180,18 +234,9 @@ function getDateMonth(date) {
                     Ovaj teniser nikada nije izgubio &#128578;
                 </p>
             </div>
-            <div
-                class="match-entry"
-                v-for="(match, index) in formatedMatchesMobile"
-                :key="index"
-            >
-                <Link
-                    prefetch="false"
-                    class="edit-btn"
-                    v-if="$page.props.auth.user"
-                    :href="`/izmeni/${match.number}`"
-                >
-                    <EditIcon />
+            <div class="match-entry" v-for="(match, index) in formatedMatchesMobile" :key="index">
+                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
+                <EditIcon />
                 </Link>
                 <div class="score">
                     {{ match.set_score }}
@@ -202,16 +247,38 @@ function getDateMonth(date) {
                 <div class="info">
                     <div class="info-wrapp">
                         <div class="text">
-                            <Link
-                                prefetch="false"
-                                :href="`/${match.winner_uri}`"
-                                >{{ match.winner_first_name }}<br />{{
-                                    match.winner_last_name
-                                }}
+                            <Link prefetch="false" :href="`/${match.winner1_uri}`">{{ match.winner1_first_name
+                            }}<br />{{
+                                match.winner1_last_name
+                            }}
                             </Link>
-                            <span class="points"
-                                >+{{ match.winner_point_gain }}</span
-                            >
+                            
+                            <div class="category-wrapp">
+                                <span class="diamond"
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.winner1_category] || 'transparent'}` }"></span><span
+                                    class="category"
+                                    :class="{ 'unknown': match.winner1_category == '?' }">{{ match.winner1_category }}</span>
+
+                            </div>
+                            <span class="points">+{{ match.winner2_first_name ? Math.round(match.winner_point_gain / 2) : match.winner_point_gain }}</span>
+                        </div>
+
+                        <div class="text" style="margin-top: 20px;"  v-if="match.winner2_name">
+                            <Link prefetch="false" :href="`/${match.winner2_uri}`">{{ match.winner2_first_name
+                            }}<br />{{
+                                match.winner2_last_name
+                            }}
+
+</Link>
+<div class="category-wrapp">
+    <span class="diamond"
+        :style="{ border: `1px solid ${categoryColorsAll[match.winner2_category] || 'transparent'}` }"></span><span
+        class="category"
+        :class="{ 'unknown': match.winner2_category == '?' }">{{ match.winner2_category }}</span>
+
+</div>
+                            <span class="points">+{{ Math.round(match.winner_point_gain / 2) }}</span>
+
                         </div>
                     </div>
 
@@ -219,33 +286,54 @@ function getDateMonth(date) {
 
                     <div class="info-wrapp">
                         <div class="text">
-                            <Link prefetch="false" :href="`/${match.loser_uri}`"
-                                >{{ match.loser_first_name }}<br />{{
-                                    match.loser_last_name
-                                }}</Link
-                            ><span class="points"
-                                >+{{ match.loser_point_gain }}</span
-                            >
+                            <Link prefetch="false" :href="`/${match.loser1_uri}`">{{ match.loser1_first_name }}<br />{{
+                                match.loser1_last_name
+                            }}
+                            
+                          
+                        </Link>
+                          <div class="category-wrapp">
+                                <span class="diamond"
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.loser1_category] || 'transparent'}` }"></span><span
+                                    class="category"
+                                    :class="{ 'unknown': match.loser1_category == '?' }">{{ match.loser1_category }}</span>
+
+                            </div>
+                        <span class="points">+{{ match.loser2_first_name ? Math.round(match.loser_point_gain / 2) : match.loser_point_gain }}</span>
+                        </div>
+
+                        <div class="text" v-if="match.loser2_name" style="margin-top: 20px;">
+                            <Link prefetch="false" :href="`/${match.loser2_uri}`">{{ match.loser2_first_name }}<br />{{
+                                match.loser2_last_name
+                            }}</Link>
+                              <div class="category-wrapp">
+                                <span class="diamond"
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.loser2_category] || 'transparent'}` }"></span><span
+                                    class="category"
+                                    :class="{ 'unknown': match.loser2_category == '?' }">{{ match.loser2_category }}</span>
+
+                            </div>
+                            <span class="points">+{{ Math.round(match.loser_point_gain / 2) }}</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="location">
-                    <span  v-if="match.league?.uri !== ''">
+                    <span v-if="match.league?.uri !== ''">
                         <a class="black" :href="`/${match.league?.uri}`">{{
                             match.league?.name
-                        }}</a>
+                            }}</a>
                     </span>
-                    <br/>
+                    <br />
                     {{ match.number || matches.length - index }},
                     {{ match.day }} {{ match.date }} {{ match.month }}
                     {{ match.year }}
                     <br />
                     {{ match.county }}
-                    <span v-if="match.court?.id >= 1">,
+                    <span v-if="match.court?.id > 1">,
                         <a :href="`/tereni/${match.court?.uri}`">{{
                             match.court.name
-                        }}</a>
+                            }}</a>
                     </span>
                 </div>
             </div>

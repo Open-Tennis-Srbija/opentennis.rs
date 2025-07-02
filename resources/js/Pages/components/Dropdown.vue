@@ -29,6 +29,7 @@ const props = defineProps({
     type: String,
     canAdd: Boolean,
     disabledOption: Object,
+    disabledOptions: Array,
 });
 
 watch(
@@ -228,29 +229,28 @@ const selectOption = (option, e) => {
             @keydown.up.prevent="onKeyUp" @keydown.esc.prevent="onEsc" @keydown.tab.prevent="onTab" />
         <div class="dropdown" ref="dropdownDiv" :class="{ open: state.isOpen }">
             <ul>
-                <li v-for="(option, index) in filteredOptions" :key="index" :class="{
-                    spacer:
-                        option == 'dropdown-spacer' ||
-                        option.name == 'dropdown-spacer',
-                    disabled:
-                        props.disabledOption &&
-                        props.disabledOption.id == option.id,
-                    hovered:
-                        state.selectedIndex == index &&
-                        (!props.disabledOption ||
-                            props.disabledOption.id != option.id),
-                }" @mouseover="state.selectedIndex = index" @click.native="selectOption(option, $event)"
-                    @tap="selectOption(option, $event)">
-                    <template v-if="
-                        option == 'dropdown-spacer' ||
-                        option.name == 'dropdown-spacer'
-                    ">
+                <li v-for="(option, index) in filteredOptions" 
+                    :key="index" 
+                    :class="{
+                        spacer: option === 'dropdown-spacer' || option?.name === 'dropdown-spacer',
+                        disabled: (props.disabledOption && props.disabledOption.id === option?.id) || 
+                                 (props.disabledOptions && props.disabledOptions.some(
+                                     (disabledOption) => disabledOption?.id === option?.id
+                                 )),
+                        hovered: state.selectedIndex === index &&
+                                (!(props.disabledOption && props.disabledOption.id === option?.id) &&
+                                !(props.disabledOptions && props.disabledOptions.some(
+                                    (disabledOption) => disabledOption?.id === option?.id
+                                )))
+                    }" 
+                    @mouseover="state.selectedIndex = index" 
+                    @click="selectOption(option, $event)">
+                    
+                    <template v-if="option === 'dropdown-spacer' || option?.name === 'dropdown-spacer'">
                         <div class="spacer"></div>
                     </template>
                     <template v-else>
-                        {{
-                            props.type == "array" ? option : option[props.label]
-                        }}
+                        {{ props.type === "array" ? option : option?.[props.label] }}
                     </template>
                 </li>
             </ul>

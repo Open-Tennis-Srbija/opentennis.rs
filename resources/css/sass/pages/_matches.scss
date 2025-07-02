@@ -63,7 +63,7 @@ $border-color-dark: #e2e0e1;
 }
 
 .match-entry {
-  height: 100px;
+  min-height: 100px;
   border-bottom: 2px solid $border-color-dark;
   align-items: center;
   padding-left: 10px;
@@ -96,6 +96,14 @@ $border-color-dark: #e2e0e1;
   }
   .winner,
   .loser{
+
+    .mt-10 {
+      margin-top: 10px;
+    }
+    .player-2 {
+      margin-bottom: 10px;
+    }
+
     .points{
       color: $mid-gray;
       font-weight: normal;
@@ -116,6 +124,36 @@ $border-color-dark: #e2e0e1;
     padding-left: 2px;
     padding-top: 2px;
   }
+
+
+  .category-wrapp {
+    display: inline-block;
+    position: relative;
+    
+    .diamond{
+      display: block;
+      position: relative;
+      width:13px;
+      height: 13px;
+      margin-left: 10px;
+      transform: scaleX(1.4) rotate(45deg);
+      
+    }
+      .category{
+        position: absolute;
+        top: 54%;
+        font-weight: bold;
+        font-weight: normal;
+        left: 72%;
+        font-size: 13px;
+        transform: translate(-50%, -50%);
+      
+        &.unknown{
+          color: #949494;
+        }
+      }
+  }
+
 }
 
 #mobile {
@@ -157,7 +195,38 @@ $border-color-dark: #e2e0e1;
     flex-direction: column;
     gap: 10px;
     padding: 10px 0 12px 0;
+  
+  .category-wrapp {
 
+    display: block;
+    position: relative;
+    width: 30px;;
+    margin: 0 auto;
+    
+    
+    .diamond{
+      display: block;
+      position: relative;
+      width:13px;
+      height: 13px;
+      margin-left: 10px;
+      transform: scaleX(1.4) rotate(45deg);
+      
+    }
+      .category{
+        position: absolute;
+        top: 52%;
+        font-weight: bold;
+        font-weight: normal;
+        left: 56%;
+        font-size: 13px;
+        transform: translate(-50%, -50%);
+      
+        &.unknown{
+          color: #949494;
+        }
+      }
+  }
     .location {
       padding-inline: 10px;
       font-size: 15px;

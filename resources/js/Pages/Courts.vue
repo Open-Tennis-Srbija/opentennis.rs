@@ -38,6 +38,7 @@ onMounted(() => {
         <div class="elo">poeni</div>
         <div class="total-matches">mečevi</div>
         <div class="total-matches">teniseri</div>
+        <div class="total-matches">opština</div>
       </div>
       <div class="ranking-entry" v-for="(court, index) in courts">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
@@ -50,6 +51,7 @@ onMounted(() => {
         <div class="elo">{{utl.formatAsThousands(court.points)}}</div>
         <div class="total-matches">{{court.matches_number}}</div>
         <div class="total-matches">{{court.player_number}}</div>
+        <div class="total-matches" style="text-align: center;">{{court.county}}</div>
       </div>
     </div>
 

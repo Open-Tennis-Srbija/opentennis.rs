@@ -55,6 +55,7 @@ class CourtsController extends Controller
                 'id' => $c->id,
                 'location' => $c->location,
                 'phone' => $c->phone,
+                'county' => $c->county,
                 'points' => $c->get_points(),
                 'matches_number' => $c->matches->count(),
                 'player_number' => $c->getPlayerCount(),
@@ -87,6 +88,7 @@ class CourtsController extends Controller
             'name' => $court->name,
             'uri' => $court->uri,
             'id' => $court->id,
+            'county' => $court->county,
             'location' => $court->location,
             'phone' => $court->phone,
             'link' => $court->link
@@ -126,6 +128,7 @@ class CourtsController extends Controller
             'match_number' => $court->getMatchCount(),
             'link' => $court->link,
             'phone' => $court->phone,
+            'county' => $court->county,
             'location' => $court->location,
             'leagues' => $court->getLeagues(),
             'position' => $court->getPosition(),
@@ -133,6 +136,27 @@ class CourtsController extends Controller
             'matches' => $court->getMatches(),
         ];
 
+    }
+
+    public static function store(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'uri' => 'required|string|max:255|unique:courts,uri',
+            'location' => 'string|max:255',
+            'county' => 'string|max:255',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $court = new Court();
+        $court->name = $request->input('name');
+        $court->uri = Str::slug($request->input('uri'));
+        $court->location = $request->input('location');
+        $court->county = $request->input('county');
+        $court->phone = $request->input('phone');
+        $court->link = $request->input('link');
+        $court->save();
+
+        return redirect('/tereni/'. $court->uri);
     }
 
     public static function updateCourt(Request $request){
@@ -150,9 +174,10 @@ class CourtsController extends Controller
         $court->uri = Str::slug($request->input('uri'));
         $court->phone = $request->input('phone');
         $court->location = $request->input('location');
+        $court->county = $request->input('county');
         $court->save();
 
-        return redirect('/tereni');
+        return redirect('/tereni/' . $court->uri);
     }
 
     public static function deleteCourt(Request $request){

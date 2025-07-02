@@ -10,8 +10,8 @@ use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
-use function PHPUnit\Framework\isNumeric;
 
 class LeaguesController extends Controller
 {
@@ -70,7 +70,7 @@ class LeaguesController extends Controller
             
             $league->uri = $uri;
 
-            if(!isNumeric($data['court']['id'])){
+            if(!is_numeric($data['court']['id'])){
                 $court = new Court();
                 $court->name = $data['court']['name'];
                 $court->link = '';
@@ -258,6 +258,54 @@ class LeaguesController extends Controller
         
         Storage::disk('public')->put('/leagues/'.$league_uri.'.json', json_encode($cache));
 
+    }
+
+
+    public static function store(Request $request){
+        $data = $request->validate([
+            'name' => 'required',
+            'location' => 'required',
+            'date_begin' => 'required',
+            'date_end' => 'required',
+            'link' => '',
+            'court' => '',
+        ], [
+            'name.required' => 'Ime je obavezno.',
+            'county.required' => 'Opština je obavezna.',
+            'date_begin.required' => 'Datum početka je obavezan.',
+            'date_end.required' => 'Datum završetka je obavezan.',
+        ]);
+
+        $league = new League();
+        $league->name = $data['name'];
+        $league->county = $data['location'];
+        $date_begin = new DateTime($data['date_begin']);
+        $league->date_begin = $date_begin->format('Y-m-d');
+        $date_end = new DateTime($data['date_end']);
+        $league->date_end = $date_end->format('Y-m-d');
+        $league->link = $data['link'] ?? '';
+        
+        $league->uri = Str::slug($data['name'], '-');
+
+        if($data['court'] && !is_numeric($data['court']['id'])){
+            $court = new Court();
+            $court->name = $data['court']['name'];
+            $court->link = '';
+            $court->uri = Str::slug($data['court']['name']);
+            $court->county = $data['location'];
+            $court->save();
+            
+            $league->court_id = $court->id;
+        } else {
+            if(isset($data['court']['id']) && is_numeric($data['court']['id']))
+                $league->court_id = $data['court']['id'];
+            else
+                $league->court_id = 1; // No court selected
+        }
+
+        $league->save();
+
+        return redirect('/'. $league->uri);
     }
 
 }

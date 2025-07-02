@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+
 use App\Models\Court;
 use App\Models\League;
 use App\Models\TennisMatch;
@@ -12,7 +13,9 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AddMatchNotification extends Mailable
+
+
+class DoubleMatchNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -21,32 +24,32 @@ class AddMatchNotification extends Mailable
      */
     public function __construct(public TennisMatch $match)
     {
-
+        //
     }
-
-    /**
-     * Get the message envelope.
-     */
+ 
     public function envelope(): Envelope
     {
         return new Envelope(
             from: new Address('info@srpskatenisliga.rs', 'Srpska Tenis Liga'),
-            subject: 'Novi singl meč je dodat na SrpskaTenisLiga.rs',
+            subject: 'Novi dubl meč je dodat na SrpskaTenisLiga.rs',
 
         );
     }
-
     /**
-     * Get the message content definition.
+     * Get the message envelope.
      */
     public function content(): Content
     {
         return new Content(
-            view: 'mail.match.added',
-            with: ['winner' => $this->match->winners()->first()->first_name . ' ' . $this->match->winners()->first()->last_name,
-                    'winner_uri' => $this->match->winners()->first()->uri,
-                    'loser' => $this->match->losers()->first()->first_name . ' ' . $this->match->losers()->first()->last_name,
-                    'loser_uri' => $this->match->losers()->first()->uri,
+            view: 'mail.match.doubles',
+            with: ['winner1' => $this->match->winners()->first()->first_name . ' ' . $this->match->winners()->first()->last_name,
+                    'winner1_uri' => $this->match->winners()->first()->uri,
+                    'loser1' => $this->match->losers()->first()->first_name . ' ' . $this->match->losers()->first()->last_name,
+                    'loser1_uri' => $this->match->losers()->first()->uri,
+                    'winner2' => $this->match->winners()->skip(1)->first()->first_name . ' ' . $this->match->winners()->skip(1)->first()->last_name,
+                    'winner2_uri' => $this->match->winners()->skip(1)->first()->uri,
+                    'loser2' => $this->match->losers()->skip(1)->first()->first_name . ' ' . $this->match->losers()->skip(1)->first()->last_name,
+                    'loser2_uri' => $this->match->losers()->skip(1)->first()->uri,
                     'set_score' => $this->match->set_score,
                     'game_score' => $this->match->game_score,
                     'date' => $this->match->getFormatedDate(),
@@ -56,6 +59,7 @@ class AddMatchNotification extends Mailable
                   ],
         );
     }
+
 
     /**
      * Get the attachments for the message.

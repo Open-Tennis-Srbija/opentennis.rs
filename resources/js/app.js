@@ -10,7 +10,9 @@ import Home from "./Pages/Home.vue";
 import Matches from "./Pages/Matches.vue";
 import eventBus, { bus } from "vue3-eventbus";
 import Dropdown from "./Pages/components/Dropdown.vue";
+import AddSingle from "./Pages/Matches/AddSingle.vue";
 import clickOutside from "./directives/click-outside.js";
+import AddDouble from "./Pages/Matches/AddDouble.vue";
 
 router.on("finish", () => {
     bus.emit("resetScroll");
@@ -40,6 +42,8 @@ createInertiaApp({
             .component("Link", Link)
             .component("Dropdown", Dropdown)
             .component("vSelect", VueSelect)
+            .component("AddSingleMatch", AddSingle)
+            .component("AddDoubleMatch", AddDouble)
             .component("datepicker", VueDatepicker)
             .component("PlayerTable", Home)
             .component("MatchTable", Matches)
