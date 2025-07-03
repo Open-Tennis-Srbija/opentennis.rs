@@ -29,11 +29,9 @@ $border-color-dark: #e2e0e1;
     grid-auto-flow: column;
     grid-template-columns: 100px 224px 224px 120px 133px 133px 133px 133px;
     line-height: 145%;
-    font-size: 17px;
 
-
-    .date,.location{
-      font-size: 15px;;
+    .smaller-font{
+      font-size: 15px;
     }
 
     a{
@@ -49,7 +47,7 @@ $border-color-dark: #e2e0e1;
   .matches-header {
     margin-top: 57px;
     padding: 0 10px 5px;
-    font-size: 16px;
+    font-size: 15px;
     color: $text-color-gray;
     border-bottom: 2px solid $border-color-light;
 
@@ -325,7 +323,10 @@ $border-color-dark: #e2e0e1;
   }
     .location {
       padding-inline: 10px;
-      font-size: 15px;
+
+      &.smaller-font{
+        font-size: 15px;
+      }
       color: $text-color-gray;
       line-height: 1.7;
       a{

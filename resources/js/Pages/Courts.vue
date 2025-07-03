@@ -68,7 +68,7 @@ const topOffset = computed(() => {
         <div class="elo">{{utl.formatAsThousands(court.points)}}</div>
         <div class="total-matches">{{court.matches_number}}</div>
         <div class="total-matches">{{court.player_number}}</div>
-        <div class="total-matches" style="text-align: center;">{{court.county}}</div>
+        <div class="total-matches smaller-font" style="text-align: center;">{{court.county}}</div>
       </div>
     </div>
 

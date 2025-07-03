@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onBeforeUnmount, ref } from "vue";
+import { computed, onMounted, onBeforeMount, ref } from "vue";
 import EditIcon from "./components/EditIcon.vue";
 import axios from "axios";
 import bus from "vue3-eventbus";
@@ -23,12 +23,6 @@ const categoryColorsAll = {
     '?': 'transparent',
 }
 const matches = ref(props.propMatches || []);
-const isActive = ref(true);
-
-// Custom axios instance with shorter timeout
-const axiosInstance = axios.create({
-    timeout: 5000, // 5 second timeout
-});
 
 onMounted(() => {
     if (!props.loadMatches) {
@@ -38,38 +32,14 @@ onMounted(() => {
         }
         return;
     }
-    
     console.log("loading matches");
-    
-    const abortController = new AbortController();
-    
-    axiosInstance.get("/get-matches", {
-        signal: abortController.signal
-    }).then((res) => {
-        if (!isActive.value) return;
-        
+    axios.get("/get-matches").then((res) => {
         matches.value = res.data;
         console.log("matches", matches.value);
         bus.emit("loading", false);
-    }).catch((error) => {
-        if (!isActive.value) return;
-        
-        if (error.name === 'AbortError' || error.code === 'ERR_CANCELED') {
-            console.log('Request was cancelled');
-        } else {
-            console.error('Request failed:', error);
-        }
     });
-    
     bus.on('scroll', (top) => {
         handleScroll(top);
-    });
-    
-    // Store abort function for cleanup
-    onBeforeUnmount(() => {
-        isActive.value = false;
-        abortController.abort();
-        bus.off('scroll');
     });
 });
 
@@ -244,12 +214,12 @@ function getDateMonth(date) {
                         match.game_score
                         }}</span>
                 </div>
-                <div class="date">
+                <div class="date smaller-font">
                     {{ match.day }} {{ match.date }} {{ match.month }}
                     {{ match.year }}
                 </div>
-                <div class="location">{{ match.county }}</div>
-                <div class="location">
+                <div class="location smaller-font">{{ match.county }}</div>
+                <div class="location smaller-font">
                     <template v-if="match.court?.id == 1">
                         {{ match.court.name }}
                     </template>
@@ -259,7 +229,7 @@ function getDateMonth(date) {
                         </a>
                     </template>
                 </div>
-                <div class="location">
+                <div class="location smaller-font">
                     <template v-if="match.league?.uri == ''">
                         {{ match.league?.name }}
                     </template>

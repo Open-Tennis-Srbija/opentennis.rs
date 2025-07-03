@@ -18,7 +18,7 @@
     background: white;
     z-index: 1;
     padding-left: 10px;
-    font-size: 17px;
+    font-size: 15px;
     color: #949494;
     border-bottom: 2px solid #b0b0b0;
     padding-bottom: 5px;
@@ -176,10 +176,10 @@
       }
     }
 
-
-    .total-matches,.wins,.loses,.win-precent,.place {
+    .smaller-font {
       font-size: 15px;
     }
+
   }
 }
 
