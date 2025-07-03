@@ -111,7 +111,7 @@ const handleInputs = (event,isDate = false) => {
               Opština (ili inostranstvo na dnu) <span class="required">*</span>
             </label>
             <Dropdown
-              v-if="form.location"
+              v-if="form.first_name"
               label="name"
               :options="opstine.data"
               :type="'array'"
