@@ -173,7 +173,7 @@ watch(
                 :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
                 <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
-                <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
+                <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
                 :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
             
             <div class="admin-links" v-if="$page.props.auth.user">
@@ -231,7 +231,7 @@ watch(
                     </svg>
                 </a>
             </div>
-            <div class="footer-text normal-font">
+            <div class="footer-text">
                 <Link prefetch="false" :href="'/uputstva'">uputstva</Link>
             </div>
         </footer>
