@@ -135,6 +135,10 @@
                 padding-top: 1px;
                 text-transform: uppercase;
 
+                &.blue{
+                    color: $blue;;
+                }
+
                 &.highlighted {
                     margin-right: -10px;
                     text-transform: uppercase;
