@@ -154,6 +154,7 @@ watch(
             <Link @click="toggleAdmin()"  prefetch="false" :href="'/dodaj-teren'" :class="{ active: $page.url === '/dodaj-teren' }">Dodaj teren</Link>
             <Link @click="toggleAdmin()"  prefetch="false" :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">Dodaj turnir</Link>
             <Link @click="toggleAdmin()"  prefetch="false" :href="'/import-meceva'" :class="{ active: $page.url === '/import-meceva' }">Import mečeva</Link>
+            <Link @click="toggleAdmin()"  prefetch="false" :href="'/import-dublova'" :class="{ active: $page.url === '/import-dublova' }">Import dublova</Link>
             <Link  :href="'/logout'" class="logout" method="post">odjavi se</Link>
         </div>
     </div>
@@ -183,7 +184,9 @@ watch(
                         :class="{ active: $page.url === '/dodaj-teren' }">dodaj teren</Link>
                 <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/import-meceva'"
                         :class="{ active: $page.url === '/import-meceva' }">import mečeva</Link>
-                    
+                <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/import-dublova'"
+                        :class="{ active: $page.url === '/import-dublova' }">import dublova</Link>
+
                 <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post" :href="'/logout'"
                     v-if="$page.props.auth.user">odjavi se</Link>
 

@@ -68,6 +68,13 @@ class TenisMatchController extends Controller
         ]);
     }
 
+    public function batchDoubles(){
+        return Inertia::render('Auth/BatchDoubles', [
+            'players' => PlayerController::getPlayersForDropdown(),
+            'courts' => CourtsController::getCourts(),
+            'leagues' => LeaguesController::getLeagues(),
+        ]);
+    }
     public function importMatches(Request $request){
         $data = $request->validate([
             'league' => '',
@@ -280,6 +287,251 @@ class TenisMatchController extends Controller
 
     }
 
+    public function importDoubles(Request $request){
+        $data = $request->validate([
+            'league' => '',
+            'court' => '',
+            'csvData' => 'required'
+        ],[
+            'csvData.required' => 'CSV fajl je obavezan.'
+        ]);
+
+        $league_id = null;
+        $court_id = null;
+
+        if(isset($data['league'])){
+            if(!is_numeric($data['league']['id'])){
+                $league = new League();
+
+                $league->name = $data['league']['name'];
+                $league->link = '';
+                $uri = str_replace(' - ','-',$league->name);
+                $uri = str_replace(' ','-',$uri);
+                $uri = str_replace(',','',$uri);
+                $uri = strtolower($uri);
+                $league->uri = $uri;
+                $league->save();
+                $date = Carbon::now();
+                $league->date_begin = $date->format('Y-m-d');
+                $league->date_end = $date->addDay()->format('Y-m-d');
+                $league_id = $league->id;
+            }
+            else{
+                $league_id = $data['league']['id'];
+            }
+        }
+
+        if(isset($data['court'])){
+            if(!is_numeric($data['court']['id'])){
+                $court = new Court();
+
+                $court->name = $data['court']['name'];
+                $court->link = '';
+                $court->county = $data['location'];
+
+                $court->save();
+                $court_id = $court->id;
+            }
+            else{
+                $court_id = $data['court']['id'];
+            }
+        }
+
+        $csvString = $data['csvData']; // your CSV text
+
+        $handle = fopen('php://memory', 'r+');
+        fwrite($handle, $csvString);
+        rewind($handle);
+
+        $header = null;
+        while (($row = fgetcsv($handle)) !== false) {
+            if (!$header) {
+                $header = $row;
+                continue;
+            }
+            $rowData = array_combine($header, $row);
+
+            $league_name = $rowData['Ime lige ili turnira'];
+            $court_name = $rowData['teren ili klub'];
+            $county = $rowData['opština'];
+            $winner1_name = $rowData['pobednik 1 (ime i prezime)'];
+            $winner2_name = $rowData['pobednik 2 (ime i prezime)'];
+            $loser1_name = $rowData['gubitnik 1 (ime i prezime)'];
+            $loser2_name = $rowData['gubitnik 2 (ime i prezime)'];
+            $set_score = $rowData['rezultat u setovima (2:0)'];
+            $game_score = $rowData['rezultat u gemovima (6:3,4:2)'];
+            $date = new DateTime($rowData['datum meča (dd mm gggg)']);
+
+            if(!isset($league_id)){
+                $league = League::where('name', $league_name)->first();
+            }
+            else{
+                $league = League::find($league_id);
+            }
+
+            if(!$league){
+                $league = new League();
+                $league->name = $league_name;
+
+                $league->link = '';
+
+                $uri = str_replace(' - ','-',$league->name);
+                $uri = str_replace(' ','-',$uri);
+                $uri = str_replace(',','',$uri);
+                $uri = strtolower($uri);
+                $league->uri = $uri;
+
+                $league->county = $county;
+
+                $league->save();
+            }
+
+            if(!isset($court_id)){
+                $court = Court::where('name', $court_name)->first();
+            }
+            else{
+                $court = Court::find($court_id);
+            }
+
+            if(!$court){
+                $court = new Court();
+                $court->name = $court_name;
+
+                $court->link = '';
+                $court->uri = Str::slug($court->name);
+                $court->county = $county;
+
+                $court->save();
+            }
+
+
+
+            $existing = TennisMatch::where('league_id', $league->id)->get();
+            $existing_match = null;
+
+            foreach($existing as $match){
+                
+                $match_winner1_name = $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name;
+                $match_winner2_name = $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->first_name . ' ' . $match->winners()->skip(1)->first()->last_name : null;
+                $match_loser1_name = $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name;
+                $match_loser2_name = $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->first_name . ' ' . $match->losers()->skip(1)->first()->last_name : null;
+
+                if($match_winner1_name == $winner1_name
+                    && $match_winner2_name == $winner2_name
+                    && $match_loser1_name == $loser1_name
+                    && $match_loser2_name == $loser2_name
+                    && $match->set_score == $set_score
+                    && $match->game_score == $game_score){
+                        $existing_match = $match;
+                    }
+            }
+
+            if(isset($existing_match)){
+                $existing_match->date = $date;
+                $existing_match->save();
+            }
+            else{
+                $match = new TennisMatch();
+                $match->court_id = $court->id;
+                $match->league_id = $league->id;
+                $match->date = $date->format('Y-m-d');
+                $match->set_score = $set_score;
+                $match->game_score = $game_score;
+                $match->county = $league->county;
+
+
+                $match->winner_point_gain = 0;
+                $match->loser_point_gain = 0;
+                $match->save();
+
+                $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
+
+                $match->number = $compare->number + 1;
+
+                $rest_matches = TennisMatch::where('number', '>=', $match->number)->get();
+
+                foreach($rest_matches as $m){
+                    if($m->id !== $match->id){
+                        $m->number = $m->number + 1;
+                        $m->save();
+                    }
+                }
+
+
+                if(count(explode(' ',$winner1_name)) > 1){
+                    $winner1_first_name = explode(' ',$winner1_name)[0];
+                    $winner1_last_name = explode(' ',$winner1_name)[1];
+                }
+                else{
+                    $winner1_first_name = $winner1_name;
+                    $winner1_last_name = 'Anonymous';
+                }
+
+                if(count(explode(' ',$winner2_name)) > 1){
+                    $winner2_first_name = explode(' ',$winner2_name)[0];
+                    $winner2_last_name = explode(' ',$winner2_name)[1];
+                }
+                else{
+                    $winner2_first_name = $winner2_name;
+                    $winner2_last_name = 'Anonymous';
+                }
+                if(count(explode(' ', $loser1_name)) > 1){
+                    $loser1_first_name = explode(' ',$loser1_name)[0];
+                    $loser1_last_name = explode(' ',$loser1_name)[1];
+                }
+                else{
+                    $loser1_first_name = $loser1_name;
+                    $loser1_last_name = 'Anonymous';
+                }
+
+                if(count(explode(' ', $loser2_name)) > 1){
+                    $loser2_first_name = explode(' ',$loser2_name)[0];
+                    $loser2_last_name = explode(' ',$loser2_name)[1];
+                }
+                else{
+                    $loser2_first_name = $loser2_name;
+                    $loser2_last_name = 'Anonymous';
+                }
+                $new_winner1 = $this->check_existing_player($match,$winner1_first_name, $winner1_last_name, 'winner');
+                $new_winner2 = $this->check_existing_player($match,$winner2_first_name, $winner2_last_name, 'winner');
+                $new_loser1 = $this->check_existing_player($match,$loser1_first_name, $loser1_last_name, 'loser');
+                $new_loser2 = $this->check_existing_player($match,$loser2_first_name, $loser2_last_name, 'loser');
+
+                $new_players = $new_winner1 + $new_winner2 + $new_loser1 + $new_loser2;
+
+                $winner1 = $match->winners()->first();
+                $winner2 = $match->winners()->skip(1)->first();
+                $loser1 = $match->losers()->first();
+                $loser2 = $match->losers()->skip(1)->first();
+
+                $match->save();
+
+                [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
+                $match->winner_point_gain = $winner_gains;
+                $match->loser_point_gain = $loser_gains;
+
+                $match->save();
+
+                $winner1->points += $winner_gains / 2;
+                $winner2->points += $winner_gains / 2;
+                $loser1->points += $loser_gains / 2;
+                $loser2->points += $loser_gains / 2;
+                
+                $winner1->save();
+                $winner2->save();
+                $loser1->save();
+                $loser2->save();
+
+                Helpers::UpdateRanks();
+                Helpers::UpdatePlayerChartsDouble($winner1, $loser1, $match);
+                Helpers::UpdatePlayerChartsDouble($winner2, $loser2, $match);
+                Helpers::UpdateStatsChart($new_players, $winner_gains + $loser_gains, $match->date);
+
+        }
+    }
+        fclose($handle);
+
+    }
     private function check_for_existing($id,$first_name,$last_name){
         if(is_numeric($id)){
             $player = Player::find($id);

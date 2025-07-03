@@ -91,6 +91,9 @@ Route::get('/get-courts', [CourtsController::class, 'getCourtList']);
 
      Route::get('/import-meceva', [TenisMatchController::class, 'batchImport'])->name('batchImport');
      Route::post('/import-matches', [TenisMatchController::class, 'importMatches']);
+     
+     Route::get('/import-dublova', [TenisMatchController::class, 'batchDoubles'])->name('batchDoubles');
+     Route::post('/import-doubles', [TenisMatchController::class, 'importDoubles']);
     //  Route::post('/{uri}/obrisi',[PlayerController::class, 'deletePlayer']);
 
      Route::inertia('/admin', 'Home')->name('admin');
