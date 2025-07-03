@@ -94,7 +94,7 @@ const handleInputs = (event,isDate = false) => {
 <template>
     <Head title="Izmeni meč" />
     <div class="static-wrapper">
-    <h1 id="title" :class="{'hide': formState.success}">Import mečeva</h1>
+    <h1 id="title" :class="{'hide': formState.success}">Import singlova</h1>
     <h1 id="success" :class="{'show': formState.success}">Mečevi su uspešno dodati!</h1>
     <div id="success-links" :class="{'show': formState.success}">
       <Link prefetch="false" class="red" :href="'/lige-turniri'">vidi lige i turnire</Link>
