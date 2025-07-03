@@ -46,6 +46,9 @@
         &.blue{
             color: $blue;
         }
+        &.red{
+            color: $red;
+        }
         position: relative;
         &.fix-letters{
             font-family: Arial !important;
@@ -145,7 +148,7 @@
           font-size: 20px;
           font-family: 'Helvetica Neue';
           text-transform: uppercase;
-          color: $blue;
+          color: $dark-gray;
           margin-bottom: 32px;
           padding-bottom: 20px;
           border-bottom: 2px solid $lignt-gray;
