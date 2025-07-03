@@ -1,8 +1,28 @@
+@use '../abstracts/' as *;
+
+
 .leagues{
     .rankings-header,
     .ranking-entry{
-        grid-template-columns: 324px 344px 133px 133px 133px 133px;
+        grid-template-columns: 535px 133px 133px 133px 133px 133px;
 
+        .league-points{
+            font-weight: bold;
+        }
+        .name{
+            
+            a{
+                font-family: 'Helvetica Neue';
+                font-weight: bold;
+                text-transform: uppercase;
+                font-weight: bold;
+                color: $red;
+                text-decoration: none;
+                &:hover{
+                    color: black;
+                }
+            }
+        }
 
         .unknown{
             color: #949494;

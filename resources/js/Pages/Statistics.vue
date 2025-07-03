@@ -84,7 +84,7 @@ import { ref } from 'vue';
                     </p>
                 </div>
             </div>
-            <h2 class="summary-title big-margin">lokacije</h2>
+            <h2 class="summary-title big-margin">lokacije, lige i turniri</h2>
             <div class="summary player three desktop col">
                 <div class="summary-item">
                     <h2 class="mb-10">najaktivnije opštine</h2>
@@ -97,7 +97,7 @@ import { ref } from 'vue';
                     <h2 class="mb-10">najkorišćeniji tereni</h2>
                     <p class="smaller f20" v-for="court in locations.courts">
                         <template v-if="court.id > 1">
-                            <a target="'_blank'" :href="`/tereni/${court.uri}`">
+                            <a  :href="`/tereni/${court.uri}`">
                                 {{ court.name }}
                             </a>
                         </template>
@@ -114,7 +114,7 @@ import { ref } from 'vue';
                         <h2 class="mb-10">najaktivnije lige i turniri</h2>
                         <p class="smaller f20" v-for="league in locations.leagues">
                             <template v-if="league.uri != ''">
-                                <a target="'_blank'" :href="`/${league.uri}`">
+                                <a :href="`/${league.uri}`">
                                     {{ league.name }}
                                 </a>
                             </template>

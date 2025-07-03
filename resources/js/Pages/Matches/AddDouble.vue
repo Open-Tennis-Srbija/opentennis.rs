@@ -219,6 +219,7 @@ const handleInputs = (event,isDate = false) => {
             </label>
             <div class="field-group">
               <dropdown
+                 :minWidth="'271px'"
                  :autofocus="true"
                  label="name"
                  :options="props.players"
@@ -230,8 +231,9 @@ const handleInputs = (event,isDate = false) => {
 
               <dropdown
                  label="name"
+                 :minWidth="'271px'"
                  :options="props.players"
-                 :disabledOptions="[form.winner2,form.loser1,form.loser2]"
+                 :disabledOptions="[form.winner1,form.loser1,form.loser2]"
                  v-model="form.winner2"
                  :class="{'invalid': form.errors.winner2}"
                  :shouldReset="formState.shouldReset"
@@ -246,6 +248,7 @@ const handleInputs = (event,isDate = false) => {
             <div class="field-group">
               <dropdown
                  label="name"
+                 :minWidth="'271px'"
                  :options="props.players"
                  :disabledOptions="[form.loser2, form.winner1, form.winner2]"
                  v-model="form.loser1"
@@ -256,6 +259,7 @@ const handleInputs = (event,isDate = false) => {
               <dropdown
                  label="name"
                  :options="props.players"
+                 :minWidth="'271px'"
                  :disabledOptions="[form.loser1, form.winner1, form.winner2]"
                  v-model="form.loser2"
                  :class="{'invalid': form.errors.loser2}"

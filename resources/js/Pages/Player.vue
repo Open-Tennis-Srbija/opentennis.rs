@@ -127,6 +127,12 @@ function containsGreek(text) {
 <template>
  	<Head :title="pageTitle" />
 	<div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player">
+		<Link prefetch="false"
+			class="edit-btn desktop"
+			v-if="$page.props.auth.user"
+			:href="`/${player.uri}/izmeni`"
+			><EditIcon
+		/></Link>
 			<Link prefetch="false"
 				class="edit-btn mobile"
 				v-if="$page.props.auth.user"
@@ -147,12 +153,6 @@ function containsGreek(text) {
 		</div>
 		<h1 v-if="player.name" :class="{'fix-letters': containsGreek(player.name)}">
 			{{ player.name.split(' ')[0]}} <br class="show-mobile"> {{  player.name.split(' ')[1] }}
-			<Link prefetch="false"
-				class="edit-btn desktop"
-				v-if="$page.props.auth.user"
-				:href="`/${player.uri}/izmeni`"
-				><EditIcon
-			/></Link>
 		</h1>
 		<p class="subtitle-spacer" v-if="!player.club && !player.location">
 			&nbsp;
@@ -188,7 +188,7 @@ function containsGreek(text) {
 					<h2 style="margin-top: -10px;">kategorija</h2>
 					<p class="category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
-						<span class="number" :class="{'white': player.category > 5,'fix': player.category==7, 'unknown': player.category == '?'}">{{ player.category }}</span>
+						<span class="number" :class="{[`category-${player.category}`]: true, 'unknown': player.category == '?'}">{{ player.category }}</span>
 					</p>
 				</div>
 			</div>
@@ -205,7 +205,7 @@ function containsGreek(text) {
 					<h2 style="margin-top: -4px;">kategorija</h2>
 					<p class="category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
-						<span class="number" :class="{'white': player.category > 5,'fix': player.category == 7, 'unknown': player.category == '?'}">{{ player.category }}</span>
+						<span class="number" :class="{[`category-${player.category}`]: true, 'fix': player.category == 7, 'unknown': player.category == '?'}">{{ player.category }}</span>
 					</p>
 				</div>
 				<div class="summary-item">

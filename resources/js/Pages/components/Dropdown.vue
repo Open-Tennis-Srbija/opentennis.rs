@@ -30,6 +30,7 @@ const props = defineProps({
     canAdd: Boolean,
     disabledOption: Object,
     disabledOptions: Array,
+    minWidth: String
 });
 
 watch(
@@ -223,7 +224,7 @@ const selectOption = (option, e) => {
 };
 </script>
 <template>
-    <div class="dropdown-wrapper">
+    <div class="dropdown-wrapper" :style="minWidth ? { minWidth: minWidth } : {}">
         <input type="text" :placeholder="state.placeholder" :value="state.search" ref="dropdownInput"
             @input="handleSearch" @focus="onFocus" @blur="onBlur" @keydown.down.prevent="onKeyDown"
             @keydown.up.prevent="onKeyUp" @keydown.esc.prevent="onEsc" @keydown.tab.prevent="onTab" />

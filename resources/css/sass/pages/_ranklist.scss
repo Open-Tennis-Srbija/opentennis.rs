@@ -2,6 +2,7 @@
 .rankings-wrapper {
   max-width: 1200px;
   margin: 0 auto 100px;
+  padding-top: 65px;
 
   .rankings-header,
   .ranking-entry {
@@ -11,13 +12,29 @@
   }
 
   .rankings-header {
-    margin-top: 60px;
+    position: fixed;
+    top: 137px;
+    height: 60px;
+    background: white;
+    z-index: 1;
     padding-left: 10px;
     font-size: 17px;
     color: #949494;
     border-bottom: 2px solid #b0b0b0;
     padding-bottom: 5px;
+    align-items: end;
+    max-width: 1200px;
+    .elo,
+    .total-matches,
+    .wins,
+    .loses,
+    .win-precent,
+    .place {
+      place-self: center;
+      align-self: auto;
+    }
   }
+  
 
   &.courts-list{
     .rankings-header,
@@ -169,6 +186,7 @@
     max-width: 100%;
     overflow: hidden;
     margin-bottom: 250px;
+    padding-top: 0px !important;
 
     .ranking-entry {
       display: flex !important;
@@ -178,7 +196,7 @@
       padding: 29px 0 25px 0;
 
       .edit-btn{
-        top: 40px;
+        bottom: 40px;
         left: 10px;
         right: unset;
       }

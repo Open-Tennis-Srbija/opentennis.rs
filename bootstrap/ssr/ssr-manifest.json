@@ -26,6 +26,12 @@
   "resources/js/Pages/AddMatch.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
+  "resources/js/Pages/Auth/AddCourt.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/AddLeague.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
   "resources/js/Pages/Auth/BatchMatches.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
@@ -36,6 +42,9 @@
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/Auth/EditCourt.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Auth/EditDouble.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/Auth/EditLeague.vue": [
@@ -51,6 +60,9 @@
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/Auth/Register.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Court.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/Courts.vue": [
@@ -72,6 +84,12 @@
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/Matches.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Matches/AddDouble.vue": [
+    "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
+  ],
+  "resources/js/Pages/Matches/AddSingle.vue": [
     "/build/assets/HelveticaNeueLTProBdEx-DMZ94_s2.woff"
   ],
   "resources/js/Pages/Mision.vue": [

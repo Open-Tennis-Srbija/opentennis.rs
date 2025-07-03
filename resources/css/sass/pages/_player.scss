@@ -50,6 +50,7 @@
             font-weight: bold !important;
             font-size: 45px !important;
         }
+      }
         .edit-btn{
             position: absolute;
             text-transform: uppercase;
@@ -74,7 +75,6 @@
             }
 
           }
-      }
       &.league{
         >h1{
             .edit-btn{
@@ -118,7 +118,7 @@
             display: block;
             position: absolute;
             top: 50%;
-            left: 50%;
+            left: 51%;
             transform: translate(-50%, -50%);
             line-height: 1;
             margin: 0;
@@ -201,7 +201,7 @@
                     .number{
                         position: absolute;
                         top: 48%;
-                        left: 44%;
+                        left: 50%;
                         transform: translate(-50%, -50%);
                         font-size: 40px;
                         &.fix{
@@ -209,6 +209,35 @@
                         }
                         &.unknown{
                             color: #949494;
+                        }
+
+                        &.category-1{
+
+                        }
+                        &.category-2{
+
+                        }
+                        &.category-3{
+                        }
+                        &.category-4{
+                            left: 45%;
+                        }
+                        &.category-5{
+
+                        }
+                        &.category-6{
+                        }
+                        &.category-7{
+                            top: 51%;
+                            left: 52%
+                        }
+                        &.category-8{
+                            top: 50%
+                        }
+                        &.category-9{
+                            top: 50%
+                        }
+                        &.category-10{
                         }
                     }
                   }
@@ -454,9 +483,46 @@
                         left: 46%;
                         transform: translate(-50%, -50%);
                         font-size:33px;
-                        &.fix{
-                            left: 53%;
-                            top:52%;
+
+                        &.category-1{
+                            top: 50%;
+                            left: 50%;
+                        }
+                        &.category-2{
+                            top: 50%;
+                            left: 50%;
+                        }
+                        &.category-3{
+                            top: 50%;
+                            left: 50%;
+                        }
+                        &.category-4{
+                            top: 50%;
+                            left: 44%;
+                        }
+                        &.category-5{
+                            top: 50%;
+                            left: 50%;
+                        }
+                        &.category-6{
+                            top: 50%;
+                            left: 48%;
+                        }
+                        &.category-7{
+                            top: 54%;
+                            left: 52%;
+                        }
+                        &.category-8{
+                            top: 50%;
+                            left: 50%;
+                        }
+                        &.category-9{
+                            top: 50%;
+                            left: 50%;
+                        }
+                        &.category-10{
+                            top: 50%;
+                            left: 50%;
                         }
                         &.unknown{
                             color: #949494;

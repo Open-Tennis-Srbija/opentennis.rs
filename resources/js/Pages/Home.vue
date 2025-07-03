@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import utils from '../utils';
 import EditBtn from './components/EditIcon.vue';
 import axios from 'axios';
 import { bus } from "vue3-eventbus";
+import { computed } from 'vue';
 
 const players = ref([]);
 const utl = utils;
@@ -21,6 +22,8 @@ const categoryColorsAll = {
   '?': 'transparent',
 }
 
+const scrollPos = ref(0);
+
 onMounted(() => {
     axios.get('/get-players').then((response) => {
         players.value = response.data;
@@ -31,7 +34,24 @@ onMounted(() => {
      window.addEventListener('pageshow', () => {
         bus.emit('loading', false);
     });
+
+    bus.on('scroll', (top) => {
+        handleScroll(top);
+    });
+
 });
+const handleScroll = (top) => {
+  scrollPos.value = top;
+}
+
+const topOffset = computed(() => {
+    if (scrollPos.value >= 50) {
+        return 95;
+    } else {
+        return scrollPos.value * 2;
+    }
+});
+
 
 </script>
 <template>
@@ -41,7 +61,7 @@ onMounted(() => {
   <Head title="Teniseri -" />
   <div class="rankings-wrapper">
     <div id="desktop">
-      <div class="rankings-header">
+      <div class="rankings-header" :style="{top: `${ 137 - topOffset}px`}">
         <div class="spacer"></div>
         <div class="name">teniser</div>
         <div class="spacer"></div>
@@ -52,7 +72,7 @@ onMounted(() => {
         <div class="win-precent">% pobeda</div>
         <div class="place">kategorija</div>
       </div>
-      <div class="ranking-entry" v-for="player in players">
+      <div class="ranking-entry" v-for="(player, index) in players" :style="{marginTop: index === 0 ? '25px' : '0'}">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
         <div class="rank"
         :class="{'first': player.rank == 1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
@@ -70,7 +90,7 @@ onMounted(() => {
     </div>
 
     <div id="mobile">
-      <div class="ranking-entry" v-for="(player) in players">
+      <div class="ranking-entry" v-for="(player, index) in players">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
         <div class="rank"
                     :class="{'first': player.rank ==1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">

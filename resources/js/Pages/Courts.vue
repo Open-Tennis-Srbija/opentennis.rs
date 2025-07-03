@@ -4,6 +4,7 @@ import utils from '../utils';
 import axios from 'axios';
 import bus from 'vue3-eventbus';
 import EditBtn from './components/EditIcon.vue';
+import { computed } from 'vue';
 
 const utl = utils;
 
@@ -20,8 +21,24 @@ onMounted(() => {
   }).catch((error) => {
     console.error('Error fetching courts:', error);
   });
+ bus.on('scroll', (top) => {
+        handleScroll(top);
+    });
 });
 
+const scrollPos = ref(0);
+
+const handleScroll = (top) => {
+  scrollPos.value = top;
+}
+
+const topOffset = computed(() => {
+    if (scrollPos.value >= 50) {
+        return 95;
+    } else {
+        return scrollPos.value * 2;
+    }
+});
 </script>
 <template>
   <!-- <div class="loader" :class="{'close' : isLoading}">
@@ -30,7 +47,7 @@ onMounted(() => {
   <Head title="Tereni -" />
 <div class="rankings-wrapper courts-list">
     <div id="desktop">
-      <div class="rankings-header">
+      <div class="rankings-header" :style="{top: `${ 137 - topOffset}px`}">
         <div class="spacer"></div>
         <div class="name">teren</div>
         <div class="spacer"></div>
@@ -40,7 +57,7 @@ onMounted(() => {
         <div class="total-matches">teniseri</div>
         <div class="total-matches">opština</div>
       </div>
-      <div class="ranking-entry" v-for="(court, index) in courts">
+      <div class="ranking-entry" v-for="(court, index) in courts" :style="{marginTop: index === 0 ? '25px' : '0'}">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
         <div class="rank">
           {{ index+1 }}

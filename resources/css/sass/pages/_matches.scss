@@ -8,6 +8,9 @@ $border-color-dark: #e2e0e1;
   max-width: 1200px;
   margin: 0 auto 100px;
 
+  &.home{
+    padding-top: 91px;
+  }
 
   .message{
     text-align: center;
@@ -47,6 +50,27 @@ $border-color-dark: #e2e0e1;
 
     .number {
       padding-left: 16px;
+    }
+
+    
+    &.home{
+      position: fixed;
+      top: 80px;
+      height: 60px;
+      background: white;
+      z-index: 1;
+      align-items: end;
+      max-width: 1200px;
+      .number {
+        padding-left: 16px;
+      }
+      .score,
+      .date,
+      .location {
+        place-self: center;
+        align-self: auto;
+        text-align: center;
+      }
     }
   }
 }
@@ -151,6 +175,40 @@ $border-color-dark: #e2e0e1;
         &.unknown{
           color: #949494;
         }
+
+
+        &.category-1{
+
+        }
+        &.category-2{
+
+        }
+        &.category-3{
+          left: 71%;
+        }
+        &.category-4{
+          left: 71%;
+
+        }
+        &.category-5{
+
+        }
+        &.category-6{
+          left: 70%;
+        }
+        &.category-7{
+
+        }
+        &.category-8{
+
+        }
+        &.category-9{
+
+        }
+        &.category-10{
+          font-size: 11px;
+          top: 45%;
+        }
       }
   }
 
@@ -173,7 +231,7 @@ $border-color-dark: #e2e0e1;
     max-width: 100%;
     overflow: hidden;
     margin-bottom: 250px;
-
+    padding-top: 0px !important;
     .message{
       font-size: 20px;
       margin-top: 40px;
@@ -224,6 +282,39 @@ $border-color-dark: #e2e0e1;
       
         &.unknown{
           color: #949494;
+        }
+        &.category-1{
+          left: 54%;
+          top: 54%;
+        }
+        &.category-2{
+          left: 54%;
+        }
+        &.category-3{
+          left: 55%;
+          top: 54%;
+        }
+        &.category-4{
+          left: 52%;
+        }
+        &.category-5{
+          left: 54%;
+        }
+        &.category-6{
+          left: 54%;
+        }
+        &.category-7{
+          top: 54%;
+        }
+        &.category-8{
+          top: 54%;
+        }
+        &.category-9{
+
+        }
+        &.category-10{
+          font-size: 11px;
+          top: 55%;
         }
       }
   }
