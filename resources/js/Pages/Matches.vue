@@ -63,7 +63,7 @@ const formatedMatchesDesktop = computed(() => {
             day: getDateDay(match.date),
             month: getDateMonth(match.date),
             date: new Date(match.date).getDate(),
-            year: new Date(match.date).getFullYear(),
+            year: new Date(match.date).getFullYear() === new Date().getFullYear() ? null : new Date(match.date).getFullYear(),
         };
     });
     return formated;
@@ -215,7 +215,7 @@ function getDateMonth(date) {
                         }}</span>
                 </div>
                 <div class="date">
-                    {{ match.day }} <br />{{ match.date }} {{ match.month }}
+                    {{ match.day }} {{ match.date }} {{ match.month }}
                     {{ match.year }}
                 </div>
                 <div class="location">{{ match.county }}</div>

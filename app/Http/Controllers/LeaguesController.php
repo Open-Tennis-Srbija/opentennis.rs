@@ -142,36 +142,62 @@ class LeaguesController extends Controller
     else return redirect('/');
     }
 
-    public static function getLeaguesForList(){
-        $today = date('Y-m-d');
-        $leagues = League::where('id', '>', 1)
-            // Inactive at the bottom
-            ->orderByRaw("date_end < ? ASC", [$today])
-            // For active leagues, sort by duration (longest first)
-            ->orderByRaw("CASE WHEN date_end >= ? THEN DATEDIFF(date_end, date_begin) END DESC", [$today])
-            // For inactive leagues, you can sort by date_end descending (most recently ended first)
-            ->orderByRaw("CASE WHEN date_end < ? THEN date_end END DESC", [$today])
-            ->get();
+    // public static function getLeaguesForList(){
+    //     $today = date('Y-m-d');
+    //     $leagues = League::where('id', '>', 1)
+    //         // Inactive at the bottom
+    //         ->orderByRaw("date_end < ? ASC", [$today])
+    //         // For active leagues, sort by duration (longest first)
+    //         ->orderByRaw("CASE WHEN date_end >= ? THEN DATEDIFF(date_end, date_begin) END DESC", [$today])
+    //         // For inactive leagues, you can sort by date_end descending (most recently ended first)
+    //         ->orderByRaw("CASE WHEN date_end < ? THEN date_end END DESC", [$today])
+    //         ->get();
 
-        $response = [];
+    //     $response = [];
 
-        foreach($leagues as $league){
-            array_push($response,[
-                'name'=> $league->name,
-                'uri'=> $league->uri,
-                'date_start' => $league->date_begin,
-                'date_end' => $league->date_end,
-                'match_number' => $league->getMatchCount(),
-                'county' => $league->county,
-                'player_number' => $league->getPlayerCount(),
-                'points' => $league->getPoints(),
-                'link' => $league->link
-            ]);
-        }
+    //     foreach($leagues as $league){
+    //         array_push($response,[
+    //             'name'=> $league->name,
+    //             'uri'=> $league->uri,
+    //             'date_start' => $league->date_begin,
+    //             'date_end' => $league->date_end,
+    //             'match_number' => $league->getMatchCount(),
+    //             'county' => $league->county,
+    //             'player_number' => $league->getPlayerCount(),
+    //             'points' => $league->getPoints(),
+    //             'link' => $league->link
+    //         ]);
+    //     }
 
-        return $response;
+    //     return $response;
+    // }
+public static function getLeaguesForList(){
+    $today = date('Y-m-d');
+    $leagues = League::where('id', '>', 1)->get();
+
+    $response = [];
+
+    foreach($leagues as $league){
+        array_push($response,[
+            'name'=> $league->name,
+            'uri'=> $league->uri,
+            'date_start' => $league->date_begin,
+            'date_end' => $league->date_end,
+            'match_number' => $league->getMatchCount(),
+            'county' => $league->county,
+            'player_number' => $league->getPlayerCount(),
+            'points' => $league->getPoints(),
+            'link' => $league->link
+        ]);
     }
 
+    // Sort by points only (highest first)
+    usort($response, function($a, $b) {
+        return $b['points'] <=> $a['points'];
+    });
+
+    return $response;
+}
     public static function update_league_list_cache($league_uri,$match_number,$new_players,$gains){
         $cache = json_decode(file_get_contents(storage_path('app/public/leagues.json')),true);
 

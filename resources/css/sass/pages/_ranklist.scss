@@ -175,6 +175,11 @@
         border: 3px solid $bronze;
       }
     }
+
+
+    .total-matches,.wins,.loses,.win-precent,.place {
+      font-size: 15px;
+    }
   }
 }
 

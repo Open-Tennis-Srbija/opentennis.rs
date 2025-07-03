@@ -31,6 +31,11 @@ $border-color-dark: #e2e0e1;
     line-height: 145%;
     font-size: 17px;
 
+
+    .date,.location{
+      font-size: 15px;;
+    }
+
     a{
       text-decoration: none;
       color: #000;
