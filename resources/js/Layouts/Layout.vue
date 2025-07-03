@@ -24,6 +24,7 @@ onMounted(() => {
             {
                 scroll(osInstance, args) {
                     scrollPos.top = args.target.scrollTop;
+                    bus.emit("scroll", scrollPos.top);
                 },
             },
         );
@@ -53,7 +54,7 @@ window.addEventListener('pageshow', (event) => {
 
 const topOffset = computed(() => {
     if (scrollPos.top >= 50) {
-        return 100;
+        return 60;
     } else {
         return scrollPos.top * 2;
     }
@@ -148,7 +149,7 @@ watch(
             </div>
         </div>
     </header>
-    <div v-if="$page.props.auth.user" class="admin-menu" :style="{ top: 150 - topOffset + 'px', height: 'calc(100vh - ' + (150 - topOffset) + 'px)' }" :class="{open: adminMenu.state}">
+    <div v-if="$page.props.auth.user" class="admin-menu" :style="{ top: 110 - topOffset + 'px', height: 'calc(100vh - ' + (110 - topOffset) + 'px)' }" :class="{open: adminMenu.state}">
         <div class="links">
             <Link @click="toggleAdmin()"  prefetch="false" :href="'/dodaj-teren'" :class="{ active: $page.url === '/dodaj-teren' }">Dodaj teren</Link>
             <Link @click="toggleAdmin()"  prefetch="false" :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">Dodaj turnir</Link>
@@ -175,7 +176,7 @@ watch(
                 <Link prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
                 :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
             
-            <div class="admin-links">
+            <div class="admin-links" v-if="$page.props.auth.user">
                 <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-turnir'"
                         :class="{ active: $page.url === '/dodaj-turnir' }">dodaj turnir</Link>
                 <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-teren'"
@@ -192,7 +193,7 @@ watch(
     <div id="os-holder"
         :style="{ height: 'calc(100vh - ' + 100 - topOffset + 50 + 'px)' }">
         <main id="main">
-            <slot />
+            <slot :scrollPos="scrollPos" />
         </main>
         <footer class="footer-wrapper">
             <p class="footer-text">
