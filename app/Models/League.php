@@ -20,6 +20,31 @@ class League extends Model
     ];
 
 
+    public function getRank(){
+        $raw_leagues = League::all();
+
+        $leagues = [];
+
+        foreach($raw_leagues as $league){
+            array_push($leagues, [
+                'id' => $league->id,
+                'points' => $league->getPoints(),
+            ]);
+        }
+
+        usort($leagues, function($a, $b) {
+            return $b['points'] <=> $a['points'];
+        });
+
+        $position = 0;
+        foreach($leagues as $league){
+            if($league['id'] == $this->id){
+                return $position;
+            }
+            $position++;
+        }
+
+    }
     public function getMatchCount()
     {
         return TennisMatch::where('league_id', $this->id)->count();

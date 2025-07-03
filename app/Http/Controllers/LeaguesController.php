@@ -21,6 +21,7 @@ class LeaguesController extends Controller
 
     public static function returnLeague($league_uri){
         $league = League::where('uri', $league_uri)->first();
+
         return [
             'name' => $league->name,
             'county' => $league->county,
@@ -31,6 +32,7 @@ class LeaguesController extends Controller
             'player_number' => $league->getPlayerCount(),
             'match_number' => $league->getMatchCount(),
             'link' => $league->link,
+            'rank' => $league->getRank(),
             'players' => $league->getPlayers(),
             'matches' => $league->getMatches(),
             'court' => []

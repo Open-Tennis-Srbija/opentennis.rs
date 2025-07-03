@@ -78,15 +78,22 @@ function containsGreek(text) {
 </script>
 <template>
     <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player league">
-        <h1 class="red" :class="{'fix-letters': containsGreek(league.name)}">
-            {{ league.name }}<Link prefetch="false"
+        <Link prefetch="false"
 				class="edit-btn"
 				v-if="$page.props.auth.user"
 				:href="`/izmeni-ligu/${league.uri}`"
 				><EditIcon
                 class="league"
 			/></Link>
-        </h1>
+            <div
+                class="rank"
+            >
+			<p :class="{ 'align-left': league.rank > 9,'n40': league.rank >= 40 && league.rank < 50 }">
+				{{ league.rank }}
+			</p>
+		</div>
+        <h1 class="red" :class="{'fix-letters': containsGreek(league.name)}">
+            {{ league.name }}        </h1>
 
         <p class="subtitle">{{ league.county }}</p>
         <p class="subtitle-spacer" >

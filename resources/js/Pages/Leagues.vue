@@ -88,6 +88,7 @@ const topOffset = computed(() => {
   <div class="rankings-wrapper leagues">
     <div id="desktop">
       <div class="rankings-header" :style="{top: `${ 137 - topOffset}px`}">
+        <div class="spacer"></div>
         <div class="name">lige i turniri</div>
         <div class="wins">poeni</div>
         <div class="total-matches">mečevi</div>
@@ -96,9 +97,12 @@ const topOffset = computed(() => {
         <div class="elo">opština</div>
       </div>
       <div v-if="leagues.length" class="ranking-entry" v-for="(league, index) in leagues" :style="{marginTop: index === 0 ? '25px' : '0'}" >
+      <div class="rank">
+          {{ index+1 }}
+        </div>
         <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-ligu/${league.uri}`"><EditBtn/></Link>
         <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
-        <div class="wins league-points" :class="{'unknown': league.points == 0}">{{utl.formatAsThousands(league.points)}}</div>
+        <div class="elo league-points" :class="{'unknown': league.points == 0}">{{utl.formatAsThousands(league.points)}}</div>
         <div class="total-matches">{{league.match_number}}</div>
         <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
         <div style="text-align: center; line-height: 1.6;" :class="{'inactive' : isInactive(league.date_end)}" class="wins">{{formatDates(league.date_start, league.date_end)[0]}}<br>{{formatDates(league.date_start, league.date_end)[1]}}</div>
