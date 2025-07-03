@@ -43,6 +43,9 @@
 
 
       >h1{
+        &.blue{
+            color: $blue;
+        }
         position: relative;
         &.fix-letters{
             font-family: Arial !important;

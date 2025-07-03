@@ -231,7 +231,7 @@ watch(
                     </svg>
                 </a>
             </div>
-            <div class="footer-text">
+            <div class="footer-text hide-mobile">
                 <Link prefetch="false" :href="'/uputstva'">uputstva</Link>
             </div>
         </footer>

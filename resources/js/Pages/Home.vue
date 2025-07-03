@@ -78,7 +78,7 @@ const topOffset = computed(() => {
         :class="{'first': player.rank == 1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
           {{ player.rank}}
         </div>
-        <div class="name"><Link prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
+        <div class="name helvetica"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
         <div class="spacer"></div>
         <div class="elo">{{utl.formatAsThousands(player.points)}}</div>
         <div class="total-matches">{{player.total_matches}}</div>
@@ -96,7 +96,7 @@ const topOffset = computed(() => {
                     :class="{'first': player.rank ==1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
           {{ player.rank }}
         </div>
-        <div class="name"><Link prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
+        <div class="name helvetica"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
         <div class="info">
           <div class="info-wrapp">
             <div class="sup">poeni</div>

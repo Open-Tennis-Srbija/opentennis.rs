@@ -418,11 +418,13 @@
 }
 
 @media only screen and (max-width: 1200px) {
+    .footer-text.hide-mobile {
+        display: none;
+    }
     .header-wrapper {
         position: fixed;
         width: 100%;
         top: 0;
-
         .logo-wrapp {
             height: 50px !important;
             margin-top: 0 !important;
