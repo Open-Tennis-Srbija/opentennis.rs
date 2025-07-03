@@ -112,6 +112,9 @@ const topOffset = computed(() => {
     <div v-if="leagues" id="mobile">
       <div class="ranking-entry" v-for="(league, index) in leagues">
         <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-ligu/${league.uri}`"><EditBtn/></Link>
+        <div class="rank">
+          {{ index + 1 }}
+        </div>
         <div class="name" style="font-weight: bold; text-align: center;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
         <div :class="{'inactive' : isInactive(league.date_end)}" class="date">{{formatDate(league.date_start, league.date_end)}}</div>
         <div class="county" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
