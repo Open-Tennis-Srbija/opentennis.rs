@@ -86,7 +86,7 @@ class Helper{
     );
     
    public static function formatName($name){
-        return strtr($name, self::$unwanted_array);
+        return strtolower(strtr($name, self::$unwanted_array));
     }
 
 }

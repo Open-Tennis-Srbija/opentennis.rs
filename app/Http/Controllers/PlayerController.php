@@ -197,13 +197,14 @@ class PlayerController extends Controller
 
 		$player = Player::find($data['id']);
 
+
 		$regenerate_uri = false;
 		$ignore_name_change = false;
 
-		if($player->first_name != $data['first_name'] || $player->last_name != $data['last_name']){ {
+		if($player->first_name != $data['first_name'] || $player->last_name != $data['last_name']){ 
 			$regenerate_uri = true;
 		}
-		if($player->uri != $data['uri'] && $data['uri'] != ''){
+		if($player->uri != $data['uri']){
 			$ignore_name_change = true;
 		}
 
@@ -251,7 +252,6 @@ class PlayerController extends Controller
 		$uri = '/'.$player->uri;
 		return redirect($uri);
 	}
-}
 
 	/**
 	 * Display the specified resource.

@@ -148,7 +148,7 @@ watch(
             <Link prefetch="false" :href="'/'">
                 <p class="STL"><span class="red">Srpska</span> <span class="blue">Tenis</span> Liga</p>
                 <Logo :style="{ top: 50 - topOffset + 'px'}" />
-                <p class="logo-message desktop">igraj više, budi zdraviji</p>
+                <p class="logo-message desktop">budi zdraviji, igraj više </p>
                 <p class="logo-message mobile left">budi zdraviji</p>
                 <p class="logo-message mobile right">igraj više</p>
             </Link>
