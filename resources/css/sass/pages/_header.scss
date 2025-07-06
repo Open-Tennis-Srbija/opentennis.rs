@@ -503,11 +503,11 @@
 
                     &.left{
                         left: 50%;
-                        transform: translate(calc(-100% - 41px), -50%);
+                        transform: translate(calc(-100% - 41px), -51%);
                     }
                     &.right{
                         left: 50%;
-                        transform: translate(calc(19% + 28px), -50%);
+                        transform: translate(calc(19% + 28px), -51%);
                     }
                 }
             }
