@@ -4424,7 +4424,7 @@ const _sfc_main = {
             _push2(ssrRenderComponent(Logo, {
               style: { top: 50 - topOffset.value + "px" }
             }, null, _parent2, _scopeId));
-            _push2(`<p class="logo-message desktop"${_scopeId}>igraj više, budi zdraviji</p><p class="logo-message mobile left"${_scopeId}>budi zdraviji</p><p class="logo-message mobile right"${_scopeId}>igraj više</p>`);
+            _push2(`<p class="logo-message desktop"${_scopeId}>budi zdraviji, igraj više </p><p class="logo-message mobile left"${_scopeId}>budi zdraviji</p><p class="logo-message mobile right"${_scopeId}>igraj više</p>`);
           } else {
             return [
               createVNode("p", { class: "STL" }, [
@@ -4436,7 +4436,7 @@ const _sfc_main = {
               createVNode(Logo, {
                 style: { top: 50 - topOffset.value + "px" }
               }, null, 8, ["style"]),
-              createVNode("p", { class: "logo-message desktop" }, "igraj više, budi zdraviji"),
+              createVNode("p", { class: "logo-message desktop" }, "budi zdraviji, igraj više "),
               createVNode("p", { class: "logo-message mobile left" }, "budi zdraviji"),
               createVNode("p", { class: "logo-message mobile right" }, "igraj više")
             ];

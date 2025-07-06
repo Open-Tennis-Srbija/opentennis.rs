@@ -19,10 +19,12 @@
     #os-holder{
       height: calc(100vh - 100px);
       margin-top: 50px;
-      margin-bottom: 50px;
       &.high{
         height: calc(100vh - 101px);
       }
       
+    }
+    .os-scrollbar-track{
+      height: calc(100% - 53px) !important;
     }
   }
