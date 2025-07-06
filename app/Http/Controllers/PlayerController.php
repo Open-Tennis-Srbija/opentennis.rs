@@ -183,6 +183,7 @@ class PlayerController extends Controller
 			'club' => ['max:30'],
 			'location' => ['max:30'],
 			'category' => ['required', 'in: 1,2,3,4,5,6,7,8,9,10,?'],
+			'uri' => ['required', 'max:50', 'regex:/^[a-zA-Z0-9-]+$/'],
 		], [
 			'first_name.required' => 'Ovo polje je obavezno.',
 			'first_name.max' => 'Maksimalan broj karaktera je 30.',
@@ -196,11 +197,51 @@ class PlayerController extends Controller
 
 		$player = Player::find($data['id']);
 
+		$regenerate_uri = false;
+		$ignore_name_change = false;
+
+		if($player->first_name != $data['first_name'] || $player->last_name != $data['last_name']){ {
+			$regenerate_uri = true;
+		}
+		if($player->uri != $data['uri'] && $data['uri'] != ''){
+			$ignore_name_change = true;
+		}
+
 		$player->first_name = $data['first_name'];
 		$player->last_name = $data['last_name'];
 		$player->club = $data['club'];
 		$player->location = $data['location'];
 		$player->category = $data['category'];
+
+		
+		if(!$ignore_name_change){
+			if($regenerate_uri){
+				$uri_firstname = Helper::formatName($data['first_name']);
+				$uri_lastname = Helper::formatName($data['last_name']);
+				$uri = $uri_firstname . '-' . $uri_lastname;
+				// Check if the URI already exists
+				$existingPlayer = Player::where('uri', $uri)->first();
+				if ($existingPlayer) {
+					// If it exists, append a number to make it unique
+					$counter = 1;
+					while (Player::where('uri', $uri . '-' . $counter)->exists()) {
+						$counter++;
+						$uri = $uri_firstname . '-' . $uri_lastname . '-' . $counter;
+					}
+					$player->uri = $uri_firstname . '-' . $uri_lastname . '-' . $counter;
+				} 
+				else {
+					$player->uri = $uri_firstname . '-' . $uri_lastname;
+				}
+			}
+			else{
+				$player->uri = $data['uri'];
+			}
+		}
+		else{
+			$player->uri = $data['uri'];
+		}
+
 
 		$uri_firstname = Helper::formatName($data['first_name']);
 		$uri_lastname = Helper::formatName($data['last_name']);
@@ -210,6 +251,7 @@ class PlayerController extends Controller
 		$uri = '/'.$player->uri;
 		return redirect($uri);
 	}
+}
 
 	/**
 	 * Display the specified resource.

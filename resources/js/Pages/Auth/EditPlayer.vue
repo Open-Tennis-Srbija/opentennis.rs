@@ -23,6 +23,7 @@ onMounted(() => {
         form.last_name = response.data.last_name;
         form.club = response.data.club;
         form.location = response.data.location;
+        form.uri = response.data.uri;
         form.category = response.data.category;
         player.value = response.data; 
         bus.emit('loading', false);
@@ -39,6 +40,7 @@ const form = useForm({
     club: null,
     location: null,
     category: null,
+    uri: null,
 });
 
 const formState = reactive({
@@ -130,6 +132,19 @@ const handleInputs = (event,isDate = false) => {
         </div>
       </div>
 
+       <div class="form-section">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="full-score" class="input-label">
+              URI (srpskatenisliga.rs/URI) <span class="required">*</span>
+            </label>
+            <input v-if="form.uri" v-model="form.uri" :class="{'invalid': form.errors.uri}" :disabled="formState.submitted" id="uri" />
+            <p class="error-message">{{ form.errors.uri }}</p>
+          </div>
+          <div class="form-group">
+          </div>
+        </div>
+      </div>
       <div class="form-section">
         <div class="form-row">
           <button id="submit">

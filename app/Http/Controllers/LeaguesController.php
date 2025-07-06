@@ -47,6 +47,7 @@ class LeaguesController extends Controller
             'location' => 'required',
             'date_begin' => 'required',
             'date_end' => 'required',
+            'uri' => 'max:50|regex:/^[a-zA-Z0-9-]+$/',
             'link' => '',
             'court' => '',
         ], [
@@ -66,11 +67,17 @@ class LeaguesController extends Controller
             $league->date_end = $date_end->format('Y-m-d');
             $league->link = $data['link'] ?? '';
 
-            $uri = str_replace(' ', '-', strtolower($data['name']));
-            $uri = str_replace('--', '-', $uri);
-            $uri = Helper::formatName($uri);
-            
-            $league->uri = $uri;
+            if($data['uri'] != $league->uri)
+            {
+                $league->uri = $data['uri'];
+            }
+            else{
+                // Generate a new URI if not provided
+                $uri = str_replace(' ', '-', strtolower($data['name']));
+                $uri = str_replace('--', '-', $uri);
+                $uri = Helper::formatName($uri);
+                $league->uri = $uri;
+            }
 
             if(!is_numeric($data['court']['id'])){
                 $court = new Court();
@@ -131,6 +138,7 @@ class LeaguesController extends Controller
             'name' => $league->name,
             'county' => $league->county,
             'date_begin' => $league->date_begin,
+            'uri' => $league->uri,
             'date_end' => $league->date_end,
             'link' => $league->link,
             'court' => Court::find($league->court_id),

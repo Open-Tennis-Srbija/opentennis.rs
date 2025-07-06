@@ -171,7 +171,11 @@ class CourtsController extends Controller
 
         $court->name = $request->input('name');
         $court->link = $request->input('link');
-        $court->uri = Str::slug($request->input('uri'));
+        if($request->input('uri') != $court->uri){
+            $court->uri = Str::slug($request->input('uri'));
+        } else {
+            $court->uri = Str::slug($request->input('name'));
+        }
         $court->phone = $request->input('phone');
         $court->location = $request->input('location');
         $court->county = $request->input('county');

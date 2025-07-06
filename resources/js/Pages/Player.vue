@@ -1,6 +1,6 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
-import { onMounted, computed, reactive, ref } from "vue";
+import { onMounted, computed, reactive, ref, onBeforeUnmount } from "vue";
 import utils from "../utils";
 import axios from 'axios';
 import PlayerChart from "./components/PlayerChart.vue";
@@ -33,6 +33,7 @@ const categoryColors = {
 }
 onMounted(() => {
 	axios.get(`/get-player/${props.player_uri}`).then((response) => {
+	bus.emit('active', 'players')
 	bus.emit('headTitle', 'teniser')
 		player.value = response.data;
 		console.log('Player data:', player.value);
@@ -122,6 +123,10 @@ const getInteractionText = (number) =>{
 function containsGreek(text) {
   return /[\u0370-\u03FF\u1F00-\u1FFF]/.test(text);
 }
+
+onBeforeUnmount(() => {
+	bus.emit('clearActive');
+});
 
 </script>
 <template>
@@ -289,7 +294,7 @@ function containsGreek(text) {
 					</template>
 				</div>
 			</div>
-			<h2 class="summary-title">lokacije</h2>
+			<h2 class="summary-title big-margin">lokacije</h2>
 			<div class="summary player three col">
 				<div class="summary-item players">
 					<h2>opštine</h2>
@@ -338,11 +343,11 @@ function containsGreek(text) {
 					</template>
 				</div>
 			</div>
-			<h2 class="summary-title">Grafikoni</h2>
+			<h2 class="summary-title big-margin">Grafikoni</h2>
 			<div class="chart-wrapper">
 				<PlayerChart v-if="player.id" :player_id="player.id" />
 			</div>
-			<h2 class="summary-title no-border low-margin">pobede</h2>
+			<h2 class="summary-title no-border big-margin">pobede</h2>
 			<div class="player-matches">
 				<MatchTable
 					v-if="player.wins"
@@ -351,7 +356,7 @@ function containsGreek(text) {
 					:loadMatches="false"
 				/>
 			</div>
-			<h2 class="summary-title no-border low-margin">gubitci</h2>
+			<h2 class="summary-title no-border big-margin">gubitci</h2>
 			<div class="player-matches mobile-mb-200">
 				<MatchTable
 					v-if="player.losses"

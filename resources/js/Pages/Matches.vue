@@ -143,7 +143,7 @@ function getDateMonth(date) {
                 </p>
             </div>
             <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
-                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
+                <Link :class="{child: !props.loadMatches}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
                 <div class="number">{{ match.number }}</div>
@@ -251,7 +251,7 @@ function getDateMonth(date) {
                 </p>
             </div>
             <div class="match-entry" v-for="(match, index) in formatedMatchesMobile" :key="index">
-                <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
+                <Link :class="{child: !props.loadMatches}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
                 <div class="score">

@@ -15,6 +15,13 @@ const isClient = ref(false);
 
 const scrollPos = reactive({ top: 0 });
 
+
+const activeChilds = reactive({
+    players: false,
+    leagues: false,
+    courts: false,
+});
+
 onMounted(() => {
     isClient.value = true;
     if (isClient.value) {
@@ -43,6 +50,26 @@ onMounted(() => {
         bus.on('headTitle', (e)=>{
             headerMessage.value = e;
         })
+        bus.on('active', (e) => {
+            if (e === 'players') {
+                activeChilds.players = true;
+                activeChilds.leagues = false;
+                activeChilds.courts = false;
+            } else if (e === 'leagues') {
+                activeChilds.players = false;
+                activeChilds.leagues = true;
+                activeChilds.courts = false;
+            } else if (e === 'courts') {
+                activeChilds.players = false;
+                activeChilds.leagues = false;
+                activeChilds.courts = true;
+            }
+        });
+        bus.on('clearActive', (e) => {
+            activeChilds.players = false;
+            activeChilds.leagues = false;
+            activeChilds.courts = false;
+        });
 window.addEventListener('pageshow', (event) => {
   // If coming from bfcache and user is not logged in, reload to get fresh state
   if (event.persisted && !$page.props.auth.user) {
@@ -119,14 +146,18 @@ watch(
     <header class="header-wrapper">
         <div class="logo-wrapp" :style="{ marginTop: -topOffset + 'px' }">
             <Link prefetch="false" :href="'/'">
-            <Logo />
+                <p class="STL"><span class="red">Srpska</span> <span class="blue">Tenis</span> Liga</p>
+                <Logo :style="{ top: 50 - topOffset + 'px'}" />
+                <p class="logo-message desktop">igraj više, budi zdraviji</p>
+                <p class="logo-message mobile left">budi zdraviji</p>
+                <p class="logo-message mobile right">igraj više</p>
             </Link>
         </div>
         <div class="links-wrapper">
             <div class="links" :class="{'admin': $page.props.auth.user}">
-                <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/' }">teniseri</Link>
-                <Link prefetch="false" :href="'/lige-turniri'" :class="{ active: $page.url === '/lige-turniri' }">lige i turniri</Link>
-                <Link  prefetch="false" :href="'/tereni'" :class="{ active: $page.url === '/tereni' }">tereni</Link>
+                <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/', activeChild: activeChilds.players }">teniseri</Link>
+                <Link prefetch="false" :href="'/lige-turniri'" :class="{ active: $page.url === '/lige-turniri', activeChild: activeChilds.leagues }">lige i turniri</Link>
+                <Link  prefetch="false" :href="'/tereni'" :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">tereni</Link>
                 <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
                 <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
                 <Link prefetch="false" class="blue" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
@@ -138,16 +169,16 @@ watch(
                 </div>
             </div>
         </div>
-        <div class="mobile-underheader" @click="toggleMenu">
+        <div class="mobile-button" @click="toggleMenu()">
+            <div class="button" :class="{ 'open-left': mobileMenu.state }"></div>
+            <div class="button" :class="{ 'open-middle': mobileMenu.state }"></div>
+            <div class="button" :class="{ 'open-right': mobileMenu.state }"></div>
+        </div>
+        <!-- <div class="mobile-underheader" @click="toggleMenu">
             <h1>
                 {{ headerMessage }}
             </h1>
-            <div class="mobile-button">
-                <div class="button" :class="{ 'open-left': mobileMenu.state }"></div>
-                <div class="button" :class="{ 'open-middle': mobileMenu.state }"></div>
-                <div class="button" :class="{ 'open-right': mobileMenu.state }"></div>
-            </div>
-        </div>
+        </div> -->
     </header>
     <div v-if="$page.props.auth.user" class="admin-menu" :style="{ top: 110 - topOffset + 'px', height: 'calc(100vh - ' + (110 - topOffset) + 'px)' }" :class="{open: adminMenu.state}">
         <div class="links">
@@ -161,11 +192,11 @@ watch(
     <div id="mobile-menu" :class="{ open: mobileMenu.state }">
         <div class="links">
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
-                :class="{ active: $page.url === '/' }">teniseri</Link>
+                :class="{ active: $page.url === '/', childActive: activeChilds.players}">teniseri</Link>
                 <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige-turniri'"
-                :class="{ active: $page.url === '/lige-turniri' }">lige i turniri</Link>
+                :class="{ active: $page.url === '/lige-turniri', childActive: activeChilds.leagues }">lige i turniri</Link>
                 <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/tereni'"
-                :class="{ active: $page.url === '/tereni' }">tereni</Link>
+                :class="{ active: $page.url === '/tereni', childActive: activeChilds.courts }">tereni</Link>
                 <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
                     :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"

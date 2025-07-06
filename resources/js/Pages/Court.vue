@@ -1,6 +1,6 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
-import { onMounted, computed, reactive, onBeforeMount } from "vue";
+import { onMounted, computed, reactive, onBeforeMount, onBeforeUnmount } from "vue";
 import utils from "../utils";
 import axios from "axios";
 import bus from "vue3-eventbus";
@@ -26,6 +26,7 @@ onMounted(() => {
     }).catch((error) => {
         console.error("Error fetching court:", error);
     });
+    bus.emit('active', 'courts');
 });
 const points = computed(() => {
 	if (!court.value.points) {
@@ -34,7 +35,9 @@ const points = computed(() => {
 	return utils.formatAsThousands(court.value.points);
 });
 
-
+onBeforeUnmount(() => {
+    bus.emit('clearActive');
+});
 
 const formatDate = ((start, end) =>{
 
@@ -166,7 +169,7 @@ function containsGreek(text) {
                 <div class="summary-item players">
                 </div>
             </div>
-            <h2 class="summary-title low-margin">teniseri</h2>
+            <h2 class="summary-title big-margin">teniseri</h2>
             <div class="summary player three col">
                 <div class="summary-item players">
                 </div>
@@ -193,7 +196,7 @@ function containsGreek(text) {
                 <div class="summary-item players">
                 </div>
             </div>
-            <h2 class="summary-title no-border low-margin">mečevi</h2>
+            <h2 class="summary-title no-border big-margin">mečevi</h2>
             <div class="player-matches">
                 <MatchTable
                 v-if="court.matches"

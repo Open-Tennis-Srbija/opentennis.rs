@@ -108,6 +108,15 @@ $border-color-dark: #e2e0e1;
     padding-top: 13px;
     text-decoration: none;
 
+    &.child{
+      top: 44px !important;
+      right: -47px !important;
+      svg{
+        height: 30px !important;
+        width: 30px !important;
+      }
+    }
+
     svg{
         width: 30px;
         height: 30px;
@@ -235,9 +244,12 @@ $border-color-dark: #e2e0e1;
     overflow: hidden;
     margin-bottom: 250px;
     padding-top: 0px !important;
+    &.home{
+      padding-top: 23px !important;
+    }
     .message{
       font-size: 20px;
-      margin-top: 40px;
+      margin-top: 10px;
     }
   }
 
@@ -251,6 +263,13 @@ $border-color-dark: #e2e0e1;
       padding: 5px 15px;
       padding-top: 9px;
       right: unset;
+
+      &.child{
+        svg{
+          height: 30px !important;
+          width: 30px !important;
+        }
+      }
     }
     display: flex;
     flex-direction: column;

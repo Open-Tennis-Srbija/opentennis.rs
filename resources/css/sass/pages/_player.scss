@@ -132,9 +132,6 @@
             font-size: 50px;
 
             &.align-left{
-                transform: translate(-48%, -48%);
-
-
                 &.n40{
                     transform: translate(-51%, -48%);
                 }
@@ -450,6 +447,7 @@
                     }
                     p{
                         font-size: 20px !important;
+                        text-align: center;
                         &.show-more{
                             font-size: 14px !important;
                         }
@@ -499,7 +497,7 @@
                             left: 50%;
                         }
                         &.category-3{
-                            top: 50%;
+                            top: 51%;
                             left: 50%;
                         }
                         &.category-4{

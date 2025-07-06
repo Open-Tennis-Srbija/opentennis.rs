@@ -1,7 +1,7 @@
 @use '../abstracts/' as *;
 .global-loader {
     position: fixed;
-    z-index: 9999;
+    z-index: 3;
     top: 110px;
     left: 0;
     right: 0;
@@ -51,7 +51,7 @@
 
 
     @media only screen and (max-width: 1200px) {
-        top: 100px;
+        top: 50px;
         bottom: 50px;
     }
 }

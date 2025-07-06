@@ -23,6 +23,7 @@ onMounted(() => {
         form.name = response.data.name;
         form.location = response.data.county;
         form.date_begin = response.data.date_begin;
+        form.uri = response.data.uri;
         form.date_end = response.data.date_end;
         form.link = response.data.link;
         form.court = response.data.court;
@@ -66,6 +67,7 @@ const form = useForm({
     location: null,
     link: null,
     court: null,
+    uri: null,
 });
 
 const formState = reactive({
@@ -224,6 +226,19 @@ const handleInputs = (event,isDate = false) => {
         </div>
       </div>
 
+      <div class="form-section">
+        <div class="form-row">
+          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
+            <label for="winner-fname" class="input-label">
+              URI (srpskatenisliga.rs/URI)
+            </label>
+            <input v-model="form.uri" @input="handleInputs($event)" :class="{'invalid': form.errors.uri}" :disabled="formState.submitted" id="uri" type="text">
+            <p class="error-message">{{ form.errors.uri }}</p>
+          </div>
+          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
+          </div>
+        </div>
+      </div>
       <div class="form-section">
         <div class="form-row">
           <button id="submit">

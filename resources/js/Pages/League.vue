@@ -1,6 +1,6 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
-import { onMounted, computed, reactive, onBeforeMount } from "vue";
+import { onMounted, computed, reactive, onBeforeMount, onBeforeUnmount } from "vue";
 import utils from "../utils";
 import axios from "axios";
 import bus from "vue3-eventbus";
@@ -19,6 +19,7 @@ const props = defineProps({
 });
 onMounted(() => {
     page.props["title"] = "Lige & Turniri";
+    bus.emit('active', 'leagues')
     axios.get(`/get-league/${props.league_uri}`).then((response) => {
         league.value = response.data;
         bus.emit("loading", false);
@@ -74,7 +75,9 @@ const isInactive = (date_end) => {
 function containsGreek(text) {
   return /[\u0370-\u03FF\u1F00-\u1FFF]/.test(text);
 }
-
+onBeforeUnmount(() => {
+    bus.emit('clearActive');
+});
 </script>
 <template>
     <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player league">
@@ -146,7 +149,7 @@ function containsGreek(text) {
                 <div class="summary-item players">
                 </div>
             </div>
-            <h2 class="summary-title no-border low-margin">mečevi</h2>
+            <h2 class="summary-title no-border big-margin">mečevi</h2>
             <div class="player-matches">
                 <MatchTable
                 v-if="league.matches"   
