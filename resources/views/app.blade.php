@@ -6,7 +6,7 @@
     <link rel="icon" href="{{ asset('/favicon.png') }}">
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="SRPSKA TENIS LIGA"/>
-    <meta name="twitter:description" content="SRPSKA TENIS LIGA"/>
+    <meta name="twitter:description" content="budi zdraviji, igraj više"/>
     <meta name="twitter:image:src"
           content="{{ asset('/stl-cover.png') }}"/>
     <meta name="twitter:image:alt" content="srpskatenisliga.rs"/>
@@ -15,7 +15,7 @@
     <meta property="og:title" content="SRPSKA TENIS LIGA"/>
     <meta property="og:image"
           content="{{ asset('/stl-cover.png') }}"/>
-    <meta property="og:description" content="SRPSKA TENIS LIGA"/>
+    <meta property="og:description" content="budi zdraviji, igraj više"/>
     <meta property="og:site_name" content="srpskatenisliga.rs"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
     @inertiaHead
