@@ -8,7 +8,7 @@
     <meta name="twitter:title" content="SRPSKA TENIS LIGA"/>
     <meta name="twitter:description" content="SRPSKA TENIS LIGA"/>
     <meta name="twitter:image:src"
-          content="{{ asset('/social-media-preview.png') }}"/>
+          content="{{ asset('/stl-cover.png') }}"/>
     <meta name="twitter:image:alt" content="srpskatenisliga.rs"/>
     <!-- Open Graph data -->
     <meta property="og:url" content="https://srpskatenisliga.rs"/>
