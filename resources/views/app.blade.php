@@ -14,7 +14,7 @@
     <meta property="og:url" content="https://srpskatenisliga.rs"/>
     <meta property="og:title" content="SRPSKA TENIS LIGA"/>
     <meta property="og:image"
-          content="{{ asset('/social-media-preview.png') }}"/>
+          content="{{ asset('/stl-cover.png') }}"/>
     <meta property="og:description" content="SRPSKA TENIS LIGA"/>
     <meta property="og:site_name" content="srpskatenisliga.rs"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
