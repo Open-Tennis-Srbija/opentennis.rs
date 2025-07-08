@@ -125,7 +125,7 @@ function containsGreek(text) {
                 </a>
             </div>
 		</p>
-        <a class="add-button" :href="`/dodaj?court=${props.court_id}`">
+        <a class="add-button align-top-mobile" :href="`/dodaj?court=${props.court_id}`">
             Dodaj meč
         </a>
 
