@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
         <h1 class="red" :class="{'fix-letters': containsGreek(league.name)}">
             {{ league.name }}        </h1>
 
-        <p class="subtitle">{{ league.county }}</p>
+        <p class="subtitle">{{ league.county }}{{ league.court && league.court.id > 1 ? ',' : '' }} <a class="court-link" v-if="league.court && league.court.id > 1" :href="`/tereni/${league.court.uri}`">{{ league.court.name }}</a></p>
         <p class="subtitle-spacer" >
             &nbsp;
         </p>
@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
             {{formatDate(league.date_start, league.date_end)}} 
         </p>
 
-        <a class="add-button league" :href="`/dodaj?league=${league.id}`">
+        <a class="add-button league" :href="`/dodaj?league=${league.id}&court=${league.court?.id}`">
             Dodaj meč
         </a>
         <div class="dashboard-wrapper">

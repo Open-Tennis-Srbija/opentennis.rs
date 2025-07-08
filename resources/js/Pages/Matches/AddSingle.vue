@@ -37,6 +37,7 @@ onBeforeMount(() => {
       }
     });
     props.leagues.forEach(element => {
+      console.log('found league', element, props.league_id);
       if (element.id == props.league_id) {
         form.league = element;
       }

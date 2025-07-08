@@ -36,7 +36,7 @@ class LeaguesController extends Controller
             'rank' => $league->getRank(),
             'players' => $league->getPlayers(),
             'matches' => $league->getMatches(),
-            'court' => []
+            'court' => Court::find($league->court_id),
         ];
 
     }

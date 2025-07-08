@@ -76,7 +76,16 @@
         color: $mid-gray;
         text-align: center;
         margin-top: -70px;
-        
+         .court-link{
+                font-size: 19px;
+                color: $mid-gray;
+                font-family: Arial, Helvetica, sans-serif;
+                text-transform: unset;
+                text-decoration: none;
+                &:hover{
+                    color: $red;
+                }
+            }
         .court-links-wrapp{
           display: flex;
           width: max-content;
