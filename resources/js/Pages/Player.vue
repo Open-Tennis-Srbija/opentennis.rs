@@ -152,7 +152,7 @@ onBeforeUnmount(() => {
 				third: player.rank == 3,
 			}"
 		>
-			<p :class="{ 'align-left': player.rank > 9,'n40': player.rank >= 40 && player.rank < 50 }">
+			<p :class="{ 'align-left': player.rank > 9,'n40': player.rank >= 40 && player.rank < 50, [`strict-${player.rank}`]: true }">
 				{{ player.rank }}
 			</p>
 		</div>
@@ -162,7 +162,7 @@ onBeforeUnmount(() => {
 		<p class="subtitle-spacer" v-if="!player.club && !player.location">
 			&nbsp;
 		</p>
-		<p class="subtitle">
+		<p class="subtitle small-margin">
 			{{ player.location }}
 		</p>
 

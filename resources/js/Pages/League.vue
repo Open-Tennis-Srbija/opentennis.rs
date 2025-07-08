@@ -91,18 +91,15 @@ onBeforeUnmount(() => {
             <div
                 class="rank"
             >
-			<p :class="{ 'align-left': league.rank > 9,'n40': league.rank >= 40 && league.rank < 50 }">
+			<p :class="{ 'align-left': league.rank > 9,'n40': league.rank >= 40 && league.rank < 50, [`strict-${league.rank}`]: true }">
 				{{ league.rank }}
 			</p>
 		</div>
         <h1 class="red" :class="{'fix-letters': containsGreek(league.name)}">
             {{ league.name }}        </h1>
 
-        <p class="subtitle">{{ league.county }}{{ league.court && league.court.id > 1 ? ',' : '' }} <a class="court-link" v-if="league.court && league.court.id > 1" :href="`/tereni/${league.court.uri}`">{{ league.court.name }}</a></p>
-        <p class="subtitle-spacer" >
-            &nbsp;
-        </p>
-        <p :style="{color: isInactive(league.date_end) ? '#949494' : 'black'}" class="subtitle">
+        <p class="subtitle small-margin">{{ league.county }}{{ league.court && league.court.id > 1 ? ',' : '' }} <a class="court-link" v-if="league.court && league.court.id > 1" :href="`/tereni/${league.court.uri}`">{{ league.court.name }}</a></p>
+        <p :style="{color: isInactive(league.date_end) ? '#949494' : 'black'}" class="subtitle smaller-margin">
             {{formatDate(league.date_start, league.date_end)}} 
         </p>
 

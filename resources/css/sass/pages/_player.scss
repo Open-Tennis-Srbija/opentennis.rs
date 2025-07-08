@@ -27,11 +27,8 @@
         text-decoration: none;
         font-family: 'Helvetica Neue';
         text-transform: uppercase;
-        padding-top: 6px;
-
-
-        margin-bottom: -30px;
-
+        margin-top: 60px;
+        margin-bottom: -5px;
         &:hover {
             background: $red;
         }
@@ -113,7 +110,9 @@
         }
       }
       .subtitle-spacer{
-        margin-bottom: 15px;
+        margin-bottom: 0;
+        height: 0;
+        margin-top: -20px;
       }
 
     >.rank{
@@ -147,13 +146,48 @@
             display: block;
             position: absolute;
             top: 50%;
-            left: 51%;
+            left: 50%;
             transform: translate(-50%, -50%);
             line-height: 1;
             margin: 0;
             padding: 0;
             font-size: 50px;
 
+
+            &.strict-2{
+                left: 51%;
+            }
+
+            &.strict-3{
+                top: 51%;
+                left: 51%;
+            }
+            &.strict-4{
+                top: 51%;
+            }
+            &.strict-5{
+                top: 51%;
+                left: 51%;
+            }
+            &.strict-6{
+                top: 51%;
+            }
+            &.strict-7{
+                top: 51%;
+                left: 51%;
+            }
+            &.strict-8{
+                top: 51%;
+                left: 51%;
+            }
+            &.strict-9{
+                top: 51%;
+                left: 51%;
+            }
+            &.strict-10{
+                top: 51%;
+                left: 49%;
+            }
             &.align-left{
                 &.n40{
                     transform: translate(-51%, -48%);
@@ -449,6 +483,10 @@
         }
         p.subtitle{
             margin: 0;
+
+            &.small-margin{
+                margin-top: 10px;
+            }
 
             a{
                 font-size: 16px;

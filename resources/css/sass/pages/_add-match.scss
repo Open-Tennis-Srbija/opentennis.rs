@@ -76,6 +76,14 @@
         color: $mid-gray;
         text-align: center;
         margin-top: -70px;
+         
+        &.small-margin{
+          margin-top: -60px;
+        }
+
+        &.smaller-margin{
+          margin-top: -20px;
+        }
          .court-link{
                 font-size: 19px;
                 color: $mid-gray;

@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-import { reactive, onMounted, nextTick, onUpdated, resolveComponent, mergeProps, unref, useSSRContext, withCtx, createTextVNode, mergeModels, useModel, onBeforeMount, ref, watch, computed, onUnmounted, createVNode, onBeforeUnmount as onBeforeUnmount$1, toDisplayString, defineAsyncComponent, createSSRApp, h } from "vue";
+import { reactive, onBeforeMount, onMounted, nextTick, onUpdated, resolveComponent, mergeProps, unref, useSSRContext, ref, withCtx, createTextVNode, mergeModels, useModel, watch, computed, onUnmounted, createVNode, onBeforeUnmount as onBeforeUnmount$1, toDisplayString, defineAsyncComponent, createSSRApp, h } from "vue";
 import { ssrRenderAttrs, ssrRenderComponent, ssrInterpolate, ssrRenderAttr, ssrRenderClass, ssrIncludeBooleanAttr, ssrRenderList, ssrRenderStyle, ssrRenderSlot } from "vue/server-renderer";
 import { useForm, usePage, router, createInertiaApp, Head, Link } from "@inertiajs/vue3";
 import bus, { bus as bus$1 } from "vue3-eventbus";
@@ -18,7 +18,7 @@ const opstine = {
 const _sfc_main$y = {
   __name: "AddSingle",
   __ssrInlineRender: true,
-  props: { players: Array, courts: Array, leagues: Array },
+  props: { players: Array, courts: Array, leagues: Array, court_id: Number, league_id: Number },
   emits: ["submitted", "success"],
   setup(__props, { emit: __emit }) {
     const props = __props;
@@ -36,6 +36,20 @@ const _sfc_main$y = {
       submitted: false,
       success: false,
       shouldReset: false
+    });
+    onBeforeMount(() => {
+      props.courts.forEach((element) => {
+        if (element.id == props.court_id) {
+          console.log("found court", element);
+          form.court = element;
+        }
+      });
+      props.leagues.forEach((element) => {
+        console.log("found league", element, props.league_id);
+        if (element.id == props.league_id) {
+          form.league = element;
+        }
+      });
     });
     onMounted(async () => {
       await nextTick();
@@ -160,7 +174,7 @@ const __vite_glob_0_22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.de
 const _sfc_main$x = {
   __name: "AddDouble",
   __ssrInlineRender: true,
-  props: { players: Array, courts: Array, leagues: Array },
+  props: { players: Array, courts: Array, leagues: Array, court_id: Number, league_id: Number },
   emits: ["submitted", "success"],
   setup(__props, { emit: __emit }) {
     const props = __props;
@@ -180,6 +194,18 @@ const _sfc_main$x = {
       submitted: false,
       success: false,
       shouldReset: false
+    });
+    onBeforeMount(() => {
+      props.courts.forEach((element) => {
+        if (element.id == props.court_id) {
+          form.court = element;
+        }
+      });
+      props.leagues.forEach((element) => {
+        if (element.id == props.league_id) {
+          form.league = element;
+        }
+      });
     });
     onMounted(async () => {
       await nextTick();
@@ -334,11 +360,25 @@ const _sfc_main$w = {
       success: false,
       shouldReset: false
     });
+    const court_id = ref(null);
+    const league_id = ref(null);
     const handleSuccess = () => {
       formState.success = true;
     };
     const selectedForm = reactive({
       type: "single"
+    });
+    onBeforeMount(() => {
+      const url = new URL(window.location);
+      const obj = Object.fromEntries(url.searchParams.entries());
+      if (obj.court) {
+        court_id.value = obj.court;
+      }
+      if (obj.league) {
+        league_id.value = obj.league;
+      }
+      console.log("Court ID:", court_id.value);
+      console.log("League ID:", league_id.value);
     });
     return (_ctx, _push, _parent, _attrs) => {
       const _component_Head = resolveComponent("Head");
@@ -389,6 +429,8 @@ const _sfc_main$w = {
         _push(`<div>`);
         if (selectedForm.type === "single") {
           _push(ssrRenderComponent(_sfc_main$y, {
+            court_id: court_id.value,
+            league_id: league_id.value,
             onSuccess: handleSuccess,
             players: props.players,
             courts: props.courts,
@@ -399,6 +441,8 @@ const _sfc_main$w = {
         }
         if (selectedForm.type === "double") {
           _push(ssrRenderComponent(_sfc_main$x, {
+            court_id: court_id.value,
+            league_id: league_id.value,
             onSuccess: handleSuccess,
             players: props.players,
             courts: props.courts,
@@ -1967,7 +2011,7 @@ const _sfc_main$h = {
       } else {
         _push(`<!---->`);
       }
-      _push(`</div></p><div class="dashboard-wrapper"><h2 class="summary-title">Statistika</h2><div class="summary player three"><div class="summary-item"><h2>poeni</h2><p>${ssrInterpolate(points.value)}</p></div><div class="summary-item"><h2>teniseri</h2><p>${ssrInterpolate(court.value.player_number)}</p></div><div class="summary-item"><h2>mečevi</h2><p>${ssrInterpolate(court.value.match_number)}</p></div></div><h2 class="summary-title low-margin">lige &amp; turniri</h2><div class="summary player three col"><div class="summary-item players"></div><div class="summary-item players">`);
+      _push(`</div></p><a class="add-button"${ssrRenderAttr("href", `/dodaj?court=${props.court_id}`)}> Dodaj meč </a><div class="dashboard-wrapper"><h2 class="summary-title">Statistika</h2><div class="summary player three"><div class="summary-item"><h2>poeni</h2><p>${ssrInterpolate(points.value)}</p></div><div class="summary-item"><h2>teniseri</h2><p>${ssrInterpolate(court.value.player_number)}</p></div><div class="summary-item"><h2>mečevi</h2><p>${ssrInterpolate(court.value.match_number)}</p></div></div><h2 class="summary-title low-margin">lige &amp; turniri</h2><div class="summary player three col"><div class="summary-item players"></div><div class="summary-item players">`);
       if (((_a = court.value.leagues) == null ? void 0 : _a.length) > 0) {
         _push(`<!--[--><!--[-->`);
         ssrRenderList(leagues.value, (league) => {
@@ -1997,7 +2041,7 @@ const _sfc_main$h = {
         }
         _push(`<!--]-->`);
       } else {
-        _push(`<h2>na ovom terenu nema liga ili turnira 🙁</h2>`);
+        _push(`<h2 class="black">na ovom terenu nema liga ili turnira 🙁</h2>`);
       }
       _push(`</div><div class="summary-item players"></div></div><h2 class="summary-title big-margin">teniseri</h2><div class="summary player three col"><div class="summary-item players"></div><div class="summary-item players">`);
       if (((_b = court.value.players) == null ? void 0 : _b.length) > 0) {
@@ -2029,7 +2073,7 @@ const _sfc_main$h = {
         }
         _push(`<!--]-->`);
       } else {
-        _push(`<h2>ovaj teren nema aktivnih igrača 🙁</h2>`);
+        _push(`<h2 class="black">ovaj teren nema aktivnih igrača 🙁</h2>`);
       }
       _push(`</div><div class="summary-item players"></div></div><h2 class="summary-title no-border big-margin">mečevi</h2><div class="player-matches">`);
       if (court.value.matches) {
@@ -2466,7 +2510,7 @@ const _sfc_main$c = {
       bus.emit("clearActive");
     });
     return (_ctx, _push, _parent, _attrs) => {
-      var _a;
+      var _a, _b;
       const _component_Link = resolveComponent("Link");
       const _component_MatchTable = resolveComponent("MatchTable");
       const _component_Head = resolveComponent("Head");
@@ -2491,8 +2535,14 @@ const _sfc_main$c = {
       } else {
         _push(`<!---->`);
       }
-      _push(`<div class="rank"><p class="${ssrRenderClass({ "align-left": league.value.rank > 9, "n40": league.value.rank >= 40 && league.value.rank < 50 })}">${ssrInterpolate(league.value.rank)}</p></div><h1 class="${ssrRenderClass([{ "fix-letters": containsGreek(league.value.name) }, "red"])}">${ssrInterpolate(league.value.name)}</h1><p class="subtitle">${ssrInterpolate(league.value.county)}</p><p class="subtitle-spacer">   </p><p style="${ssrRenderStyle({ color: isInactive(league.value.date_end) ? "#949494" : "black" })}" class="subtitle">${ssrInterpolate(formatDate(league.value.date_start, league.value.date_end))}</p><div class="dashboard-wrapper"><h2 class="summary-title">Statistika</h2><div class="summary player three"><div class="summary-item"><h2>poeni</h2><p>${ssrInterpolate(points.value)}</p></div><div class="summary-item"><h2>teniseri</h2><p>${ssrInterpolate(league.value.player_number)}</p></div><div class="summary-item"><h2>mečevi</h2><p>${ssrInterpolate(league.value.match_number)}</p></div></div><h2 class="summary-title low-margin">teniseri</h2><div class="summary player three col"><div class="summary-item players"></div><div class="summary-item players">`);
-      if (((_a = league.value.players) == null ? void 0 : _a.length) > 0) {
+      _push(`<div class="rank"><p class="${ssrRenderClass({ "align-left": league.value.rank > 9, "n40": league.value.rank >= 40 && league.value.rank < 50, [`strict-${league.value.rank}`]: true })}">${ssrInterpolate(league.value.rank)}</p></div><h1 class="${ssrRenderClass([{ "fix-letters": containsGreek(league.value.name) }, "red"])}">${ssrInterpolate(league.value.name)}</h1><p class="subtitle small-margin">${ssrInterpolate(league.value.county)}${ssrInterpolate(league.value.court && league.value.court.id > 1 ? "," : "")} `);
+      if (league.value.court && league.value.court.id > 1) {
+        _push(`<a class="court-link"${ssrRenderAttr("href", `/tereni/${league.value.court.uri}`)}>${ssrInterpolate(league.value.court.name)}</a>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`</p><p style="${ssrRenderStyle({ color: isInactive(league.value.date_end) ? "#949494" : "black" })}" class="subtitle smaller-margin">${ssrInterpolate(formatDate(league.value.date_start, league.value.date_end))}</p><a class="add-button league"${ssrRenderAttr("href", `/dodaj?league=${league.value.id}&court=${(_a = league.value.court) == null ? void 0 : _a.id}`)}> Dodaj meč </a><div class="dashboard-wrapper"><h2 class="summary-title">Statistika</h2><div class="summary player three"><div class="summary-item"><h2>poeni</h2><p>${ssrInterpolate(points.value)}</p></div><div class="summary-item"><h2>teniseri</h2><p>${ssrInterpolate(league.value.player_number)}</p></div><div class="summary-item"><h2>mečevi</h2><p>${ssrInterpolate(league.value.match_number)}</p></div></div><h2 class="summary-title low-margin">teniseri</h2><div class="summary player three col"><div class="summary-item players"></div><div class="summary-item players">`);
+      if (((_b = league.value.players) == null ? void 0 : _b.length) > 0) {
         _push(`<!--[--><!--[-->`);
         ssrRenderList(players.value, (player) => {
           _push(`<p>`);
@@ -2521,7 +2571,7 @@ const _sfc_main$c = {
         }
         _push(`<!--]-->`);
       } else {
-        _push(`<h2>ovaj turnir nema aktivnih igrača 🙁</h2>`);
+        _push(`<h2 class="black">ovaj turnir nema aktivnih igrača 🙁</h2>`);
       }
       _push(`</div><div class="summary-item players"></div></div><h2 class="summary-title no-border big-margin">mečevi</h2><div class="player-matches">`);
       if (league.value.matches) {
@@ -3530,7 +3580,7 @@ const _sfc_main$7 = {
         first: player.value.rank == 1,
         second: player.value.rank == 2,
         third: player.value.rank == 3
-      }, "rank"])}"><p class="${ssrRenderClass({ "align-left": player.value.rank > 9, "n40": player.value.rank >= 40 && player.value.rank < 50 })}">${ssrInterpolate(player.value.rank)}</p></div>`);
+      }, "rank"])}"><p class="${ssrRenderClass({ "align-left": player.value.rank > 9, "n40": player.value.rank >= 40 && player.value.rank < 50, [`strict-${player.value.rank}`]: true })}">${ssrInterpolate(player.value.rank)}</p></div>`);
       if (player.value.name) {
         _push(`<h1 class="${ssrRenderClass([{ "fix-letters": containsGreek(player.value.name) }, "blue"])}">${ssrInterpolate(player.value.name.split(" ")[0])} <br class="show-mobile"> ${ssrInterpolate(player.value.name.split(" ")[1])}</h1>`);
       } else {
@@ -3541,9 +3591,14 @@ const _sfc_main$7 = {
       } else {
         _push(`<!---->`);
       }
-      _push(`<p class="subtitle">${ssrInterpolate(player.value.location)}</p><div class="dashboard-wrapper"><h2 class="summary-title">Statistika</h2><div class="summary player six desktop"><div class="summary-item"><h2>poeni</h2><p>${ssrInterpolate(points.value)}</p></div><div class="summary-item"><h2>mečevi</h2><p>${ssrInterpolate(player.value.total_matches)}</p></div><div class="summary-item"><h2>pobede</h2><p>${ssrInterpolate(player.value.wins_number)}</p></div><div class="summary-item"><h2>gubitci</h2><p>${ssrInterpolate(player.value.losses_number)}</p></div><div class="summary-item"><h2>% pobeda</h2><p>${ssrInterpolate(player.value.win_precentage)}%</p></div><div class="summary-item"><h2 style="${ssrRenderStyle({ "margin-top": "-10px" })}">kategorija</h2><p class="category"><span class="diamond" style="${ssrRenderStyle({ border: `1px solid ${categoryColors[player.value.category] || "transparent"}` })}"></span><span class="${ssrRenderClass([{ [`category-${player.value.category}`]: true, "unknown": player.value.category == "?" }, "number"])}">${ssrInterpolate(player.value.category)}</span></p></div></div><div class="summary player five mobile"><div class="summary-item half"><h2>poeni</h2><p>${ssrInterpolate(points.value)}</p></div><div class="summary-item"><h2>% pobeda</h2><p>${ssrInterpolate(player.value.win_precentage)}%</p></div><div class="summary-item"><h2 style="${ssrRenderStyle({ "margin-top": "-4px" })}">kategorija</h2><p class="category"><span class="diamond" style="${ssrRenderStyle({ border: `1px solid ${categoryColors[player.value.category] || "transparent"}` })}"></span><span class="${ssrRenderClass([{ [`category-${player.value.category}`]: true, "fix": player.value.category == 7, "unknown": player.value.category == "?" }, "number"])}">${ssrInterpolate(player.value.category)}</span></p></div><div class="summary-item"><h2>mečevi</h2><p>${ssrInterpolate(player.value.total_matches)}</p></div><div class="summary-item"><h2>pobede</h2><p>${ssrInterpolate(player.value.wins_number)}</p></div><div class="summary-item"><h2>gubitci</h2><p>${ssrInterpolate(player.value.losses_number)}</p></div></div><h2 class="summary-title">Teniseri</h2><div class="summary player three col"><div class="summary-item players">`);
+      _push(`<p class="subtitle small-margin">${ssrInterpolate(player.value.location)}</p><div class="dashboard-wrapper"><h2 class="summary-title">Statistika</h2><div class="summary player six desktop"><div class="summary-item"><h2>poeni</h2><p>${ssrInterpolate(points.value)}</p></div><div class="summary-item"><h2>mečevi</h2><p>${ssrInterpolate(player.value.total_matches)}</p></div><div class="summary-item"><h2>pobede</h2><p>${ssrInterpolate(player.value.wins_number)}</p></div><div class="summary-item"><h2>gubitci</h2><p>${ssrInterpolate(player.value.losses_number)}</p></div><div class="summary-item"><h2>% pobeda</h2><p>${ssrInterpolate(player.value.win_precentage)}%</p></div><div class="summary-item"><h2 style="${ssrRenderStyle({ "margin-top": "-10px" })}">kategorija</h2><p class="category"><span class="diamond" style="${ssrRenderStyle({ border: `1px solid ${categoryColors[player.value.category] || "transparent"}` })}"></span><span class="${ssrRenderClass([{ [`category-${player.value.category}`]: true, "unknown": player.value.category == "?" }, "number"])}">${ssrInterpolate(player.value.category)}</span></p></div></div><div class="summary player five mobile"><div class="summary-item half"><h2>poeni</h2><p>${ssrInterpolate(points.value)}</p></div><div class="summary-item"><h2>% pobeda</h2><p>${ssrInterpolate(player.value.win_precentage)}%</p></div><div class="summary-item"><h2 style="${ssrRenderStyle({ "margin-top": "-4px" })}">kategorija</h2><p class="category"><span class="diamond" style="${ssrRenderStyle({ border: `1px solid ${categoryColors[player.value.category] || "transparent"}` })}"></span><span class="${ssrRenderClass([{ [`category-${player.value.category}`]: true, "fix": player.value.category == 7, "unknown": player.value.category == "?" }, "number"])}">${ssrInterpolate(player.value.category)}</span></p></div><div class="summary-item"><h2>mečevi</h2><p>${ssrInterpolate(player.value.total_matches)}</p></div><div class="summary-item"><h2>pobede</h2><p>${ssrInterpolate(player.value.wins_number)}</p></div><div class="summary-item"><h2>gubitci</h2><p>${ssrInterpolate(player.value.losses_number)}</p></div></div><h2 class="summary-title">Teniseri</h2><div class="summary player three col"><div class="summary-item players">`);
+      if (player.value.matchups) {
+        _push(`<h2>pobedio ${ssrInterpolate(Object.values(player.value.matchups.won_against).length)} tenisera</h2>`);
+      } else {
+        _push(`<!---->`);
+      }
       if (matchups.value.wins.length > 0) {
-        _push(`<!--[--><h2>pobedio ${ssrInterpolate(Object.values(player.value.matchups.won_against).length)} tenisera</h2><!--[-->`);
+        _push(`<!--[--><!--[-->`);
         ssrRenderList(matchups.value.wins, (player2) => {
           _push(`<p>`);
           _push(ssrRenderComponent(_component_Link, {
@@ -3571,11 +3626,16 @@ const _sfc_main$7 = {
         }
         _push(`<!--]-->`);
       } else {
-        _push(`<h2>ovaj teniser nikada nije pobedio 🙁</h2>`);
+        _push(`<h2 class="black">ovaj teniser nikada nije pobedio 🙁</h2>`);
       }
       _push(`</div><div class="summary-item players">`);
+      if (player.value.matchups) {
+        _push(`<h2>izgubio od ${ssrInterpolate(Object.values(player.value.matchups.lost_against).length)} tenisera</h2>`);
+      } else {
+        _push(`<!---->`);
+      }
       if (matchups.value.loses.length > 0) {
-        _push(`<!--[--><h2>izgubio od ${ssrInterpolate(Object.values(player.value.matchups.lost_against).length)} tenisera</h2><!--[-->`);
+        _push(`<!--[--><!--[-->`);
         ssrRenderList(matchups.value.loses, (player2) => {
           _push(`<p>`);
           _push(ssrRenderComponent(_component_Link, {
@@ -3603,11 +3663,16 @@ const _sfc_main$7 = {
         }
         _push(`<!--]-->`);
       } else {
-        _push(`<h2>ovaj teniser nikada nije izgubio 🙂</h2>`);
+        _push(`<h2 class="black">ovaj teniser nikada nije izgubio 🙂</h2>`);
       }
       _push(`</div><div class="summary-item players">`);
+      if (player.value.matchups) {
+        _push(`<h2>nije igrao sa ${ssrInterpolate(player.value.matchups.not_played.length)} ${ssrInterpolate(getInteractionText(matchups.value.not_played.length))}</h2>`);
+      } else {
+        _push(`<!---->`);
+      }
       if (matchups.value.not_played.length > 0) {
-        _push(`<!--[--><h2>nije igrao sa ${ssrInterpolate(player.value.matchups.not_played.length)} ${ssrInterpolate(getInteractionText(matchups.value.not_played.length))}</h2><!--[-->`);
+        _push(`<!--[--><!--[-->`);
         ssrRenderList(matchups.value.not_played, (player2) => {
           _push(`<p>`);
           _push(ssrRenderComponent(_component_Link, {
@@ -3635,7 +3700,7 @@ const _sfc_main$7 = {
         }
         _push(`<!--]-->`);
       } else {
-        _push(`<h2>ovaj teniser je igrao sa svima 🙂</h2>`);
+        _push(`<h2 class="black">ovaj teniser je igrao sa svima 🙂</h2>`);
       }
       _push(`</div></div><h2 class="summary-title big-margin">lokacije</h2><div class="summary player three col"><div class="summary-item players"><h2>opštine</h2><!--[-->`);
       ssrRenderList(locations.value.locations, (location) => {
@@ -3651,9 +3716,9 @@ const _sfc_main$7 = {
         }
         _push(` (${ssrInterpolate(court.count)}) </p>`);
       });
-      _push(`<!--]--></div><div class="summary-item players">`);
+      _push(`<!--]--></div><div class="summary-item players"><h2>lige i turniri</h2>`);
       if (locations.value.leagues.length > 0) {
-        _push(`<!--[--><h2>lige i turniri</h2><!--[-->`);
+        _push(`<!--[-->`);
         ssrRenderList(locations.value.leagues, (league) => {
           _push(`<p>`);
           if (league.uri != "") {
@@ -3663,9 +3728,9 @@ const _sfc_main$7 = {
           }
           _push(` (${ssrInterpolate(league.count)}) </p>`);
         });
-        _push(`<!--]--><!--]-->`);
+        _push(`<!--]-->`);
       } else {
-        _push(`<h2>ovaj teniser nije učestvovao u ligama 🙁</h2>`);
+        _push(`<h2 class="black">ovaj teniser nije učestvovao u ligama 🙁</h2>`);
       }
       _push(`</div></div><h2 class="summary-title big-margin">Grafikoni</h2><div class="chart-wrapper">`);
       if (player.value.id) {
