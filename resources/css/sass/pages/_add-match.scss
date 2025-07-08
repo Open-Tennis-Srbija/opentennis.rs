@@ -535,12 +535,15 @@
       border-bottom: 0;
       margin-bottom: 250px;
 
+      .league-margin{
+        margin-top: 10px !important
+      }
     .form-select{
       gap: 50px;
       }
       h1 {
         font-size: 27px;
-        display: none;;
+        display: none;
         &.add{
           display: inline;
           font-size: 27px;
