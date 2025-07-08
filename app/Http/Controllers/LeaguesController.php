@@ -24,6 +24,7 @@ class LeaguesController extends Controller
 
         return [
             'name' => $league->name,
+            'id' => $league->id,
             'county' => $league->county,
             'uri' => $league->uri,
             'points' => $league->getPoints(),

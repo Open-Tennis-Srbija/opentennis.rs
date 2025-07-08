@@ -125,6 +125,9 @@ function containsGreek(text) {
                 </a>
             </div>
 		</p>
+        <a class="add-button" :href="`/dodaj?court=${props.court_id}`">
+            Dodaj meč
+        </a>
 
         <div class="dashboard-wrapper">
             <h2 class="summary-title">Statistika</h2>
@@ -163,7 +166,7 @@ function containsGreek(text) {
                         </p>
                     </template>
                     <template v-else>
-                        <h2>na ovom terenu nema liga ili turnira &#128577;</h2>
+                        <h2 class="black">na ovom terenu nema liga ili turnira &#128577;</h2>
                     </template>
                 </div>
                 <div class="summary-item players">
@@ -190,7 +193,7 @@ function containsGreek(text) {
                         </p>
                     </template>
                     <template v-else>
-                        <h2>ovaj teren nema aktivnih igrača &#128577;</h2>
+                        <h2 class="black">ovaj teren nema aktivnih igrača &#128577;</h2>
                     </template>
                 </div>
                 <div class="summary-item players">

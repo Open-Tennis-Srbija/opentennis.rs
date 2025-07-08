@@ -1,14 +1,14 @@
 
 <script setup>
 import {useForm} from '@inertiajs/vue3'
-import {reactive,onMounted, defineAsyncComponent, computed, onUpdated} from 'vue';
+import {reactive,onMounted, defineAsyncComponent, computed, onUpdated, onBeforeMount} from 'vue';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import opstine from '../..//assets/opstine.json';
 import bus from 'vue3-eventbus';
 import { nextTick } from 'vue';
 
-const props = defineProps({players: Array,courts: Array, leagues: Array});
+const props = defineProps({players: Array,courts: Array, leagues: Array, court_id: Number, league_id: Number});
 
 const emit = defineEmits(['submitted','success']);
 
@@ -29,7 +29,19 @@ const formState = reactive({
     success: false,
     shouldReset: false,
 });
-
+onBeforeMount(() => {
+    props.courts.forEach(element => {
+      if (element.id == props.court_id) {
+        console.log('found court', element);
+        form.court = element;
+      }
+    });
+    props.leagues.forEach(element => {
+      if (element.id == props.league_id) {
+        form.league = element;
+      }
+    });
+});
 onMounted(async () => {
     await nextTick();
     bus.emit('loading', false);

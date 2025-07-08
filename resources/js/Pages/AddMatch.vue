@@ -1,9 +1,10 @@
 <script setup>
-import {reactive} from 'vue';
+import {onBeforeMount, reactive, watch} from 'vue';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import AddSingle from './Matches/AddSingle.vue';
 import AddDouble from './Matches/AddDouble.vue';
+import { ref } from 'vue';
 
 const props = defineProps({players: Array,courts: Array, leagues: Array});
 
@@ -12,15 +13,27 @@ const formState = reactive({
     success: false,
     shouldReset: false,
 });
+const court_id = ref(null)
+const league_id = ref(null)
 
 const handleSuccess = () => {
     formState.success = true;
 };
-
 const selectedForm = reactive({
     type: 'single',
 });
-
+onBeforeMount(() => {
+    const url = new URL(window.location);
+    const obj = Object.fromEntries(url.searchParams.entries());
+    if (obj.court) {
+        court_id.value = obj.court;
+    }
+    if (obj.league) {
+        league_id.value = obj.league;
+    }
+    console.log('Court ID:', court_id.value);
+    console.log('League ID:', league_id.value);
+});
 </script>
 <template>
   <Head title="Dodaj meč -" />
@@ -36,8 +49,8 @@ const selectedForm = reactive({
       <Link prefetch="false" class="red" :href="'/'">vidi tenisere</Link>
     </div>
     <div v-if="!formState.success">
-      <AddSingle @success="handleSuccess" v-if="selectedForm.type === 'single'" :players="props.players" :courts="props.courts" :leagues="props.leagues" />
-      <AddDouble @success="handleSuccess" v-if="selectedForm.type === 'double'" :players="props.players" :courts="props.courts" :leagues="props.leagues" />
+      <AddSingle :court_id="court_id" :league_id="league_id" @success="handleSuccess" v-if="selectedForm.type === 'single'" :players="props.players" :courts="props.courts" :leagues="props.leagues" />
+      <AddDouble :court_id="court_id" :league_id="league_id" @success="handleSuccess" v-if="selectedForm.type === 'double'" :players="props.players" :courts="props.courts" :leagues="props.leagues" />
     </div>
   </div>
 </template>

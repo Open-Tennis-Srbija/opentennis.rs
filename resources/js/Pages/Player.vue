@@ -229,8 +229,8 @@ onBeforeUnmount(() => {
 			<h2 class="summary-title">Teniseri</h2>
 			<div class="summary player three col">
 				<div class="summary-item players">
+					<h2 v-if="player.matchups">pobedio {{ Object.values(player.matchups.won_against).length }} tenisera</h2>
 					<template v-if="matchups.wins.length > 0">
-						<h2>pobedio {{ Object.values(player.matchups.won_against).length }} tenisera</h2>
 						<template v-for="player in matchups.wins">
 							<p>
 								<Link prefetch="false" :href="`/${player.uri}`">{{
@@ -247,12 +247,12 @@ onBeforeUnmount(() => {
 						</p>
 					</template>
 					<template v-else>
-						<h2>ovaj teniser nikada nije pobedio &#128577;</h2>
+						<h2 class="black">ovaj teniser nikada nije pobedio &#128577;</h2>
 					</template>
 				</div>
 				<div class="summary-item players">
+					<h2 v-if="player.matchups">izgubio od {{Object.values(player.matchups.lost_against).length}} tenisera</h2>
 					<template v-if="matchups.loses.length > 0">
-						<h2>izgubio od {{Object.values(player.matchups.lost_against).length}} tenisera</h2>
 						<template v-for="player in matchups.loses">
 							<p>
 								<Link prefetch="false" :href="`/${player.uri}`">{{
@@ -269,12 +269,12 @@ onBeforeUnmount(() => {
 						</p>
 					</template>
 					<template v-else>
-						<h2>ovaj teniser nikada nije izgubio &#128578;</h2>
+						<h2 class="black">ovaj teniser nikada nije izgubio &#128578;</h2>
 					</template>
 				</div>
 				<div class="summary-item players">
+					<h2 v-if="player.matchups">nije igrao sa {{player.matchups.not_played.length}} {{getInteractionText(matchups.not_played.length)}}</h2>
 					<template v-if="matchups.not_played.length > 0">
-						<h2>nije igrao sa {{player.matchups.not_played.length}} {{getInteractionText(matchups.not_played.length)}}</h2>
 						<template v-for="player in matchups.not_played">
 							<p>
 								<Link prefetch="false" :href="`/${player.uri}`">{{
@@ -290,7 +290,7 @@ onBeforeUnmount(() => {
 						</p>
 					</template>
 					<template v-else>
-						<h2>ovaj teniser je igrao sa svima &#128578;</h2>
+						<h2 class="black">ovaj teniser je igrao sa svima &#128578;</h2>
 					</template>
 				</div>
 			</div>
@@ -322,8 +322,8 @@ onBeforeUnmount(() => {
 						</template>
 				</div>
 				<div class="summary-item players">
+					<h2>lige i turniri</h2>
 					<template v-if="locations.leagues.length > 0">
-						<h2>lige i turniri</h2>
 						<template v-for="league in locations.leagues">
 							<p>
 								<template v-if="league.uri != ''">
@@ -339,7 +339,7 @@ onBeforeUnmount(() => {
 						</template>
 					</template>
 					<template v-else>
-						<h2>ovaj teniser nije učestvovao u ligama &#128577;</h2>
+						<h2 class="black">ovaj teniser nije učestvovao u ligama &#128577;</h2>
 					</template>
 				</div>
 			</div>

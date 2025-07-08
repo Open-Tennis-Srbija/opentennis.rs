@@ -106,6 +106,9 @@ onBeforeUnmount(() => {
             {{formatDate(league.date_start, league.date_end)}} 
         </p>
 
+        <a class="add-button" :href="`/dodaj?league=${league.id}`">
+            Dodaj meč
+        </a>
         <div class="dashboard-wrapper">
             <h2 class="summary-title">Statistika</h2>
             <div class="summary player three">
@@ -143,7 +146,7 @@ onBeforeUnmount(() => {
                         </p>
                     </template>
                     <template v-else>
-                        <h2>ovaj turnir nema aktivnih igrača &#128577;</h2>
+                        <h2 class="black">ovaj turnir nema aktivnih igrača &#128577;</h2>
                     </template>
                 </div>
                 <div class="summary-item players">
