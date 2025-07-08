@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
             {{formatDate(league.date_start, league.date_end)}} 
         </p>
 
-        <a class="add-button" :href="`/dodaj?league=${league.id}`">
+        <a class="add-button league" :href="`/dodaj?league=${league.id}`">
             Dodaj meč
         </a>
         <div class="dashboard-wrapper">

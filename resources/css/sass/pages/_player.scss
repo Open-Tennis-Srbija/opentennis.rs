@@ -28,6 +28,10 @@
         font-family: 'Helvetica Neue';
         text-transform: uppercase;
         padding-top: 6px;
+
+
+        margin-bottom: -30px;
+
         &:hover {
             background: $red;
         }
@@ -395,6 +399,13 @@
                 display: block !important;
             }
           }
+        .add-button{
+            margin-top: 26px;
+            &.league{
+                margin-top: 35px;
+                margin-bottom: -25px;
+            }
+        }
         h1{
             display: block;
             margin-bottom: 0;
