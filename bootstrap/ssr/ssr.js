@@ -1990,12 +1990,12 @@ const _sfc_main$h = {
         _push(`<!---->`);
       }
       _push(`</h1>`);
-      if (!court.value.link) {
+      if (!court.value.link && !court.value.location && !court.value.phone) {
         _push(`<p class="subtitle-spacer">   </p>`);
       } else {
         _push(`<!---->`);
       }
-      _push(`<p class="subtitle"><div class="court-links-wrapp">`);
+      _push(`<p class="subtitle small-margin"><div class="court-links-wrapp">`);
       if (court.value.link) {
         _push(`<a${ssrRenderAttr("href", court.value.link)} target="_blank" rel="noopener noreferrer"> vebsajt </a>`);
       } else {

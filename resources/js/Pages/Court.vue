@@ -109,10 +109,10 @@ function containsGreek(text) {
 			/></Link>
         </h1>
 
-        <p class="subtitle-spacer" v-if="!court.link">
+        <p class="subtitle-spacer" v-if="!court.link && !court.location && !court.phone">
 			&nbsp;
 		</p>
-		<p class="subtitle">
+		<p class="subtitle small-margin">
             <div class="court-links-wrapp">
                 <a v-if="court.link" :href="court.link" target="_blank" rel="noopener noreferrer">
                     vebsajt
