@@ -434,7 +434,9 @@
             }
           }
         .add-button{
-            margin-top: 26px;
+            &.mobile-align{
+                margin-top: 26px;
+            }
             &.league{
                 margin-top: 35px;
                 margin-bottom: -25px;

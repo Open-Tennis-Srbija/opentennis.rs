@@ -5,10 +5,25 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: 'resources/js/app.js',
             refresh: true,
-            ssr: 'resources/js/ssr.js',
         }),
-        vue()
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
     ],
+    server: {
+        host: true, // This allows external access
+        port: 5173,
+        strictPort: true,
+        hmr: {
+            port: 5173,
+            host: '192.168.1.147',
+        },
+    },
 });
