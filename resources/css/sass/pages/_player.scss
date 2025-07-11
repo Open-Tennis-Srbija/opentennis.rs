@@ -239,10 +239,16 @@
           &.five{
               display: grid;
               grid-template-columns: repeat(5, 20%);
-
+              row-gap: 30px;
+            
               .summary-item{
                   display: grid;
                   place-items: center;
+                  &.flex{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                  }
               }
           }
           &.six{
@@ -427,7 +433,7 @@
       }
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1200px){
     .static-wrapper.player{
         padding-inline: 0;
         .edit-btn{

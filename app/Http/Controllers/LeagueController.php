@@ -340,6 +340,18 @@ class LeagueController extends Controller
                 'wins'=>[],
                 'loses'=>[]
             ],
+            'categories'=>[
+                1 => [],
+                2 => [],
+                3 => [],
+                4 => [],
+                5 => [],
+                6 => [],
+                7 => [],
+                8 => [],
+                9 => [],
+                10 => [],
+            ],
             'locations'=>[]
         ];
 
@@ -397,6 +409,18 @@ class LeagueController extends Controller
                 'uri' => $players[$i]['uri'],
             ]);
         }
+
+
+        $data['categories'][1] = PlayerController::getPlayersForCategory(1);
+        $data['categories'][2] = PlayerController::getPlayersForCategory(2);
+        $data['categories'][3] = PlayerController::getPlayersForCategory(3);
+        $data['categories'][4] = PlayerController::getPlayersForCategory(4);
+        $data['categories'][5] = PlayerController::getPlayersForCategory(5);
+        $data['categories'][6] = PlayerController::getPlayersForCategory(6);
+        $data['categories'][7] = PlayerController::getPlayersForCategory(7);
+        $data['categories'][8] = PlayerController::getPlayersForCategory(8);
+        $data['categories'][9] = PlayerController::getPlayersForCategory(9);
+        $data['categories'][10] = PlayerController::getPlayersForCategory(10);
 
         return $data;
 

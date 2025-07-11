@@ -13,6 +13,48 @@
     margin: 70px 0 65px;
     text-transform: uppercase;
 }
+.summary {
+
+
+    .summary-item {
+        h2 {
+            position: relative;
+            &.category{
+                color: black !important;
+                font-weight: normal !important;
+            }
+            .diamond {
+                display: block;
+                width: 25px;
+                height: 25px;
+                transform: scaleX(1.4) rotate(45deg);
+
+            }
+
+            .number {
+                position: absolute;
+                top: 56%;
+                font-weight: bold;
+                left: 50%;
+                transform: translate(-50%, -50%);
+
+                &.white {
+                    color: white;
+                }
+
+                &.unknown {
+                    color: #949494;
+                }
+            }
+        }
+        .no-players{
+            font-size: 17px !important;
+            font-weight: normal !important;  
+            color: $mid-gray; 
+        }
+    }
+}
+
 
 .join-wrapper {
     max-width: 1200px;
@@ -63,7 +105,9 @@
         padding-top: 170px;
         padding-inline: 20px;
     }
-
+    .col{
+        grid-template-columns: 100% !important;
+    }
     .title {
         display: none;
     }

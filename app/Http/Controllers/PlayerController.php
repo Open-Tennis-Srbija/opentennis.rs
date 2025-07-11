@@ -263,6 +263,20 @@ class PlayerController extends Controller
 		]);
 	}
 
+	public static function getPlayersForCategory($category){
+		return Player::where('category', $category)
+			->orderBy('points', 'desc')
+			->limit(5)
+			->get()
+			->map(function ($player) {
+				return [
+					'uri' => $player->uri,
+					'name' => $player->first_name . ' ' . $player->last_name,
+					'points' => $player->points,
+				];
+			});
+	}
+
 	public static function get_player_by_uri($uri){
 		$p = Player::where('uri', $uri)
 			->with('wins','losses')

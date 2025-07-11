@@ -35,6 +35,19 @@ import { ref } from 'vue';
         return utils.formatAsThousands(data.value.totals.points);
     });
 
+    const categoryColors = {
+    1: '#8dc73f',
+    2: '#38b64b',
+    3: '#00a99c',
+    4: '#01aef0',
+    5: '#0072bb',
+    6: '#92278f',
+    7: '#eb008b',
+    8: '#ee1d23',
+    9: '#f36621',
+    10: '#f7941d',
+    '?': 'transparent',
+    }
 </script>
 <template>
     <Head :title="'Statistika -'"/>
@@ -81,6 +94,150 @@ import { ref } from 'vue';
                         <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
                         </Link>  ({{ player.count }})
+                    </p>
+                </div>
+            </div>
+            
+            <h2 class="summary-title">kategorije</h2>
+            <div class="summary player five col">
+                <div class="summary-item flex">
+                    <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[1] || 'transparent'}` }"></span>
+						<span class="number category-1">1</span>
+                    </h2>
+                    <p class="smaller f20" v-for="player in data.categories?.[1]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link> 
+                    </p>
+                    <p v-if="data.categories?.[1]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item flex">
+                     <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[2] || 'transparent'}` }"></span>
+						<span class="number category-2">2</span>
+                    </h2>
+                    <p class="smaller f20" v-for="player in data.categories?.[2]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link> 
+                    </p>
+                    <p v-if="data.categories?.[2]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item flex">
+                     <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[3] || 'transparent'}` }"></span>
+						<span class="number category-3">3</span>
+                    </h2>
+                    <p class="smaller f20" v-for="player in data.categories?.[3]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link>
+                    </p>
+                    <p v-if="data.categories?.[3]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item flex">
+                     <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[4] || 'transparent'}` }"></span>
+						<span class="number category-4">4</span>
+                    </h2>
+                    <p class="smaller f20" v-for="player in data.categories?.[4]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link>
+                    </p>
+                    <p v-if="data.categories?.[4]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item flex">
+                     <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[5] || 'transparent'}` }"></span>
+						<span class="number category-5">5</span>
+                    </h2>
+                    <p class="smaller f20" v-for="player in data.categories?.[5]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link>
+                    </p>
+                    <p v-if="data.categories?.[5]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item flex">
+                     <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[6] || 'transparent'}` }"></span>
+						<span class="number category-6">6</span>
+                    </h2>
+                    <p class="smaller f20" v-for="player in data.categories?.[6]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link>
+                    </p>
+                    <p v-if="data.categories?.[6]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item flex">
+                     <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[7] || 'transparent'}` }"></span>
+						<span class="number category-7">7</span>
+                    </h2>
+                    <p class="smaller f20" v-for="player in data.categories?.[7]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link> 
+                    </p>
+                    <p v-if="data.categories?.[7]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item flex">
+                     <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[8] || 'transparent'}` }"></span>
+						<span class="number category-8">8</span>
+                    </h2>
+                    <p class="smaller f20" v-for="player in data.categories?.[8]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link>
+                    </p>
+                    <p v-if="data.categories?.[8]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item flex">
+                     <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[9] || 'transparent'}` }"></span>
+						<span class="number category-9">9</span>
+                    </h2>
+                    <p class="smaller f20" v-for="player in data.categories?.[9]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link> 
+                    </p>
+                    <p v-if="data.categories?.[9]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item flex">
+                     <h2 class="mb-10 category">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[10] || 'transparent'}` }"></span>
+						<span class="number category-10">10</span>
+                    </h2>
+                    <p class="smaller f20" v-if="data.categories?.[10]?.length > 0" v-for="player in data.categories?.[10]">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link> 
+                    </p>
+                    <p v-if="data.categories?.[10]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
                     </p>
                 </div>
             </div>
