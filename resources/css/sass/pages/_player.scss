@@ -494,6 +494,10 @@
 
             p{
                 font-size: 33px !important;
+            
+                &.no-players{
+                    font-size: 20px !important
+                }
             }
         }
         p.subtitle{

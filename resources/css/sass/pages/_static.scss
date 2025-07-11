@@ -13,6 +13,7 @@
     margin: 70px 0 65px;
     text-transform: uppercase;
 }
+
 .summary {
 
 
@@ -105,6 +106,10 @@
         padding-top: 170px;
         padding-inline: 20px;
     }
+    .summary{
+        padding-inline: 20px
+    }
+
     .col{
         grid-template-columns: 100% !important;
     }
