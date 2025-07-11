@@ -77,6 +77,37 @@
         left: 50%;
         transform: translate(-50%, -50%);
 
+
+        &.category-1{
+          
+        }
+        &.category-2{
+          
+        }
+        &.category-3{
+        }
+        &.category-4{
+          
+        }
+        &.category-5{
+          
+        }
+        &.category-6{
+        }
+        &.category-7{
+          left: 54%;
+        }
+        &.category-8{
+        }
+        &.category-9{
+        }
+        &.category-10{
+        }
+        &.category-unknown{
+          color: $mid-gray !important;
+          left: 54%;
+        }
+
         &.white{
           color: white;
         }

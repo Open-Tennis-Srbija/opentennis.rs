@@ -222,6 +222,9 @@ $border-color-dark: #e2e0e1;
           font-size: 11px;
           top: 60%;
         }
+        &.category-unknown{
+          color: $mid-gray !important;
+        }
       }
   }
 

@@ -20,7 +20,7 @@ const categoryColorsAll = {
     8: '#ee1d23',
     9: '#f36621',
     10: '#f7941d',
-    '?': 'transparent',
+    '?': '#a1a1a1',
 }
 const matches = ref(props.propMatches || []);
 
@@ -157,7 +157,7 @@ function getDateMonth(date) {
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.winner1_category] || 'transparent'}` }"></span><span
                                     class="category"
-                                    :class="{ 'unknown': match.winner1_category == '?',[`category-${match.winner1_category}`]: match.winner1_category  }">{{ match.winner1_category }}</span>
+                                    :class="{ 'category-unknown': match.winner1_category == '?',[`category-${match.winner1_category}`]: match.winner1_category  }">{{ match.winner1_category }}</span>
 
                             </div> <br /><span class="points">+{{ match.winner2_name ?
                                 Math.round(match.winner_point_gain / 2) : match.winner_point_gain }}</span>
@@ -170,7 +170,7 @@ function getDateMonth(date) {
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.winner2_category] || 'transparent'}` }"></span><span
                                     class="category"
-                                    :class="{ 'unknown': match.winner2_category == '?',[`category-${match.winner2_category}`]: match.winner2_category }">{{ match.winner2_category }}</span>
+                                    :class="{ 'category-unknown': match.winner2_category == '?',[`category-${match.winner2_category}`]: match.winner2_category }">{{ match.winner2_category }}</span>
 
                             </div>
                             <br /><span class="points">+{{ Math.round(match.winner_point_gain / 2) }}</span>
@@ -187,7 +187,7 @@ function getDateMonth(date) {
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.loser1_category] || 'transparent'}` }"></span><span
                                     class="category"
-                                    :class="{ 'unknown': match.loser1_category == '?',[`category-${match.loser1_category}`]: match.loser1_category }">{{ match.loser1_category }}</span>
+                                    :class="{ 'category-unknown': match.loser1_category == '?',[`category-${match.loser1_category}`]: match.loser1_category }">{{ match.loser1_category }}</span>
 
                             </div>
 
@@ -202,7 +202,7 @@ function getDateMonth(date) {
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.loser2_category] || 'transparent'}` }"></span><span
                                     class="category"
-                                    :class="{ 'unknown': match.loser2_category == '?',[`category-${match.loser2_category}`]: match.loser2_category }">{{ match.loser2_category }}</span>
+                                    :class="{ 'category-unknown': match.loser2_category == '?',[`category-${match.loser2_category}`]: match.loser2_category }">{{ match.loser2_category }}</span>
 
                             </div>
                             <br /><span class="points">+{{ Math.round(match.loser_point_gain / 2) }}</span>
@@ -273,7 +273,7 @@ function getDateMonth(date) {
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.winner1_category] || 'transparent'}` }"></span><span
                                     class="category"
-                                    :class="{ 'unknown': match.winner1_category == '?' ,[`category-${match.winner1_category}`]: match.winner1_category }">{{ match.winner1_category }}</span>
+                                    :class="{ 'category-unknown': match.winner1_category == '?' ,[`category-${match.winner1_category}`]: match.winner1_category }">{{ match.winner1_category }}</span>
 
                             </div>
                             <span class="points">+{{ match.winner2_first_name ? Math.round(match.winner_point_gain / 2) : match.winner_point_gain }}</span>
@@ -290,7 +290,7 @@ function getDateMonth(date) {
     <span class="diamond"
         :style="{ border: `1px solid ${categoryColorsAll[match.winner2_category] || 'transparent'}` }"></span><span
         class="category"
-        :class="{ 'unknown': match.winner2_category == '?' ,[`category-${match.winner2_category}`]: match.winner2_category }">{{ match.winner2_category }}</span>
+        :class="{ 'category-unknown': match.winner2_category == '?' ,[`category-${match.winner2_category}`]: match.winner2_category }">{{ match.winner2_category }}</span>
 
 </div>
                             <span class="points">+{{ Math.round(match.winner_point_gain / 2) }}</span>
@@ -312,7 +312,7 @@ function getDateMonth(date) {
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.loser1_category] || 'transparent'}` }"></span><span
                                     class="category"
-                                    :class="{ 'unknown': match.loser1_category == '?' ,[`category-${match.loser1_category}`]: match.loser1_category }">{{ match.loser1_category }}</span>
+                                    :class="{ 'category-unknown': match.loser1_category == '?' ,[`category-${match.loser1_category}`]: match.loser1_category }">{{ match.loser1_category }}</span>
 
                             </div>
                         <span class="points">+{{ match.loser2_first_name ? Math.round(match.loser_point_gain / 2) : match.loser_point_gain }}</span>
@@ -326,7 +326,7 @@ function getDateMonth(date) {
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.loser2_category] || 'transparent'}` }"></span><span
                                     class="category"
-                                    :class="{ 'unknown': match.loser2_category == '?' ,[`category-${match.loser2_category}`]: match.loser2_category }">{{ match.loser2_category }}</span>
+                                    :class="{ 'category-unknown': match.loser2_category == '?' ,[`category-${match.loser2_category}`]: match.loser2_category }">{{ match.loser2_category }}</span>
 
                             </div>
                             <span class="points">+{{ Math.round(match.loser_point_gain / 2) }}</span>

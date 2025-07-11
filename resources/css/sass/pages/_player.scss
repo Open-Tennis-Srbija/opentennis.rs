@@ -310,6 +310,11 @@
                         }
                         &.category-10{
                         }
+                        &.category-unknown{
+                            color: #a1a1a1 !important;
+                            top: 55% !important;
+                            left: 51% !important;
+                        }   
                     }
                   }
               }
@@ -628,6 +633,12 @@
                         &.category-10{
                             top: 50%;
                             left: 50%;
+                        }
+                        &.category-unknown{
+
+                            color: #a1a1a1 !important;
+                            top: 55% !important;
+                            left: 51% !important;
                         }
                         &.unknown{
                             color: #949494;

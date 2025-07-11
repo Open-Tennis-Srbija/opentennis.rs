@@ -28,8 +28,7 @@ const categoryColors = {
   8: '#ee1d23',
   9: '#f36621',
   10: '#f7941d',
-  '?': 'transparent',
-  '?': 'transparent',
+  '?': '#a1a1a1',
 }
 onMounted(() => {
 	axios.get(`/get-player/${props.player_uri}`).then((response) => {
@@ -193,7 +192,7 @@ onBeforeUnmount(() => {
 					<h2 style="margin-top: -10px;">kategorija</h2>
 					<p class="category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
-						<span class="number" :class="{[`category-${player.category}`]: true, 'unknown': player.category == '?'}">{{ player.category }}</span>
+						<span class="number" :class="{[`category-${player.category}`]: true, 'category-unknown': player.category == '?'}">{{ player.category }}</span>
 					</p>
 				</div>
 			</div>
@@ -210,7 +209,7 @@ onBeforeUnmount(() => {
 					<h2 style="margin-top: -4px;">kategorija</h2>
 					<p class="category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
-						<span class="number" :class="{[`category-${player.category}`]: true, 'fix': player.category == 7, 'unknown': player.category == '?'}">{{ player.category }}</span>
+						<span class="number" :class="{[`category-${player.category}`]: true, 'fix': player.category == 7, 'category-unknown': player.category == '?'}">{{ player.category }}</span>
 					</p>
 				</div>
 				<div class="summary-item">

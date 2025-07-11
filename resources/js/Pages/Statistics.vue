@@ -46,7 +46,7 @@ import { ref } from 'vue';
     8: '#ee1d23',
     9: '#f36621',
     10: '#f7941d',
-    '?': 'transparent',
+    '?': '#a1a1a1',
     }
 </script>
 <template>
@@ -241,7 +241,7 @@ import { ref } from 'vue';
                     </p>
                 </div>
                 <div class="summary-item full flex" :class="{'smaller-top-margin': data.categories?.[10]?.length == 0}">
-                     <h2 class="mb-10 category unknown">
+                     <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors['?'] || 'transparent'}` }"></span>
 						<span class="number category-unknown">?</span>
                     </h2>
