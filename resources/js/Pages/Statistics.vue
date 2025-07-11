@@ -98,7 +98,7 @@ import { ref } from 'vue';
                 </div>
             </div>
             
-            <h2 class="summary-title">kategorije</h2>
+            <h2 class="summary-title">kategorije (TOP 5)</h2>
             <div class="summary player five col">
                 <div class="summary-item flex">
                     <h2 class="mb-10 category">
