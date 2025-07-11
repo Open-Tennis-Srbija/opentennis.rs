@@ -351,6 +351,7 @@ class LeagueController extends Controller
                 8 => [],
                 9 => [],
                 10 => [],
+                '?' => []
             ],
             'locations'=>[]
         ];
@@ -421,6 +422,7 @@ class LeagueController extends Controller
         $data['categories'][8] = PlayerController::getPlayersForCategory(8);
         $data['categories'][9] = PlayerController::getPlayersForCategory(9);
         $data['categories'][10] = PlayerController::getPlayersForCategory(10);
+        $data['categories']['?'] = PlayerController::getPlayersForCategory('?');
 
         return $data;
 

@@ -80,7 +80,7 @@ onBeforeUnmount(() => {
 });
 </script>
 <template>
-    <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player league">
+    <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player league mobile-mb-300">
         <Link prefetch="false"
 				class="edit-btn"
 				v-if="$page.props.auth.user"

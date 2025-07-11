@@ -92,7 +92,7 @@ function containsGreek(text) {
 
 </script>
 <template>
-    <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player league">
+    <div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player league mobile-mb-300">
         <div
 			class="rank">
 			<p :class="{ 'align-left': court.position > 9,'n40': court.position >= 40 && court.position < 50 }">

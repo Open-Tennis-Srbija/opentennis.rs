@@ -131,7 +131,7 @@ onBeforeUnmount(() => {
 </script>
 <template>
  	<Head :title="pageTitle" />
-	<div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player">
+	<div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player mobile-mb-300">
 		<Link prefetch="false"
 			class="edit-btn desktop"
 			v-if="$page.props.auth.user"

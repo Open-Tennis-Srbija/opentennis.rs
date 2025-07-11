@@ -51,7 +51,7 @@ import { ref } from 'vue';
 </script>
 <template>
     <Head :title="'Statistika -'"/>
-    <div style="padding-bottom:0;margin-bottom:60px" class="static-wrapper player">
+    <div style="padding-bottom:0;margin-bottom:60px" class="static-wrapper player mobile-mb-300">
         <div class="dashboard-wrapper">
         <h1 class="hide-mobile">Statistika</h1>
             <h2 class="summary-title">ukupno</h2>
@@ -98,7 +98,7 @@ import { ref } from 'vue';
                 </div>
             </div>
             
-            <h2 class="summary-title">najaktivniji po<br class="show-mobile"> kategorijama</h2>
+            <h2 class="summary-title big-margin">najaktivniji po<br class="show-mobile"> kategorijama</h2>
             <div class="summary player five col">
                 <div class="summary-item flex">
                     <h2 class="mb-10 category">
@@ -114,7 +114,7 @@ import { ref } from 'vue';
                         nema nikoga još &#128578;  
                     </p>
                 </div>
-                <div class="summary-item flex">
+                <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[1]?.length == 0}">
                      <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[2] || 'transparent'}` }"></span>
 						<span class="number category-2">2</span>
@@ -128,7 +128,7 @@ import { ref } from 'vue';
                         nema nikoga još &#128578;  
                     </p>
                 </div>
-                <div class="summary-item flex">
+                <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[2]?.length == 0}">
                      <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[3] || 'transparent'}` }"></span>
 						<span class="number category-3">3</span>
@@ -142,7 +142,7 @@ import { ref } from 'vue';
                         nema nikoga još &#128578;  
                     </p>
                 </div>
-                <div class="summary-item flex">
+                <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[3]?.length == 0}">
                      <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[4] || 'transparent'}` }"></span>
 						<span class="number category-4">4</span>
@@ -156,7 +156,7 @@ import { ref } from 'vue';
                         nema nikoga još &#128578;  
                     </p>
                 </div>
-                <div class="summary-item flex">
+                <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[4]?.length == 0}">
                      <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[5] || 'transparent'}` }"></span>
 						<span class="number category-5">5</span>
@@ -170,7 +170,7 @@ import { ref } from 'vue';
                         nema nikoga još &#128578;  
                     </p>
                 </div>
-                <div class="summary-item flex">
+                <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[5]?.length == 0}">
                      <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[6] || 'transparent'}` }"></span>
 						<span class="number category-6">6</span>
@@ -184,7 +184,7 @@ import { ref } from 'vue';
                         nema nikoga još &#128578;  
                     </p>
                 </div>
-                <div class="summary-item flex">
+                <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[6]?.length == 0}">
                      <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[7] || 'transparent'}` }"></span>
 						<span class="number category-7">7</span>
@@ -198,7 +198,7 @@ import { ref } from 'vue';
                         nema nikoga još &#128578;  
                     </p>
                 </div>
-                <div class="summary-item flex">
+                <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[7]?.length == 0}">
                      <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[8] || 'transparent'}` }"></span>
 						<span class="number category-8">8</span>
@@ -212,7 +212,7 @@ import { ref } from 'vue';
                         nema nikoga još &#128578;  
                     </p>
                 </div>
-                <div class="summary-item flex">
+                <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[8]?.length == 0}">
                      <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[9] || 'transparent'}` }"></span>
 						<span class="number category-9">9</span>
@@ -226,7 +226,7 @@ import { ref } from 'vue';
                         nema nikoga još &#128578;  
                     </p>
                 </div>
-                <div class="summary-item flex">
+                <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[9]?.length == 0}">
                      <h2 class="mb-10 category">
 						<span class="diamond" :style="{ border: `1px solid ${categoryColors[10] || 'transparent'}` }"></span>
 						<span class="number category-10">10</span>
@@ -237,6 +237,20 @@ import { ref } from 'vue';
                         </Link> 
                     </p>
                     <p v-if="data.categories?.[10]?.length == 0" class="no-players">
+                        nema nikoga još &#128578;  
+                    </p>
+                </div>
+                <div class="summary-item full flex" :class="{'smaller-top-margin': data.categories?.[10]?.length == 0}">
+                     <h2 class="mb-10 category unknown">
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors['?'] || 'transparent'}` }"></span>
+						<span class="number category-unknown">?</span>
+                    </h2>
+                    <p class="smaller f20" v-if="data.categories?.['?']?.length > 0" v-for="player in data.categories?.['?']">
+                        <Link prefetch="false" :href="`/${player.uri}`">
+                            {{ player.name }}
+                        </Link> 
+                    </p>
+                    <p v-if="data.categories?.['?']?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
                     </p>
                 </div>

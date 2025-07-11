@@ -59,7 +59,7 @@ const topOffset = computed(() => {
 
   </div> -->
   <Head title="Teniseri -" />
-  <div class="rankings-wrapper">
+  <div class="rankings-wrapper mobile-mb-300">
     <div id="desktop">
       <div class="rankings-header" :style="{top: `${ 137 - topOffset}px`}">
         <div class="spacer"></div>

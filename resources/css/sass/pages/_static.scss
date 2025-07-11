@@ -18,11 +18,24 @@
 
 
     .summary-item {
+        &.full {
+            grid-column-start: 1;
+            grid-column-end: 6;
+        }
         h2 {
             position: relative;
             &.category{
+                margin-top: 10px;
+                margin-bottom: 20px !important;
                 color: black !important;
                 font-weight: normal !important;
+
+                &.unknown{
+                    margin-bottom: 10px !important;
+                }
+                .category-unknown{
+                    color: $mid-gray !important;
+                }
             }
             .diamond {
                 display: block;
@@ -107,7 +120,17 @@
         padding-inline: 20px;
     }
     .summary{
-        padding-inline: 20px
+        padding-inline: 20px;
+        .summary-item {
+            &.full {
+                grid-column-start: 1;
+                grid-column-end: 1;
+            }
+
+            &.smaller-top-margin {
+                margin-top: -42px;
+            }
+        }
     }
 
     .col{
