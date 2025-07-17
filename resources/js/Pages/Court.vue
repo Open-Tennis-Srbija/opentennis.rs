@@ -174,7 +174,7 @@ function containsGreek(text) {
             </div>
             <h2 class="summary-title big-margin">teniseri</h2>
             <div class="summary player three col">
-                <div class="summary-item players">
+                <div class="summary-item players mobile-hide">
                 </div>
                 <div class="summary-item players">
                     <template v-if="court.players?.length > 0">
@@ -196,7 +196,7 @@ function containsGreek(text) {
                         <h2 class="black">ovaj teren nema aktivnih igrača &#128577;</h2>
                     </template>
                 </div>
-                <div class="summary-item players">
+                <div class="summary-item players mobile-hide">
                 </div>
             </div>
             <h2 class="summary-title no-border big-margin">mečevi</h2>

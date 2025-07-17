@@ -242,7 +242,7 @@ function getDateMonth(date) {
             </div>
         </div>
         <div id="mobile">
-            <div v-if="props.showMessage">
+            <div v-if="props.showMessage.wins || props.showMessage.loses || props.showMessage.league" class="matches-header">
                 <p v-if="props.showMessage.wins" class="message">
                     Ovaj teniser nikada nije pobedio &#128577;
                 </p>

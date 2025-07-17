@@ -6,8 +6,13 @@
 .show-mobile{
     display: none;
 }
-
+.mb-0{
+    margin-bottom: 0 !important;
+}
 @media (max-width: 768px) {
+    .mobile-hide {
+        display: none !important;
+    }
     .show-mobile {
         display: block;
     }
