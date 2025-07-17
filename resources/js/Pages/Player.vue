@@ -307,7 +307,7 @@ onBeforeUnmount(() => {
 				<div class="summary-item players">
 						<h2>tereni</h2>
 						<template v-for="court in locations.courts">
-							<p>
+							<p style="text-align: center;">
 								<template v-if="court.id > 1">
 									<a  :href="`/tereni/${court.uri}`">
 										{{ court.name }}

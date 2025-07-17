@@ -80,12 +80,12 @@ const topOffset = computed(() => {
         </div>
         <div class="name helvetica"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
         <div class="spacer"></div>
+        <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'category-unknown': player.category == '?', [`category-${player.category}`]: player.category != '?'}">{{player.category}}</span></div>
         <div class="elo">{{utl.formatAsThousands(player.points)}}</div>
         <div class="total-matches">{{player.total_matches}}</div>
         <div class="wins">{{player.wins}}</div>
         <div class="loses">{{player.loses}}</div>
         <div class="win-precent">{{player.win_precentage}}%</div>
-        <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'category-unknown': player.category == '?', [`category-${player.category}`]: player.category != '?'}">{{player.category}}</span></div>
       </div>
     </div>
 
