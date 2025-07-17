@@ -149,7 +149,7 @@ onBeforeUnmount(() => {
                 <div class="summary-item players">
                 </div>
             </div>
-            <h2 class="summary-title no-border big-margin mb-0">mečevi</h2>
+            <h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
             <div class="player-matches">
                 <MatchTable
                 v-if="league.matches"   
