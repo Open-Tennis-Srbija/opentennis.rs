@@ -65,12 +65,12 @@ const topOffset = computed(() => {
         <div class="spacer"></div>
         <div class="name">teniser</div>
         <div class="spacer"></div>
+        <div class="place">kategorija</div>
         <div class="elo">poeni</div>
         <div class="total-matches">mečevi</div>
         <div class="wins">pobede</div>
         <div class="loses">gubitci</div>
         <div class="win-precent">% pobeda</div>
-        <div class="place">kategorija</div>
       </div>
       <div class="ranking-entry" v-for="(player, index) in players" :style="{marginTop: index === 0 ? '25px' : '0'}">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
