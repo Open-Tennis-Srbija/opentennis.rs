@@ -7,23 +7,101 @@ onMounted(async () => {
 });
 </script>
 <template>
+
     <Head title="Uputstva -" />
     <div class="static-wrapper">
         <h1>UPUTSTVA</h1>
-        <p><Link prefetch="false" :href="'/'">SrpskaTenisLiga.rs</Link> je osnovao  <a href="https://www.linkedin.com/in/nikolatosic/" target="_blank">Nikola Tošić</a> 9 decembra 2024.</p>
-        <p>SrpskaTenisLiga.rs je sajt posvećen rekreativnom tenisu u Srbiji. SrpskaTenisLiga.rs ne organizuje mečeve, turnine i  lige, nego samo dokumentuje rezultate sa spariga, turninra i liga.
-</p>
+        <p>
+            <Link prefetch="false" :href="'/'">SrpskaTenisLiga.rs</Link> je osnovao <a
+                href="https://www.linkedin.com/in/nikolatosic/" target="_blank">Nikola Tošić</a> 9 decembra 2024.
+        </p>
+        <p>SrpskaTenisLiga.rs je sajt posvećen rekreativnom tenisu u Srbiji. SrpskaTenisLiga.rs samo dokumentuje
+            rezultate spariga, turnira i liga koje organizuju teniseri, klubovi i drugi. Dakle, SrpskaTenisLiga.rs je
+            agregator svih sparinga, liga i turnira u Srbiji.
+        </p>
         <p>Ciljevi sajta SrpskaTenisLiga.rs su:</p>
-        <p style="margin-bottom: 0;">1) Dokumentacija i analiza svih podataka relevantnih za amaterski tenis u Srbiji,</p>
-        <p>2) Motivacija amatera da igraju više i generalni razvoj amaterskog tenisa.</p>
-        <p>SrpskaTenisLiga.rs je besplatan za korišćenje - nema nikakve naplate, rokove, niti obaveze. Na teniserima je da dodaju svoje mečeve i samim tim poboljšavaju svoj rang.  Svaki teniser može da bude dodat na sajt, dovoljno je da dokumentuje jedan meč sa svojim imenom. Nema kvalifikacija i sve je besplatno.</p>
+        <p style="margin-bottom: 0;">1) Dokumentacija i analiza svih podataka korisnih za rekreativni tenis u Srbiji,
+        </p>
+        <p>2) Motivacija tenisera da igraju više i generalni razvoj rekreativnog tenisa.</p>
+
+        <p>SrpskaTenisLiga.rs postiže ove ciljeve kroz sledeće aktivnosti:</p>
+        <p style="margin-bottom: 0;">1) Kategorisanje svih tenisera u Srbiji, od početnika do Novaka Đokovica.
+            Kategorisanje pomaže teniserima da nađu druge tenisere, učestvuju u takmičenjima, i prate svoj napredak,</p>
+        <p style="margin-bottom: 0;">2) Merenje aktivnosti tenisera kroz poene,</p>
+        <p>3) Dokumentovanje svih liga, turnira, i terena.</p>
+
+        <p>SrpskaTenisLiga.rs je besplatna za korišćenje - nema kvalifikacija, naplate, rokove, niti obaveze. Na
+            teniserima je da dodaju svoje mečeve i na organizatorima takmičenja da dodaju mečeve sa takmičenja. Svaki
+            teniser može biti dodat na sajt, dovoljno je da dokumentuje jedan meč koji je odigrao.</p>
+
+
+        <h2>Privatnost tenisera</h2>
+        <br>
+        <p>Mečevi na SrpskaTenisLiga.rs su dodati na sledeće načine:</p>
+        <p style="margin-bottom: 0;">1) Teniseri ih sami dodaju kroz <a href="/dodaj">dodaj meč formu</a>,</p>
+        <p style="margin-bottom: 0;">2) Naš tim dodaje javno objavljene rezultate liga i turnira,</p>
+        <p>3) Naš tim, u saradnji sa organizatorima, dodaje rezultate liga i turnira koji nisu javno objavljeni.</p>
+        <p>Ako teniser ne želi da bude vidljiv na sajtu njihovo ime može da se zameni inicijalima ili da se potpuno sakrije. Ako oba tenisera u dodatom meču ne žele da budu vidljivi, njihov meč može da se obriše. Za obe akcije pošaljite email na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
+        </p>
+       
+
         <h2>Dodavanje mečeva</h2>
         <br>
-        <p>Mečevi se dokumentuju tako što se dodaju preko <Link prefetch="false" :href="'/dodaj'">dodaj meč forme</Link>. Može da se doda bilo koji meč igran bilo gde 12 meseci pre dodavanja. Da bi meč bio prihvaćen on mora da ima barem jednog takmičara koji je građanin Republike Srbije ili da se odigra na teritoriji Republike Srbije. Znači meč između građanina Srbije i stranca u stranoj državi može da bude dodat na sajt. Takođe meč između dva stranca u Srbiji može da bude dodat.</p>
-        <p>Za sada mogu da se dodaju samo singles mečevi. Svi formati bodovanja singles mečeva su prihvaćeni dokle god je rezultat pobednika barem 4 gema. Znači minimalni rezultat da bi meč bio dokumentovan je 4:0. Primeri formata bodovanja su setovi do 4 gema, setovi do 6 gema, meč do 9 gemova, ili meč na vreme sa minimalnim rezultatom od 4:0. Tie break treba da se doda kao jedan gem. Na primer, ako se u meču od 5:5 igra tie break koji je 10:8, onda se upisuje rezultat 6:5.</p>
+        <p>
+            Mečevi se dokumentuju tako što se dodaju preko <a href="/dodaj">dodaj meč forme</a>. Može da se doda bilo koji meč igran bilo gde 12 meseci pre dodavanja. Da bi meč bio prihvaćen on mora da ima barem jednog takmičara koji je građanin Republike Srbije ili da se odigra na teritoriji Republike Srbije. Znači meč između građanina Srbije i stranca u stranoj državi može da bude dodat na sajt. Takođe meč između dva stranca u Srbiji može da bude dodat.
+        </p>
+        <p>
+            Svi formati bodovanja mečeva su prihvaćeni dokle god je rezultat pobednika barem 4 gema. Znači minimalni rezultat da bi meč bio dokumentovan je 4:0. Primeri formata bodovanja su setovi do 4 gema, setovi do 6 gema, meč do 9 gemova, ili meč na vreme sa minimalnim rezultatom od 4:0. Tie break treba da se doda kao jedan gem. Na primer, ako se u meču od 5:5 igra tie break koji je 10:8, onda se upisuje rezultat 6:5.
+        </p>
+
+
         <h2>Poeni za aktivnost</h2>
         <br>
-        <p>Rang tenisera favorizuje aktivnost tenisera i kalkuliše se dodavanjem poena za svaki pobedu, gubitak, i osvojeni gem. Dakle, izgubljeni meč takođe nosi poene, kao i gemovi koje je osvojio gubitnik. Ako ista dva tenisera igraju više puta u istih 30 dana onda dobijaju manje poena nego da su igrali sa različitim teniserima. Takođe dobijeni poeni opadaju za 10 % svakih 30 dana od dana meča. CIlj ovih pravila je da se motiviše što više igranja (čak i ako se gubi), da se nagrade gubitnici za osvojene gemove, a i da se motiviše različitost u izboru tenisera i konstantno igranje.</p>
+        <p>Rang tenisera favorizuje aktivnost tenisera i kalkuliše se dodavanjem poena za svaki pobedu, gubitak, i osvojeni gem.</p>
+        <table class="rules-table">
+          
+            <tbody>
+                <tr>
+                    <td class="under-header" colspan="2">za pobednika</td>
+                </tr>
+                <tr>
+                    <td>za meč u kome je teniser pobedio</td> <td class="points">+100</td>
+                </tr>
+                <tr>
+                    <td>za svaki dobijeni gem u meču koji je teniser pobedio</td> <td>+10</td>
+                </tr>
+                <tr>
+                    <td>drugi dobijeni meč sa istim gubitnikom u roku od 30 dana</td> <td>+75</td>
+                </tr>
+                <tr>
+                    <td>svaki sledeći dobijeni meč sa istim gubitnikom u roku od 30 dana</td> <td>+50</td>
+                </tr>
+                <tr>
+                    <td class="under-header" colspan="2">za gubitnika</td>
+                </tr>
+                <tr>
+                    <td>za meč u kome je teniser izgubio</td> <td>+25</td>
+                </tr>
+                <tr>
+                    <td>za svaki dobijeni gem u meču koji je teniser izgubio</td> <td>+7</td>
+                </tr>
+                <tr>
+                    <td>drugi izgubljeni meč sa istim pobednikom u roku od 30 dana</td> <td>+20</td>
+                </tr>
+                <tr>
+                    <td>svaki sledeći izgubljeni meč sa istim pobednikom u roku od 30 dana</td> <td>+15</td>
+                </tr>
+                <tr>
+                    <td class="under-header" colspan="2">vremenski faktor</td>
+                </tr>
+                <tr>
+                    <td>svakih 30 dana svi poeni se smanjuju za</td> <td>-5%</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            Cilj poena aktivnosti je da se motiviše što više igranja (čak i ako se gubi) i da se motiviše različitost u izboru tenisera.
+        </p>
 
         <h2>Kategorije tenisera</h2>
         <br>
@@ -53,23 +131,24 @@ onMounted(async () => {
             Kategorija 8) Juniorski i mlađi takmičari.
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 9) Seniorski takmičari.
+            Kategorija 9) Seniorski, ATP, ITF takmičari.
         </p>
         <p>
             Kategorija 10) Novak Djoković.
         </p>
         <p>
-            Ručno odreživanje kategorija je privremeno rešenje. Kasnije će biti zamenjene automatskom evaluacijom kategorija tenisera na osnovu rezultata.
+            Ručno određivanje kategorija je privremeno rešenje i biće zamenjeno automatskim kategorisanjem tenisera na osnovu rezultata mečeva.
         </p>
-        <p> Ako se ne slažete sa svojom kategorijom pošaljite email na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
+        <p> Ako se ne slažete sa svojom kategorijom pošaljite email na <a
+                href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
         </p>
 
-        <h2>Privatnost tenisera</h2>
-
+        <h2>Pristup podatcima</h2>
         <br>
+        <p>
+            Ako želite podatke svih mečeva u formatu tabela, za vaše sopstveno istraživanje, pošaljite email na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>. Uvek smo zainteresovani da vidimo nove načine prikazivanja podataka.
 
-        <p>Ako teniser ne želi da bude vidljiv na sajtu njihovo ime može da se zameni inicijalima ili da se potpuno sakrije. Ako se oba učesnika u dodatom meču slažu, meč može da se obriše.
-        </p> 
-            <p>Ako želite da je vaše ime sakriveno ili obrisano sa <Link prefetch="false" :href="'/'">SrpskaTenisLiga.rs</Link> pošaljite email na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.</p>
+        </p>
+
     </div>
 </template>
