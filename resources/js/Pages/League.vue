@@ -153,6 +153,7 @@ onBeforeUnmount(() => {
             <h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
             <div class="player-matches">
                 <Matches
+                :isHome="false"
                 v-if="league.id"   
                 :league_id="league.id" :loadMatches="true" :showMessage="{ league: league.match_number == 0 }"
                 />

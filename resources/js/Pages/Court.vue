@@ -203,6 +203,7 @@ function containsGreek(text) {
             <h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
             <div class="player-matches">
                 <MatchTable
+                :isHome="false"
                 :loadMatches="true"
                 :court_id="props.court_id"
                 :showMessage="{ league: court.match_number == 0 }"

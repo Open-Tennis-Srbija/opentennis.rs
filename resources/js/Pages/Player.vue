@@ -351,6 +351,7 @@ onBeforeUnmount(() => {
 			<div class="player-matches">
 				<Matches
 					v-if="player.id"
+					:isHome="false"
 					:player_id="player.id"
 					:loadMatches="true"
 					:showMessage="{ matches: player.matches?.length == 0 }"

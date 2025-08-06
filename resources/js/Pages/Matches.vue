@@ -8,6 +8,7 @@ const props = defineProps({
     loadMatches: Boolean || true,
     showMessage: Object,
     propMatches: Array,
+    isHome: Boolean || true,
     court_id: [String, Number], // Add court_id prop
     league_id: [String, Number], // Add league_id prop
     player_id: [String, Number], // Add player_id prop
@@ -213,7 +214,7 @@ function getDateMonth(date) {
 <template>
 
     <Head v-if="props.loadMatches" title="Mečevi -" />
-    <div class="matches-wrapper" :class="{'home': props.loadMatches, 'mobile-mb-300': props.loadMatches}">
+    <div class="matches-wrapper" :class="{'home': props.isHome, 'mobile-mb-300': props.loadMatches}">
         <div id="desktop">
             <div class="matches-header" :class="{'home': props.loadMatches}" :style="{top: `${ 85 - topOffset}px`}">
                 <div class="spacer number"></div>
