@@ -292,7 +292,7 @@ class PlayerController extends Controller
 						'rank' => $player->rank,
 						'category'=> $player->category,
 						'points' => $player->points,
-						'wins' => $player->wins->map(
+						'matches' => $player->matches->skip(0)->take(100)->map(
 							function ($win) {
 								return [
 									'winner1_name' => $win->winners()->first()->first_name . ' ' . $win->winners()->first()->last_name,
@@ -319,33 +319,6 @@ class PlayerController extends Controller
 								];
 							}
 						),
-						'losses' => $player->losses->map(
-							function ($loss) {
-								return [
-									'winner1_name' => $loss->winners()->first()->first_name . ' ' . $loss->winners()->first()->last_name,
-									'winner1_uri' => $loss->winners()->first()->uri,
-									'winner1_category' => $loss->winners()->first()->category,
-									'winner2_name' => $loss->winners()->skip(1)->first() ? $loss->winners()->skip(1)->first()->first_name . ' ' . $loss->winners()->skip(1)->first()->last_name : null,
-									'winner2_uri' => $loss->winners()->skip(1)->first() ? $loss->winners()->skip(1)->first()->uri : null,
-									'winner2_category' => $loss->winners()->skip(1)->first() ? $loss->winners()->skip(1)->first()->category : null,
-									'loser1_name' => $loss->losers()->first()->first_name . ' ' . $loss->losers()->first()->last_name,
-									'loser1_uri' => $loss->losers()->first()->uri,
-									'loser1_category' => $loss->losers()->first()->category,
-									'loser2_name' => $loss->losers()->skip(1)->first() ? $loss->losers()->skip(1)->first()->first_name . ' ' . $loss->losers()->skip(1)->first()->last_name : null,
-									'loser2_uri' => $loss->losers()->skip(1)->first() ? $loss->losers()->skip(1)->first()->uri : null,
-									'loser2_category' => $loss->losers()->skip(1)->first() ? $loss->losers()->skip(1)->first()->category : null,
-									'number' => $loss->number,
-									'winner_point_gain' => $loss->winner_point_gain,
-									'loser_point_gain' => $loss->loser_point_gain,
-									'set_score' => $loss->set_score,
-									'game_score' => $loss->game_score,
-									'county' => $loss->county,
-									'court' => Court::find($loss->court_id),
-									'league' => League::find($loss->league_id),
-									'date' => $loss->date,
-								];
-							}
-						),
 						'matchups' => [
 							'won_against' => $player->wonAgainstWithCounts(),
 							'lost_against' => $player->lostAgainstWithCounts(),
@@ -365,6 +338,60 @@ class PlayerController extends Controller
 			);
 
 			return $p[0];
+	}
+
+	public function getPlayerMatchesApi(Request $request, $id)
+	{
+		$page = $request->get('page', 1);
+		$perPage = $request->get('per_page', 100);
+		$offset = ($page - 1) * $perPage;
+
+		// Get matches for the specific player using the same logic as in get_player_by_uri
+		$player = Player::with('wins', 'losses')->findOrFail($id);
+		
+		// Get all matches (both wins and losses) and sort by number descending
+		$allMatches = $player->matches()->orderBy('number', 'desc')->get();
+		
+		// Format matches the same way as in get_player_by_uri
+		$formattedMatches = $allMatches->map(function ($match) {
+			return [
+				'winner1_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
+				'winner1_uri' => $match->winners()->first()->uri,
+				'winner1_category' => $match->winners()->first()->category,
+				'winner2_name' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->first_name . ' ' . $match->winners()->skip(1)->first()->last_name : null,
+				'winner2_uri' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->uri : null,
+				'winner2_category' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->category : null,
+				'loser1_name' => $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name,
+				'loser1_uri' => $match->losers()->first()->uri,
+				'loser1_category' => $match->losers()->first()->category,
+				'loser2_name' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->first_name . ' ' . $match->losers()->skip(1)->first()->last_name : null,
+				'loser2_uri' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->uri : null,
+				'loser2_category' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->category : null,
+				'number' => $match->number,
+				'winner_point_gain' => $match->winner_point_gain,
+				'loser_point_gain' => $match->loser_point_gain,
+				'set_score' => $match->set_score,
+				'game_score' => $match->game_score,
+				'county' => $match->county,
+				'court' => Court::find($match->court_id),
+				'league' => League::find($match->league_id),
+				'date' => $match->date,
+			];
+		});
+		
+		// Manually paginate the matches
+		$total = $formattedMatches->count();
+		$paginatedMatches = $formattedMatches->slice($offset, $perPage)->values();
+		
+		return response()->json([
+			'data' => $paginatedMatches,
+			'current_page' => (int) $page,
+			'per_page' => (int) $perPage,
+			'total' => $total,
+			'last_page' => ceil($total / $perPage),
+			'from' => $offset + 1,
+			'to' => min($offset + $perPage, $total),
+		]);
 	}
 
 	/**

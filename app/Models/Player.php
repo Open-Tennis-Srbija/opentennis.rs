@@ -26,7 +26,7 @@ class Player extends Model
     {
         return $this->belongsToMany(TennisMatch::class, 'match_players')
                     ->withPivot('team')
-                    ->withTimestamps()->get();
+                    ->orderByDesc('tennis_matches.number');
     }
 
     public function wins()

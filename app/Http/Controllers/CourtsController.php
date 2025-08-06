@@ -133,9 +133,38 @@ class CourtsController extends Controller
             'leagues' => $court->getLeagues(),
             'position' => $court->getPosition(),
             'players' => $court->getPlayers(),
-            'matches' => $court->getMatches(),
+            // Remove matches loading - will be handled by MatchTable component
         ];
 
+    }
+
+    /**
+     * Get court matches with pagination for API
+     */
+    public function getCourtMatchesApi(Request $request, $id)
+    {
+        $page = $request->get('page', 1);
+        $perPage = $request->get('per_page', 100);
+        $offset = ($page - 1) * $perPage;
+        
+        $court = Court::find($id);
+        if (!$court) {
+            return response()->json(['error' => 'Court not found'], 404);
+        }
+        
+        $matches = $court->getMatches($offset, $perPage);
+        $totalMatches = $court->getMatchCount();
+        $lastPage = ceil($totalMatches / $perPage);
+        
+        return response()->json([
+            'data' => $matches,
+            'current_page' => $page,
+            'last_page' => $lastPage,
+            'per_page' => $perPage,
+            'total' => $totalMatches,
+            'from' => $offset + 1,
+            'to' => min($offset + $perPage, $totalMatches)
+        ]);
     }
 
     public static function store(Request $request){

@@ -83,8 +83,8 @@ class Court extends Model {
             ->count('match_players.player_id');
     }
     
-    public function getMatches(){
-        $matches = TennisMatch::where('court_id', $this->id)->get();
+    public function getMatches($offset = 0 , $limit = 100){
+        $matches = TennisMatch::where('court_id', $this->id)->skip($offset)->take($limit)->get();
 
         $response = [];
 

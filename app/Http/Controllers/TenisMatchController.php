@@ -283,7 +283,7 @@ class TenisMatchController extends Controller
 
         }
     }
-        fclose($handle);
+fclose($handle);
 
     }
 
@@ -642,12 +642,53 @@ class TenisMatchController extends Controller
             'court' => Court::find($match->court_id),
         ];
     }
-    public static function getMatches(){
+    public static function getMatches($page = 1, $perPage = 100){
 
     return TennisMatch::with(['winners', 'losers'])
             ->orderByDesc('number')
-            ->get()
-            ->map(function ($match) {
+            ->paginate($perPage, ['*'], 'page', $page)
+            ->through(function ($match) {
+                return [
+                    'winner1_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
+                    'winner1_uri' => $match->winners()->first()->uri,
+                    'winner1_category' => $match->winners()->first()->category,
+                    'winner2_name' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->first_name . ' ' . $match->winners()->skip(1)->first()->last_name : null,
+                    'winner2_uri' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->uri : null,
+                    'winner2_category' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->category : null,
+                    'loser1_name' => $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name,
+                    'loser1_uri' => $match->losers()->first()->uri,
+                    'loser1_category' => $match->losers()->first()->category,
+                    'loser2_name' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->first_name . ' ' . $match->losers()->skip(1)->first()->last_name : null,
+                    'loser2_uri' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->uri : null,
+                    'loser2_category' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->category : null,
+                    'number' => $match->number,
+                    'winner_point_gain' => $match->winner_point_gain,
+                    'loser_point_gain' => $match->loser_point_gain,
+                    'set_score' => $match->set_score,
+                    'game_score' => $match->game_score,
+                    'county' => $match->county,
+                    'court' => Court::find($match->court_id),
+                    'league' => League::find($match->league_id),
+                    'court_link' => $match->court ? $match->court->link : null,
+                    'date' => $match->date,
+                ];
+            });
+            
+    return $paginatedMatches;
+    }
+
+    /**
+     * Get matches with pagination for API
+     */
+    public function getMatchesApi(Request $request)
+    {
+        $page = $request->get('page', 1);
+        $perPage = $request->get('per_page', 100);
+        
+        return TennisMatch::with(['winners', 'losers'])
+            ->orderByDesc('number')
+            ->paginate($perPage, ['*'], 'page', $page)
+            ->through(function ($match) {
                 return [
                     'winner1_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
                     'winner1_uri' => $match->winners()->first()->uri,

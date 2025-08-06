@@ -31,6 +31,7 @@ onMounted(() => {
             {
                 scroll(osInstance, args) {
                     scrollPos.top = args.target.scrollTop;
+                    console.log(osInstance);
                     bus.emit("scroll", scrollPos.top);
                 },
             },

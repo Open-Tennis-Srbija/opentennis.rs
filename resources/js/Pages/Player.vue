@@ -6,6 +6,7 @@ import axios from 'axios';
 import PlayerChart from "./components/PlayerChart.vue";
 import EditIcon from "./components/EditIcon.vue";
 import bus from 'vue3-eventbus';
+import Matches from "./Matches.vue";
 
 const props = defineProps({ player_uri: String });
 const player = ref({});
@@ -346,22 +347,13 @@ onBeforeUnmount(() => {
 			<div class="chart-wrapper">
 				<PlayerChart v-if="player.id" :player_id="player.id" />
 			</div>
-			<h2 class="summary-title no-border big-margin">pobede</h2>
+			<h2 class="summary-title no-border big-margin">mečevi</h2>
 			<div class="player-matches">
-				<MatchTable
-					v-if="player.wins"
-					:showMessage="{ wins: player.wins_number == 0 }"
-					:propMatches="player.wins"
-					:loadMatches="false"
-				/>
-			</div>
-			<h2 class="summary-title no-border big-margin">gubitci</h2>
-			<div class="player-matches mobile-mb-200">
-				<MatchTable
-					v-if="player.losses"
-					:showMessage="{ loses: player.losses_number == 0 }"
-					:propMatches="player.losses"
-					:loadMatches="false"
+				<Matches
+					v-if="player.id"
+					:player_id="player.id"
+					:loadMatches="true"
+					:showMessage="{ matches: player.matches?.length == 0 }"
 				/>
 			</div>
 		</div>

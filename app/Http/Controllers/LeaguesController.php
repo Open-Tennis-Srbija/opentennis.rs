@@ -345,4 +345,29 @@ public static function getLeaguesForList(){
         return redirect('/'. $league->uri);
     }
 
+    public function getLeagueMatchesApi(Request $request, $id)
+    {
+        $page = $request->get('page', 1);
+        $perPage = $request->get('per_page', 100);
+        $offset = ($page - 1) * $perPage;
+
+        // Get matches for the specific league using offset and limit
+        $league = League::findOrFail($id);
+        $matches = $league->getMatches();
+        
+        // Manually paginate the matches since getMatches() returns an array
+        $total = count($matches);
+        $paginatedMatches = array_slice($matches, $offset, $perPage);
+        
+        return response()->json([
+            'data' => $paginatedMatches,
+            'current_page' => (int) $page,
+            'per_page' => (int) $perPage,
+            'total' => $total,
+            'last_page' => ceil($total / $perPage),
+            'from' => $offset + 1,
+            'to' => min($offset + $perPage, $total),
+        ]);
+    }
+
 }

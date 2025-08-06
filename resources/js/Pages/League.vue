@@ -6,6 +6,7 @@ import axios from "axios";
 import bus from "vue3-eventbus";
 import { ref } from "vue";
 import EditIcon from "./components/EditIcon.vue";
+import Matches from "./Matches.vue";
 
 const utl = utils;
 const league = ref({});
@@ -151,9 +152,9 @@ onBeforeUnmount(() => {
             </div>
             <h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
             <div class="player-matches">
-                <MatchTable
-                v-if="league.matches"   
-                :propMatches="league.matches" :loadMatches="false" :showMessage="{ league: league.match_number == 0 }"
+                <Matches
+                v-if="league.id"   
+                :league_id="league.id" :loadMatches="true" :showMessage="{ league: league.match_number == 0 }"
                 />
             </div>
         </div>

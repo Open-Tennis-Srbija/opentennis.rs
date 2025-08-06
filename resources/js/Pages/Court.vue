@@ -6,6 +6,7 @@ import axios from "axios";
 import bus from "vue3-eventbus";
 import { ref } from "vue";
 import EditIcon from "./components/EditIcon.vue";
+import MatchTable from "./Matches.vue";
 
 const utl = utils;
 const court = ref({});
@@ -202,8 +203,9 @@ function containsGreek(text) {
             <h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
             <div class="player-matches">
                 <MatchTable
-                v-if="court.matches"
-                :propMatches="court.matches" :loadMatches="false" :showMessage="{ league: court.match_number == 0 }"
+                :loadMatches="true"
+                :court_id="props.court_id"
+                :showMessage="{ league: court.match_number == 0 }"
                 />
             </div>
         </div>
