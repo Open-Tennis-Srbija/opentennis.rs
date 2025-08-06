@@ -8,7 +8,6 @@ const props = defineProps({
     loadMatches: Boolean || true,
     showMessage: Object,
     propMatches: Array,
-    isHome: Boolean || true,
     court_id: [String, Number], // Add court_id prop
     league_id: [String, Number], // Add league_id prop
     player_id: [String, Number], // Add player_id prop
@@ -32,6 +31,7 @@ const isLoading = ref(false);
 const hasMoreData = ref(true);
 const totalMatches = ref(0);
 
+const isHome = computed(() => window.location.pathname === '/mecevi');
 // Computed property to determine loading context
 const isCourtSpecific = computed(() => !!props.court_id);
 const isLeagueSpecific = computed(() => !!props.league_id);
@@ -213,10 +213,10 @@ function getDateMonth(date) {
 </script>
 <template>
 
-    <Head v-if="props.loadMatches" title="Mečevi -" />
-    <div class="matches-wrapper" :class="{'home': props.isHome, 'mobile-mb-300': props.loadMatches}">
+    <Head v-if="isHome" title="Mečevi -" />
+    <div class="matches-wrapper" :class="{'home': isHome, 'mobile-mb-300': isHome}">
         <div id="desktop">
-            <div class="matches-header" :class="{'home': props.loadMatches}" :style="{top: `${ 85 - topOffset}px`}">
+            <div class="matches-header" :class="{'home': isHome}" :style="{top: `${ 85 - topOffset}px`}">
                 <div class="spacer number"></div>
                 <div class="winner">pobednik</div>
                 <div class="loser">gubitnik</div>
@@ -238,7 +238,7 @@ function getDateMonth(date) {
                 </p>
             </div>
             <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
-                <Link :class="{child: !props.loadMatches}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
+                <Link :class="{child: !isHome}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
                 <div class="number">{{ match.number }}</div>
@@ -396,7 +396,7 @@ function getDateMonth(date) {
                 </p>
             </div>
             <div class="match-entry" v-for="(match, index) in formatedMatchesMobile" :key="index">
-                <Link :class="{child: !props.loadMatches}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
+                <Link :class="{child: !isHome}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
                 <div class="score">
