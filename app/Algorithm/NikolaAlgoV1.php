@@ -55,22 +55,22 @@ class NikolaAlgoV1
 
         if($mode == 'winner'){
             $winner = $match->winners()->first();
-            $winner_matches = $winner->matches();
+            $winner_matches = $winner->matches()->get();
             $winner_gain = self::getPlayerEloGain($match,$winner_matches,$winner->id);
             return $winner_gain;
         }
         else if($mode == 'loser'){
             $loser = $match->losers()->first();
-            $loser_matches = $loser->matches();
+            $loser_matches = $loser->matches()->get();
             $loser_gain = self::getPlayerEloGain($match,$loser_matches, $loser->id, true);
             return $loser_gain;
         }
         else{
             $winner = $match->winners()->first();
-            $winner_matches = $winner->matches();
+            $winner_matches = $winner->matches()->get();
             $winner_gain = self::getPlayerEloGain($match,$winner_matches,$winner->id);
             $loser = $match->losers()->first();
-            $loser_matches = $loser->matches();
+            $loser_matches = $loser->matches()->get();
             $loser_gain = self::getPlayerEloGain($match,$loser_matches, $loser->id, true);
             return [$winner_gain, $loser_gain];
         }
