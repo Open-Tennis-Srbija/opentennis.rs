@@ -191,6 +191,13 @@ const onBlur = () => {
     }
 };
 
+const toggleDropdown = () => {
+    if(state.isOpen)
+        onBlur();
+    else
+        onFocus({ target: dropdownInput.value });
+};
+
 const onTab = () => {
     let selected = filteredOptions.value[state.selectedIndex];
 
@@ -256,7 +263,7 @@ const selectOption = (option, e) => {
                 </li>
             </ul>
         </div>
-        <div class="arrow" :class="{ open: state.isOpen }">
+        <div class="arrow" @click="toggleDropdown" :class="{ open: state.isOpen }">
             <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
                 <g>
                     <polygon points="8 3 5 7 2 3 8 3" />
