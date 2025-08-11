@@ -140,7 +140,34 @@
         position: sticky;
         z-index: 1;
         top: 0;
+  svg {
+            position: absolute;
+            height: 80px;
+            top: 84%;
+            left: 50%;
+            transform: translate(-50%, -50%);
 
+            .cls-1 {
+                    fill: #fff;
+                }
+            
+                .cls-2 {
+                    fill: #cf0;
+                }
+            
+                .cls-3 {
+                    fill: #8f8f8f;
+                }
+            
+                .cls-4 {
+                    fill: #194477;
+                }
+            
+                .cls-5 {
+                    fill: #c7373d;
+                }
+
+        }
         .links {
             width: 1200px;
             display: grid;
@@ -391,7 +418,7 @@
         flex-direction: column;
         gap: 30px;
         padding-left: 30px;
-        padding-top: 30px;
+        padding-top: 50px;
         padding-bottom: 150px;
 
         a {
@@ -523,7 +550,9 @@
         }
 
         .links-wrapper {
-            display: none;
+            .links{
+                display: none;
+            }
         }
 
         .mobile-underheader {

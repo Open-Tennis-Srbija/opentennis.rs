@@ -152,3 +152,10 @@ onMounted(async () => {
 
     </div>
 </template>
+<style lang="scss" scoped>
+
+h2{
+    margin-top: 50px;
+}
+
+</style>

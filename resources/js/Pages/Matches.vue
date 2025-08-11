@@ -216,7 +216,7 @@ function getDateMonth(date) {
     <Head v-if="isHome" title="Mečevi -" />
     <div class="matches-wrapper" :class="{'home': isHome, 'mobile-mb-300': isHome}">
         <div id="desktop">
-            <div class="matches-header" :class="{'home': isHome}" :style="{top: `${ 85 - topOffset}px`}">
+            <div class="matches-header" :class="{'home': isHome}" :style="{top: `${ 20 - topOffset}px`}">
                 <div class="spacer number"></div>
                 <div class="winner">pobednik</div>
                 <div class="loser">gubitnik</div>

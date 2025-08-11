@@ -145,16 +145,17 @@ watch(
 <template>
     <Loader :show="loading" />
     <header class="header-wrapper">
-        <div class="logo-wrapp" :style="{ marginTop: -topOffset + 'px' }">
-            <Link prefetch="false" :href="'/'">
-                <p class="STL"><span class="red">Srpska</span> <span class="blue">Tenis</span> Liga</p>
-                <Logo :style="{ top: 50 - topOffset + 'px'}" />
-                <p class="logo-message desktop">budi zdraviji, igraj više </p>
-                <p class="logo-message mobile left">budi zdraviji</p>
-                <p class="logo-message mobile right">igraj više</p>
-            </Link>
-        </div>
+        <!-- <div class="logo-wrapp" :style="{ marginTop: -topOffset + 'px' }"> -->
+            <!-- <Link prefetch="false" :href="'/'"> -->
+                <!-- <p class="STL"><span class="red">Srpska</span> <span class="blue">Tenis</span> Liga</p> -->
+                <!-- <Logo :style="{ top: 50 - topOffset + 'px'}" /> -->
+                <!-- <p class="logo-message desktop">budi zdraviji, igraj više </p> -->
+                <!-- <p class="logo-message mobile left">budi zdraviji</p> -->
+                <!-- <p class="logo-message mobile right">igraj više</p> -->
+            <!-- </Link> -->
+        <!-- </div> -->
         <div class="links-wrapper">
+            <Logo :style="{ top: 50 + 'px'}" />
             <div class="links" :class="{'admin': $page.props.auth.user}">
                 <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/', activeChild: activeChilds.players }">teniseri</Link>
                 <Link prefetch="false" :href="'/lige-turniri'" :class="{ active: $page.url === '/lige-turniri', activeChild: activeChilds.leagues }">lige i turniri</Link>
