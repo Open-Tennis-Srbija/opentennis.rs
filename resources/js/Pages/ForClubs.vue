@@ -9,7 +9,7 @@ onMounted(async () => {
 <template>
     <Head title="Dodaj ligu ili turnir -" />
     <div class="static-wrapper">
-        <h1>DODAJ LIGU ILI TURNIR</h1>
+        <h1 class="show-mobile text-align-center">DODAJ LIGU ILI TURNIR</h1>
         <!-- <p>
             Srpska Tenis Liga povećava broj mečeva, iznajmljivanje terena, i
             zapošljavanje trenera.

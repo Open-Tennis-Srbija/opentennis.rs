@@ -441,6 +441,7 @@
 @media only screen and (max-width: 1200px){
     .static-wrapper.player{
         padding-inline: 0;
+        margin-top: 90px;
         .edit-btn{
             &.desktop{
                 display: none;
@@ -467,6 +468,9 @@
             width: 100%;
             margin-top: 30px;
             padding-inline: 20px;
+            &.mobile-neg-margin{
+                margin-top: -20px;
+            }
             &.hide-mobile{
                 display: none;
             }

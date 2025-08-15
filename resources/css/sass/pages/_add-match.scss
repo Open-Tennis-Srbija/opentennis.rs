@@ -544,6 +544,11 @@
       h1 {
         font-size: 27px;
         display: none;
+
+        &.show-mobile{
+          display: inline-block;
+          width: 100%;
+        }
         &.add{
           display: inline;
           font-size: 27px;
