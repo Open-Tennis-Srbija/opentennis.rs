@@ -1490,14 +1490,8 @@ fclose($handle);
 
 
 
-        if($old_loser->id != $loser->id){
-            $match->players()->detach($old_loser->id);
-            $match->players()->attach($loser->id, ['team' => 'loser']);
-        }
-        if($old_winner->id != $winner->id){
-            $match->players()->detach($old_winner->id);
-            $match->players()->attach($winner->id, ['team' => 'winner']);
-        }
+        $match->players()->detach($old_winner->id);
+        $match->players()->detach($old_loser->id);
 
 
 
@@ -1565,6 +1559,8 @@ fclose($handle);
             $match->county = $data['location'];
         }
         $match->save();
+        $match->players()->attach($winner->id, ['team' => 'winner']);
+        $match->players()->attach($loser->id, ['team' => 'loser']);
 
         [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
         $match->winner_point_gain = $winner_gains;
