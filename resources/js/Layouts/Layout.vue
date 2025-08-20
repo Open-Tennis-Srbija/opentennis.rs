@@ -157,12 +157,16 @@ watch(
         <div class="links-wrapper">
             <Logo :style="{ top: 50 + 'px'}" />
             <div class="links" :class="{'admin': $page.props.auth.user}">
-                <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/', activeChild: activeChilds.players }">teniseri</Link>
-                <Link prefetch="false" :href="'/lige-turniri'" :class="{ active: $page.url === '/lige-turniri', activeChild: activeChilds.leagues }">lige i turniri</Link>
-                <Link  prefetch="false" :href="'/tereni'" :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">tereni</Link>
-                <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
-                <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
-                <Link prefetch="false" class="blue" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
+                <div class="link-group">
+                    <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/', activeChild: activeChilds.players }">teniseri</Link>
+                    <Link prefetch="false" :href="'/lige-turniri'" :class="{ active: $page.url === '/lige-turniri', activeChild: activeChilds.leagues }">lige i turniri</Link>
+                    <Link  prefetch="false" :href="'/tereni'" :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">tereni</Link>
+                </div>
+                <div class="link-group">
+                    <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
+                    <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">statistika</Link>
+                    <Link prefetch="false" class="blue" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
+                </div>
                 <!-- <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link> -->
                 <div v-if="$page.props.auth.user" @click="toggleAdmin" class="admin-button">
                     <div class="button" :class="{ 'open-left': adminMenu.state }"></div>

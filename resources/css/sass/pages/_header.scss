@@ -169,10 +169,19 @@
 
         }
         .links {
-            width: 1200px;
-            display: grid;
-            grid-template-columns: repeat(6, 200px);
+           width: 1200px;
+            // display: grid;
+            // grid-template-columns: repeat(6, 200px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             place-items: center;
+
+            .link-group{
+                width: calc(50% - 120px);
+                display: flex;
+                justify-content: space-between;
+            }
 
 
             a {
