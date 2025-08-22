@@ -155,7 +155,9 @@ watch(
             <!-- </Link> -->
         <!-- </div> -->
         <div class="links-wrapper">
-            <Logo :style="{ top: 50 + 'px'}" />
+            <a href="/">
+                <Logo :style="{ top: 50 + 'px'}" />
+            </a>
             <div class="links" :class="{'admin': $page.props.auth.user}">
                 <div class="link-group">
                     <Link prefetch="false" :href="'/'" :class="{ active: $page.url === '/', activeChild: activeChilds.players }">teniseri</Link>

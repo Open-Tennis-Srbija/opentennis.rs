@@ -191,9 +191,10 @@
                 font-family: "Helvetica Neue";
                 padding-top: -2px;
                 text-transform: uppercase;
+                margin-top: -22px;
 
                 &.blue{
-                    color: $blue;;
+                    color: $blue;
                 }
 
                 &.highlighted {

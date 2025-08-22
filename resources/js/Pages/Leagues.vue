@@ -92,7 +92,8 @@ const topOffset = computed(() => {
   <Head title="Lige & Turniri -" />
   <div class="rankings-wrapper leagues mobile-mb-300">
     <div id="desktop">
-      <div class="rankings-header" :style="{top: `${ 77 - topOffset}px`}">
+      <div class="rankings-header" style="top: 50px;">
+      <!-- <div class="rankings-header" :style="{top: `${ 50 - topOffset}px`}"> -->
         <div class="spacer"></div>
         <div class="name">lige i turniri</div>
         <div class="wins">poeni</div>
