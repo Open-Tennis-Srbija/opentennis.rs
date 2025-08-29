@@ -18,6 +18,15 @@
     <meta property="og:description" content="budi zdraviji, igraj više"/>
     <meta property="og:site_name" content="srpskatenisliga.rs"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8TR2L5FC85"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-8TR2L5FC85');
+    </script>
     @inertiaHead
   </head>
   <body>
