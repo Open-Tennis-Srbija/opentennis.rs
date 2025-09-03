@@ -64,7 +64,9 @@ import { ref } from 'vue';
     <!-- Skeleton Loading State -->
     <div v-if="isLoading" style="padding-bottom:0;margin-bottom:60px" class="static-wrapper player mobile-mb-300 skeleton-wrapper">
         <div class="dashboard-wrapper">
-             <h1 class="statistics">Statistika</h1>
+            <!-- Main title skeleton -->
+            <h1 class="statistics">Statistika</h1>
+
             
             <!-- Totals section -->
             <div class="skeleton-section-title">
@@ -382,87 +384,7 @@ import { ref } from 'vue';
 </template>
 
 <style scoped>
-.statistics {
-    font-size: 40px;
-    font-weight: 800;
-    text-align: center;
-    padding-bottom: 10px;
-    border-bottom: 5px solid var(--secondary);
-    margin-bottom: 80px;
-}
-
-.summary-title {
-    border-bottom: 1px solid var(--secondary);
-    text-transform: uppercase;
-    margin: 40px 20px 10px;
-    padding-bottom: 5px;
-    font-weight: 600;
-    text-align: center;
-}
-
-.summary-title.big-margin {
-    margin-top: 120px;
-}
-
-.summary-item {
-    position: relative;
-}
-
-.summary-item h2 {
-    color: var(--orange);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 25px;
-    text-align: center;
-}
-
-.summary-item p {
-    text-align: center;
-    font-size: 22px;
-    margin-bottom: 5px;
-}
-
-.summary-item.flex {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-}
-
-.summary-item.full {
-    grid-column: 1 / -1;
-}
-
-.category {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.diamond {
-    width: 15px;
-    height: 15px;
-    transform: rotate(45deg);
-    border-radius: 2px;
-    margin-right: 10px;
-}
-
-.smaller {
-    font-size: 18px !important;
-}
-
-.f20 {
-    font-size: 20px !important;
-}
-
-.no-players {
-    margin-bottom: 0 !important;
-}
-
-.smaller-top-margin {
-    margin-top: -30px;
-}
-
-/* Skeleton styles */
+/* Skeleton loading styles only - no typography changes */
 .skeleton-wrapper {
     pointer-events: none;
 }
@@ -564,37 +486,8 @@ import { ref } from 'vue';
     }
 }
 
+/* Mobile responsive skeleton adjustments */
 @media (max-width: 768px) {
-    .statistics {
-        font-size: 30px;
-        margin-bottom: 50px;
-    }
-    
-    .summary-title {
-        margin: 30px 10px 10px;
-        font-size: 20px;
-    }
-    
-    .summary-title.big-margin {
-        margin-top: 80px;
-    }
-    
-    .summary-item h2 {
-        font-size: 20px;
-    }
-    
-    .summary-item p {
-        font-size: 18px;
-    }
-    
-    .smaller {
-        font-size: 16px !important;
-    }
-    
-    .f20 {
-        font-size: 18px !important;
-    }
-
     .skeleton-main-title .skeleton {
         height: 30px;
         width: 150px;

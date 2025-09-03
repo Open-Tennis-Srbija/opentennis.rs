@@ -198,10 +198,10 @@ watch(
     <div class="side-menu" style="top: 90px;" :style="{ height: 'calc(100vh - ' + (90 - topOffset) + 'px)' }"
         :class="{ open: sideMenu.state }">
         <div class="links">
-            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/crazy-pizza'"
-                :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">Dodaj ligu</Link>
+            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/crazy-pizza'"
+                :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/uputstva'"
                 :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
 
@@ -266,10 +266,10 @@ watch(
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"
                 :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/crazy-pizza'"
-                :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
+                <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
+                <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/crazy-pizza'"
+                    :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
                 :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
 
