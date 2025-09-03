@@ -53,7 +53,7 @@ import { ref } from 'vue';
     <Head :title="'Statistika -'"/>
     <div style="padding-bottom:0;margin-bottom:60px" class="static-wrapper player mobile-mb-300">
         <div class="dashboard-wrapper">
-        <h1 class="mobile-neg-margin">Statistika</h1>
+        <h1 class="statistics">Statistika</h1>
             <h2 class="summary-title">ukupno</h2>
             <div class="summary player three desktop">
                 <div class="summary-item">

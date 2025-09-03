@@ -1,9 +1,13 @@
 @font-face {
     font-family: "Helvetica Neue";
-    src: url('../../fonts/HelveticaNeueLTProBdEx.woff'), format('woff');
+    src: url('@fonts/HelveticaNeueLTProBdEx.woff'), format('woff');
 }
 @font-face {
     font-family: "Helvetica Neue Extended";
-    src: url('../../fonts/helvetica-neue-55/HelveticaNeue-Extended.otf'), format('opentype');
+    src: url('@fonts/helvetica-neue-55/HelveticaNeue-Extended.otf'), format('opentype');
 }
 
+@font-face{
+    font-family: 'Gill Sans';
+    src: url('@fonts/gill-sans/Gill-Sans.otf') format('opentype');
+}

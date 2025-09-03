@@ -10,6 +10,10 @@ use App\Http\Controllers\ResolverController;
 use App\Http\Middleware\RedirectLoggedIn;
 use Illuminate\Support\Facades\Route;
 
+
+// PROMO
+Route::inertia('/crazy-pizza', 'static/CrazyPizza')->name('crazyPizza');
+
 Route::inertia('/', 'players/Players')->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);
 

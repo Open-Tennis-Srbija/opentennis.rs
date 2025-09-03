@@ -10,7 +10,7 @@ onMounted(async () => {
 
     <Head title="Uputstva -" />
     <div class="static-wrapper">
-        <h1 class="show-mobile text-align-center">UPUTSTVA</h1>
+        <h1 class="mobile-neg-margin text-align-center">UPUTSTVA</h1>
         <p>
             <Link prefetch="false" :href="'/'">SrpskaTenisLiga.rs</Link> je osnovao <a
                 href="https://www.linkedin.com/in/nikolatosic/" target="_blank">Nikola Tošić</a> 9 decembra 2024.

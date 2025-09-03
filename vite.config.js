@@ -26,6 +26,7 @@ export default defineConfig({
             '@pages': path.resolve(__dirname, 'resources/js/Pages'),
             '@utils': path.resolve(__dirname, 'resources/js/utils'),
             '@assets': path.resolve(__dirname, 'resources/js/assets/'),
+            '@fonts': path.resolve(__dirname, 'resources/fonts/'),
             '@abstracts': path.resolve(__dirname, 'resources/css/sass/abstracts')
         },
     },

@@ -37,8 +37,11 @@ class AuthController extends Controller
         ]);
 
         // Attempt to log the user in...
-        if(Auth::attempt($fields, $request->remember)){
+        if(Auth::attempt($fields, true)){ // Force remember me to true
             $request->session()->regenerate();
+            
+            // Set session to expire in 1 year (365 days)
+            config(['session.lifetime' => 525600]); // 365 * 24 * 60 = 525600 minutes
 
             return redirect()->route('home');
         }

@@ -47,7 +47,7 @@ const topOffset = computed(() => {
   <Head title="Tereni -" />
 <div class="rankings-wrapper courts-list mobile-mb-300">
     <div id="desktop">
-      <div class="rankings-header" style="top: 50px;">
+      <div class="rankings-header" style="top: 90px;">
         <div class="spacer"></div>
         <div class="name">teren</div>
         <div class="spacer"></div>
