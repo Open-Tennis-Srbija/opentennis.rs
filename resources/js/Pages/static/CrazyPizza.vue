@@ -22,7 +22,7 @@ onMounted(async () => {
         </p>
 
         <p>
-            Moguće je dobiti samo jednu picu kada se pređe 1,000.
+            Moguće je dobiti samo jednu picu kada se pređe 1,000 poena.
         </p>
 
         <p>
@@ -33,6 +33,10 @@ onMounted(async () => {
             Predlažem da se najavite Crazy Pizza telefonom.
         </p>
         
+        <p>
+            Za sada promocija nema rok.
+        </p>
+
         <p>
             Za pomoć zovite Nikolu na <a href="tel:063268906">063268906</a>.
         </p>
