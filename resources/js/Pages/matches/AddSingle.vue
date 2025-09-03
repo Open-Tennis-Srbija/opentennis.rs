@@ -1,46 +1,27 @@
+
 <script setup>
-import {useForm, usePage} from '@inertiajs/vue3'
-import { onMounted, reactive, defineAsyncComponent, nextTick} from 'vue';
+import {useForm} from '@inertiajs/vue3'
+import {reactive,onMounted, defineAsyncComponent, computed, onUpdated, onBeforeMount} from 'vue';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
-import opstine from '../../assets/opstine.json';
+import opstine from '@assets/regions_serbia.json';
 import bus from 'vue3-eventbus';
+import { nextTick } from 'vue';
 
-const props = defineProps({players: Array, match: Object, courts: Array, leagues: Array});
+const props = defineProps({players: Array,courts: Array, leagues: Array, court_id: Number, league_id: Number});
 
-
-const page = usePage();
-
-onMounted(async () => {
-    page.props['title'] = `Izmeni meč`;
-    await nextTick();
-    bus.emit('loading', false);
-});
+const emit = defineEmits(['submitted','success']);
 
 const form = useForm({
-    id: props.match.id,
-    winner: props.match.winner,
-    loser: props.match.loser,
-    set_score: props.match.set_score,
-    game_score: props.match.game_score,
-    court: props.match.court,
-    date: props.match.date,
-    location: props.match.location,
-    league: props.match.league
+    winner: null,
+    loser:null,
+    set_score: '',
+    game_score: '',
+    court: null,
+    date: new Date(),
+    location: 'Beograd',
+    league: {id: 1, name: 'sparing'},
 });
-
-const deleteMatch = () =>{
-    if(confirm('Da li ste sigurni da želite da obrišete ovaj meč?')){
-        form.post(`/mec/obrisi`,{
-            onSuccess: () => {
-                location.href = '/mecevi';
-            },
-            onError: (errors) => {
-                formState.submitted = false;
-            },
-        });
-    }
-}
 
 
 const formState = reactive({
@@ -48,6 +29,28 @@ const formState = reactive({
     success: false,
     shouldReset: false,
 });
+onBeforeMount(() => {
+    props.courts.forEach(element => {
+      if (element.id == props.court_id) {
+        console.log('found court', element);
+        form.court = element;
+      }
+    });
+    props.leagues.forEach(element => {
+      console.log('found league', element, props.league_id);
+      if (element.id == props.league_id) {
+        form.league = element;
+      }
+    });
+});
+onMounted(async () => {
+    await nextTick();
+    bus.emit('loading', false);
+})
+onUpdated(()=>{
+bus.emit('loading', false);
+})
+
 
 const submit = () =>{
 
@@ -57,34 +60,52 @@ const submit = () =>{
   if(form.winner){
     form.winner.name.trim();
     form.winner.name = form.winner.name.replace(/  /g, ' ');
-
   }
   if(form.loser){
     form.loser.name.trim();
-    form.winner.name = form.winner.name.replace(/  /g, ' ');
+    form.loser.name.replace(/  /g, ' ');
   }
 
   form.set_score.trim();
-  if(form.game_score){
-      form.game_score.trim();
-   form.game_score = form.game_score.replace(/ /g, ',');
+  form.set_score = form.set_score.replace(/-/g, ':');
+  form.game_score.trim();
+  form.game_score = form.game_score.replace(/ /g, ',');
   form.game_score = form.game_score.replace(/,,/g, ',');
-      console.log(form.game_score);
-  }
+  form.game_score = form.game_score.replace(/-/g, ':');
+
   form.location.trim();
 
-    form.post(`/izmeni`,{
-        onSuccess: () => {
-          bus.emit('loading', false);
+    form.post('/dodaj',{
+        onSuccess: (data) => {
+          emit('success');
+          formState.shouldReset = true;
+          form.reset('game_score');
+          form.reset('set_score');
+          form.winner = null;
+          form.loser = null;
           formState.submitted = false;
           formState.success = true;
+          console.log(data)
+          setTimeout(()=>{
+            formState.shouldReset = false;
+          }, 1000);
+          updateDropDowns(data)
+          form.location = 'Beograd';
         },
         onError: (errors) => {
-            bus.emit('loading', false);
           formState.submitted = false;
+          setTimeout(()=>{
+            formState.shouldReset = false;
+          }, 1000);
         },
     });
 }
+
+  const updateDropDowns = (data =>{
+    props.players = data.props.players;
+    props.courts = data.props.courts;
+    props.leagues = data.props.leagues;
+  })
 const validateNames = (()=>{
   let check = true;
   if(!form.winner){
@@ -135,10 +156,6 @@ const formatDate = (date) => {
     return days[date.getDay()] + ' ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
 }
 
-const tempPlayers = reactive({
-  players: props.players
-})
-
 
 const handleTemp = (mode) => {
   if(!form[mode] || form[mode] === ''){
@@ -164,14 +181,6 @@ const handleInputs = (event,isDate = false) => {
 
 </script>
 <template>
-    <Head title="Izmeni meč" />
-    <div class="static-wrapper">
-    <h1 id="title" :class="{'hide': formState.success}">Izmeni meč</h1>
-    <h1 id="success" :class="{'show': formState.success}">Meč je uspešno izmenjen</h1>
-    <div id="success-links" :class="{'show': formState.success}">
-      <Link prefetch="false" class="blue" :href="'/mecevi'">vidi mečeve</Link>
-      <Link prefetch="false" class="red" :href="'/'">vidi tenisere</Link>
-    </div>
     <form id="form" @submit.prevent="submit" :class="{'hide': formState.success}">
 
       <div class="form-section">
@@ -182,13 +191,13 @@ const handleInputs = (event,isDate = false) => {
               Pobednik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
            <dropdown
-              v-if="props.players"
+              :autofocus="true"
               label="name"
               :options="props.players"
               :disabledOption="form.loser"
               v-model="form.winner"
               :class="{'invalid': form.errors.winner}"
-              :shouldreset="formState.shouldreset"
+              :shouldReset="formState.shouldReset"
             />
             <p class="error-message">{{ form.errors.winner }}</p>
           </div>
@@ -197,7 +206,6 @@ const handleInputs = (event,isDate = false) => {
               Gubitnik (ime i prezime, odaberi postojeće ili dodaj novo) <span class="required">*</span>
             </label>
             <Dropdown
-              v-if="props.players"
               label="name"
               :options="props.players"
               v-model="form.loser"
@@ -228,10 +236,9 @@ const handleInputs = (event,isDate = false) => {
           </div>
           <div class="form-group">
             <label for="winner-fname" class="input-label">
-              Liga ili turnir
+              Sparing, liga ili turnir
             </label>
             <Dropdown
-              v-if="props.leagues"
               label="name"
               :options="[{ id: 1, name: 'sparing' },{ id: null, name: 'dropdown-spacer' }, ...props.leagues]"
               v-model="form.league"
@@ -276,13 +283,11 @@ const handleInputs = (event,isDate = false) => {
               Opština (ili inostranstvo na dnu) <span class="required">*</span>
             </label>
             <Dropdown
-              v-if="opstine.data"
               label="name"
               :options="opstine.data"
               :type="'array'"
               v-model="form.location"
               :class="{'invalid': form.errors.location}"
-              :shouldReset="formState.shouldReset"
             />
             <p class="error-message">{{ form.errors.location }}</p>
           </div>
@@ -304,13 +309,12 @@ const handleInputs = (event,isDate = false) => {
 
       <div class="form-section">
         <div class="form-row">
-          <button id="submit">
-            <span id="add-btn">Sačuvaj</span>
+        <button id="submit" :class="{'red': formState.submitted}">
+            <span id="add-btn" :class="{'hide': formState.submitted}">Dodaj</span>
+            <span id="loader-submit" :class="{'show': formState.submitted}" class="loader"></span>
           </button>
         </div>
       </div>
 
     </form>
-    <button v-if="!formState.success" @click.prevent="deleteMatch()" class="delete">obriši</button>
-  </div>
 </template>

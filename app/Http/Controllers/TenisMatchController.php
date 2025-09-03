@@ -19,7 +19,6 @@ use App\Mail\DoubleMatchNotification;
 use DateTime;
 use Helpers;
 use Carbon\Carbon;
-use Hamcrest\Type\IsNumeric;
 use Illuminate\Support\Str;
 
 class TenisMatchController extends Controller
@@ -42,7 +41,7 @@ class TenisMatchController extends Controller
         $isDoubles = ($winner_count == 2 && $loser_count == 2);
 
         if($isDoubles){
-            return Inertia::render('Auth/EditDouble', [
+            return Inertia::render('Auth/admin/matches/EditDouble', [
                 'players' => PlayerController::getPlayersForDropdown(),
                 'match' => TenisMatchController::getDoubleForEdit($number),
                 'courts' => CourtsController::getCourts(),
@@ -50,7 +49,7 @@ class TenisMatchController extends Controller
             ]);
         }
         else{
-            return Inertia::render('Auth/EditMatch', [
+            return Inertia::render('Auth/admin/matches/EditMatch', [
                 'players' => PlayerController::getPlayersForDropdown(),
                 'match' => TenisMatchController::getMatchForEdit($number),
                 'courts' => CourtsController::getCourts(),
@@ -61,7 +60,7 @@ class TenisMatchController extends Controller
     }
 
     public function batchImport(){
-        return Inertia::render('Auth/BatchMatches', [
+        return Inertia::render('Auth/admin/imports/BatchMatches', [
             'players' => PlayerController::getPlayersForDropdown(),
             'courts' => CourtsController::getCourts(),
             'leagues' => LeaguesController::getLeagues(),
@@ -69,7 +68,7 @@ class TenisMatchController extends Controller
     }
 
     public function batchDoubles(){
-        return Inertia::render('Auth/BatchDoubles', [
+        return Inertia::render('Auth/admin/imports/BatchDoubles', [
             'players' => PlayerController::getPlayersForDropdown(),
             'courts' => CourtsController::getCourts(),
             'leagues' => LeaguesController::getLeagues(),

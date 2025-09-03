@@ -7,8 +7,8 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import { ref } from 'vue';
 import axios from 'axios';
 import bus from 'vue3-eventbus';
-import Dropdown from '../components/Dropdown.vue';
-import opstine from '../../assets/opstine.json';
+import Dropdown from '@components/Dropdown.vue';
+import opstine from '@assets/regions_serbia.json';
 
 const props = defineProps({courts: Array});
 

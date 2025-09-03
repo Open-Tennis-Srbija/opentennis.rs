@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import utils from '../utils';
-import EditBtn from './components/EditIcon.vue';
+import utils from '../../utils';
+import EditBtn from '@components/EditIcon.vue';
 import axios from 'axios';
 import { bus } from "vue3-eventbus";
 import { computed } from 'vue';

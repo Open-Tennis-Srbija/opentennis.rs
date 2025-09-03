@@ -10,10 +10,10 @@ use App\Http\Controllers\ResolverController;
 use App\Http\Middleware\RedirectLoggedIn;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'Home')->name('home');
+Route::inertia('/', 'players/Players')->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);
 
-Route::inertia('/mecevi', 'Matches', ['loadMatches' => true])->name('matches');
+Route::inertia('/mecevi', 'matches/Matches', ['loadMatches' => true])->name('matches');
 Route::get('/get-matches', [TenisMatchController::class, 'getMatches']);
 Route::get('/api/matches', [TenisMatchController::class, 'getMatchesApi']);
 
@@ -21,7 +21,7 @@ Route::get('/get-player/{uri}', [PlayerController::class, 'get_player_by_uri']);
 Route::get('/api/player/{id}/matches', [PlayerController::class, 'getPlayerMatchesApi']);
 Route::get('/get-player-chart/{id}', [PlayerController::class, 'getChart']);
 
-Route::inertia('/dodaj', 'AddMatch',
+Route::inertia('/dodaj', 'matches/AddMatch',
     ['players' => PlayerController::getPlayersForDropdown(),
     'courts' => CourtsController::getCourts(),
     'leagues' => LeaguesController::getLeagues(),
@@ -29,7 +29,7 @@ Route::inertia('/dodaj', 'AddMatch',
 )->name('addMatch');
 Route::post('/dodaj', [TenisMatchController::class, 'store']);
 
-Route::inertia('/dodaj-dubl', 'AddDouble',
+Route::inertia('/dodaj-dubl', 'matches/AddDouble',
     ['players' => PlayerController::getPlayersForDropdown(),
     'courts' => CourtsController::getCourts(),
     'leagues' => LeaguesController::getLeagues(),
@@ -37,25 +37,25 @@ Route::inertia('/dodaj-dubl', 'AddDouble',
 )->name('addDouble');
 Route::post('/dodaj-dubl', [TenisMatchController::class, 'storeDouble']);
 
-Route::inertia('/lige-turniri', 'Leagues')->name('leagues');
+Route::inertia('/lige-turniri', 'leagues/Leagues')->name('leagues');
 
 Route::get('/get-leagues', [LeaguesController::class, 'getLeaguesForList']);
 Route::get('/get-league/{uri}', [LeaguesController::class, 'returnLeague']);
 Route::get('/api/league/{id}/matches', [LeaguesController::class, 'getLeagueMatchesApi']);
 
-Route::inertia('/dodaj-ligu', 'ForClubs')->name('clubs');
+Route::inertia('/dodaj-ligu', 'static/ForClubs')->name('clubs');
 
-Route::inertia('/misija', 'Mision')->name('mision');
+Route::inertia('/misija', 'static/Mision')->name('mision');
 
-Route::inertia('/statistika', 'Statistics')->name('leagueStats');
+Route::inertia('/statistika', 'static/Statistics')->name('leagueStats');
 Route::get('/get-statistics', [LeagueController::class, 'getStatistics']);
 Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
 
 /* Route::post('/leagueChart',[LeagueController::class, 'getChart'])->name('leagueChart'); */
 /**/
 
-Route::inertia('/uputstva', 'Rules')->name('rules');
-Route::inertia('/tereni', 'Courts')->name('courts');
+Route::inertia('/uputstva', 'static/Rules')->name('rules');
+Route::inertia('/tereni', 'courts/Courts')->name('courts');
 Route::get('/tereni/{uri}',[CourtsController::class, 'getCourt'])->name('court');
 Route::get('/get-court/{id}',[CourtsController::class, 'get_court'])->name('court');
 Route::get('/get-courts', [CourtsController::class, 'getCourtList']);
@@ -74,14 +74,14 @@ Route::get('/api/court/{id}/matches', [CourtsController::class, 'getCourtMatches
      Route::post('/mec/obrisi',[TenisMatchController::class, 'deleteMatch']);
 
 
-     Route::inertia('/dodaj-turnir','Auth/AddLeague',['courts' => CourtsController::getCourts()])->name('addLeague');
+     Route::inertia('/dodaj-turnir','Auth/admin/leagues/AddLeague',['courts' => CourtsController::getCourts()])->name('addLeague');
      Route::post('/dodaj-ligu', [LeaguesController::class, 'store']);
      Route::get('/izmeni-ligu/{uri}', [LeaguesController::class, 'getLeagueForEdit'])->name('editLeague');
      Route::get('/liga/{uri}', [LeaguesController::class, 'returnForEdit'])->name('leagueByUri');
      Route::post('/izmeni-ligu/{uri}', [LeaguesController::class, 'updateLeague']);
      Route::post('/obrisi-ligu', [LeaguesController::class, 'deleteLeague']);
 
-     Route::inertia('/dodaj-teren','Auth/AddCourt')->name('addCourt');
+     Route::inertia('/dodaj-teren','Auth/admin/courts/AddCourt')->name('addCourt');
      Route::post('/teren/dodaj', [CourtsController::class, 'store']);
      Route::get('/izmeni-teren/{id}',[CourtsController::class, 'getEditCourt'])->name('editCourt');
      Route::get('/get-court-for-edit/{id}',[CourtsController::class, 'getCourtForEdit'])->name('courtById');
@@ -100,7 +100,7 @@ Route::get('/api/court/{id}/matches', [CourtsController::class, 'getCourtMatches
      Route::post('/import-doubles', [TenisMatchController::class, 'importDoubles']);
     //  Route::post('/{uri}/obrisi',[PlayerController::class, 'deletePlayer']);
 
-     Route::inertia('/admin', 'Home')->name('admin');
+     Route::inertia('/admin', 'players/Players')->name('admin');
 
      Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
  });

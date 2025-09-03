@@ -4,8 +4,8 @@ import { router, usePage } from "@inertiajs/vue3";
 import "overlayscrollbars/overlayscrollbars.css";
 import { OverlayScrollbars } from "overlayscrollbars";
 import { bus } from "vue3-eventbus";
-import Logo from "./components/Logo.vue";
-import Loader from "./components/Loader.vue";
+import Logo from "@components/Logo.vue";
+import Loader from "@components/Loader.vue";
 
 const mobileMenu = reactive({ state: false });
 const adminMenu = reactive({ state: false });

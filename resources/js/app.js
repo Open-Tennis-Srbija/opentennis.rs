@@ -6,13 +6,13 @@ import Layout from "./Layouts/Layout.vue";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy";
 import VueSelect from "vue-select";
 import VueDatepicker from "@vuepic/vue-datepicker";
-import Home from "./Pages/Home.vue";
-import Matches from "./Pages/Matches.vue";
+import Players from "./Pages/players/Players.vue";
+import Matches from "@matches/Matches.vue";
 import eventBus, { bus } from "vue3-eventbus";
-import Dropdown from "./Pages/components/Dropdown.vue";
-import AddSingle from "./Pages/Matches/AddSingle.vue";
+import Dropdown from "@components/Dropdown.vue";
+import AddSingle from "@matches/AddSingle.vue";
 import clickOutside from "./directives/click-outside.js";
-import AddDouble from "./Pages/Matches/AddDouble.vue";
+import AddDouble from "@matches/AddDouble.vue";
 
 router.on("finish", () => {
     bus.emit("resetScroll");
@@ -45,7 +45,7 @@ createInertiaApp({
             .component("AddSingleMatch", AddSingle)
             .component("AddDoubleMatch", AddDouble)
             .component("datepicker", VueDatepicker)
-            .component("PlayerTable", Home)
+            .component("PlayerTable", Players)
             .component("MatchTable", Matches)
             .mount(el);
     },

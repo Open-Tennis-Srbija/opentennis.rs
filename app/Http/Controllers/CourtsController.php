@@ -75,7 +75,7 @@ class CourtsController extends Controller
         return $respons;
     }
     public static function getEditCourt($id){
-        return Inertia::render('Auth/EditCourt', [
+        return Inertia::render('Auth/admin/courts/EditCourt', [
             'id' => $id 
         ]);
     }
@@ -113,7 +113,7 @@ class CourtsController extends Controller
             }
         }
 
-        return Inertia::render('Court', [
+        return Inertia::render('courts/Court', [
             'court_id' => $court->id     
         ]);
     }

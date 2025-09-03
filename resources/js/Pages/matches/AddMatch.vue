@@ -2,8 +2,8 @@
 import {onBeforeMount, reactive, watch} from 'vue';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
-import AddSingle from './Matches/AddSingle.vue';
-import AddDouble from './Matches/AddDouble.vue';
+import AddSingle from '@matches/AddSingle.vue';
+import AddDouble from '@matches/AddDouble.vue';
 import { ref } from 'vue';
 
 const props = defineProps({players: Array,courts: Array, leagues: Array});

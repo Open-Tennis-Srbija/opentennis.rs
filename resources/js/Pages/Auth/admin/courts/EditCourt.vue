@@ -1,20 +1,35 @@
-
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
-import {nextTick, onMounted, reactive} from 'vue';
+import {onMounted, reactive} from 'vue';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
+import { ref } from 'vue';
+import axios from 'axios';
 import bus from 'vue3-eventbus';
-import Dropdown from '../components/Dropdown.vue';
-import opstine from '../../assets/opstine.json';
+import Dropdown from '@components/Dropdown.vue';
+import opstine from '@assets/regions_serbia.json';
 
+const props = defineProps({id: Number});
 
 const page = usePage();
+const court = ref({});
 
-onMounted(async () => {
-    page.props['title'] = `Dodaj teren`;
-    await nextTick();
-    bus.emit('loading', false);
+onMounted(() => {
+    page.props['title'] = `Izmeni teren`;
+    axios.get(`/get-court-for-edit/${props.id}`).then((response) => {
+       console.log(response.data);
+       form.id = response.data.id;
+       form.name = response.data.name;
+       form.link = response.data.link;
+       form.uri = response.data.uri;
+       form.phone = response.data.phone;
+       form.county = response.data.county;
+        form.location = response.data.location;
+        court.value = response.data;
+        bus.emit('loading', false);
+    }).catch((error) => {
+        console.error('Error fetching court:', error);
+    });
 });
 
 const form = useForm({
@@ -22,8 +37,8 @@ const form = useForm({
     name: null,
     link: null,
     phone: null,
-    county: null,
     location: null,
+    county: null,
     uri: null,
 });
 
@@ -31,13 +46,24 @@ const formState = reactive({
     submitted: false,
     success: false,
 });
-
+const deleteCourt = () =>{
+    if(confirm('Da li ste sigurni da želite da obrišete ovaj teren?')){
+        form.post(`/teren/obrisi`,{
+            onSuccess: () => {
+                location.href = '/tereni';
+            },
+            onError: (errors) => {
+                formState.submitted = false;
+            },
+        });
+    }
+}
 const submit = () =>{
 
   formState.submitted = true;
   form.name.trim();
 
-    form.post(`/teren/dodaj`,{
+    form.post(`/teren/izmeni`,{
         onSuccess: () => {
           form.reset();
           formState.submitted = false;
@@ -62,9 +88,9 @@ const handleInputs = (event,isDate = false) => {
 
 </script>
 <template>
-   <Head title="Dodaj teren -" />
+   <Head title="Izmeni teren -" />
     <div class="static-wrapper">
-    <h1 id="title" :class="{'hide': formState.success}">Dodaj teren</h1>
+    <h1 id="title" :class="{'hide': formState.success}">izmeni teren</h1>
     <form id="form" @submit.prevent="submit">
 
       <div class="form-section">
@@ -100,6 +126,7 @@ const handleInputs = (event,isDate = false) => {
               Opština (ili inostranstvo na dnu) <span class="required">*</span>
             </label>
             <Dropdown
+              v-if="form.county"
               label="name"
               :options="opstine.data"
               :type="'array'"
@@ -132,11 +159,12 @@ const handleInputs = (event,isDate = false) => {
       <div class="form-section">
         <div class="form-row">
           <button id="submit">
-            <span id="add-btn">dodaj</span>
+            <span id="add-btn">izmeni</span>
           </button>
         </div>
       </div>
 
     </form>
+    <button @click.prevent="deleteCourt()" class="delete">obriši</button>
   </div>
 </template>

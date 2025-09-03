@@ -1,7 +1,7 @@
 <script setup>
     import { onMounted, computed } from 'vue';
-    import utils from '../utils';
-    import LeagueChart from './components/LeagueChart.vue';
+    import utils from '../../utils';
+    import LeagueChart from '@components/LeagueChart.vue';
     import { usePage } from '@inertiajs/vue3';
     import axios from 'axios';
     import bus from 'vue3-eventbus';

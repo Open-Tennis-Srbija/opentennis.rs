@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, onBeforeMount, ref } from "vue";
-import EditIcon from "./components/EditIcon.vue";
+import EditIcon from "@components/EditIcon.vue";
 import axios from "axios";
 import bus from "vue3-eventbus";
 

@@ -1,12 +1,12 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
 import { onMounted, computed, reactive, ref, onBeforeUnmount } from "vue";
-import utils from "../utils";
+import utils from "../../utils";
 import axios from 'axios';
-import PlayerChart from "./components/PlayerChart.vue";
-import EditIcon from "./components/EditIcon.vue";
+import PlayerChart from "@components/PlayerChart.vue";
+import EditIcon from "@components/EditIcon.vue";
 import bus from 'vue3-eventbus';
-import Matches from "./Matches.vue";
+import Matches from "@matches/Matches.vue";
 
 const props = defineProps({ player_uri: String });
 const player = ref({});

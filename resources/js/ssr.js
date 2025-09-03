@@ -6,9 +6,9 @@ import Layout from './Layouts/Layout.vue';
 import VueSelect from 'vue-select';
 import VueDatepicker from '@vuepic/vue-datepicker';
 import eventBus, { bus } from 'vue3-eventbus';
-import Dropdown from './Pages/components/Dropdown.vue';
-import Home from './Pages/Home.vue';
-import Matches from './Pages/Matches.vue';
+import Dropdown from '@components/Dropdown.vue';
+import Home from './Pages/players/Players.vue';
+import Matches from '@matches/Matches.vue';
 import clickOutside from './directives/click-outside.js';
 
 createServer((page) =>

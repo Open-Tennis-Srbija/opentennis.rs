@@ -6,7 +6,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import { ref } from 'vue';
 import axios from 'axios';
 import bus from 'vue3-eventbus';
-import opstine from '../../assets/opstine.json'
+import opstine from '@assets/regions_serbia.json'
 
 const props = defineProps({uri: String});
 

@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import utils from '../utils';
+import utils from '../../utils';
 import axios from 'axios';
 import bus from 'vue3-eventbus';
-import EditBtn from './components/EditIcon.vue';
+import EditBtn from '@components/EditIcon.vue';
 import { computed } from 'vue';
 
 const utl = utils;

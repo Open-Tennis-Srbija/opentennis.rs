@@ -1,12 +1,12 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
 import { onMounted, computed, reactive, onBeforeMount, onBeforeUnmount } from "vue";
-import utils from "../utils";
+import utils from "../../utils";
 import axios from "axios";
 import bus from "vue3-eventbus";
 import { ref } from "vue";
-import EditIcon from "./components/EditIcon.vue";
-import MatchTable from "./Matches.vue";
+import EditIcon from "@components/EditIcon.vue";
+import MatchTable from "@matches/Matches.vue";
 
 const utl = utils;
 const court = ref({});
