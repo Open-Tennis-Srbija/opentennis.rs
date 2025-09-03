@@ -96,6 +96,7 @@ function toggleMenu() {
 function toggleSideMenu() {
     sideMenu.state = !sideMenu.state;
 }
+
 const page = usePage();
 const headerMessage = ref("");
 
@@ -150,7 +151,7 @@ watch(
             <img src="/promo/crazy-pizza/crazy-pizza-banner-icon.png" alt="Crazy Pizza Beograd" class="banner-icon" />
             <p>
                 Crazy pizza beograd <br>
-                besplatna pizza za svakoga sa 1,000 poena
+                <span>besplatna pizza za svakoga sa 1,000 poena</span>
             </p>
         </div>
         </Link>
@@ -384,6 +385,16 @@ watch(
     position: relative;
     overflow: hidden !important;
 
+    &:hover{
+        p{
+            color: #fedf37 !important;
+
+            span{
+                color: #fedf37 !important;
+            }
+        }
+    }
+
     .banner-icon {
         display: block !important;
         height: 40px !important;
@@ -395,15 +406,34 @@ watch(
 
     p {
         font-family: 'Gill Sans';
-        font-size: 14px;
-        color: #f5eccd;
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 500;
+        color: #f5eccd !important;
         text-transform: uppercase;
         text-decoration: none;
         text-align: center;
+
+        span{
+            color: #f5eccd !important;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 1;
+        }
     }
     @media screen and (max-width: 450px) {
         p{
-            padding-top: 6px;
+            padding-top: 7px;
+            
+        }
+        &:hover{
+        p{
+            color: #f5eccd !important;
+
+            span{
+                color: #f5eccd !important;
+            }
+        }
         }
     }
     @media screen and (max-width: 450px) {
@@ -411,7 +441,11 @@ watch(
             left: 10px;
         }
             p {
-                font-size: 12px;
+                font-size: 15px;
+
+                span{
+                    font-size: 9px;
+                }
             }
     }
 }

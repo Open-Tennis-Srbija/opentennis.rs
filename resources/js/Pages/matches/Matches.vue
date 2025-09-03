@@ -30,6 +30,7 @@ const currentPage = ref(1);
 const isLoading = ref(false);
 const hasMoreData = ref(true);
 const totalMatches = ref(0);
+const isInitialLoading = ref(true); // Add initial loading state
 
 const isHome = computed(() => window.location.pathname === '/mecevi');
 // Computed property to determine loading context
@@ -45,6 +46,7 @@ onMounted(() => {
             // For prop matches, disable infinite scroll
             hasMoreData.value = false;
         }
+        isInitialLoading.value = false; // Set initial loading to false when using props
         return;
     }
     console.log("loading matches");
@@ -59,6 +61,8 @@ onMounted(() => {
 
 const loadInitialMatches = async () => {
     try {
+        isInitialLoading.value = true; // Set initial loading to true
+        
         // Determine API endpoint based on court_id, league_id, or player_id props
         let apiUrl;
         if (props.court_id) {
@@ -84,6 +88,8 @@ const loadInitialMatches = async () => {
     } catch (error) {
         console.error('Error loading initial matches:', error);
         bus.emit("loading", false);
+    } finally {
+        isInitialLoading.value = false; // Set initial loading to false when done
     }
 };
 
@@ -237,7 +243,54 @@ function getDateMonth(date) {
                     Ovaj teniser nikada nije izgubio &#128578;
                 </p>
             </div>
-            <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index">
+            
+            <!-- Initial loading skeleton for desktop -->
+            <div v-if="isInitialLoading && props.loadMatches" class="initial-loading-skeletons">
+                <div v-for="n in 8" :key="`initial-desktop-skeleton-${n}`" class="match-entry skeleton">
+                    <div class="number skeleton-item"></div>
+                    <div class="winner">
+                        <div class="players">
+                            <div class="player-1">
+                                <div class="skeleton-item skeleton-name"></div>
+                                <div class="category-wrapp">
+                                    <span class="skeleton-item skeleton-category"></span>
+                                </div>
+                                <div class="skeleton-item skeleton-points"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loser">
+                        <div class="players">
+                            <div class="player-1">
+                                <div class="skeleton-item skeleton-name"></div>
+                                <div class="category-wrapp">
+                                    <span class="skeleton-item skeleton-category"></span>
+                                </div>
+                                <div class="skeleton-item skeleton-points"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="score">
+                        <div class="skeleton-item skeleton-score"></div>
+                        <div class="skeleton-item skeleton-games"></div>
+                    </div>
+                    <div class="date smaller-font">
+                        <div class="skeleton-item skeleton-date"></div>
+                    </div>
+                    <div class="location smaller-font">
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
+                    <div class="location smaller-font">
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
+                    <div class="location smaller-font">
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="match-entry" v-for="(match, index) in formatedMatchesDesktop" :key="index"
+                v-show="!isInitialLoading || !props.loadMatches">
                 <Link :class="{child: !isHome}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
@@ -395,7 +448,45 @@ function getDateMonth(date) {
                     Ovaj teniser nikada nije izgubio &#128578;
                 </p>
             </div>
-            <div class="match-entry" v-for="(match, index) in formatedMatchesMobile" :key="index">
+            
+            <!-- Initial loading skeleton for mobile -->
+            <div v-if="isInitialLoading && props.loadMatches" class="initial-loading-skeletons">
+                <div v-for="n in 8" :key="`initial-mobile-skeleton-${n}`" class="match-entry skeleton">
+                    <div class="score">
+                        <div class="skeleton-item skeleton-score"></div>
+                        <div class="skeleton-item skeleton-games"></div>
+                    </div>
+                    <div class="info">
+                        <div class="info-wrapp">
+                            <div class="text">
+                                <div class="skeleton-item skeleton-name"></div>
+                                <div class="category-wrapp">
+                                    <span class="skeleton-item skeleton-category"></span>
+                                </div>
+                                <div class="skeleton-item skeleton-points"></div>
+                            </div>
+                        </div>
+                        <div class="sep">:</div>
+                        <div class="info-wrapp">
+                            <div class="text">
+                                <div class="skeleton-item skeleton-name"></div>
+                                <div class="category-wrapp">
+                                    <span class="skeleton-item skeleton-category"></span>
+                                </div>
+                                <div class="skeleton-item skeleton-points"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="location">
+                        <div class="skeleton-item skeleton-location"></div>
+                        <div class="skeleton-item skeleton-location"></div>
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="match-entry" v-for="(match, index) in formatedMatchesMobile" :key="index"
+                v-show="!isInitialLoading || !props.loadMatches">
                 <Link :class="{child: !isHome}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
@@ -700,5 +791,29 @@ function getDateMonth(date) {
 
 .loading-skeletons {
     opacity: 0.8;
+}
+
+.initial-loading-skeletons {
+    opacity: 0.8;
+}
+
+.initial-loading-skeletons .match-entry {
+    margin-bottom: 20px;
+}
+
+/* Enhanced skeleton animation for initial load */
+.initial-loading-skeletons .skeleton-item {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.2s infinite ease-in-out;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
 </style>
