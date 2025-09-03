@@ -10,13 +10,17 @@ import { ref } from 'vue';
     const page = usePage();
 
     const data = ref({});
+    const isLoading = ref(true);
     onMounted(() => {
         page.props['title'] = 'statistika';
         axios.get('/get-statistics').then((response) => {
             data.value = response.data;
+            isLoading.value = false;
             bus.emit('loading', false);
         }).catch((error) => {
             console.error('Error fetching statistics:', error);
+            isLoading.value = false;
+            bus.emit('loading', false);
         });
     });
 
@@ -48,10 +52,84 @@ import { ref } from 'vue';
     10: '#f7941d',
     '?': '#a1a1a1',
     }
+
+    // Function to generate random widths for more realistic skeleton
+    const getRandomWidth = () => {
+        return Math.floor(Math.random() * (80 - 50 + 1)) + 50; // Random between 50% and 80%
+    };
 </script>
 <template>
     <Head :title="'Statistika -'"/>
-    <div style="padding-bottom:0;margin-bottom:60px" class="static-wrapper player mobile-mb-300">
+    
+    <!-- Skeleton Loading State -->
+    <div v-if="isLoading" style="padding-bottom:0;margin-bottom:60px" class="static-wrapper player mobile-mb-300 skeleton-wrapper">
+        <div class="dashboard-wrapper">
+             <h1 class="statistics">Statistika</h1>
+            
+            <!-- Totals section -->
+            <div class="skeleton-section-title">
+                <div class="skeleton skeleton-text medium"></div>
+            </div>
+            <div class="summary player three desktop">
+                <div class="summary-item" v-for="i in 3" :key="i">
+                    <div class="skeleton skeleton-text small" style="margin-bottom: 8px;"></div>
+                    <div class="skeleton skeleton-text medium"></div>
+                </div>
+            </div>
+
+            <!-- Players section -->
+            <div class="skeleton-section-title">
+                <div class="skeleton skeleton-text medium"></div>
+            </div>
+            <div class="summary player three desktop col">
+                <div class="summary-item" v-for="i in 3" :key="i">
+                    <div class="skeleton skeleton-text medium" style="margin-bottom: 10px;"></div>
+                    <div v-for="j in 4" :key="j" style="margin-bottom: 6px;">
+                        <div class="skeleton skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Categories section -->
+            <div class="skeleton-section-title big-margin">
+                <div class="skeleton skeleton-text large"></div>
+            </div>
+            <div class="summary player five col">
+                <div class="summary-item flex" v-for="i in 11" :key="i" :class="{ 'full': i === 11 }">
+                    <div class="skeleton-category">
+                        <div class="skeleton skeleton-circle-small"></div>
+                    </div>
+                    <div v-for="j in 3" :key="j" style="margin-bottom: 6px;">
+                        <div class="skeleton skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Locations section -->
+            <div class="skeleton-section-title big-margin">
+                <div class="skeleton skeleton-text large"></div>
+            </div>
+            <div class="summary player three desktop col">
+                <div class="summary-item" v-for="i in 3" :key="i">
+                    <div class="skeleton skeleton-text medium" style="margin-bottom: 10px;"></div>
+                    <div v-for="j in 5" :key="j" style="margin-bottom: 6px;">
+                        <div class="skeleton skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts section -->
+            <div class="skeleton-section-title big-margin">
+                <div class="skeleton skeleton-text medium"></div>
+            </div>
+            <div class="skeleton-chart-container">
+                <div class="skeleton skeleton-chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actual Content -->
+    <div v-else style="padding-bottom:0;margin-bottom:60px" class="static-wrapper player mobile-mb-300">
         <div class="dashboard-wrapper">
         <h1 class="statistics">Statistika</h1>
             <h2 class="summary-title">ukupno</h2>
@@ -302,3 +380,236 @@ import { ref } from 'vue';
         </div>
     </div>
 </template>
+
+<style scoped>
+.statistics {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 5px solid var(--secondary);
+    margin-bottom: 80px;
+}
+
+.summary-title {
+    border-bottom: 1px solid var(--secondary);
+    text-transform: uppercase;
+    margin: 40px 20px 10px;
+    padding-bottom: 5px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.summary-title.big-margin {
+    margin-top: 120px;
+}
+
+.summary-item {
+    position: relative;
+}
+
+.summary-item h2 {
+    color: var(--orange);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 25px;
+    text-align: center;
+}
+
+.summary-item p {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.summary-item.flex {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.summary-item.full {
+    grid-column: 1 / -1;
+}
+
+.category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.diamond {
+    width: 15px;
+    height: 15px;
+    transform: rotate(45deg);
+    border-radius: 2px;
+    margin-right: 10px;
+}
+
+.smaller {
+    font-size: 18px !important;
+}
+
+.f20 {
+    font-size: 20px !important;
+}
+
+.no-players {
+    margin-bottom: 0 !important;
+}
+
+.smaller-top-margin {
+    margin-top: -30px;
+}
+
+/* Skeleton styles */
+.skeleton-wrapper {
+    pointer-events: none;
+}
+
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(190, 190, 190, 0.2) 0%,
+        rgba(129, 129, 129, 0.24) 50%,
+        rgba(190, 190, 190, 0.2) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 4px;
+    height: 16px;
+    margin: 2px 0;
+}
+
+.skeleton-text {
+    height: 16px;
+}
+
+.skeleton-text.small {
+    height: 14px;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.skeleton-text.medium {
+    height: 18px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.skeleton-text.large {
+    height: 24px;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.skeleton-main-title {
+    text-align: center;
+    margin-bottom: 80px;
+    padding-bottom: 10px;
+    border-bottom: 5px solid rgba(190, 190, 190, 0.2);
+}
+
+.skeleton-main-title .skeleton {
+    height: 40px;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.skeleton-section-title {
+    text-align: center;
+    margin: 40px 20px 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(190, 190, 190, 0.2);
+}
+
+.skeleton-section-title.big-margin {
+    margin-top: 120px;
+}
+
+.skeleton-circle-small {
+    width: 15px;
+    height: 15px;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.skeleton-category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.skeleton-chart-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.skeleton-chart {
+    height: 400px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .statistics {
+        font-size: 30px;
+        margin-bottom: 50px;
+    }
+    
+    .summary-title {
+        margin: 30px 10px 10px;
+        font-size: 20px;
+    }
+    
+    .summary-title.big-margin {
+        margin-top: 80px;
+    }
+    
+    .summary-item h2 {
+        font-size: 20px;
+    }
+    
+    .summary-item p {
+        font-size: 18px;
+    }
+    
+    .smaller {
+        font-size: 16px !important;
+    }
+    
+    .f20 {
+        font-size: 18px !important;
+    }
+
+    .skeleton-main-title .skeleton {
+        height: 30px;
+        width: 150px;
+    }
+
+    .skeleton-section-title {
+        margin: 30px 10px 10px;
+    }
+
+    .skeleton-section-title.big-margin {
+        margin-top: 80px;
+    }
+
+    .skeleton-chart {
+        height: 300px;
+    }
+}
+</style>

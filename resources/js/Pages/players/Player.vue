@@ -10,6 +10,7 @@ import Matches from "@matches/Matches.vue";
 
 const props = defineProps({ player_uri: String });
 const player = ref({});
+const isLoading = ref(true);
 
 const page = usePage();
 const isExpanded = reactive({
@@ -38,9 +39,12 @@ onMounted(() => {
 		player.value = response.data;
 		console.log('Player data:', player.value);
 		pageTitle.value = `${player.value.name} - Srpska Tenis Liga`;
+		isLoading.value = false;
 		bus.emit('loading', false)
 	}).catch((error) => {
 		console.error('Error fetching players:', error);
+		isLoading.value = false;
+		bus.emit('loading', false);
 	});
 });
 
@@ -124,6 +128,11 @@ function containsGreek(text) {
   return /[\u0370-\u03FF\u1F00-\u1FFF]/.test(text);
 }
 
+// Function to generate random widths for more realistic skeleton
+const getRandomWidth = () => {
+  return Math.floor(Math.random() * (80 - 50 + 1)) + 50; // Random between 50% and 80%
+};
+
 onBeforeUnmount(() => {
 	bus.emit('clearActive');
 });
@@ -131,7 +140,113 @@ onBeforeUnmount(() => {
 </script>
 <template>
  	<Head :title="pageTitle" />
-	<div style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player mobile-mb-300">
+	
+	<!-- Skeleton Loading State -->
+	<div v-if="isLoading" class="static-wrapper player mobile-mb-300 skeleton-wrapper">
+		<!-- Rank skeleton -->
+		<div class="rank skeleton-rank">
+			<div class="skeleton skeleton-circle"></div>
+		</div>
+		
+		<!-- Name skeleton -->
+		<div class="skeleton-title">
+			<div class="skeleton skeleton-text large"></div>
+		</div>
+		
+		<!-- Location skeleton -->
+		<div class="skeleton-subtitle">
+			<div class="skeleton skeleton-text medium"></div>
+		</div>
+		
+		<!-- Dashboard skeleton -->
+		<div class="dashboard-wrapper">
+			<!-- Statistics title -->
+			<div class="skeleton-section-title">
+				<div class="skeleton skeleton-text medium"></div>
+			</div>
+			
+			<!-- Desktop stats (6 items) -->
+			<div class="summary player six desktop">
+				<div class="summary-item" v-for="i in 6" :key="i">
+					<div class="skeleton skeleton-text small" style="margin-bottom: 8px;"></div>
+					<div class="skeleton skeleton-text medium"></div>
+				</div>
+			</div>
+			
+			<!-- Mobile stats (5 items) -->
+			<div class="summary player five mobile">
+				<div class="summary-item" v-for="i in 6" :key="i">
+					<div class="skeleton skeleton-text small" style="margin-bottom: 8px;"></div>
+					<div class="skeleton skeleton-text medium"></div>
+				</div>
+			</div>
+			
+			<!-- Players title -->
+			<div class="skeleton-section-title">
+				<div class="skeleton skeleton-text small"></div>
+			</div>
+			
+			<!-- Players section (3 columns) -->
+			<div class="summary player three col">
+				<div class="summary-item players" v-for="i in 3" :key="i">
+					<div class="skeleton skeleton-text medium" style="margin-bottom: 10px;"></div>
+					<div v-for="j in 5" :key="j" style="margin-bottom: 6px;">
+						<div class="skeleton skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Locations title -->
+			<div class="skeleton-section-title big-margin">
+				<div class="skeleton skeleton-text small"></div>
+			</div>
+			
+			<!-- Locations section (3 columns) -->
+			<div class="summary player three col">
+				<div class="summary-item players" v-for="i in 3" :key="i">
+					<div class="skeleton skeleton-text medium" style="margin-bottom: 10px;"></div>
+					<div v-for="j in 4" :key="j" style="margin-bottom: 6px;">
+						<div class="skeleton skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Charts title -->
+			<div class="skeleton-section-title big-margin">
+				<div class="skeleton skeleton-text small"></div>
+			</div>
+			
+			<!-- Chart skeleton -->
+			<div class="chart-wrapper">
+				<div class="skeleton skeleton-chart"></div>
+			</div>
+			
+			<!-- Matches title -->
+			<div class="skeleton-section-title no-border big-margin">
+				<div class="skeleton skeleton-text small"></div>
+			</div>
+			
+			<!-- Matches skeleton -->
+			<div class="player-matches">
+				<div class="skeleton-matches">
+					<div v-for="i in 3" :key="i" class="skeleton-match-item">
+						<div class="skeleton-match-content">
+							<div class="skeleton skeleton-text small" style="margin-bottom: 8px;"></div>
+							<div class="skeleton-match-players">
+								<div class="skeleton skeleton-text medium"></div>
+								<div class="skeleton skeleton-text tiny"></div>
+								<div class="skeleton skeleton-text medium"></div>
+							</div>
+							<div class="skeleton skeleton-text small" style="margin-top: 8px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Actual Content -->
+	<div v-else class="static-wrapper player mobile-mb-300">
 		<Link prefetch="false"
 			class="edit-btn desktop"
 			v-if="$page.props.auth.user"
@@ -360,3 +475,189 @@ onBeforeUnmount(() => {
 		</div>
 	</div>
 </template>
+
+<style lang="scss" scoped>
+// Skeleton base animation
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Base skeleton styles
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+  
+  &.skeleton-circle {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+  
+  &.skeleton-text {
+    height: 16px;
+    
+    &.tiny {
+      width: 20px;
+      height: 14px;
+    }
+    
+    &.small {
+      width: 80px;
+      height: 18px;
+    }
+    
+    &.medium {
+      width: 150px;
+      height: 20px;
+    }
+    
+    &.large {
+      width: 300px;
+      height: 40px;
+    }
+  }
+  
+  &.skeleton-chart {
+    width: 100%;
+    height: 300px;
+    border-radius: 8px;
+  }
+}
+
+// Skeleton wrapper positioning
+.skeleton-wrapper {
+  .skeleton-rank {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+    margin-top: -20px;
+  }
+  
+  .skeleton-title {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 10px 0;
+  }
+  
+  .skeleton-subtitle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  
+  .skeleton-section-title {
+    display: flex;
+    justify-content: center;
+    margin: 70px 0 30px 0;
+    
+    &.big-margin {
+      margin: 110px 0 20px 0;
+    }
+  }
+}
+
+// Skeleton matches styles
+.skeleton-matches {
+  margin-top: 20px;
+  
+  .skeleton-match-item {
+    margin-bottom: 16px;
+    padding: 16px;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    background: #fff;
+    
+    .skeleton-match-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      
+      .skeleton-match-players {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        justify-content: center;
+        
+        .skeleton:first-child,
+        .skeleton:last-child {
+          flex: 1;
+          max-width: 120px;
+        }
+        
+        .skeleton:nth-child(2) {
+          flex: 0;
+        }
+      }
+    }
+  }
+}
+
+// Mobile responsiveness for skeleton
+@media only screen and (max-width: 1200px) {
+  .skeleton-wrapper {
+    padding-inline: 0;
+    margin-top: 90px;
+    
+    .skeleton-title {
+      padding-inline: 20px;
+      margin-top: 30px;
+    }
+    
+    .skeleton-subtitle {
+      padding-inline: 20px;
+    }
+    
+    .skeleton-section-title {
+      padding-inline: 20px;
+    }
+    
+    // Mobile skeleton matches
+    .skeleton-matches {
+      .skeleton-match-item {
+        .skeleton-match-content {
+          .skeleton-match-players {
+            flex-direction: column;
+            gap: 8px;
+            
+            .skeleton:first-child,
+            .skeleton:last-child {
+              align-self: flex-start;
+            }
+          }
+        }
+      }
+    }
+    
+    // Mobile players section
+    .summary.player.three.col {
+      grid-template-columns: 100%;
+      gap: 30px;
+      
+      .summary-item.players {
+        padding-inline: 20px;
+      }
+    }
+    
+    // Mobile stats sections
+    .summary.player.six.desktop {
+      display: none !important;
+    }
+    
+    .summary.player.five.mobile {
+      display: flex !important;
+      flex-wrap: wrap;
+      
+      .summary-item {
+        width: 33.3%;
+      }
+    }
+  }
+}
+</style>

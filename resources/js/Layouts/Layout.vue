@@ -401,7 +401,11 @@ watch(
         text-decoration: none;
         text-align: center;
     }
-
+    @media screen and (max-width: 450px) {
+        p{
+            padding-top: 6px;
+        }
+    }
     @media screen and (max-width: 450px) {
         .banner-icon{
             left: 10px;
