@@ -199,7 +199,7 @@ class CourtsController extends Controller
         ]);
 
         $court->name = $request->input('name');
-        $court->link = $request->input('link');
+        $court->link = $request->input('link') ?? '';
         if($request->input('uri') != $court->uri){
             $court->uri = Str::slug($request->input('uri'));
         } else {
