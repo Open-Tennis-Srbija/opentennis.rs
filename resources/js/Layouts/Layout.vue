@@ -151,7 +151,7 @@ watch(
             <img src="/promo/crazy-pizza/crazy-pizza-banner-icon.png" alt="Crazy Pizza Beograd" class="banner-icon" />
             <p>
                 Crazy pizza beograd <br>
-                <span>besplatna pizza za svakoga sa 1,000 poena</span>
+                <span>BESPLATNA PICA ZA SVAKOGA SA 1,000 I VIŠE POENA</span>
             </p>
         </div>
         </Link>
