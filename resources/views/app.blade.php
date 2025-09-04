@@ -10,12 +10,12 @@
       <meta name="twitter:card" content="summary_large_image"/>
       <meta name="twitter:title" content="Crazy Pizza - SRPSKA TENIS LIGA"/>
       <meta name="twitter:description" content="BESPLATNA PICA ZA SVAKOGA SA 1,000 I VIŠE POENA"/>
-      <meta name="twitter:image:src" content="{{ asset('/crazy-pizza/crazy-pizza-srpska-tenis-liga-srbija.png') }}"/>
+      <meta name="twitter:image:src" content="{{ asset('/crazy-pizza/promo/crazy-pizza-srpska-tenis-liga-srbija.png') }}"/>
       <meta name="twitter:image:alt" content="Crazy Pizza"/>
       <!-- Open Graph data -->
       <meta property="og:url" content="https://srpskatenisliga.rs/crazy-pizza"/>
       <meta property="og:title" content="Crazy Pizza - SRPSKA TENIS LIGA"/>
-      <meta property="og:image" content="{{ asset('/crazy-pizza/crazy-pizza-srpska-tenis-liga-srbija.png') }}"/>
+      <meta property="og:image" content="{{ asset('/crazy-pizza/promo/crazy-pizza-srpska-tenis-liga-srbija.png') }}"/>
       <meta property="og:description" content="BESPLATNA PICA ZA SVAKOGA SA 1,000 I VIŠE POENA"/>
       <meta property="og:site_name" content="srpskatenisliga.rs"/>
     @else
