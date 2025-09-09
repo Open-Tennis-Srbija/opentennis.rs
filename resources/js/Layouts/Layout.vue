@@ -7,6 +7,7 @@ import { bus } from "vue3-eventbus";
 import Logo from "@components/Logo.vue";
 import Loader from "@components/Loader.vue";
 import utils from "../utils";
+import { act } from "react";
 
 const mobileMenu = reactive({ state: false });
 const sideMenu = reactive({ state: false });
@@ -81,6 +82,7 @@ onMounted(() => {
             activeChilds.players = false;
             activeChilds.leagues = false;
             activeChilds.courts = false;
+            activeChilds.tournaments = false;
         });
         window.addEventListener('pageshow', (event) => {
             // If coming from bfcache and user is not logged in, reload to get fresh state
