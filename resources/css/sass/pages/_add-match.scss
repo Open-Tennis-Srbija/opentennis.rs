@@ -223,7 +223,7 @@
         .dp--clear-btn{
           height: 40px !important;
           width: 40px !important;
-          background-color: $lignt-gray;
+          background-color: $light-gray;
           top: -15px;
           right: 5px;
           .dp__input_icons{
@@ -246,13 +246,13 @@
 
          }
          .dp__overlay_cell:hover{
-          background-color: $lignt-gray;
+          background-color: $light-gray;
           border-radius: 0;
 
          }
          .dp__overlay_cell_disabled {
           cursor: auto;
-          background: $lignt-gray;
+          background: $light-gray;
           color: $mid-gray;
           border-radius: 0;
         }
@@ -316,7 +316,7 @@
               border-radius: 0;
             }
             .dp__date_hover_end:hover, .dp__date_hover_start:hover, .dp__date_hover:hover{
-              background-color: $lignt-gray;
+              background-color: $light-gray;
               border-radius: 0;
             }
             .dp__active_date{
@@ -508,7 +508,7 @@
         .vs__clear{
           height: 40px;
           width: 40px;
-          background-color: $lignt-gray;
+          background-color: $light-gray;
           margin-top: 0;
         }
         .vs__dropdown-toggle{

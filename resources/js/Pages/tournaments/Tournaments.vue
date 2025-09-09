@@ -61,7 +61,7 @@ const isInactive = (date_end) => {
 
 onMounted(() => {
   isClient.value = true;
-  axios.get('/get-leagues').then((response) => {
+  axios.get('/get-tournaments').then((response) => {
     leagues.value = response.data;
     isLoading.value = false; // Set loading to false when data is loaded
     bus.emit('loading', false);
@@ -98,14 +98,14 @@ const getRandomWidth = () => {
   <!-- <div class="loader" :class="{'close' : isLoading}">
 
   </div> -->
-  <Head title="Lige -" />
+  <Head title="Turniri -" />
   <div class="rankings-wrapper leagues mobile-mb-300">
     <!-- Skeleton Loading State -->
     <div v-if="isLoading" class="skeleton-wrapper">
       <div id="desktop">
         <div class="rankings-header" style="top: 90px;">
           <div class="spacer"></div>
-          <div class="name">lige</div>
+          <div class="name">turniri</div>
           <div class="wins">poeni</div>
           <div class="total-matches">mečevi</div>
           <div class="loses">teniseri</div>
@@ -161,7 +161,7 @@ const getRandomWidth = () => {
         <div class="rankings-header" style="top: 90px;">
         <!-- <div class="rankings-header" :style="{top: `${ 50 - topOffset}px`}"> -->
           <div class="spacer"></div>
-          <div class="name">lige</div>
+          <div class="name">turniri</div>
           <div class="wins">poeni</div>
           <div class="total-matches">mečevi</div>
           <div class="loses">teniseri</div>

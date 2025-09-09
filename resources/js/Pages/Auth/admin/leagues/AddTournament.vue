@@ -16,7 +16,7 @@ const page = usePage();
 const focusInput = ref(null);
 
 onMounted(async () => {
-    page.props['title'] = `Dodaj novu ligu`;
+    page.props['title'] = `Dodaj turnir`;
     await nextTick();
     bus.emit('loading', false);
 });
@@ -42,7 +42,7 @@ const form = useForm({
     date_begin: null,
     date_end: null,
     name: null,
-    type: 'Liga',
+    type: 'Turnir',
     location: null,
     link: null,
     court: null,
@@ -85,9 +85,9 @@ const handleInputs = (event,isDate = false) => {
 
 </script>
 <template>
-   <Head title="Dodaj novu ligu -" />
+   <Head title="Dodaj turnir -" />
     <div class="static-wrapper">
-    <h1 id="title" :class="{'hide': formState.success}">dodaj novu ligu</h1>
+    <h1 id="title" :class="{'hide': formState.success}">dodaj turnir</h1>
     <form id="form" @submit.prevent="submit">
 
       <div class="form-section">

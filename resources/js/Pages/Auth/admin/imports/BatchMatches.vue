@@ -18,6 +18,7 @@ onMounted(async () => {
 const form = useForm({
     court: null,
     league: null, 
+    type: null,
     csvData: null,
 });
 
@@ -92,19 +93,19 @@ const handleInputs = (event,isDate = false) => {
 
 </script>
 <template>
-    <Head title="Izmeni meč" />
+    <Head title="Import singlova -" />
     <div class="static-wrapper">
     <h1 id="title" :class="{'hide': formState.success}">Import singlova</h1>
     <h1 id="success" :class="{'show': formState.success}">Mečevi su uspešno dodati!</h1>
     <div id="success-links" :class="{'show': formState.success}">
-      <Link prefetch="false" class="red" :href="'/lige-turniri'">vidi lige i turnire</Link>
+      <Link prefetch="false" class="red" :href="'/lige'">vidi lige i turnire</Link>
       <Link prefetch="false" class="blue" :href="'/mecevi'">vidi mečeve</Link>
       <Link prefetch="false" class="red" :href="'/'">vidi tenisere</Link>
     </div>
     <form id="form" @submit.prevent="submit" :class="{'hide': formState.success}">
 
       <div class="form-section">
-        <div class="form-row">
+        <div class="form-row three">
           <div class="form-group">
             <label for="winner-fname" class="input-label">
               Liga ili turnir (opcionalno)
@@ -131,6 +132,20 @@ const handleInputs = (event,isDate = false) => {
               :shouldReset="formState.shouldReset"
             />
             <p class="error-message">{{ form.errors.court }}</p>
+          </div>
+          <div class="form-group">
+            <label for="place" class="input-label">
+              Tip
+            </label>
+            <Dropdown
+              label="name"
+              :type="'array'"
+              :options="['Liga', 'Turnir']"
+              v-model="form.type"
+              :class="{'invalid': form.errors.type}"
+              :shouldReset="formState.shouldReset"
+            />
+            <p class="error-message">{{ form.errors.type }}</p>
           </div>
         </div>
       </div>

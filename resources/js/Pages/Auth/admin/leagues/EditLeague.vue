@@ -26,6 +26,7 @@ onMounted(() => {
         form.uri = response.data.uri;
         form.date_end = response.data.date_end;
         form.link = response.data.link;
+        form.type = response.data.type == 'league' ? 'liga' : 'turnir';
         form.court = response.data.court;
         league.value = response.data;
         bus.emit('loading', false);
@@ -67,8 +68,11 @@ const form = useForm({
     location: null,
     link: null,
     court: null,
+    type: null,
     uri: null,
 });
+
+const types = ['Liga', 'Turnir'];
 
 const formState = reactive({
     submitted: false,
@@ -78,7 +82,7 @@ const deleteLeague = () =>{
     if(confirm('Da li ste sigurni da želite da obrišete ovu ligu?')){
         form.post(`/obrisi-ligu`,{
             onSuccess: () => {
-                location.href = '/lige-turniri';
+                location.href = '/lige';
             },
             onError: (errors) => {
                 formState.submitted = false;
@@ -177,6 +181,32 @@ const handleInputs = (event,isDate = false) => {
           </div>
         </div>
       </div>
+          <div class="form-section">
+        <div class="form-row">
+          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
+            <label for="winner-fname" class="input-label">
+              URI (srpskatenisLiga.rs/URI)
+            </label>
+            <input v-model="form.uri" @input="handleInputs($event)" :class="{'invalid': form.errors.uri}" :disabled="formState.submitted" id="uri" type="text">
+            <p class="error-message">{{ form.errors.uri }}</p>
+          </div>
+          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
+              <label for="winner-fname" class="input-label">
+              Tip<span class="required">*</span>
+            </label>
+            <Dropdown
+              v-if="form.type"
+              label="name"
+              :options="types"
+              v-model="form.type"
+              :type="'array'"
+              :class="{'invalid': form.errors.type}"
+              :shouldReset="formState.shouldReset"
+            ></Dropdown>
+            <p class="error-message">{{ form.errors.last_name }}</p>
+          </div>
+        </div>
+      </div>
        <div class="form-section">
         <div class="form-row">
           <div class="form-group">
@@ -226,19 +256,7 @@ const handleInputs = (event,isDate = false) => {
         </div>
       </div>
 
-      <div class="form-section">
-        <div class="form-row">
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
-            <label for="winner-fname" class="input-label">
-              URI (srpskatenisliga.rs/URI)
-            </label>
-            <input v-model="form.uri" @input="handleInputs($event)" :class="{'invalid': form.errors.uri}" :disabled="formState.submitted" id="uri" type="text">
-            <p class="error-message">{{ form.errors.uri }}</p>
-          </div>
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
-          </div>
-        </div>
-      </div>
+  
       <div class="form-section">
         <div class="form-row">
           <button id="submit">

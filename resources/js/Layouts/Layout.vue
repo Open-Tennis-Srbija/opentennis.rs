@@ -20,6 +20,7 @@ const activeChilds = reactive({
     players: false,
     leagues: false,
     courts: false,
+    tournaments: false,
 });
 
 onMounted(() => {
@@ -56,14 +57,23 @@ onMounted(() => {
                 activeChilds.players = true;
                 activeChilds.leagues = false;
                 activeChilds.courts = false;
+                activeChilds.tournaments = false;
             } else if (e === 'leagues') {
                 activeChilds.players = false;
                 activeChilds.leagues = true;
                 activeChilds.courts = false;
+                activeChilds.tournaments = false;
             } else if (e === 'courts') {
                 activeChilds.players = false;
                 activeChilds.leagues = false;
                 activeChilds.courts = true;
+                activeChilds.tournaments = false;
+            }
+            else if (e ==='tournaments'){
+                activeChilds.players = false;
+                activeChilds.leagues = false;
+                activeChilds.courts = false;
+                activeChilds.tournaments = true;
             }
         });
         bus.on('clearActive', (e) => {
@@ -122,7 +132,7 @@ function computeHeaderMessage() {
             return "tereni";
         case "/import-meceva":
             return "Import mečeva";
-        case "/lige-turniri":
+        case "/lige":
             return 'Lige i turniri';
         case "/admin":
             return "admin";
@@ -163,16 +173,16 @@ watch(
                 <div class="link-group">
                     <Link prefetch="false" :href="'/'"
                         :class="{ active: $page.url === '/', activeChild: activeChilds.players }">teniseri</Link>
-                    <Link prefetch="false" :href="'/lige-turniri'"
-                        :class="{ active: $page.url === '/lige-turniri', activeChild: activeChilds.leagues }">lige i
-                    turniri</Link>
+                    
+                    <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
                     <Link prefetch="false" :href="'/tereni'"
                         :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">tereni</Link>
                 </div>
                 <div class="link-group">
-                    <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
-                    <Link prefetch="false" :href="'/statistika'" :class="{ active: $page.url === '/statistika' }">
-                    statistika</Link>
+                    <Link prefetch="false" :href="'/turniri'"
+                        :class="{ active: $page.url === '/turniri', activeChild: activeChilds.tournaments }">Turniri</Link>
+                    <Link prefetch="false" :href="'/lige'" :class="{ active: $page.url === '/lige', activeChild: activeChilds.leagues }">
+                    lige</Link>
                     <Link prefetch="false" class="blue" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">
                     dodaj meč</Link>
                 </div>
@@ -199,6 +209,8 @@ watch(
     <div class="side-menu" style="top: 90px;" :style="{ height: 'calc(100vh - ' + (90 - topOffset) + 'px)' }"
         :class="{ open: sideMenu.state }">
         <div class="links">
+            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/statistika'"
+                :class="{ active: $page.url === '/statistika' }">Statistika</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">Dodaj ligu</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/crazy-pizza'"
@@ -213,6 +225,8 @@ watch(
                 :href="'/dodaj-teren'" :class="{ active: $page.url === '/dodaj-teren' }">Dodaj teren</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">Dodaj turnir</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
+                :href="'/dodaj-novu-ligu'" :class="{ active: $page.url === '/dodaj-novu-ligu' }">Dodaj novu ligu</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/import-meceva'" :class="{ active: $page.url === '/import-meceva' }">Import singlova</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
@@ -256,8 +270,11 @@ watch(
         <div class="links">
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
                 :class="{ active: $page.url === '/', childActive: activeChilds.players }">teniseri</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige-turniri'"
-                :class="{ active: $page.url === '/lige-turniri', childActive: activeChilds.leagues }">lige i turniri
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige'"
+                :class="{ active: $page.url === '/lige', childActive: activeChilds.leagues }">lige
+            </Link>
+             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/turniri'"
+                :class="{ active: $page.url === '/turniri', childActive: activeChilds.leagues }">turniri
             </Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/tereni'"
                 :class="{ active: $page.url === '/tereni', childActive: activeChilds.courts }">tereni</Link>
@@ -279,6 +296,9 @@ watch(
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false"
                 @click.prevent="mobileMenu.state = false" :href="'/dodaj-turnir'"
                 :class="{ active: $page.url === '/dodaj-turnir' }">dodaj turnir</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false"
+                @click.prevent="mobileMenu.state = false" :href="'/dodaj-novu-ligu'"
+                :class="{ active: $page.url === '/dodaj-novu-ligu' }">dodaj novu ligu</Link>
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false"
                 @click.prevent="mobileMenu.state = false" :href="'/dodaj-teren'"
                 :class="{ active: $page.url === '/dodaj-teren' }">dodaj teren</Link>

@@ -78,6 +78,7 @@ class TenisMatchController extends Controller
         $data = $request->validate([
             'league' => '',
             'court' => '',
+            'type' => '',
             'csvData' => 'required'
         ],[
             'csvData.required' => 'CSV fajl je obavezan.'
@@ -97,6 +98,19 @@ class TenisMatchController extends Controller
                 $uri = str_replace(',','',$uri);
                 $uri = strtolower($uri);
                 $league->uri = $uri;
+                
+                if(isset($data['type'])){
+                    if($data['type'] == 'Liga'){
+                        $league->type = 'league';
+                    }
+                    else{
+                        $league->type = 'tournament';
+                    }
+                }
+                else
+                    $league->type = 'league';
+                
+
                 $league->save();
                 $date = Carbon::now();
                 $league->date_begin = $date->format('Y-m-d');
@@ -309,6 +323,18 @@ fclose($handle);
                 $uri = str_replace(',','',$uri);
                 $uri = strtolower($uri);
                 $league->uri = $uri;
+
+                if(isset($data['type'])){
+                    if($data['type'] == 'Liga'){
+                        $league->type = 'league';
+                    }
+                    else{
+                        $league->type = 'tournament';
+                    }
+                }
+                else
+                    $league->type = 'league';
+
                 $league->save();
                 $date = Carbon::now();
                 $league->date_begin = $date->format('Y-m-d');
@@ -920,6 +946,7 @@ fclose($handle);
         if(env('APP_ENV') == 'production'){
             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
             Mail::to('nikola@openinnovation.me')->send(new AddMatchNotification($match));
+            Mail::to('')->send(new AddMatchNotification($match));
             Mail::to('')->send(new AddMatchNotification($match));
         }
          else

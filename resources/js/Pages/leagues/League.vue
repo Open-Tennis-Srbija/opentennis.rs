@@ -21,9 +21,14 @@ const props = defineProps({
 });
 onMounted(() => {
     page.props["title"] = "Lige & Turniri";
-    bus.emit('active', 'leagues')
     axios.get(`/get-league/${props.league_uri}`).then((response) => {
-        league.value = response.data;
+      league.value = response.data;
+      if(league.value.type == 'league')
+        bus.emit('active', 'leagues')
+      else
+        bus.emit('active', 'tournaments')
+
+        
         isLoading.value = false;
         bus.emit("loading", false);
     }).catch((error) => {

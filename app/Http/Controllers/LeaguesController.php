@@ -29,6 +29,7 @@ class LeaguesController extends Controller
             'uri' => $league->uri,
             'points' => $league->getPoints(),
             'date_start'=>$league->date_begin,
+            'type' => $league->type,
             'date_end' => $league->date_end,
             'player_number' => $league->getPlayerCount(),
             'match_number' => $league->getMatchCount(),
@@ -48,6 +49,7 @@ class LeaguesController extends Controller
             'location' => 'required',
             'date_begin' => 'required',
             'date_end' => 'required',
+            'type' => 'required|in:Turnir,Liga',
             'uri' => 'max:50|regex:/^[a-zA-Z0-9-]+$/',
             'link' => '',
             'court' => '',
@@ -67,6 +69,7 @@ class LeaguesController extends Controller
             $date_end = new DateTime($data['date_end']);
             $league->date_end = $date_end->format('Y-m-d');
             $league->link = $data['link'] ?? '';
+            $league->type = $data['type'] == 'liga' ? 'league' : 'tournament';
 
             if($data['uri'] != $league->uri)
             {
@@ -125,10 +128,15 @@ class LeaguesController extends Controller
             }
         }
 
+        $type = $league->type;
         // Delete the league
         $league->delete();
 
-        return redirect('/lige-turniri');
+
+        if($type == 'tournament')
+            return redirect('/turniri');
+        else
+            return redirect('/lige');
     }
 
 
@@ -141,6 +149,7 @@ class LeaguesController extends Controller
             'date_begin' => $league->date_begin,
             'uri' => $league->uri,
             'date_end' => $league->date_end,
+            'type' => $league->type,
             'link' => $league->link,
             'court' => Court::find($league->court_id),
         ];
@@ -184,7 +193,34 @@ class LeaguesController extends Controller
     // }
 public static function getLeaguesForList(){
     $today = date('Y-m-d');
-    $leagues = League::where('id', '>', 1)->get();
+    $leagues = League::where('id', '>', 1)->where('type','league')->get();
+
+    $response = [];
+
+    foreach($leagues as $league){
+        array_push($response,[
+            'name'=> $league->name,
+            'uri'=> $league->uri,
+            'date_start' => $league->date_begin,
+            'date_end' => $league->date_end,
+            'match_number' => $league->getMatchCount(),
+            'county' => $league->county,
+            'player_number' => $league->getPlayerCount(),
+            'points' => $league->getPoints(),
+            'link' => $league->link
+        ]);
+    }
+
+    // Sort by points only (highest first)
+    usort($response, function($a, $b) {
+        return $b['points'] <=> $a['points'];
+    });
+
+    return $response;
+}
+public static function getTournamentsForList(){
+    $today = date('Y-m-d');
+    $leagues = League::where('id', '>', 1)->where('type','tournament')->get();
 
     $response = [];
 
@@ -304,6 +340,7 @@ public static function getLeaguesForList(){
             'location' => 'required',
             'date_begin' => 'required',
             'date_end' => 'required',
+            'type' => 'required|in:Turnir,Liga',
             'link' => '',
             'court' => '',
         ], [
@@ -321,7 +358,8 @@ public static function getLeaguesForList(){
         $date_end = new DateTime($data['date_end']);
         $league->date_end = $date_end->format('Y-m-d');
         $league->link = $data['link'] ?? '';
-        
+        $league->type = $data['type'] == 'liga' ? 'league' : 'tournament';
+
         $league->uri = Str::slug($data['name'], '-');
 
         if($data['court'] && !is_numeric($data['court']['id'])){
