@@ -7,7 +7,6 @@ import { bus } from "vue3-eventbus";
 import Logo from "@components/Logo.vue";
 import Loader from "@components/Loader.vue";
 import utils from "../utils";
-import { act } from "react";
 
 const mobileMenu = reactive({ state: false });
 const sideMenu = reactive({ state: false });
