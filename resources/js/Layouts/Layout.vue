@@ -11,6 +11,7 @@ import utils from "../utils";
 const mobileMenu = reactive({ state: false });
 const sideMenu = reactive({ state: false });
 const loading = ref(true);
+const isLoggedOut = ref(false);
 
 const isClient = ref(false);
 
@@ -41,6 +42,21 @@ onMounted(() => {
         router.on('start', (e) => {
             console.log(e)
             loading.value = true
+        })
+        router.on('finish', (e) => {
+            // Check if we just logged out (user was authenticated before but not now)
+            // and we're on the home page
+            if (isLoggedOut.value && page.url === '/') {
+                loading.value = false
+                isLoggedOut.value = false // Reset the flag
+            }
+        })
+        router.on('error', (e) => {
+            // Reset logout flag on error
+            if (isLoggedOut.value) {
+                loading.value = false
+                isLoggedOut.value = false
+            }
         })
         bus.on("resetScroll", (e) => {
             document.querySelector(
@@ -87,6 +103,11 @@ onMounted(() => {
             // If coming from bfcache and user is not logged in, reload to get fresh state
             if (event.persisted && !$page.props.auth.user) {
                 window.location.reload();
+            }
+            // Only ensure loading is false after logout when page is shown
+            if (isLoggedOut.value && page.url === '/') {
+                loading.value = false;
+                isLoggedOut.value = false;
             }
         });
     }
@@ -214,6 +235,17 @@ const tournamentsText = computed(() => {
 // Set initial value
 headerMessage.value = computeHeaderMessage();
 
+// Watch for auth state changes to detect logout
+watch(
+    () => page.props.auth?.user,
+    (newUser, oldUser) => {
+        // If user was logged in before but not now, they logged out
+        if (oldUser && !newUser) {
+            isLoggedOut.value = true
+        }
+    }
+);
+
 watch(
     () => [page.url, page.props.title, page.props.auth?.user],
     () => {
@@ -301,7 +333,7 @@ watch(
                 :href="'/import-meceva'" :class="{ active: $page.url === '/import-meceva' }">Import singlova</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/import-dublova'" :class="{ active: $page.url === '/import-dublova' }">Import dublova</Link>
-            <Link v-if="$page.props.auth.user" class="bigger logout" :href="'/logout'" method="post">odjavi se</Link>
+            <Link v-if="$page.props.auth.user" @click="toggleSideMenu()" class="bigger logout" :href="'/logout'" method="post">odjavi se</Link>
 
             <div class="socials">
                 <a class="viber" target="_blank"
