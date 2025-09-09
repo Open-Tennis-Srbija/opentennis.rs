@@ -3,6 +3,7 @@ import axios from 'axios';
 import { onBeforeMount, defineAsyncComponent, onMounted } from 'vue';
 import { reactive } from 'vue';
 import { computed } from 'vue';
+import utils from '../../utils';
 
 const VueApexCharts = defineAsyncComponent(() => import('vue3-apexcharts'));
 
@@ -133,6 +134,11 @@ const chartOptions = {
     },
     yaxis:{
         min: 0,
+        labels:{
+            formatter: function (value) {
+                return utils.formatAsThousands(value);
+            }
+        }
     },
     xaxis:{
 
@@ -142,7 +148,7 @@ const chartOptions = {
         axisTicks: {
             show: true,
         },
-
+    
     },
     title:{
         text: 'poeni',
@@ -184,6 +190,11 @@ const chartOptionsLine2 = {
         min: 2,
         tickAmount: (maxRank.value ? maxRank.value - 1 : 8), // e.g., 10-2=8 steps
         forceNiceScale: true,
+        labels:{
+            formatter: function (value) {
+                return utils.formatAsThousands(value);
+            }
+        }
     },
     xaxis:{
 
@@ -232,6 +243,11 @@ const chartOptionsLine3 = {
     },
     yaxis:{
         min: 1,
+        labels:{
+            formatter: function (value) {
+                return utils.formatAsThousands(value);
+            }
+        }
     },
     xaxis:{
 

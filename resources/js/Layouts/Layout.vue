@@ -6,6 +6,7 @@ import { OverlayScrollbars } from "overlayscrollbars";
 import { bus } from "vue3-eventbus";
 import Logo from "@components/Logo.vue";
 import Loader from "@components/Loader.vue";
+import utils from "../utils";
 
 const mobileMenu = reactive({ state: false });
 const sideMenu = reactive({ state: false });
@@ -141,6 +142,74 @@ function computeHeaderMessage() {
     }
 }
 
+const headerStats = computed(() => page.props.headerStats);
+
+const matchesText = computed(() => {
+   //check last digit of headerStats.totalMatches
+   const lastDigit = headerStats.value.totalMatches % 10;
+   if(headerStats.value.totalMatches === 0){
+       return "Mečevi";
+   }
+   else if(headerStats.value.totalMatches < 5){
+       return utils.formatAsThousands(headerStats.value.totalMatches) + " Meča";
+   }
+   else if (lastDigit === 1) {
+       return utils.formatAsThousands(headerStats.value.totalMatches) + " Meč";
+   } else {
+       return utils.formatAsThousands(headerStats.value.totalMatches) + " Mečeva";
+   }
+});
+
+const playersText = computed(() => {
+   //check last digit of headerStats.totalMatches
+   const lastDigit = headerStats.value.totalPlayers % 10;
+   if(headerStats.value.totalPlayers === 0){
+       return "Teniseri";
+   }
+   else if (lastDigit === 1) {
+       return utils.formatAsThousands(headerStats.value.totalPlayers) + " Teniser";
+   } else {
+       return utils.formatAsThousands(headerStats.value.totalPlayers) + " Tenisera";
+   }
+});
+
+const courtsText = computed(() => {
+   //check last digit of headerStats.totalCourts
+   const lastDigit = headerStats.value.totalCourts % 10;
+   if(headerStats.value.totalCourts === 0){
+       return "Tereni";
+   }
+   else if (lastDigit === 1) {
+       return utils.formatAsThousands(headerStats.value.totalCourts - 1) + " Teren";
+   } else {
+       return utils.formatAsThousands(headerStats.value.totalCourts - 1) + " Terena";
+   }
+});
+const leaguesText = computed(() => {
+   //check last digit of headerStats.totalLeagues
+   const lastDigit = headerStats.value.totalLeagues % 10;
+   if(headerStats.value.totalLeagues === 0){
+       return "Lige";
+   }
+   else if (lastDigit === 1) {
+       return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
+   } else {
+       return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
+   }
+});
+const tournamentsText = computed(() => {
+   //check last digit of headerStats.totalTournaments
+   const lastDigit = headerStats.value.totalTournaments % 10;
+   if(headerStats.value.totalTournaments === 0){
+       return "Turniri";
+   }
+   else if (lastDigit === 1) {
+       return utils.formatAsThousands(headerStats.value.totalTournaments) + " Turnir";
+   } else {
+       return utils.formatAsThousands(headerStats.value.totalTournaments) + " Turnira";
+   }
+});
+
 // Set initial value
 headerMessage.value = computeHeaderMessage();
 
@@ -172,17 +241,17 @@ watch(
             <div class="links" :class="{ 'admin': $page.props.auth.user }">
                 <div class="link-group">
                     <Link prefetch="false" :href="'/'"
-                        :class="{ active: $page.url === '/', activeChild: activeChilds.players }">teniseri</Link>
+                        :class="{ active: $page.url === '/', activeChild: activeChilds.players }">{{playersText}}</Link>
                     
-                    <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
+                    <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">{{matchesText}}</Link>
                     <Link prefetch="false" :href="'/tereni'"
-                        :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">tereni</Link>
+                        :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">{{courtsText}}</Link>
                 </div>
                 <div class="link-group">
                     <Link prefetch="false" :href="'/turniri'"
-                        :class="{ active: $page.url === '/turniri', activeChild: activeChilds.tournaments }">Turniri</Link>
+                        :class="{ active: $page.url === '/turniri', activeChild: activeChilds.tournaments }">{{tournamentsText}}</Link>
                     <Link prefetch="false" :href="'/lige'" :class="{ active: $page.url === '/lige', activeChild: activeChilds.leagues }">
-                    lige</Link>
+                    {{leaguesText}}</Link>
                     <Link prefetch="false" class="blue" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">
                     dodaj meč</Link>
                 </div>
@@ -269,17 +338,16 @@ watch(
     <div id="mobile-menu" :class="{ open: mobileMenu.state }">
         <div class="links">
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
-                :class="{ active: $page.url === '/', childActive: activeChilds.players }">teniseri</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige'"
-                :class="{ active: $page.url === '/lige', childActive: activeChilds.leagues }">lige
-            </Link>
-             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/turniri'"
-                :class="{ active: $page.url === '/turniri', childActive: activeChilds.leagues }">turniri
-            </Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/tereni'"
-                :class="{ active: $page.url === '/tereni', childActive: activeChilds.courts }">tereni</Link>
+                :class="{ active: $page.url === '/', childActive: activeChilds.players }">{{playersText}}</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
-                :class="{ active: $page.url === '/mecevi' }">mečevi</Link>
+                :class="{ active: $page.url === '/mecevi' }">{{ matchesText }}</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/tereni'"
+                :class="{ active: $page.url === '/tereni', childActive: activeChilds.courts }">{{ courtsText }}</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/turniri'"
+                :class="{ active: $page.url === '/turniri', childActive: activeChilds.leagues }">{{ tournamentsText }}</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige'"
+                :class="{ active: $page.url === '/lige', childActive: activeChilds.leagues }">{{ leaguesText }}
+            </Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"

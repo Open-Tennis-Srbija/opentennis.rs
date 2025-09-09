@@ -3,6 +3,7 @@ import { onMounted, defineAsyncComponent } from 'vue';
 import { reactive } from 'vue';
 import { computed } from 'vue';
 import axios from 'axios';
+import utils from '../../utils';
 
 const props = defineProps({
     player_id: Number,
@@ -122,6 +123,11 @@ const chartOptions = {
     },
     yaxis:{
         min: 0,
+        labels:{
+            formatter: function (value) {
+                return utils.formatAsThousands(value);
+            }
+        }
     },
     xaxis:{
 
@@ -173,6 +179,11 @@ const chartOptionsLine2 = {
         reversed: true,
         min: 1,
         max: maxRank,
+        labels:{
+            formatter: function (value) {
+                return utils.formatAsThousands(value);
+            }
+        }
     },
     xaxis:{
 

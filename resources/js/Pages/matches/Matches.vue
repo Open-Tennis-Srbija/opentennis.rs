@@ -581,8 +581,7 @@ function getDateMonth(date) {
                     {{ match.day }} {{ match.date }} {{ match.month }}
                     {{ match.year }}
                     <br />
-                    {{ match.county }}
-                    <span v-if="match.court?.id > 1">,
+                    {{ match.county }}<span v-if="match.court?.id > 1">,
                         <a :href="`/tereni/${match.court?.uri}`">{{
                             match.court.name
                             }}</a>

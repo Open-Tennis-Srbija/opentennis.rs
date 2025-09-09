@@ -142,11 +142,11 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item">
                     <h2>teniseri</h2>
-                    <p>{{ data.totals?.players }}</p>
+                    <p>{{ utils.formatAsThousands(data.totals?.players) }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>mečevi</h2>
-                    <p>{{ data.totals?.matches }}</p>
+                    <p>{{ utils.formatAsThousands(data.totals?.matches) }}</p>
                 </div>
             </div>
 
@@ -157,7 +157,7 @@ import { ref } from 'vue';
                     <p class="smaller f20" v-for="player in data.players?.total">
                         <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> ({{ player.count }})
+                        </Link> ({{ utils.formatAsThousands(player.count) }})
                     </p>
                 </div>
                 <div class="summary-item">
@@ -165,7 +165,7 @@ import { ref } from 'vue';
                     <p class="smaller f20" v-for="player in data.players?.wins">
                         <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> ({{ player.count }})
+                        </Link> ({{ utils.formatAsThousands(player.count) }})
                     </p>
                 </div>
                 <div class="summary-item">
@@ -173,7 +173,7 @@ import { ref } from 'vue';
                     <p class="smaller f20" v-for="player in data.players?.loses">
                         <Link prefetch="false" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link>  ({{ player.count }})
+                        </Link>  ({{ utils.formatAsThousands(player.count) }})
                     </p>
                 </div>
             </div>
@@ -341,7 +341,7 @@ import { ref } from 'vue';
                     <h2 class="mb-10">najaktivnije opštine</h2>
                     <p class="smaller f20" v-for="location in locations.locations">
                         {{ location.name }}
-                        ({{ location.count }})
+                        ({{ utils.formatAsThousands(location.count) }})
                     </p>
                 </div>
                 <div class="summary-item">
@@ -355,7 +355,7 @@ import { ref } from 'vue';
                         <template v-else>
                             {{ court.name }}
                         </template>
-                        ({{ court.count }})</p>
+                        ({{ utils.formatAsThousands(court.count) }})</p>
                 </div>
                 <div class="summary-item">
                     <template v-if="locations.leagues?.length == 0">
@@ -372,7 +372,7 @@ import { ref } from 'vue';
                             <template v-else>
                                 {{ league.name }}
                             </template>
-                            ({{ league.count }})</p>
+                            ({{ utils.formatAsThousands(league.count) }})</p>
                     </template>
                 </div>
             </div>

@@ -41,7 +41,16 @@ class HandleInertiaRequests extends Middleware
             'auth.user' => fn() => $request->user()
                 ? $request->user()->only('id', 'name', 'email')
                 : null,
+            'headerStats' => [
+                    'totalPlayers' => \App\Models\Player::count(),
+                    'totalMatches' => \App\Models\TennisMatch::count(),
+                    'totalTournaments' => \App\Models\League::where('type', 'tournament')->count(),
+                    'totalLeagues' => \App\Models\League::where('type', 'league')->count(),
+                    'totalCourts' => \App\Models\Court::count(),
 
-        ]);
+                    // Add any other numbers you need
+                ],
+            ],
+        );
     }
 }

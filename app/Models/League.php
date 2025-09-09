@@ -21,7 +21,7 @@ class League extends Model
 
 
     public function getRank(){
-        $raw_leagues = League::all();
+        $raw_leagues = League::where('type', $this->type)->get();
 
         $leagues = [];
 
@@ -36,7 +36,10 @@ class League extends Model
             return $b['points'] <=> $a['points'];
         });
 
-        $position = 0;
+        if(count($leagues) == 1) $position = 1;
+        else
+            $position = 0;
+        
         foreach($leagues as $league){
             if($league['id'] == $this->id){
                 return $position;
