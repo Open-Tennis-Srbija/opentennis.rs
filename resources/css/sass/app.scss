@@ -3,6 +3,10 @@
 @use './pages';
 
 
+*{
+    scroll-behavior: smooth;
+}
+
 .show-mobile{
     display: none;
 }

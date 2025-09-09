@@ -5,6 +5,7 @@ import EditBtn from '@components/EditIcon.vue';
 import axios from 'axios';
 import { bus } from "vue3-eventbus";
 import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 
 const players = ref([]);
 const isLoading = ref(true); // Add loading state
@@ -49,18 +50,36 @@ const handleScroll = (top) => {
 }
 
 const topOffset = computed(() => {
-    if (scrollPos.value >= 50) {
-        return 95;
+    if (scrollPos.value >= 70) {
+        return 160;
     } else {
         return scrollPos.value * 2;
     }
 });
+
+
 
 // Function to generate random widths for more realistic skeleton
 const getRandomWidth = () => {
     return Math.floor(Math.random() * (85 - 60 + 1)) + 60; // Random between 60% and 85%
 };
 
+const page = usePage();
+
+const headerStats = computed(() => page.props.headerStats);
+
+const playersText = computed(() => {
+   //check last digit of headerStats.totalMatches
+   const lastDigit = headerStats.value.totalPlayers % 10;
+   if(headerStats.value.totalPlayers === 0){
+       return "Teniseri";
+   }
+   else if (lastDigit === 1) {
+       return utils.formatAsThousands(headerStats.value.totalPlayers) + " Teniser";
+   } else {
+       return utils.formatAsThousands(headerStats.value.totalPlayers) + " Tenisera";
+   }
+});
 
 </script>
 <template>
@@ -68,11 +87,12 @@ const getRandomWidth = () => {
 
   </div> -->
   <Head title="Teniseri -" />
+  <h1 class="list-title players">{{playersText}}</h1>
   <div class="rankings-wrapper mobile-mb-300">
     <!-- Skeleton Loading State -->
     <div v-if="isLoading" class="skeleton-wrapper">
       <div id="desktop">
-        <div class="rankings-header"  style="top: 90px">
+        <div class="rankings-header"  :style="{ top: 240 - topOffset + 'px' }">
           <div class="spacer"></div>
           <div class="name">teniser</div>
           <div class="spacer"></div>
@@ -83,7 +103,7 @@ const getRandomWidth = () => {
           <div class="loses">gubitci</div>
           <div class="win-precent">% pobeda</div>
         </div>
-        <div v-for="n in 10" :key="`desktop-skeleton-${n}`" class="ranking-entry skeleton" :style="{marginTop: n === 1 ? '25px' : '0'}">
+        <div v-for="n in 10" :key="`desktop-skeleton-${n}`" class="ranking-entry skeleton" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
           <div class="rank">
             <div class="skeleton-item skeleton-text small"></div>
           </div>
@@ -152,7 +172,7 @@ const getRandomWidth = () => {
     <!-- Actual Content -->
     <div v-else>
       <div id="desktop">
-        <div class="rankings-header"  style="top: 90px">
+        <div class="rankings-header" :style="{ top: 240 - topOffset + 'px' }">
           <div class="spacer"></div>
           <div class="name">teniser</div>
           <div class="spacer"></div>
@@ -163,7 +183,7 @@ const getRandomWidth = () => {
           <div class="loses">gubitci</div>
           <div class="win-precent">% pobeda</div>
         </div>
-        <div class="ranking-entry" v-for="(player, index) in players" :style="{marginTop: index === 0 ? '25px' : '0'}">
+        <div class="ranking-entry" v-for="(player, index) in players" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
                   <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
           <div class="rank"
           :class="{'first': player.rank == 1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">

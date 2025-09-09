@@ -5,6 +5,7 @@ import axios from 'axios';
 import bus from 'vue3-eventbus';
 import EditBtn from '@components/EditIcon.vue';
 import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 
 const utl = utils;
 
@@ -82,8 +83,8 @@ const handleScroll = (top) => {
 }
 
 const topOffset = computed(() => {
-    if (scrollPos.value >= 50) {
-        return 95;
+    if (scrollPos.value >= 70) {
+        return 160;
     } else {
         return scrollPos.value * 2;
     }
@@ -93,17 +94,38 @@ const topOffset = computed(() => {
 const getRandomWidth = () => {
     return Math.floor(Math.random() * (85 - 60 + 1)) + 60; // Random between 60% and 85%
 };
+
+const page = usePage();
+const headerStats = computed(() => page.props.headerStats);
+
+const leaguesText = computed(() => {
+   //check last digit of headerStats.totalLeagues
+   const lastDigit = headerStats.value.totalLeagues % 10;
+   if(headerStats.value.totalLeagues === 0){
+       return "Lige";
+   }
+   else if (lastDigit === 1) {
+       return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
+   }
+ else if (lastDigit === 2 || headerStats.value.totalLeagues === 3) {
+       return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " lige";
+   }
+   else {
+       return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
+   }
+});
 </script>
 <template>
   <!-- <div class="loader" :class="{'close' : isLoading}">
 
   </div> -->
   <Head title="Lige -" />
+  <h1 class="list-title">{{ leaguesText }}</h1>
   <div class="rankings-wrapper leagues mobile-mb-300">
     <!-- Skeleton Loading State -->
     <div v-if="isLoading" class="skeleton-wrapper">
       <div id="desktop">
-        <div class="rankings-header" style="top: 90px;">
+        <div class="rankings-header" :style="{ top: 240 - topOffset + 'px' }">
           <div class="spacer"></div>
           <div class="name">lige</div>
           <div class="wins">poeni</div>
@@ -112,7 +134,7 @@ const getRandomWidth = () => {
           <div class="elo">početak - kraj</div>
           <div class="elo">opština</div>
         </div>
-        <div v-for="n in 8" :key="`desktop-skeleton-${n}`" class="ranking-entry skeleton" :style="{marginTop: n === 1 ? '25px' : '0'}">
+        <div v-for="n in 8" :key="`desktop-skeleton-${n}`" class="ranking-entry skeleton" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
           <div class="rank">
             <div class="skeleton-item skeleton-text small"></div>
           </div>
@@ -158,7 +180,7 @@ const getRandomWidth = () => {
     <!-- Actual Content -->
     <div v-else>
       <div id="desktop">
-        <div class="rankings-header" style="top: 90px;">
+        <div class="rankings-header" :style="{ top: 240 - topOffset + 'px' }">
         <!-- <div class="rankings-header" :style="{top: `${ 50 - topOffset}px`}"> -->
           <div class="spacer"></div>
           <div class="name">lige</div>
@@ -168,7 +190,7 @@ const getRandomWidth = () => {
           <div class="elo">početak - kraj</div>
           <div class="elo">opština</div>
         </div>
-        <div v-if="leagues.length" class="ranking-entry" v-for="(league, index) in leagues" :style="{marginTop: index === 0 ? '25px' : '0'}" >
+        <div v-if="leagues.length" class="ranking-entry" v-for="(league, index) in leagues" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}" >
         <div class="rank">
             {{ index+1 }}
           </div>

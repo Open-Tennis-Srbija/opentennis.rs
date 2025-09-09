@@ -3,6 +3,8 @@ import { computed, onMounted, onBeforeMount, ref } from "vue";
 import EditIcon from "@components/EditIcon.vue";
 import axios from "axios";
 import bus from "vue3-eventbus";
+import { usePage } from "@inertiajs/vue3";
+import utils from "../../utils";
 
 const props = defineProps({
     loadMatches: Boolean || true,
@@ -151,8 +153,8 @@ const loadMoreMatches = async () => {
 }
 
 const topOffset = computed(() => {
-    if (scrollPos.value >= 50) {
-        return 95;
+    if (scrollPos.value >= 70) {
+        return 160;
     } else {
         return scrollPos.value * 2;
     }
@@ -216,13 +218,33 @@ function getDateMonth(date) {
 
     return months[month];
 }
+
+const page = usePage();
+const headerStats = computed(() => page.props.headerStats);
+
+const matchesText = computed(() => {
+   //check last digit of headerStats.totalMatches
+   const lastDigit = headerStats.value.totalMatches % 10;
+   if(headerStats.value.totalMatches === 0){
+       return "Mečevi";
+   }
+   else if(headerStats.value.totalMatches < 5){
+       return utils.formatAsThousands(headerStats.value.totalMatches) + " Meča";
+   }
+   else if (lastDigit === 1) {
+       return utils.formatAsThousands(headerStats.value.totalMatches) + " Meč";
+   } else {
+       return utils.formatAsThousands(headerStats.value.totalMatches) + " Mečeva";
+   }
+});
 </script>
 <template>
 
     <Head v-if="isHome" title="Mečevi -" />
+    <h1 v-if="isHome" class="list-title matches">{{matchesText}}</h1>
     <div class="matches-wrapper" :class="{'home': isHome, 'mobile-mb-300': isHome}">
         <div id="desktop">
-            <div class="matches-header" :class="{'home': isHome}" >
+            <div class="matches-header" :class="{'home': isHome}" :style="{ top: isHome ? (180 - topOffset) + 'px' : ''}">
                 <div class="spacer number"></div>
                 <div class="winner">pobednik</div>
                 <div class="loser">gubitnik</div>

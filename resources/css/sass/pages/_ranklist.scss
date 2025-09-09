@@ -1,4 +1,17 @@
 @use '../abstracts' as *;
+.list-title{
+  font-family: 'Helvetica Neue';
+  text-transform: uppercase;
+  font-size: 40px;
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 0px;
+
+  @media screen and (max-width: 1200px) {
+    font-size: 27px;
+    margin-bottom: 20px;
+  }
+}
 .rankings-wrapper {
   max-width: 1200px;
   margin: 0 auto 100px;
@@ -40,7 +53,7 @@
     .ranking-entry {
       display: grid;
       grid-auto-flow: column;
-      grid-template-columns: 100px 302px 133px 133px 133px 133px 133px 133px;
+      grid-template-columns: 100px 568px 133px 133px 133px 133px;
     }
   }
 
@@ -239,6 +252,10 @@
       gap: 20px;
       padding: 29px 0 25px 0;
       padding-inline: 20px;
+
+      &:first-of-type{
+        border-top: 2px solid #e2e0e1;
+      }
 
       .edit-btn{
         bottom: 0px;

@@ -34,7 +34,6 @@ onMounted(() => {
             {
                 scroll(osInstance, args) {
                     scrollPos.top = args.target.scrollTop;
-                    console.log(osInstance);
                     bus.emit("scroll", scrollPos.top);
                 },
             },
@@ -215,7 +214,11 @@ const leaguesText = computed(() => {
    }
    else if (lastDigit === 1) {
        return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
-   } else {
+   }
+ else if (lastDigit === 2 || headerStats.value.totalLeagues === 3) {
+       return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " lige";
+   }
+   else {
        return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
    }
 });
