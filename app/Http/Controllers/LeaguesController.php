@@ -49,7 +49,7 @@ class LeaguesController extends Controller
             'location' => 'required',
             'date_begin' => 'required',
             'date_end' => 'required',
-            'type' => 'required|in:Turnir,Liga',
+            'type' => 'required|in:turnir,liga,Turnir,Liga',
             'uri' => 'max:50|regex:/^[a-zA-Z0-9-]+$/',
             'link' => '',
             'court' => '',
@@ -69,7 +69,7 @@ class LeaguesController extends Controller
             $date_end = new DateTime($data['date_end']);
             $league->date_end = $date_end->format('Y-m-d');
             $league->link = $data['link'] ?? '';
-            $league->type = $data['type'] == 'liga' ? 'league' : 'tournament';
+            $league->type = $data['type'] == 'liga' || $data['type'] == 'Liga' ? 'league' : 'tournament';
 
             if($data['uri'] != $league->uri)
             {
@@ -340,7 +340,7 @@ public static function getTournamentsForList(){
             'location' => 'required',
             'date_begin' => 'required',
             'date_end' => 'required',
-            'type' => 'required|in:Turnir,Liga',
+            'type' => 'required|in:Turnir,Liga,turnir,liga',
             'link' => '',
             'court' => '',
         ], [
@@ -358,7 +358,7 @@ public static function getTournamentsForList(){
         $date_end = new DateTime($data['date_end']);
         $league->date_end = $date_end->format('Y-m-d');
         $league->link = $data['link'] ?? '';
-        $league->type = $data['type'] == 'liga' ? 'league' : 'tournament';
+        $league->type = $data['type'] == 'liga' || $data['type'] == 'Liga' ? 'league' : 'tournament';
 
         $league->uri = Str::slug($data['name'], '-');
 
