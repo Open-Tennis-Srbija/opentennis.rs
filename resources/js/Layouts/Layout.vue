@@ -373,6 +373,8 @@ watch(
     </div>
     <div id="mobile-menu" :class="{ open: mobileMenu.state }">
         <div class="links">
+            <Link class="bigger blue" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"
+                :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
                 :class="{ active: $page.url === '/', childActive: activeChilds.players }">{{playersText}}</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
@@ -386,8 +388,6 @@ watch(
             </Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"
-                :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
                 <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
                 <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/crazy-pizza'"

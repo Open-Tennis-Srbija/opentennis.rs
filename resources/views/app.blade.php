@@ -22,14 +22,14 @@
       <!-- Default Meta Tags -->
       <meta name="twitter:card" content="summary_large_image"/>
       <meta name="twitter:title" content="SRPSKA TENIS LIGA"/>
-      <meta name="twitter:description" content="budi zdraviji, igraj više"/>
+      <meta name="twitter:description" content="svi teniseri, lige i turniri, tereni, i mečevi na jednom mestu"/>
       <meta name="twitter:image:src" content="{{ asset('/stl-cover.png') }}"/>
       <meta name="twitter:image:alt" content="srpskatenisliga.rs"/>
       <!-- Open Graph data -->
       <meta property="og:url" content="https://srpskatenisliga.rs"/>
       <meta property="og:title" content="SRPSKA TENIS LIGA"/>
       <meta property="og:image" content="{{ asset('/stl-cover.png') }}"/>
-      <meta property="og:description" content="budi zdraviji, igraj više"/>
+      <meta property="og:description" content="svi teniseri, lige i turniri, tereni, i mečevi na jednom mestu"/>
       <meta property="og:site_name" content="srpskatenisliga.rs"/>
     @endif
     
