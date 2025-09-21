@@ -399,7 +399,7 @@ const matchesText = computed(() => {
                         </a>
                     </template>
                 </div>
-                <div class="location smaller-font">
+                <div class="location smaller-font" style="padding-right: 10px;">
                     <template v-if="match.league?.uri == ''">
                         {{ match.league?.name }}
                     </template>

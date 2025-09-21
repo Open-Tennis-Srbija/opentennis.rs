@@ -190,7 +190,7 @@ onBeforeUnmount(() => {
                 class="rank"
             >
 			<p :class="{ 'align-left': league.rank > 9,'n40': league.rank >= 40 && league.rank < 50, [`strict-${league.rank}`]: true }">
-				{{ league.rank }}
+				{{ league.type == 'tournament' ? league.rank + 1 : league.rank }}
 			</p>
 		</div>
         <h1 class="red" :class="{'fix-letters': containsGreek(league.name)}">
