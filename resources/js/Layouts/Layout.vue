@@ -22,6 +22,7 @@ const activeChilds = reactive({
     players: false,
     leagues: false,
     courts: false,
+    matches: false,
     tournaments: false,
 });
 
@@ -72,16 +73,19 @@ onMounted(() => {
             if (e === 'players') {
                 activeChilds.players = true;
                 activeChilds.leagues = false;
+                activeChilds.matches = false;
                 activeChilds.courts = false;
                 activeChilds.tournaments = false;
             } else if (e === 'leagues') {
                 activeChilds.players = false;
                 activeChilds.leagues = true;
+                activeChilds.matches = false;
                 activeChilds.courts = false;
                 activeChilds.tournaments = false;
             } else if (e === 'courts') {
                 activeChilds.players = false;
                 activeChilds.leagues = false;
+                activeChilds.matches = false;
                 activeChilds.courts = true;
                 activeChilds.tournaments = false;
             }
@@ -89,7 +93,15 @@ onMounted(() => {
                 activeChilds.players = false;
                 activeChilds.leagues = false;
                 activeChilds.courts = false;
+                activeChilds.matches = false;
                 activeChilds.tournaments = true;
+            }
+            else if (e === 'matches'){
+                activeChilds.players = false;
+                activeChilds.leagues = false;
+                activeChilds.courts = false;
+                activeChilds.tournaments = false;
+                activeChilds.matches = true;
             }
         });
         bus.on('clearActive', (e) => {
@@ -278,8 +290,7 @@ watch(
                 <div class="link-group">
                     <Link prefetch="false" :href="'/'"
                         :class="{ active: $page.url === '/', activeChild: activeChilds.players }">{{playersText}}</Link>
-                    
-                    <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi' }">{{matchesText}}</Link>
+                    <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi', activeChild: activeChilds.matches }">{{matchesText}}</Link>
                     <Link prefetch="false" :href="'/tereni'"
                         :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">{{courtsText}}</Link>
                 </div>
@@ -378,7 +389,7 @@ watch(
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
                 :class="{ active: $page.url === '/', childActive: activeChilds.players }">{{playersText}}</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
-                :class="{ active: $page.url === '/mecevi' }">{{ matchesText }}</Link>
+                :class="{ active: $page.url === '/mecevi', childActive: activeChilds.matches }">{{ matchesText }}</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/tereni'"
                 :class="{ active: $page.url === '/tereni', childActive: activeChilds.courts }">{{ courtsText }}</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/turniri'"

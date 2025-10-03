@@ -21,6 +21,7 @@ onMounted(() => {
         match.value = response.data;
         bus.emit("loading", false);
     });
+    bus.emit('active', 'matches');
 
 });
 
@@ -86,6 +87,7 @@ const formatedMatch = computed(() => {
 });
 </script>
 <template>
+    <Head :title="`Meč ${formatedMatch.number || ''} -`" />
     <div class="match-entry">
         <Link :class="{ child: !isHome }" prefetch="false" class="edit-btn" v-if="$page.props.auth.user"
             :href="`/izmeni/${formatedMatch.number}`">
