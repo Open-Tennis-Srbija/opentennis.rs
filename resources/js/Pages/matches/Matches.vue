@@ -87,7 +87,7 @@ const loadInitialMatches = async () => {
         console.log("total matches", totalMatches.value);
         console.log("context:", isCourtSpecific.value ? `court ${props.court_id}` : isLeagueSpecific.value ? `league ${props.league_id}` : isPlayerSpecific.value ? `player ${props.player_id}` : 'all matches');
         bus.emit("loading", false);
-    } catch (error) {
+    } catch (error) {getDateDay
         console.error('Error loading initial matches:', error);
         bus.emit("loading", false);
     } finally {
@@ -316,7 +316,7 @@ const matchesText = computed(() => {
                 <Link :class="{child: !isHome}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
-                <div class="number">{{ match.number }}</div>
+                <div class="number"><a :href="`/mec-${match.number}`">{{ match.number }}</a></div>
                 <div class="winner">
                     <div class="players">
                         <div class="player-1" :class="{ 'mt-10': match.winner2_name }">
@@ -513,9 +513,11 @@ const matchesText = computed(() => {
                 <EditIcon />
                 </Link>
                 <div class="score">
+                    <a :href="`/mec-${match.number}`">
                     {{ match.set_score }}
                     <br v-if="match.game_score && match.game_score !== ''" />
                     <span class="games">{{ match.game_score }}</span>
+                    </a>
                 </div>
 
                 <div class="info">
@@ -599,7 +601,9 @@ const matchesText = computed(() => {
                             }}</a>
                     </span>
                     <br />
-                    {{ match.number || matches.length - index }},
+                    <a :href="`/mec-${match.number || matches.length - index}`">
+                        {{ match.number || matches.length - index }}
+                    </a>
                     {{ match.day }} {{ match.date }} {{ match.month }}
                     {{ match.year }}
                     <br />

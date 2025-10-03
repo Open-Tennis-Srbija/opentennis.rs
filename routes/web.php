@@ -18,8 +18,10 @@ Route::inertia('/', 'players/Players')->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);
 
 Route::inertia('/mecevi', 'matches/Matches', ['loadMatches' => true])->name('matches');
+Route::get('/mec-{number}', [TenisMatchController::class, 'getMatchForDisplay'])->name('match');
 Route::get('/get-matches', [TenisMatchController::class, 'getMatches']);
 Route::get('/api/matches', [TenisMatchController::class, 'getMatchesApi']);
+Route::get('/api/match/{number}', [TenisMatchController::class, 'getMatchNumberApi']);
 
 Route::get('/get-player/{uri}', [PlayerController::class, 'get_player_by_uri']);
 Route::get('/api/player/{id}/matches', [PlayerController::class, 'getPlayerMatchesApi']);
