@@ -602,18 +602,23 @@ const matchesText = computed(() => {
                             match.league?.name
                             }}</a>
                     </span>
+                   
                     <br />
-                    <Link prefetch="false" :href="`/${match.number || matches.length - index}`">
-                        {{ match.number || matches.length - index }}
-                    </Link>
-                    {{ match.day }} {{ match.date }} {{ match.month }}
-                    {{ match.year }}
-                    <br />
-                    {{ match.county }}<span v-if="match.court?.id > 1">,
+                    <span v-if="match.court?.id > 1">
                         <Link :href="`/tereni/${match.court?.uri}`">{{
                             match.court.name
                             }}</Link>
                     </span>
+                    <br />
+                    {{ match.county }}
+                    <br />
+
+                    {{ match.day }} {{ match.date }} {{ match.month }}
+                    {{ match.year }}
+                    <br />
+                    <Link prefetch="false" :href="`/${match.number || matches.length - index}`">
+                        {{ match.number || matches.length - index }}
+                    </Link>
                 </div>
             </div>
             

@@ -277,7 +277,7 @@ $border-color-dark: #e2e0e1;
     }
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 30px;
     padding: 10px 0 12px 0;
   
   .category-wrapp {
@@ -360,7 +360,11 @@ $border-color-dark: #e2e0e1;
         }
 
         &.black{
-            color: $blue;
+            color: $red;
+            margin-top: 20px;
+            &:hover {
+              color: $blue;
+            }
         }
       }
     }
