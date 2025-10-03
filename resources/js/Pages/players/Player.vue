@@ -259,18 +259,27 @@ onBeforeUnmount(() => {
 				:href="`/${player.uri}/izmeni`"
 				><EditIcon
 			/></Link>
-		<div
-			class="rank"
-			:class="{
-				first: player.rank == 1,
-				second: player.rank == 2,
-				third: player.rank == 3,
-			}"
-		>
-			<p :class="{ 'align-left': player.rank > 9,'n40': player.rank >= 40 && player.rank < 50, [`strict-${player.rank}`]: true }">
-				{{ player.rank }}
-			</p>
-		</div>
+
+			<div class="ranks">
+				<div
+					class="rank"
+					:class="{
+						first: player.rank == 1,
+						second: player.rank == 2,
+						third: player.rank == 3,
+					}"
+				>
+					<p :class="{ 'align-left': player.rank > 9,'n40': player.rank >= 40 && player.rank < 50, [`strict-${player.rank}`]: true }">
+						{{ player.rank }}
+					</p>
+				</div>
+				<div class="category">
+					<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
+					<span class="number" :class="{[`category-${player.category}`]: true, 'category-unknown': player.category == '?'}">{{ player.category }}</span>
+				</div>
+			</div>
+
+
 		<h1 v-if="player.name" class="blue" :class="{'fix-letters': containsGreek(player.name)}">
 			{{ player.name.split(' ')[0]}} <br class="show-mobile"> {{  player.name.split(' ')[1] }}
 		</h1>
@@ -283,7 +292,7 @@ onBeforeUnmount(() => {
 
 		<div class="dashboard-wrapper">
 			<h2 class="summary-title">Statistika</h2>
-			<div class="summary player six desktop">
+			<div class="summary player five desktop">
 				<div class="summary-item">
 					<h2>poeni</h2>
 					<p>{{ points}}</p>
@@ -304,29 +313,16 @@ onBeforeUnmount(() => {
 					<h2>% pobeda</h2>
 					<p>{{ player.win_precentage }}%</p>
 				</div>
-				<div class="summary-item">
-					<h2 style="margin-top: -10px;">kategorija</h2>
-					<p class="category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
-						<span class="number" :class="{[`category-${player.category}`]: true, 'category-unknown': player.category == '?'}">{{ player.category }}</span>
-					</p>
-				</div>
+				
 			</div>
 			<div class="summary player five mobile">
 				<div class="summary-item half">
 					<h2>poeni</h2>
 					<p>{{ points }}</p>
 				</div>
-				<div class="summary-item">
+				<div class="summary-item half">
 					<h2>% pobeda</h2>
 					<p>{{ player.win_precentage }}%</p>
-				</div>
-				<div class="summary-item">
-					<h2 style="margin-top: -4px;">kategorija</h2>
-					<p class="category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
-						<span class="number" :class="{[`category-${player.category}`]: true, 'fix': player.category == 7, 'category-unknown': player.category == '?'}">{{ player.category }}</span>
-					</p>
 				</div>
 				<div class="summary-item">
 					<h2>mečevi</h2>
@@ -342,7 +338,7 @@ onBeforeUnmount(() => {
 				</div>
 			</div>
 			<h2 class="summary-title">Teniseri</h2>
-			<div class="summary player three col">
+			<div class="summary player two col">
 				<div class="summary-item players">
 					<h2 v-if="player.matchups">pobedio {{ Object.values(player.matchups.won_against).length }} tenisera</h2>
 					<template v-if="matchups.wins.length > 0">
@@ -387,27 +383,7 @@ onBeforeUnmount(() => {
 						<h2 class="black">ovaj teniser nikada nije izgubio &#128578;</h2>
 					</template>
 				</div>
-				<div class="summary-item players">
-					<h2 v-if="player.matchups">nije igrao sa {{player.matchups.not_played.length}} {{getInteractionText(matchups.not_played.length)}}</h2>
-					<template v-if="matchups.not_played.length > 0">
-						<template v-for="player in matchups.not_played">
-							<p>
-								<Link prefetch="false" :href="`/${player.uri}`">{{
-									player.name
-								}}</Link>
-							</p>
-						</template>
-						<p
-							v-if="player.matchups.not_played.length > 10"
-							class="show-more"
-							@click="isExpanded.not_played = !isExpanded.not_played">
-							{{ !isExpanded.not_played ? 'vidi sve' : 'vidi manje' }}
-						</p>
-					</template>
-					<template v-else>
-						<h2 class="black">ovaj teniser je igrao sa svima &#128578;</h2>
-					</template>
-				</div>
+			
 			</div>
 			<h2 class="summary-title big-margin">lokacije</h2>
 			<div class="summary player three col">

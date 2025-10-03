@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import axios from 'axios';
 import { usePage } from '@inertiajs/vue3';
 import bus from "vue3-eventbus";
@@ -25,6 +25,10 @@ onMounted(() => {
     });
     bus.emit('active', 'matches');
 
+});
+
+onBeforeUnmount(() => {
+    bus.emit('clearActive');
 });
 
 
@@ -405,6 +409,10 @@ $text-color-gray: #949494;
             text-decoration: none;
             color: black;
             font-size: 30px;
+
+            &:hover {
+                color: $red;
+            }
         }
 
         .sup {

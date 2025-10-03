@@ -249,10 +249,10 @@ const matchesText = computed(() => {
                 <div class="winner">pobednik</div>
                 <div class="loser">gubitnik</div>
                 <div class="score">rezultat</div>
-                <div class="date">datum</div>
-                <div class="location">opština</div>
-                <div class="location">teren</div>
                 <div class="location">liga ili turnir</div>
+                <div class="location">teren</div>
+                <div class="location">opština</div>
+                <div class="date">datum</div>
             </div>
             <div v-if="props.showMessage">
                 <p v-if="props.showMessage.wins" class="message">
@@ -320,9 +320,9 @@ const matchesText = computed(() => {
                 <div class="winner">
                     <div class="players">
                         <div class="player-1" :class="{ 'mt-10': match.winner2_name }">
-                            <Link prefetch="false" :href="`/${match.winner1_uri}`">{{
+                            <a target="_blank" prefetch="false" :href="`/${match.winner1_uri}`">{{
                                 match.winner1_name
-                            }}</Link>
+                            }}</a>
                             <div class="category-wrapp">
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.winner1_category] || 'transparent'}` }"></span><span
@@ -333,9 +333,9 @@ const matchesText = computed(() => {
                                 Math.round(match.winner_point_gain / 2) : match.winner_point_gain }}</span>
                         </div>
                         <div v-if="match.winner2_name" class="player-2">
-                            <Link prefetch="false" :href="`/${match.winner2_uri}`">{{
+                            <a target="_blank" prefetch="false" :href="`/${match.winner2_uri}`">{{
                                 match.winner2_name
-                            }}</Link>
+                            }}</a>
                             <div class="category-wrapp">
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.winner2_category] || 'transparent'}` }"></span><span
@@ -350,9 +350,9 @@ const matchesText = computed(() => {
                 <div class="loser">
                     <div class="players">
                         <div class="player-1" :class="{ 'mt-10': match.loser2_name }">
-                            <Link prefetch="false" :href="`/${match.loser1_uri}`">{{
+                            <a target="_blank" prefetch="false" :href="`/${match.loser1_uri}`">{{
                                 match.loser1_name
-                            }}</Link>
+                            }}</a>
                             <div class="category-wrapp">
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.loser1_category] || 'transparent'}` }"></span><span
@@ -365,9 +365,9 @@ const matchesText = computed(() => {
                                 match.loser_point_gain }}</span>
                         </div>
                         <div v-if="match.loser2_name" class="player-2">
-                            <Link prefetch="false" :href="`/${match.loser2_uri}`">{{
+                            <a target="_blank" prefetch="false" :href="`/${match.loser2_uri}`">{{
                                 match.loser2_name
-                            }}</Link>
+                            }}</a>
                             <div class="category-wrapp">
                                 <span class="diamond"
                                     :style="{ border: `1px solid ${categoryColorsAll[match.loser2_category] || 'transparent'}` }"></span><span
@@ -386,30 +386,30 @@ const matchesText = computed(() => {
                         }}</span>
                     </Link>
                 </div>
-                <div class="date smaller-font">
-                    {{ match.day }} {{ match.date }} {{ match.month }}
-                    {{ match.year }}
-                </div>
-                <div class="location smaller-font">{{ match.county }}</div>
-                <div class="location smaller-font">
-                    <template v-if="match.court?.id == 1">
-                        {{ match.court.name }}
-                    </template>
-                    <template v-else>
-                        <a :href="`/tereni/${match.court?.uri}`">
-                            {{ match.court?.name }}
-                        </a>
-                    </template>
-                </div>
                 <div class="location smaller-font" style="padding-right: 10px;">
                     <template v-if="match.league?.uri == ''">
                         {{ match.league?.name }}
                     </template>
                     <template v-else>
-                        <a :href="`/${match.league?.uri}`">
+                        <a target="_blank" :href="`/${match.league?.uri}`">
                             {{ match.league?.name }}
                         </a>
                     </template>
+                </div>
+                <div class="location smaller-font">
+                    <template v-if="match.court?.id == 1">
+                        {{ match.court.name }}
+                    </template>
+                    <template v-else>
+                        <a target="_blank" :href="`/tereni/${match.court?.uri}`">
+                            {{ match.court?.name }}
+                        </a>
+                    </template>
+                </div>
+                <div class="location smaller-font">{{ match.county }}</div>
+                <div class="date smaller-font">
+                    {{ match.day }} {{ match.date }} {{ match.month }}
+                    {{ match.year }}
                 </div>
             </div>
             
@@ -458,10 +458,7 @@ const matchesText = computed(() => {
                 </div>
             </div>
             
-            <!-- No more data indicator for desktop -->
-            <div v-if="!hasMoreData && matches.length > 0 && props.loadMatches" class="no-more-data">
-                <p>Nema više mečeva</p>
-            </div>
+          
         </div>
         <div id="mobile">
             <div v-if="props.showMessage">
@@ -598,14 +595,17 @@ const matchesText = computed(() => {
 
                 <div class="location">
                     <span v-if="match.league?.uri !== ''">
-                        <a class="black" :href="`/${match.league?.uri}`">{{
+                        <a class="black" target="_blank" :href="`/${match.league?.uri}`">{{
                             match.league?.name
                             }}</a>
+                    </span>
+                    <span v-else>
+                        {{ match.league?.name }}
                     </span>
                    
                     <br />
                     <span v-if="match.court?.id > 1">
-                        <Link :href="`/tereni/${match.court?.uri}`">{{
+                        <Link target="_blank" :href="`/tereni/${match.court?.uri}`">{{
                             match.court.name
                             }}</Link>
                     </span>
@@ -658,10 +658,7 @@ const matchesText = computed(() => {
                 </div>
             </div>
             
-            <!-- No more data indicator for mobile -->
-            <div v-if="!hasMoreData && matches.length > 0 && props.loadMatches" class="no-more-data">
-                <p>Nema više mečeva</p>
-            </div>
+         
         </div>
     </div>
 </template>

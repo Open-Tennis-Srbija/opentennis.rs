@@ -328,7 +328,7 @@ watch(
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">Statistika</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/dodaj-ligu'"
-                :class="{ active: $page.url === '/dodaj-ligu' }">Dodaj ligu</Link>
+                :class="{ active: $page.url === '/dodaj-ligu' }">Dodaj turnir ili ligu</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/crazy-pizza'"
                 :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/uputstva'"
@@ -400,7 +400,7 @@ watch(
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
                 <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
-                :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link>
+                :class="{ active: $page.url === '/dodaj-ligu' }">dodaj turnir ili ligu</Link>
                 <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/crazy-pizza'"
                     :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
