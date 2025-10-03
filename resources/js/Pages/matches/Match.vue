@@ -4,6 +4,8 @@ import axios from 'axios';
 import { usePage } from '@inertiajs/vue3';
 import bus from "vue3-eventbus";
 import { computed } from 'vue';
+import EditIcon from "@components/EditIcon.vue";
+
 
 const props = defineProps({
     match_number: {
@@ -223,6 +225,7 @@ $text-color-gray: #949494;
     .edit-btn {
         top: 40px;
         left: 0px;
+        width: max-content;
         font-size: 15px;
         padding: 5px 15px;
         padding-top: 9px;
@@ -436,6 +439,10 @@ $text-color-gray: #949494;
 }
 
 @media only screen and (max-width: 1000px) {
+
+#main{
+    overflow-x: hidden;
+}
     .match-entry {
         height: max-content;
         position: relative;

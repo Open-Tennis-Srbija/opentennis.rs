@@ -316,7 +316,7 @@ const matchesText = computed(() => {
                 <Link :class="{child: !isHome}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
-                <div class="number"><Link prefetch="false" :href="`/mec-${match.number}`">{{ match.number }}</Link></div>
+                <div class="number"><Link prefetch="false" :href="`/${match.number}`">{{ match.number }}</Link></div>
                 <div class="winner">
                     <div class="players">
                         <div class="player-1" :class="{ 'mt-10': match.winner2_name }">
@@ -380,7 +380,7 @@ const matchesText = computed(() => {
                     </div>
                 </div>
                 <div class="score">
-                    <Link prefetch="false" :href="`/mec-${match.number}`">
+                    <Link prefetch="false" :href="`/${match.number}`">
                     {{ match.set_score }}<br /><span class="gray">{{
                         match.game_score
                         }}</span>
@@ -515,7 +515,7 @@ const matchesText = computed(() => {
                 <EditIcon />
                 </Link>
                 <div class="score">
-                    <Link prefetch="false" :href="`/mec-${match.number}`">
+                    <Link prefetch="false" :href="`/${match.number}`">
                     {{ match.set_score }}
                     <br v-if="match.game_score && match.game_score !== ''" />
                     <span class="games">{{ match.game_score }}</span>
@@ -603,7 +603,7 @@ const matchesText = computed(() => {
                             }}</a>
                     </span>
                     <br />
-                    <Link prefetch="false" :href="`/mec-${match.number || matches.length - index}`">
+                    <Link prefetch="false" :href="`/${match.number || matches.length - index}`">
                         {{ match.number || matches.length - index }}
                     </Link>
                     {{ match.day }} {{ match.date }} {{ match.month }}
