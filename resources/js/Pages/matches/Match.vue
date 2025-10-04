@@ -188,26 +188,24 @@ const formatedMatch = computed(() => {
         </div>
 
         <div class="location">
-            <span v-if="formatedMatch.league?.uri !== ''">
-                <a class="black" :href="`/${formatedMatch.league?.uri}`">{{
+                <a v-if="formatedMatch.league?.uri !== ''" class="black" :href="`/${formatedMatch.league?.uri}`">{{
                     formatedMatch.league?.name
                     }}</a>
-            </span>
-            <span v-else>
+            <p v-else>
                 sparing
-            </span>
-            <br />
+            </p>
             <a class="court" :href="`/tereni/${formatedMatch.court?.uri}`">{{
                 formatedMatch.court?.name
             }}</a>
-            <br />
-            {{ formatedMatch.county }}<span v-if="formatedMatch.court?.id > 1">
-                <br />
-                {{ formatedMatch.day }} {{ formatedMatch.date }} {{ formatedMatch.month }}
-                {{ formatedMatch.year }}
-                <br />
-                {{ formatedMatch.number }}
-            </span>
+            <p>
+                {{ formatedMatch.county }}<span v-if="formatedMatch.court?.id > 1">
+                    <br />
+                    {{ formatedMatch.day }} {{ formatedMatch.date }} {{ formatedMatch.month }}
+                    {{ formatedMatch.year }}
+                    <br />
+                    {{ formatedMatch.number }}
+                </span>
+            </p>
         </div>
 
     </div>
@@ -337,11 +335,22 @@ $text-color-gray: #949494;
         }
 
         color: $text-color-gray;
-        line-height: 1.7;
 
+        p{
+            display: block;
+            width: max-content;
+            margin: 0 auto;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
         a {
             text-decoration: none;
             color: $text-color-gray;
+            display: block;
+            width: max-content;
+            margin: 0 auto;
+            margin-bottom: 10px;
+            line-height: 1.4;
 
             &:hover {
                 color: $red;
@@ -359,6 +368,7 @@ $text-color-gray: #949494;
             }
 
             &.black {
+                line-height: 1;
                 color: $red;
                 text-decoration: none;
                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
