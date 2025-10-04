@@ -2,7 +2,7 @@
 import {useForm, usePage} from '@inertiajs/vue3'
 import {reactive, onMounted, defineAsyncComponent, nextTick} from 'vue';
 import bus from 'vue3-eventbus';
-
+import Password from '@components/Password.vue';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -74,13 +74,7 @@ const handleInputs = (event,isDate = false) => {
             <input autofocus v-model="form.username" @input="handleInputs($event)" :class="{'invalid': form.errors.username}" :disabled="formState.submitted" id="username" type="text">
             <p class="error-message">{{ form.errors.username }}</p>
           </div>
-          <div class="form-group center">
-            <label for="games" class="input-label">
-              Lozinka <span class="required">*</span>
-            </label>
-            <input :class="{'invalid': form.errors.password}" v-model="form.password" @input="handleInputs($event)" :disabled="formState.submitted" id="game_score " type="password">
-            <p class="error-message">{{ form.errors.password }}</p>
-          </div>
+          <Password v-model="form.password" :disabled="formState.submitted" :error="form.errors.password" label="Lozinka" placeholder="Unesite lozinku" required />
         </div>
       </div>
 

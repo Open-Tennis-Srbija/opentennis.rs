@@ -244,15 +244,15 @@ const getRandomWidth = () => {
             <div class="summary player three">
                 <div class="summary-item">
                     <h2>poeni</h2>
-                    <p>{{ points }}</p>
+                    <p class="big">{{ points }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>teniseri</h2>
-                    <p>{{ court.player_number }}</p>
+                    <p class="big">{{ court.player_number }}</p>
                 </div>
                 <div class="summary-item">
                     <h2>mečevi</h2>
-                    <p>{{ court.match_number }}</p>
+                    <p class="big">{{ court.match_number }}</p>
                 </div>
             </div>
             <h2 class="summary-title low-margin">lige & turniri</h2>

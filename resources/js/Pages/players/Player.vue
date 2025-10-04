@@ -318,23 +318,23 @@ onBeforeUnmount(() => {
 			<div class="summary player five mobile">
 				<div class="summary-item half">
 					<h2>poeni</h2>
-					<p>{{ points }}</p>
+					<p class="big">{{ points }}</p>
 				</div>
 				<div class="summary-item half">
 					<h2>% pobeda</h2>
-					<p>{{ player.win_precentage }}%</p>
+					<p class="big">{{ player.win_precentage }}%</p>
 				</div>
 				<div class="summary-item">
 					<h2>mečevi</h2>
-					<p>{{ player.total_matches }}</p>
+					<p class="big">{{ player.total_matches }}</p>
 				</div>
 				<div class="summary-item">
 					<h2>pobede</h2>
-					<p>{{ player.wins_number }}</p>
+					<p class="big">{{ player.wins_number }}</p>
 				</div>
 				<div class="summary-item">
 					<h2>gubitci</h2>
-					<p>{{ player.losses_number }}</p>
+					<p class="big">{{ player.losses_number }}</p>
 				</div>
 			</div>
 			<h2 class="summary-title">Teniseri</h2>

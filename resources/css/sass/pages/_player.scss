@@ -93,11 +93,11 @@
     .edit-btn {
         position: absolute;
         text-transform: uppercase;
-        right: 290px;
+        right: 0px;
         color: black;
         font-size: 50px;
         padding: 5px 10px;
-        top: -19px;
+        top: -50px !important;
         font-weight: normal;
 
 
@@ -784,7 +784,9 @@
         .summary-item {
 
             p {
-                font-size: 33px !important;
+                &.big{
+                    font-size: 33px !important;
+                }
 
                 &.no-players {
                     font-size: 20px !important
@@ -794,6 +796,7 @@
 
         p.subtitle {
             margin: 0;
+            padding-inline: 20px;
 
             &.small-margin {
                 margin-top: 10px;
@@ -962,6 +965,22 @@
                 }
             }
 
+        }
+    }
+}
+@media only screen and (max-width: 768px){
+     .static-wrapper.player {
+     .summary-item {
+            margin-bottom: 50px;
+
+
+            p {
+                font-size: 20px !important;
+
+                &.no-players {
+                    font-size: 20px !important
+                }
+            }
         }
     }
 }
