@@ -350,6 +350,7 @@ $text-color-gray: #949494;
             width: max-content;
             max-width: 100%;
             margin: 0 auto;
+            padding-inline: 20px;
             margin-bottom: 10px;
             line-height: 1.4;
 
