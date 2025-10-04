@@ -254,7 +254,7 @@ onBeforeUnmount(() => {
 			><EditIcon
 		/></Link>
 			<Link prefetch="false"
-				class="edit-btn mobile"
+				class="edit-btn fix-top mobile"
 				v-if="$page.props.auth.user"
 				:href="`/${player.uri}/izmeni`"
 				><EditIcon

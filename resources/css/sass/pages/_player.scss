@@ -93,13 +93,19 @@
     .edit-btn {
         position: absolute;
         text-transform: uppercase;
-        right: 0px;
         color: black;
         font-size: 50px;
         padding: 5px 10px;
-        top: -50px !important;
+        top: -19px !important;
         font-weight: normal;
-
+        
+        
+        
+        right: 0px;
+        
+        &.fix-top{
+            top: -50px !important;
+        }
 
 
         svg {
