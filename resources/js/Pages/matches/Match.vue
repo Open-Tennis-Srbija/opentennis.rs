@@ -326,7 +326,7 @@ $text-color-gray: #949494;
 
     .location {
         padding-inline: 10px;
-
+        max-width: 100%;
         margin-top: 0px;
         font-size: 20px;
 
@@ -348,6 +348,7 @@ $text-color-gray: #949494;
             color: $text-color-gray;
             display: block;
             width: max-content;
+            max-width: 100%;
             margin: 0 auto;
             margin-bottom: 10px;
             line-height: 1.4;
@@ -368,7 +369,6 @@ $text-color-gray: #949494;
             }
 
             &.black {
-                line-height: 1;
                 color: $red;
                 text-decoration: none;
                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
