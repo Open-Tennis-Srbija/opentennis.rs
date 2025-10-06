@@ -59,6 +59,95 @@ class TenisMatchController extends Controller
 
     }
 
+    public function getMatchByUri($uri){
+        // URI formats:
+        // Singles: /winnerfirstname-winnerlastname-loserfirstname-loserlastname-match-number (5 parts)
+        // Doubles: /winner1firstname-winner1lastname-winner2firstname-winner2lastname-loser1firstname-loser1lastname-loser2firstname-loser2lastname-match-number (9 parts)
+        
+        $parts = explode('-', $uri);
+        $partsCount = count($parts);
+        
+        // Extract match number (always the last part)
+        $matchNumber = intval(end($parts));
+        
+        // Find the match with the given number
+        $match = TennisMatch::where('number', $matchNumber)
+            ->with(['winners', 'losers'])
+            ->first();
+            
+        if (!$match) {
+            return abort(404);
+        }
+
+        $winnersCount = $match->winners()->count();
+        $losersCount = $match->losers()->count();
+
+        if ($partsCount == 5 && $winnersCount == 1 && $losersCount == 1) {
+            // Singles match
+            return $this->validateAndRenderMatch($match, $parts, $matchNumber, 'singles');
+        } elseif ($partsCount == 9 && $winnersCount == 2 && $losersCount == 2) {
+            // Doubles match
+            return $this->validateAndRenderMatch($match, $parts, $matchNumber, 'doubles');
+        }
+        
+        return abort(404);
+    }
+
+    private function validateAndRenderMatch($match, $parts, $matchNumber, $type) {
+        if ($type === 'singles') {
+            // Singles validation using player URIs
+            $expectedWinnerUri = $parts[0] . '-' . $parts[1];
+            $expectedLoserUri = $parts[2] . '-' . $parts[3];
+            
+            $winner = $match->winners()->first();
+            $loser = $match->losers()->first();
+            
+            // Remove number suffix from URIs for comparison (e.g., "player-name0" -> "player-name")
+            $winnerUriBase = preg_replace('/\d+$/', '', $winner->uri);
+            $loserUriBase = preg_replace('/\d+$/', '', $loser->uri);
+            
+            // Verify URIs match
+            if ($winnerUriBase == $expectedWinnerUri && $loserUriBase == $expectedLoserUri) {
+                return Inertia::render('matches/Match', [
+                    'match_number' => $matchNumber
+                ]);
+            }
+        } else {
+            // Doubles validation using player URIs
+            $expectedWinnerUris = [
+                $parts[0] . '-' . $parts[1],
+                $parts[2] . '-' . $parts[3]
+            ];
+            $expectedLoserUris = [
+                $parts[4] . '-' . $parts[5],
+                $parts[6] . '-' . $parts[7]
+            ];
+            
+            $winners = $match->winners()->get();
+            $losers = $match->losers()->get();
+            
+            // Get actual player URIs without number suffixes
+            $actualWinnerUris = $winners->map(function($winner) {
+                return preg_replace('/\d+$/', '', $winner->uri);
+            })->toArray();
+            $actualLoserUris = $losers->map(function($loser) {
+                return preg_replace('/\d+$/', '', $loser->uri);
+            })->toArray();
+            
+            // Check if all expected URIs exist in actual URIs (order doesn't matter)
+            $winnersMatch = empty(array_diff($expectedWinnerUris, $actualWinnerUris));
+            $losersMatch = empty(array_diff($expectedLoserUris, $actualLoserUris));
+            
+            if ($winnersMatch && $losersMatch) {
+                return Inertia::render('matches/Match', [
+                    'match_number' => $matchNumber
+                ]);
+            }
+        }
+        
+        return redirect('/');
+    }
+
     public function batchImport(){
         return Inertia::render('Auth/admin/imports/BatchMatches', [
             'players' => PlayerController::getPlayersForDropdown(),
@@ -614,6 +703,43 @@ fclose($handle);
         $match->players()->attach($player->id,['team'=>$mode]);
         return $new;
 
+    }
+
+    /**
+     * Generate URI for a match based on player names and match number
+     */
+    public static function generateMatchUri($matchNumber) {
+        $match = TennisMatch::where('number', $matchNumber)
+            ->with(['winners', 'losers'])
+            ->first();
+            
+        if (!$match) {
+            return null;
+        }
+        
+        $winner1 = $match->winners()->first();
+        $loser1 = $match->losers()->first();
+        $winner2 = $match->winners()->skip(1)->first();
+        $loser2 = $match->losers()->skip(1)->first();
+        
+        // Format names for URI (lowercase, replace spaces with dashes)
+        $formatName = function($firstName, $lastName) {
+            return strtolower(Helper::formatName($firstName)) . '-' . strtolower(Helper::formatName($lastName));
+        };
+        
+        if ($winner2 && $loser2) {
+            // Doubles match
+            return $formatName($winner1->first_name, $winner1->last_name) . '-' .
+                   $formatName($winner2->first_name, $winner2->last_name) . '-' .
+                   $formatName($loser1->first_name, $loser1->last_name) . '-' .
+                   $formatName($loser2->first_name, $loser2->last_name) . '-' .
+                   $matchNumber;
+        } else {
+            // Singles match
+            return $formatName($winner1->first_name, $winner1->last_name) . '-' .
+                   $formatName($loser1->first_name, $loser1->last_name) . '-' .
+                   $matchNumber;
+        }
     }
 
     private function getMatchForEdit($number){

@@ -18,6 +18,7 @@ Route::inertia('/', 'players/Players')->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);
 
 Route::inertia('/mecevi', 'matches/Matches', ['loadMatches' => true])->name('matches');
+Route::get('/mec/{uri}', [TenisMatchController::class, 'getMatchByUri'])->name('match');
 Route::get('/get-matches', [TenisMatchController::class, 'getMatches']);
 Route::get('/api/matches', [TenisMatchController::class, 'getMatchesApi']);
 Route::get('/api/match/{number}', [TenisMatchController::class, 'getMatchNumberApi']);

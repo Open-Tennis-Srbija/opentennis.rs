@@ -21,9 +21,9 @@ class ResolverController extends Controller
 
         if($league) return Inertia::render('leagues/League', ['league_uri' => $uri]);
 
-        $match = TennisMatch::where('number', $uri)->first();
+        // $match = TennisMatch::where('number', $uri)->first();
 
-        if($match) return Inertia::render('matches/Match', ['match_number' => $uri]);
+        // if($match) return Inertia::render('matches/Match', ['match_number' => $uri]);
 
         return redirect('/');
 

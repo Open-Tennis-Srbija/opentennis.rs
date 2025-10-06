@@ -222,6 +222,44 @@ function getDateMonth(date) {
 const page = usePage();
 const headerStats = computed(() => page.props.headerStats);
 
+// Helper function to generate match URI with player names
+const generateMatchUri = (match) => {
+    const formatName = (name) => {
+        return name
+            .toLowerCase()
+            // Replace Serbian Latin characters
+            .replace(/č/g, 'c')
+            .replace(/ć/g, 'c')
+            .replace(/đ/g, 'dj')
+            .replace(/š/g, 's')
+            .replace(/ž/g, 'z')
+            // Replace other common special characters
+            .replace(/[àáâãäå]/g, 'a')
+            .replace(/[èéêë]/g, 'e')
+            .replace(/[ìíîï]/g, 'i')
+            .replace(/[òóôõö]/g, 'o')
+            .replace(/[ùúûü]/g, 'u')
+            .replace(/[ýÿ]/g, 'y')
+            .replace(/ñ/g, 'n')
+            // Remove any remaining non-alphanumeric characters except spaces
+            .replace(/[^a-z0-9\s]/g, '')
+            // Replace spaces with dashes
+            .replace(/\s+/g, '-')
+            // Remove multiple consecutive dashes
+            .replace(/-+/g, '-')
+            // Remove leading/trailing dashes
+            .replace(/^-+|-+$/g, '');
+    };
+
+    if (match.winner2_name && match.loser2_name) {
+        // Doubles match: winner1-winner2-loser1-loser2-number
+        return `/mec/${formatName(match.winner1_name)}-${formatName(match.winner2_name)}-${formatName(match.loser1_name)}-${formatName(match.loser2_name)}-${match.number}`;
+    } else {
+        // Singles match: winner-loser-number
+        return `/mec/${formatName(match.winner1_name)}-${formatName(match.loser1_name)}-${match.number}`;
+    }
+};
+
 const matchesText = computed(() => {
    //check last digit of headerStats.totalMatches
    const lastDigit = headerStats.value.totalMatches % 10;
@@ -316,7 +354,7 @@ const matchesText = computed(() => {
                 <Link :class="{child: !isHome}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
-                <div class="number"><Link prefetch="false" :href="`/${match.number}`">{{ match.number }}</Link></div>
+                <div class="number"><Link prefetch="false" :href="generateMatchUri(match)">{{ match.number }}</Link></div>
                 <div class="winner">
                     <div class="players">
                         <div class="player-1" :class="{ 'mt-10': match.winner2_name }">
@@ -380,7 +418,7 @@ const matchesText = computed(() => {
                     </div>
                 </div>
                 <div class="score">
-                    <Link prefetch="false" :href="`/${match.number}`">
+                    <Link prefetch="false" :href="generateMatchUri(match)">
                     {{ match.set_score }}<br /><span class="gray">{{
                         match.game_score
                         }}</span>
@@ -512,7 +550,7 @@ const matchesText = computed(() => {
                 <EditIcon />
                 </Link>
                 <div class="score">
-                    <Link prefetch="false" :href="`/${match.number}`">
+                    <Link prefetch="false" :href="generateMatchUri(match)">
                     {{ match.set_score }}
                     <br v-if="match.game_score && match.game_score !== ''" />
                     <span class="games">{{ match.game_score }}</span>
@@ -616,7 +654,7 @@ const matchesText = computed(() => {
                     {{ match.day }} {{ match.date }} {{ match.month }}
                     {{ match.year }}
                     <br />
-                    <Link prefetch="false" :href="`/${match.number || matches.length - index}`">
+                    <Link prefetch="false" :href="generateMatchUri(match)">
                         {{ match.number || matches.length - index }}
                     </Link>
                 </div>
