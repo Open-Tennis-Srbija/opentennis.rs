@@ -1226,6 +1226,7 @@ fclose($handle);
         $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
 
         $match->number = $compare->number + 1;
+        
 
         [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
         $match->winner_point_gain = $winner_gains;

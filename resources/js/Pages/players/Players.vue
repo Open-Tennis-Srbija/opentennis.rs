@@ -184,11 +184,15 @@ const playersText = computed(() => {
         </div>
         <div class="ranking-entry" v-for="(player, index) in players" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
                   <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
-                  <div class="rank"
+                  <div style="place-self: center;;" class="rank"
                   :class="{'first': player.rank == 1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
                   {{ player.rank}}
                 </div>
-          <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'category-unknown': player.category == '?', [`category-${player.category}`]: player.category != '?'}">{{player.category}}</span></div>
+          <div class="place"
+          ><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }">
+            <span class="number" :class="{'category-unknown': player.category == '?', [`category-${player.category}`]: player.category != '?'}">{{player.category}}</span>
+          </span>
+          </div>
           <div class="name helvetica"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
           <div class="elo">{{utl.formatAsThousands(player.points)}}</div>
           <div class="total-matches">{{player.total_matches}}</div>
@@ -206,7 +210,11 @@ const playersText = computed(() => {
                         :class="{'first': player.rank ==1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
               {{ player.rank }}
             </div>
-            <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'unknown': player.category == '?'}">{{player.category}}</span></div>
+            <div class="place">
+              <span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }">
+                <span class="number" :class="{'unknown': player.category == '?'}">{{player.category}}</span>
+              </span>
+            </div>
           </div>
           <div class="name helvetica"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
           <div class="info">

@@ -45,8 +45,13 @@ onMounted(async () => {
 </template>
 <style lang="scss" scoped>
 
+h1{
+    @media screen and (min-width: 1200px){
+        margin-bottom: 50px !important;
+    }
+}
 h2{
-    margin-top: 50px;
+    margin-top: 40px;
 }
 img{
     display: block;

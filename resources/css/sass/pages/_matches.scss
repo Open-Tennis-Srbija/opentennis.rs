@@ -97,7 +97,6 @@ $border-color-dark: #e2e0e1;
   min-height: 100px;
   border-bottom: 2px solid $border-color-dark;
   align-items: center;
-  padding-left: 10px;
   position: relative;
   
   .edit-btn{
@@ -184,24 +183,20 @@ $border-color-dark: #e2e0e1;
     display: inline-block;
     position: relative;
     margin-left: 5px;
-    top: 5px;
     
     .diamond{
-      display: block;
       position: relative;
       width:22px;
       border-width: 2px !important;
       height: 22px;
-      
+      display: grid;
+      place-items: center;      
     }
       .category{
-        position: absolute;
-        top: 52%;
         font-weight: bold;
         font-weight: normal;
-        left: 50%;
         font-size: 13px;
-        transform: translate(-50%, -50%);
+        line-height: 1;
       
         &.unknown{
           color: #949494;
@@ -304,7 +299,7 @@ $border-color-dark: #e2e0e1;
       position: relative;
       width:20px;
       height: 20px;
-      
+      padding-top: 3px;
     }
       .category{
         position: absolute;
@@ -349,11 +344,31 @@ $border-color-dark: #e2e0e1;
         font-size: 15px;
       }
       color: $text-color-gray;
-      line-height: 1.7;
+      line-height: 1.6;
 
        .court,.league{
         font-family: 'Helvetica Neue';
         text-transform: uppercase;
+        line-height: 1.4;
+        display: block;
+        width: max-content;
+        max-width: calc(100vw - 40px);
+        margin: 0 auto;
+        margin-bottom: -17px;
+
+      }
+
+      .court{
+        margin-bottom: -20px;
+      }
+
+      .placeholder{
+        line-height: 1;
+        display: flex;
+        width: max-content;
+        margin: 0 auto;
+        margin-bottom: -10px;
+
       }
 
       .court{

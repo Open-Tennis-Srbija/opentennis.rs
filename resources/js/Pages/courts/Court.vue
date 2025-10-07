@@ -257,9 +257,9 @@ const getRandomWidth = () => {
             </div>
             <h2 class="summary-title low-margin">lige & turniri</h2>
             <div class="summary player three col">
-                <div class="summary-item players">
+                <div class="summary-item players mobile-hide">
                 </div>
-                <div class="summary-item players">
+                <div class="summary-item players mobile-mt-20">
                     <template v-if="court.leagues?.length > 0">
                         <template v-for="league in leagues">
                             <p>
@@ -279,7 +279,7 @@ const getRandomWidth = () => {
                         <h2 class="black">na ovom terenu nema liga ili turnira &#128577;</h2>
                     </template>
                 </div>
-                <div class="summary-item players">
+                <div class="summary-item players mobile-hide">
                 </div>
             </div>
             <h2 class="summary-title big-margin">teniseri</h2>

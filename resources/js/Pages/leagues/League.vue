@@ -222,9 +222,9 @@ onBeforeUnmount(() => {
             </div>
             <h2 class="summary-title low-margin">teniseri</h2>
             <div class="summary player three col">
-                <div class="summary-item players">
+                <div class="summary-item players mobile-hide">
                 </div>
-                <div class="summary-item players">
+                <div class="summary-item players mobile-mt-20">
                     <template v-if="league.players?.length > 0">
                         <template v-for="player in players">
                             <p>
@@ -244,7 +244,7 @@ onBeforeUnmount(() => {
                         <h2 class="black">ovaj turnir nema aktivnih igrača &#128577;</h2>
                     </template>
                 </div>
-                <div class="summary-item players">
+                <div class="summary-item players mobile-hide">
                 </div>
             </div>
             <h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>

@@ -182,8 +182,9 @@ import { ref } from 'vue';
             <div class="summary player five col">
                 <div class="summary-item flex">
                     <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[1] || 'transparent'}` }"></span>
-						<span class="number category-1">1</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[1] || 'transparent'}` }">
+                            <span class="number category-1">1</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[1]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -196,8 +197,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[1]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[2] || 'transparent'}` }"></span>
-						<span class="number category-2">2</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[2] || 'transparent'}` }">
+                            <span class="number category-2">2</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[2]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -210,8 +212,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[2]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[3] || 'transparent'}` }"></span>
-						<span class="number category-3">3</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[3] || 'transparent'}` }">
+                            <span class="number category-3">3</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[3]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -224,8 +227,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[3]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[4] || 'transparent'}` }"></span>
-						<span class="number category-4">4</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[4] || 'transparent'}` }">
+                            <span class="number category-4">4</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[4]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -238,8 +242,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[4]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[5] || 'transparent'}` }"></span>
-						<span class="number category-5">5</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[5] || 'transparent'}` }">
+                            <span class="number category-5">5</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[5]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -252,8 +257,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[5]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[6] || 'transparent'}` }"></span>
-						<span class="number category-6">6</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[6] || 'transparent'}` }">
+                            <span class="number category-6">6</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[6]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -266,8 +272,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[6]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[7] || 'transparent'}` }"></span>
-						<span class="number category-7">7</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[7] || 'transparent'}` }">
+                            <span class="number category-7">7</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[7]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -280,8 +287,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[7]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[8] || 'transparent'}` }"></span>
-						<span class="number category-8">8</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[8] || 'transparent'}` }">
+                            <span class="number category-8">8</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[8]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -294,8 +302,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[8]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[9] || 'transparent'}` }"></span>
-						<span class="number category-9">9</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[9] || 'transparent'}` }">
+                            <span class="number category-9">9</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[9]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -308,8 +317,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item flex" :class="{'smaller-top-margin': data.categories?.[9]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors[10] || 'transparent'}` }"></span>
-						<span class="number category-10">10</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors[10] || 'transparent'}` }">
+                            <span class="number category-10">10</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-if="data.categories?.[10]?.length > 0" v-for="player in data.categories?.[10]">
                         <Link prefetch="false" :href="`/${player.uri}`">
@@ -322,8 +332,9 @@ import { ref } from 'vue';
                 </div>
                 <div class="summary-item full flex" :class="{'smaller-top-margin': data.categories?.[10]?.length == 0}">
                      <h2 class="mb-10 category">
-						<span class="diamond" :style="{ border: `1px solid ${categoryColors['?'] || 'transparent'}` }"></span>
-						<span class="number category-unknown">?</span>
+						<span class="diamond" :style="{ border: `1px solid ${categoryColors['?'] || 'transparent'}` }">
+                            <span class="number category-unknown">?</span>
+                        </span>
                     </h2>
                     <p class="smaller f20" v-if="data.categories?.['?']?.length > 0" v-for="player in data.categories?.['?']">
                         <Link prefetch="false" :href="`/${player.uri}`">

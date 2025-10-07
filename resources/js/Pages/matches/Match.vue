@@ -116,10 +116,12 @@ const formatedMatch = computed(() => {
 
                     <div class="category-wrapp">
                         <span class="diamond"
-                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner1_category] || 'transparent'}` }"></span><span
+                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner1_category] || 'transparent'}` }">
+                        <span
                             class="category"
                             :class="{ 'category-unknown': formatedMatch.winner1_category == '?', [`category-${formatedMatch.winner1_category}`]: formatedMatch.winner1_category }">{{
                                 formatedMatch.winner1_category }}</span>
+                        </span>
 
                     </div>
                     <span class="points">+{{ formatedMatch.winner2_first_name ?
@@ -135,10 +137,12 @@ const formatedMatch = computed(() => {
                     </Link>
                     <div class="category-wrapp">
                         <span class="diamond"
-                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner2_category] || 'transparent'}` }"></span><span
+                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner2_category] || 'transparent'}` }">
+                        <span
                             class="category"
                             :class="{ 'category-unknown': formatedMatch.winner2_category == '?', [`category-${formatedMatch.winner2_category}`]: formatedMatch.winner2_category }">{{
                                 formatedMatch.winner2_category }}</span>
+                        </span>
 
                     </div>
                     <span class="points">+{{ Math.round(formatedMatch.winner_point_gain / 2) }}</span>
@@ -159,10 +163,13 @@ const formatedMatch = computed(() => {
                     </Link>
                     <div class="category-wrapp">
                         <span class="diamond"
-                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser1_category] || 'transparent'}` }"></span><span
+                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser1_category] || 'transparent'}` }">
+                        <span
                             class="category"
                             :class="{ 'category-unknown': formatedMatch.loser1_category == '?', [`category-${formatedMatch.loser1_category}`]: formatedMatch.loser1_category }">{{
                                 formatedMatch.loser1_category }}</span>
+                        </span>
+                        
 
                     </div>
                     <span class="points">+{{ formatedMatch.loser2_first_name ? Math.round(formatedMatch.loser_point_gain
@@ -176,10 +183,13 @@ const formatedMatch = computed(() => {
                     }}</Link>
                     <div class="category-wrapp">
                         <span class="diamond"
-                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser2_category] || 'transparent'}` }"></span><span
+                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser2_category] || 'transparent'}` }">
+                        <span
                             class="category"
                             :class="{ 'category-unknown': formatedMatch.loser2_category == '?', [`category-${formatedMatch.loser2_category}`]: formatedMatch.loser2_category }">{{
                                 formatedMatch.loser2_category }}</span>
+                        </span>
+                        
 
                     </div>
                     <span class="points">+{{ Math.round(formatedMatch.loser_point_gain / 2) }}</span>
@@ -255,21 +265,20 @@ $text-color-gray: #949494;
 
 
         .diamond {
-            display: block;
             position: relative;
             width: 55px;
             height: 55px;
             border-width: 3px !important;
+            display: grid;
+            place-items: center;
+                padding-top: 3px;
+
         }
 
         .category {
-            position: absolute;
-            top: 54%;
             font-weight: bold;
             font-weight: normal;
-            left: 50%;
-            font-size: 40px;
-            transform: translate(-50%, -50%);
+            font-size: 30px;
 
             &.unknown {
                 color: #949494;
@@ -302,7 +311,6 @@ $text-color-gray: #949494;
             &.category-9 {}
 
             &.category-10 {
-                left: 49%;
             }
         }
     }
@@ -520,22 +528,20 @@ $text-color-gray: #949494;
 
 
             .diamond {
-                display: block;
                 position: relative;
                 width: 35px;
                 height: 35px;
                 border-width: 3px !important;
+                display: grid;
+                place-items: center;
+                padding-top: 3px;
             }
 
             .category {
-                position: absolute;
-                top: 52%;
                 font-weight: bold;
                 font-weight: normal;
-                left: 50%;
-                font-size: 20px;
-                transform: translate(-50%, -50%);
-
+                font-size: 19px;
+                line-height: 1;
                 &.unknown {
                     color: #949494;
                 }

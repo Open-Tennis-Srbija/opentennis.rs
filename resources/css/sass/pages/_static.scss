@@ -38,19 +38,18 @@
                 }
             }
             .diamond {
-                display: block;
                 width: 30px;
                 height: 30px;
                 border-width: 2px !important;
+                display: grid;
+                padding-top: 3px;
+                place-items: center;
             }
 
             .number {
-                position: absolute;
-                top: 56%;
                 line-height: 1;
                 font-weight: bold;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                font-size: 16.6px;
 
                 &.white {
                     color: white;

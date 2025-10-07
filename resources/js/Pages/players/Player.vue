@@ -274,8 +274,9 @@ onBeforeUnmount(() => {
 					</p>
 				</div>
 				<div class="category">
-					<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }"></span>
-					<span class="number" :class="{[`category-${player.category}`]: true, 'category-unknown': player.category == '?'}">{{ player.category }}</span>
+					<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }">
+						<span class="number" :class="{[`category-${player.category}`]: true, 'category-unknown': player.category == '?'}">{{ player.category }}</span>
+					</span>
 				</div>
 			</div>
 

@@ -325,17 +325,14 @@
             position: relative;
 
             .diamond {
-                display: block;
                 height: 90px;
                 border-width: 5px !important;
                 width: 90px;
+                display: grid;
+                place-items: center;
             }
 
             .number {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
                 font-size: 50px;
 
                 &.fix {
@@ -864,17 +861,15 @@
                         margin-bottom: 36px;
 
                         .diamond {
-                            display: block;
                             height: 40px;
                             width: 40px;
+                            display: grid;
+                            place-items: center;
                         }
 
                         .number {
-                            position: absolute;
-                            top: 48%;
-                            left: 46%;
-                            transform: translate(-50%, -50%);
                             font-size: 33px;
+
 
                             &.category-1 {
                                 top: 50%;

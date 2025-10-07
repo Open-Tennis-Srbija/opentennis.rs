@@ -17,6 +17,8 @@ const isClient = ref(false);
 
 const scrollPos = reactive({ top: 0 });
 
+const activePromo = ref(0);
+
 
 const activeChilds = reactive({
     players: false,
@@ -39,8 +41,12 @@ onMounted(() => {
                 },
             },
         );
+
+        activePromo.value = Math.floor(Math.random() * 3) + 1;
+        console.log(activePromo.value);
         router.on('start', (e) => {
             console.log(e)
+            activePromo.value = Math.floor(Math.random() * 3) + 1;
             loading.value = true
         })
         router.on('finish', (e) => {
@@ -89,14 +95,14 @@ onMounted(() => {
                 activeChilds.courts = true;
                 activeChilds.tournaments = false;
             }
-            else if (e ==='tournaments'){
+            else if (e === 'tournaments') {
                 activeChilds.players = false;
                 activeChilds.leagues = false;
                 activeChilds.courts = false;
                 activeChilds.matches = false;
                 activeChilds.tournaments = true;
             }
-            else if (e === 'matches'){
+            else if (e === 'matches') {
                 activeChilds.players = false;
                 activeChilds.leagues = false;
                 activeChilds.courts = false;
@@ -178,73 +184,73 @@ function computeHeaderMessage() {
 const headerStats = computed(() => page.props.headerStats);
 
 const matchesText = computed(() => {
-   //check last digit of headerStats.totalMatches
-   const lastDigit = headerStats.value.totalMatches % 10;
-   if(headerStats.value.totalMatches === 0){
-       return "Mečevi";
-   }
-   else if(headerStats.value.totalMatches < 5){
-       return utils.formatAsThousands(headerStats.value.totalMatches) + " Meča";
-   }
-   else if (lastDigit === 1) {
-       return utils.formatAsThousands(headerStats.value.totalMatches) + " Meč";
-   } else {
-       return utils.formatAsThousands(headerStats.value.totalMatches) + " Mečeva";
-   }
+    //check last digit of headerStats.totalMatches
+    const lastDigit = headerStats.value.totalMatches % 10;
+    if (headerStats.value.totalMatches === 0) {
+        return "Mečevi";
+    }
+    else if (headerStats.value.totalMatches < 5) {
+        return utils.formatAsThousands(headerStats.value.totalMatches) + " Meča";
+    }
+    else if (lastDigit === 1) {
+        return utils.formatAsThousands(headerStats.value.totalMatches) + " Meč";
+    } else {
+        return utils.formatAsThousands(headerStats.value.totalMatches) + " Mečeva";
+    }
 });
 
 const playersText = computed(() => {
-   //check last digit of headerStats.totalMatches
-   const lastDigit = headerStats.value.totalPlayers % 10;
-   if(headerStats.value.totalPlayers === 0){
-       return "Teniseri";
-   }
-   else if (lastDigit === 1) {
-       return utils.formatAsThousands(headerStats.value.totalPlayers) + " Teniser";
-   } else {
-       return utils.formatAsThousands(headerStats.value.totalPlayers) + " Tenisera";
-   }
+    //check last digit of headerStats.totalMatches
+    const lastDigit = headerStats.value.totalPlayers % 10;
+    if (headerStats.value.totalPlayers === 0) {
+        return "Teniseri";
+    }
+    else if (lastDigit === 1) {
+        return utils.formatAsThousands(headerStats.value.totalPlayers) + " Teniser";
+    } else {
+        return utils.formatAsThousands(headerStats.value.totalPlayers) + " Tenisera";
+    }
 });
 
 const courtsText = computed(() => {
-   //check last digit of headerStats.totalCourts
-   const lastDigit = headerStats.value.totalCourts % 10;
-   if(headerStats.value.totalCourts === 0){
-       return "Tereni";
-   }
-   else if (lastDigit === 1) {
-       return utils.formatAsThousands(headerStats.value.totalCourts - 1) + " Teren";
-   } else {
-       return utils.formatAsThousands(headerStats.value.totalCourts - 1) + " Terena";
-   }
+    //check last digit of headerStats.totalCourts
+    const lastDigit = headerStats.value.totalCourts % 10;
+    if (headerStats.value.totalCourts === 0) {
+        return "Tereni";
+    }
+    else if (lastDigit === 1) {
+        return utils.formatAsThousands(headerStats.value.totalCourts - 1) + " Teren";
+    } else {
+        return utils.formatAsThousands(headerStats.value.totalCourts - 1) + " Terena";
+    }
 });
 const leaguesText = computed(() => {
-   //check last digit of headerStats.totalLeagues
-   const lastDigit = headerStats.value.totalLeagues % 10;
-   if(headerStats.value.totalLeagues === 0){
-       return "Lige";
-   }
-   else if (lastDigit === 1) {
-       return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
-   }
- else if (lastDigit === 2 || headerStats.value.totalLeagues === 3) {
-       return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " lige";
-   }
-   else {
-       return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
-   }
+    //check last digit of headerStats.totalLeagues
+    const lastDigit = headerStats.value.totalLeagues % 10;
+    if (headerStats.value.totalLeagues === 0) {
+        return "Lige";
+    }
+    else if (lastDigit === 1) {
+        return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
+    }
+    else if (lastDigit === 2 || headerStats.value.totalLeagues === 3) {
+        return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " lige";
+    }
+    else {
+        return utils.formatAsThousands(headerStats.value.totalLeagues - 1) + " Liga";
+    }
 });
 const tournamentsText = computed(() => {
-   //check last digit of headerStats.totalTournaments
-   const lastDigit = headerStats.value.totalTournaments % 10;
-   if(headerStats.value.totalTournaments === 0){
-       return "Turniri";
-   }
-   else if (lastDigit === 1) {
-       return utils.formatAsThousands(headerStats.value.totalTournaments) + " Turnir";
-   } else {
-       return utils.formatAsThousands(headerStats.value.totalTournaments) + " Turnira";
-   }
+    //check last digit of headerStats.totalTournaments
+    const lastDigit = headerStats.value.totalTournaments % 10;
+    if (headerStats.value.totalTournaments === 0) {
+        return "Turniri";
+    }
+    else if (lastDigit === 1) {
+        return utils.formatAsThousands(headerStats.value.totalTournaments) + " Turnir";
+    } else {
+        return utils.formatAsThousands(headerStats.value.totalTournaments) + " Turnira";
+    }
 });
 
 // Set initial value
@@ -273,7 +279,7 @@ watch(
 <template>
     <Loader :show="loading" />
     <header class="header-wrapper">
-        <Link style="text-decoration: none;" prefetch="false" :href="'/crazy-pizza'">
+        <Link v-if="activePromo === 1" style="text-decoration: none;" prefetch="false" :href="'/crazy-pizza'">
         <div class="logo-wrapp crazy-pizza">
             <img src="/promo/crazy-pizza/crazy-pizza-banner-icon.png" alt="Crazy Pizza Beograd" class="banner-icon" />
             <p>
@@ -282,23 +288,38 @@ watch(
             </p>
         </div>
         </Link>
+        <Link v-if="activePromo === 2" style="text-decoration: none;" prefetch="false" :href="'/nagrade-partnera-2025'">
+        <div class="logo-wrapp plavinci">
+            <img src="/promo/img/vinarija-plavinci.jpg" alt="Vinarija Plavinci" class="banner-icon" />
+        </div>
+        </Link>
+        <Link v-if="activePromo === 3" style="text-decoration: none;" prefetch="false" :href="'/nagrade-partnera-2025'">
+        <div class="logo-wrapp abramo">
+            <img src="/promo/img/abramo.jpg" alt="Abramo caffee" class="banner-icon" />
+        </div>
+        </Link>
         <div class="links-wrapper">
             <Link prefetch="false" :href="'/'">
-                <Logo :style="{ top: 50 + 'px' }" />
+            <Logo :style="{ top: 50 + 'px' }" />
             </Link>
             <div class="links" :class="{ 'admin': $page.props.auth.user }">
                 <div class="link-group">
                     <Link prefetch="false" :href="'/'"
-                        :class="{ active: $page.url === '/', activeChild: activeChilds.players }">{{playersText}}</Link>
-                    <Link prefetch="false" :href="'/mecevi'" :class="{ active: $page.url === '/mecevi', activeChild: activeChilds.matches }">{{matchesText}}</Link>
+                        :class="{ active: $page.url === '/', activeChild: activeChilds.players }">{{ playersText }}</Link>
+                    <Link prefetch="false" :href="'/mecevi'"
+                        :class="{ active: $page.url === '/mecevi', activeChild: activeChilds.matches }">{{ matchesText }}
+                    </Link>
                     <Link prefetch="false" :href="'/tereni'"
-                        :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">{{courtsText}}</Link>
+                        :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">{{ courtsText }}
+                    </Link>
                 </div>
                 <div class="link-group">
                     <Link prefetch="false" :href="'/turniri'"
-                        :class="{ active: $page.url === '/turniri', activeChild: activeChilds.tournaments }">{{tournamentsText}}</Link>
-                    <Link prefetch="false" :href="'/lige'" :class="{ active: $page.url === '/lige', activeChild: activeChilds.leagues }">
-                    {{leaguesText}}</Link>
+                        :class="{ active: $page.url === '/turniri', activeChild: activeChilds.tournaments }">
+                    {{ tournamentsText }}</Link>
+                    <Link prefetch="false" :href="'/lige'"
+                        :class="{ active: $page.url === '/lige', activeChild: activeChilds.leagues }">
+                    {{ leaguesText }}</Link>
                     <Link prefetch="false" class="blue" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">
                     dodaj meč</Link>
                 </div>
@@ -329,6 +350,8 @@ watch(
                 :class="{ active: $page.url === '/statistika' }">Statistika</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">Dodaj turnir ili ligu</Link>
+            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/nagrade-partnera-2025'"
+                :class="{ active: $page.url === '/nagrade-partnera-2025' }">nagrade partnera 2025</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/crazy-pizza'"
                 :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/uputstva'"
@@ -347,7 +370,8 @@ watch(
                 :href="'/import-meceva'" :class="{ active: $page.url === '/import-meceva' }">Import singlova</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/import-dublova'" :class="{ active: $page.url === '/import-dublova' }">Import dublova</Link>
-            <Link v-if="$page.props.auth.user" @click="toggleSideMenu()" class="bigger logout" :href="'/logout'" method="post">odjavi se</Link>
+            <Link v-if="$page.props.auth.user" @click="toggleSideMenu()" class="bigger logout" :href="'/logout'"
+                method="post">odjavi se</Link>
 
             <div class="socials">
                 <a class="viber" target="_blank"
@@ -387,42 +411,40 @@ watch(
             <Link class="bigger blue" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"
                 :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/'"
-                :class="{ active: $page.url === '/', childActive: activeChilds.players }">{{playersText}}</Link>
+                :class="{ active: $page.url === '/', childActive: activeChilds.players }">{{ playersText }}</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/mecevi'"
                 :class="{ active: $page.url === '/mecevi', childActive: activeChilds.matches }">{{ matchesText }}</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/tereni'"
                 :class="{ active: $page.url === '/tereni', childActive: activeChilds.courts }">{{ courtsText }}</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/turniri'"
-                :class="{ active: $page.url === '/turniri', childActive: activeChilds.leagues }">{{ tournamentsText }}</Link>
+                :class="{ active: $page.url === '/turniri', childActive: activeChilds.leagues }">{{ tournamentsText }}
+            </Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/lige'"
                 :class="{ active: $page.url === '/lige', childActive: activeChilds.leagues }">{{ leaguesText }}
             </Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
-                <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj turnir ili ligu</Link>
-                <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/crazy-pizza'"
-                    :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/nagrade-partnera-2025'"
+                :class="{ active: $page.url === '/nagrade-partnera-2025' }">nagrade partnera 2025</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/crazy-pizza'"
+                :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
                 :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
 
-            <div  v-if="$page.props.auth.user" class="admin-separator"></div>
+            <div v-if="$page.props.auth.user" class="admin-separator"></div>
 
-            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false"
-                @click.prevent="mobileMenu.state = false" :href="'/dodaj-turnir'"
-                :class="{ active: $page.url === '/dodaj-turnir' }">dodaj turnir</Link>
-            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false"
-                @click.prevent="mobileMenu.state = false" :href="'/dodaj-novu-ligu'"
-                :class="{ active: $page.url === '/dodaj-novu-ligu' }">dodaj novu ligu</Link>
-            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false"
-                @click.prevent="mobileMenu.state = false" :href="'/dodaj-teren'"
-                :class="{ active: $page.url === '/dodaj-teren' }">dodaj teren</Link>
-            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false"
-                @click.prevent="mobileMenu.state = false" :href="'/import-meceva'"
-                :class="{ active: $page.url === '/import-meceva' }">import sunglova</Link>
-            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false"
-                @click.prevent="mobileMenu.state = false" :href="'/import-dublova'"
-                :class="{ active: $page.url === '/import-dublova' }">import dublova</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
+                :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">dodaj turnir</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
+                :href="'/dodaj-novu-ligu'" :class="{ active: $page.url === '/dodaj-novu-ligu' }">dodaj novu ligu</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
+                :href="'/dodaj-teren'" :class="{ active: $page.url === '/dodaj-teren' }">dodaj teren</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
+                :href="'/import-meceva'" :class="{ active: $page.url === '/import-meceva' }">import sunglova</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
+                :href="'/import-dublova'" :class="{ active: $page.url === '/import-dublova' }">import dublova</Link>
 
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post"
                 :href="'/logout'" v-if="$page.props.auth.user">odjavi se</Link>
@@ -510,78 +532,134 @@ watch(
 
 <style lang="scss">
 @use "../../css/sass/app.scss";
+@use '@abstracts/variables' as *;
 
-.crazy-pizza {
-    background-color: #8d1f1e !important;
-    height: 40px !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden !important;
+.header-wrapper {
 
-    &:hover{
-        p{
-            color: #fedf37 !important;
-
-            span{
-                color: #fedf37 !important;
-            }
-        }
-    }
-
-    .banner-icon {
-        display: block !important;
+    .crazy-pizza {
+        background-color: #8d1f1e !important;
         height: 40px !important;
-        width: auto !important;
-        position: absolute !important;
-        bottom: -5px !important;
-        left: calc(50vw - 220px);
-    }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden !important;
 
-    p {
-        font-family: 'Gill Sans';
-        font-size: 18px;
-        line-height: 1;
-        font-weight: 500;
-        color: #f5eccd !important;
-        text-transform: uppercase;
-        text-decoration: none;
-        text-align: center;
+        &:hover {
+            p {
+                color: #fedf37 !important;
 
-        span{
-            color: #f5eccd !important;
-            font-weight: 400;
-            font-size: 13px;
-            line-height: 1;
-        }
-    }
-    @media screen and (max-width: 450px) {
-        p{
-            padding-top: 7px;
-            
-        }
-        &:hover{
-        p{
-            color: #f5eccd !important;
-
-            span{
-                color: #f5eccd !important;
+                span {
+                    color: #fedf37 !important;
+                }
             }
         }
+
+        .banner-icon {
+            display: block !important;
+            height: 40px !important;
+            width: auto !important;
+            position: absolute !important;
+            bottom: -5px !important;
+            left: calc(50vw - 220px);
         }
-    }
-    @media screen and (max-width: 450px) {
-        .banner-icon{
-            left: 10px;
+
+        p {
+            font-family: 'Gill Sans';
+            font-size: 18px;
+            line-height: 1;
+            font-weight: 500;
+            color: #f5eccd !important;
+            text-transform: uppercase;
+            text-decoration: none;
+            text-align: center;
+
+            span {
+                color: #f5eccd !important;
+                font-weight: 400;
+                font-size: 13px;
+                line-height: 1;
+            }
         }
+
+        @media screen and (max-width: 450px) {
+            p {
+                padding-top: 7px;
+
+            }
+
+            &:hover {
+                p {
+                    color: #f5eccd !important;
+
+                    span {
+                        color: #f5eccd !important;
+                    }
+                }
+            }
+        }
+
+        @media screen and (max-width: 450px) {
+            .banner-icon {
+                left: 10px;
+            }
+
             p {
                 font-size: 15px;
 
-                span{
+                span {
                     font-size: 9px;
                 }
             }
+        }
+    }
+
+    .plavinci {
+        background-color: $plavinci-blue !important;
+        height: 40px !important;
+
+        img {
+            height: 30px !important;
+        }
+
+        @media screen and (max-width: 450px) {
+            img {
+                padding-top: 5px;
+                height: 30px !important;
+            }
+            
+        }
+
+        &:hover {
+            img {
+                transform: scale(1.05);
+                transition: all 0.3s ease-in-out;
+            }
+        }
+    }
+
+    .abramo {
+        background-color: $abramo-black !important;
+        height: 40px !important;
+
+        img {
+            height: 30px !important;
+        }
+
+          @media screen and (max-width: 450px) {
+            img {
+                padding-top: 5px;
+                height: 30px !important;
+            }
+            
+        }
+
+        &:hover {
+            img {
+                transform: scale(1.05);
+                transition: all 0.3s ease-in-out;
+            }
+        }
     }
 }
 </style>

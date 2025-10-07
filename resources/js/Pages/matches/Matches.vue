@@ -354,7 +354,7 @@ const matchesText = computed(() => {
                 <Link :class="{child: !isHome}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
-                <div class="number"><Link prefetch="false" :href="generateMatchUri(match)">{{ match.number }}</Link></div>
+                <div style="place-self: center;;" class="number"><Link prefetch="false" :href="generateMatchUri(match)">{{ match.number }}</Link></div>
                 <div class="winner">
                     <div class="players">
                         <div class="player-1" :class="{ 'mt-10': match.winner2_name }">
@@ -363,9 +363,11 @@ const matchesText = computed(() => {
                             }}</a>
                             <div class="category-wrapp">
                                 <span class="diamond"
-                                    :style="{ border: `1px solid ${categoryColorsAll[match.winner1_category] || 'transparent'}` }"></span><span
-                                    class="category"
-                                    :class="{ 'category-unknown': match.winner1_category == '?',[`category-${match.winner1_category}`]: match.winner1_category  }">{{ match.winner1_category }}</span>
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.winner1_category] || 'transparent'}` }">
+                                    <span
+                                        class="category"
+                                        :class="{ 'category-unknown': match.winner1_category == '?',[`category-${match.winner1_category}`]: match.winner1_category  }">{{ match.winner1_category }}</span>
+                                </span>
 
                             </div> <br /><span class="points">+{{ match.winner2_name ?
                                 Math.round(match.winner_point_gain / 2) : match.winner_point_gain }}</span>
@@ -376,9 +378,11 @@ const matchesText = computed(() => {
                             }}</a>
                             <div class="category-wrapp">
                                 <span class="diamond"
-                                    :style="{ border: `1px solid ${categoryColorsAll[match.winner2_category] || 'transparent'}` }"></span><span
-                                    class="category"
-                                    :class="{ 'category-unknown': match.winner2_category == '?',[`category-${match.winner2_category}`]: match.winner2_category }">{{ match.winner2_category }}</span>
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.winner2_category] || 'transparent'}` }">
+                                    <span
+                                        class="category"
+                                        :class="{ 'category-unknown': match.winner2_category == '?',[`category-${match.winner2_category}`]: match.winner2_category }">{{ match.winner2_category }}</span>
+                                </span>
 
                             </div>
                             <br /><span class="points">+{{ Math.round(match.winner_point_gain / 2) }}</span>
@@ -393,9 +397,13 @@ const matchesText = computed(() => {
                             }}</a>
                             <div class="category-wrapp">
                                 <span class="diamond"
-                                    :style="{ border: `1px solid ${categoryColorsAll[match.loser1_category] || 'transparent'}` }"></span><span
-                                    class="category"
-                                    :class="{ 'category-unknown': match.loser1_category == '?',[`category-${match.loser1_category}`]: match.loser1_category }">{{ match.loser1_category }}</span>
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.loser1_category] || 'transparent'}` }">
+                                    <span
+                                        class="category"
+                                        :class="{ 'category-unknown': match.loser1_category == '?',[`category-${match.loser1_category}`]: match.loser1_category }">{{ match.loser1_category }}</span>
+                                
+                                </span>
+                                
 
                             </div>
 
@@ -408,9 +416,11 @@ const matchesText = computed(() => {
                             }}</a>
                             <div class="category-wrapp">
                                 <span class="diamond"
-                                    :style="{ border: `1px solid ${categoryColorsAll[match.loser2_category] || 'transparent'}` }"></span><span
-                                    class="category"
-                                    :class="{ 'category-unknown': match.loser2_category == '?',[`category-${match.loser2_category}`]: match.loser2_category }">{{ match.loser2_category }}</span>
+                                    :style="{ border: `1px solid ${categoryColorsAll[match.loser2_category] || 'transparent'}` }">
+                                    <span
+                                        class="category"
+                                        :class="{ 'category-unknown': match.loser2_category == '?',[`category-${match.loser2_category}`]: match.loser2_category }">{{ match.loser2_category }}</span>
+                                </span>
 
                             </div>
                             <br /><span class="points">+{{ Math.round(match.loser_point_gain / 2) }}</span>
@@ -637,7 +647,7 @@ const matchesText = computed(() => {
                             match.league?.name
                             }}</a>
                     </span>
-                    <span v-else>
+                    <span class="placeholder" v-else>
                         {{ match.league?.name }}
                     </span>
                    

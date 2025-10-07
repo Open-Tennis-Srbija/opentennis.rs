@@ -21,7 +21,7 @@
   .ranking-entry {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 50px 103px 382px 133px 133px 133px 133px 133px;
+    grid-template-columns: 60px 120px 312px 133px 133px 133px 133px 133px;
   }
 
   .rankings-header {
@@ -76,19 +76,16 @@
   .place{
     position : relative;
     .diamond{
-      display: block;
       width:35px;
       height: 35px;
       border-width: 3px !important;
-      
+      display: grid;
+      place-items: center;
+      padding-top: 3px;
     }
       .number{
-        position: absolute;
-        top: 50%;
         font-weight: bold;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
+        line-height: 1;
 
         &.category-1{
           
