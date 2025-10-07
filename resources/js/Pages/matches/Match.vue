@@ -302,6 +302,7 @@ $text-color-gray: #949494;
             &.category-9 {}
 
             &.category-10 {
+                left: 49%;
             }
         }
     }
