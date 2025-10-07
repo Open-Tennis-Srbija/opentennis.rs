@@ -326,21 +326,19 @@
 
             .diamond {
                 display: block;
-                height: 67px;
+                height: 90px;
                 border-width: 5px !important;
-                width: 67px;
-                transform: scaleX(1.4) rotate(45deg);
+                width: 90px;
             }
 
             .number {
                 position: absolute;
-                top: 48%;
+                top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 font-size: 50px;
 
                 &.fix {
-                    left: 53%;
                 }
 
                 &.unknown {
@@ -348,94 +346,69 @@
                 }
 
                 &.category-1 {
-                    left: 49%;
                 }
 
                 &.category-2 {}
 
                 &.category-3 {
-                    top: 50%
                 }
 
                 &.category-4 {
-                    left: 47%;
                 }
 
                 &.category-5 {
-                    top: 50%;
                 }
 
                 &.category-6 {
-                    top: 52%;
                 }
 
                 &.category-7 {
-                    top: 54%;
-                    left: 52%
                 }
 
                 &.category-8 {
-                    top: 54%
                 }
 
                 &.category-9 {
-                    top: 54%
                 }
 
                 &.category-10 {
-                    top: 54%;
                 }
 
                 &.category-unknown {
                     color: #a1a1a1 !important;
-                    top: 55% !important;
-                    left: 51% !important;
                 }
 
 
                 @media screen and (max-width: 1200px) {
                     &.category-1 {
-                        left: 49%;
-                        top: 50%;
                     }
 
                     &.category-2 {
-                        top: 50%;
 
                     }
 
                     &.category-3 {
-                        top: 54%
                     }
 
                     &.category-4 {
-                        left: 47%;
                     }
 
                     &.category-5 {
-                        top: 54%;
-                        left: 48%;
                     }
 
                     &.category-6 {
-                        top: 52%;
                     }
 
                     &.category-7 {
-                        top: 54%;
-                        left: 52%
                     }
 
                     &.category-8 {
-                        top: 54%
                     }
 
                     &.category-9 {
-                        top: 54%
                     }
 
                     &.category-10 {
-                        top: 54%;
                     }
 
                 }
@@ -513,9 +486,8 @@
 
                     .diamond {
                         display: block;
-                        height: 45px;
-                        width: 45px;
-                        transform: scaleX(1.4) rotate(45deg);
+                        height: 55px;
+                        width: 55px;
                     }
 
                     .number {
@@ -893,9 +865,8 @@
 
                         .diamond {
                             display: block;
-                            height: 35px;
-                            width: 35px;
-                            transform: scaleX(1.4) rotate(45deg);
+                            height: 40px;
+                            width: 40px;
                         }
 
                         .number {

@@ -10,6 +10,7 @@ import { usePage } from '@inertiajs/vue3';
 const players = ref([]);
 const isLoading = ref(true); // Add loading state
 const utl = utils;
+
 const categoryColorsAll = {
   1: '#8dc73f',
   2: '#38b64b',
@@ -94,9 +95,8 @@ const playersText = computed(() => {
       <div id="desktop">
         <div class="rankings-header"  :style="{ top: 240 - topOffset + 'px' }">
           <div class="spacer"></div>
-          <div class="name">teniser</div>
-          <div class="spacer"></div>
           <div class="place">kategorija</div>
+          <div class="name">teniser</div>
           <div class="elo">poeni</div>
           <div class="total-matches">mečevi</div>
           <div class="wins">pobede</div>
@@ -173,10 +173,9 @@ const playersText = computed(() => {
     <div v-else>
       <div id="desktop">
         <div class="rankings-header" :style="{ top: 240 - topOffset + 'px' }">
-          <div class="spacer"></div>
-          <div class="name">teniser</div>
-          <div class="spacer"></div>
+          <div class="place">rang</div>
           <div class="place">kategorija</div>
+          <div class="name">teniser</div>
           <div class="elo">poeni</div>
           <div class="total-matches">mečevi</div>
           <div class="wins">pobede</div>
@@ -185,13 +184,12 @@ const playersText = computed(() => {
         </div>
         <div class="ranking-entry" v-for="(player, index) in players" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
                   <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
-          <div class="rank"
-          :class="{'first': player.rank == 1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
-            {{ player.rank}}
-          </div>
-          <div class="name helvetica"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
-          <div class="spacer"></div>
+                  <div class="rank"
+                  :class="{'first': player.rank == 1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
+                  {{ player.rank}}
+                </div>
           <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'category-unknown': player.category == '?', [`category-${player.category}`]: player.category != '?'}">{{player.category}}</span></div>
+          <div class="name helvetica"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
           <div class="elo">{{utl.formatAsThousands(player.points)}}</div>
           <div class="total-matches">{{player.total_matches}}</div>
           <div class="wins">{{player.wins}}</div>
@@ -203,9 +201,12 @@ const playersText = computed(() => {
       <div id="mobile">
         <div class="ranking-entry" v-for="(player, index) in players">
                   <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
-          <div class="rank"
-                      :class="{'first': player.rank ==1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
-            {{ player.rank }}
+          <div class="ranks">
+            <div class="rank"
+                        :class="{'first': player.rank ==1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
+              {{ player.rank }}
+            </div>
+            <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'unknown': player.category == '?'}">{{player.category}}</span></div>
           </div>
           <div class="name helvetica"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
           <div class="info">
@@ -222,7 +223,6 @@ const playersText = computed(() => {
               <div class="text">{{ player.total_matches }} ({{ player.wins }},{{ player.loses }})</div>
             </div>
           </div>
-          <div class="place"><span class="diamond" :style="{border: `1px solid ${categoryColorsAll[player.category] || 'transparent'}` }"></span><span class="number" :class="{'unknown': player.category == '?'}">{{player.category}}</span></div>
         </div>
       </div>
     </div>

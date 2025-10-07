@@ -39,15 +39,15 @@
             }
             .diamond {
                 display: block;
-                width: 25px;
-                height: 25px;
-                transform: scaleX(1.4) rotate(45deg);
-
+                width: 30px;
+                height: 30px;
+                border-width: 2px !important;
             }
 
             .number {
                 position: absolute;
                 top: 56%;
+                line-height: 1;
                 font-weight: bold;
                 left: 50%;
                 transform: translate(-50%, -50%);
@@ -58,6 +58,10 @@
 
                 &.unknown {
                     color: #949494;
+                }
+
+                @media only screen and (max-width: 600px) {
+                    top: 52%;
                 }
             }
         }

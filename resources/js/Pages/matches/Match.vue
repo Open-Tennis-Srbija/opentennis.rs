@@ -251,26 +251,23 @@ $text-color-gray: #949494;
 
         display: block;
         position: relative;
-        width: 30px;
         margin: 0 auto;
 
 
         .diamond {
             display: block;
             position: relative;
-            width: 40px;
-            height: 40px;
-            margin-left: -4px;
-            transform: scaleX(1.4) rotate(45deg);
-
+            width: 45px;
+            height: 45px;
+            border-width: 3px !important;
         }
 
         .category {
             position: absolute;
-            top: 52%;
+            top: 54%;
             font-weight: bold;
             font-weight: normal;
-            left: 56%;
+            left: 50%;
             font-size: 40px;
             transform: translate(-50%, -50%);
 
@@ -279,47 +276,32 @@ $text-color-gray: #949494;
             }
 
             &.category-1 {
-                left: 50%;
-                top: 54%;
             }
 
             &.category-2 {
-                left: 54%;
             }
 
             &.category-3 {
-                left: 55%;
-                top: 54%;
             }
 
             &.category-4 {
-                left: 52%;
             }
 
             &.category-5 {
-                left: 54%;
             }
 
             &.category-6 {
-                top: 54%;
-                left: 54%;
             }
 
             &.category-7 {
-                top: 56%;
             }
 
             &.category-8 {
-                top: 54%;
-                left: 54%;
             }
 
             &.category-9 {}
 
             &.category-10 {
-                font-size: 36px;
-                left: 54%;
-                top: 52%;
             }
         }
     }
@@ -533,19 +515,15 @@ $text-color-gray: #949494;
 
             display: block;
             position: relative;
-            width: 30px;
-            ;
             margin: 0 auto;
 
 
             .diamond {
                 display: block;
                 position: relative;
-                width: 20px;
-                height: 20px;
-                margin-left: 10px;
-                transform: scaleX(1.4) rotate(45deg);
-
+                width: 25px;
+                height: 25px;
+                border-width: 3px !important;
             }
 
             .category {
@@ -553,7 +531,7 @@ $text-color-gray: #949494;
                 top: 52%;
                 font-weight: bold;
                 font-weight: normal;
-                left: 66%;
+                left: 50%;
                 font-size: 20px;
                 transform: translate(-50%, -50%);
 
@@ -562,50 +540,33 @@ $text-color-gray: #949494;
                 }
 
                 &.category-1 {
-                    left: 66%;
-                    top: 54%;
                 }
 
                 &.category-2 {
-                    left: 66%;
                 }
 
                 &.category-3 {
-                    left: 68%;
-                    top: 54%;
                 }
 
                 &.category-4 {
-                    left: 62%;
                 }
 
                 &.category-5 {
-                    top: 54%;
-                    left: 65%;
                 }
 
                 &.category-6 {
-                    left: 66%;
                 }
 
                 &.category-7 {
-                    top: 56%;
-                    left: 68%;
                 }
 
                 &.category-8 {
-                    left: 66%;
-                    top: 54%;
                 }
 
                 &.category-9 {
-                    left: 68%;
                 }
 
                 &.category-10 {
-                    font-size: 18px;
-                    left: 66%;
-                    top: 55%;
                 }
             }
         }
