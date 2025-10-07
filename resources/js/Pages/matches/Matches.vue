@@ -633,7 +633,7 @@ const matchesText = computed(() => {
 
                 <div class="location">
                     <span v-if="match.league?.uri !== ''">
-                        <a class="black" target="_blank" :href="`/${match.league?.uri}`">{{
+                        <a class="league" target="_blank" :href="`/${match.league?.uri}`">{{
                             match.league?.name
                             }}</a>
                     </span>
@@ -643,7 +643,7 @@ const matchesText = computed(() => {
                    
                     <br />
                     <span v-if="match.court?.id > 1">
-                        <Link target="_blank" :href="`/tereni/${match.court?.uri}`">{{
+                        <Link class="court" target="_blank" :href="`/tereni/${match.court?.uri}`">{{
                             match.court.name
                             }}</Link>
                     </span>

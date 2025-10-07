@@ -297,7 +297,7 @@ $border-color-dark: #e2e0e1;
     display: block;
     position: relative;
     margin: 0 auto;
-    
+    margin-bottom: 10px;
     
     .diamond{
       display: block;
@@ -350,6 +350,27 @@ $border-color-dark: #e2e0e1;
       }
       color: $text-color-gray;
       line-height: 1.7;
+
+       .court,.league{
+        font-family: 'Helvetica Neue';
+      }
+
+      .court{
+        color:black;
+
+        &:hover {
+          color: $red;
+        }
+      }
+
+      .league{
+        color: $red;
+
+        &:hover {
+          color: $blue;
+        }
+      }
+
       a{
 
         color: $text-color-gray;
@@ -368,8 +389,8 @@ $border-color-dark: #e2e0e1;
     }
 
     .score {
-      font-size: 25px;
       a{
+        font-size: 25px;
         font-family: 'Helvetica Neue', sans-serif;
       }
       line-height: 1.2;
@@ -409,6 +430,7 @@ $border-color-dark: #e2e0e1;
     justify-content: center;
     align-items: center;
 
+   
     .sup {
       color: $text-color-gray;
       font-size: 11px;
