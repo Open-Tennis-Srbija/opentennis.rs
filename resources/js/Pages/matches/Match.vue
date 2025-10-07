@@ -257,8 +257,8 @@ $text-color-gray: #949494;
         .diamond {
             display: block;
             position: relative;
-            width: 45px;
-            height: 45px;
+            width: 55px;
+            height: 55px;
             border-width: 3px !important;
         }
 
