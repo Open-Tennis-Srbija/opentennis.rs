@@ -290,12 +290,12 @@ watch(
             </p>
         </div>
         </Link>
-        <Link v-if="activePromo === 2" style="text-decoration: none;" prefetch="false" :href="'/nagrade-partnera-2025'">
+        <Link v-if="activePromo === 2" style="text-decoration: none;" prefetch="false" :href="'/nagrade'">
         <div class="logo-wrapp plavinci">
             <PlavinciBanner />
         </div>
         </Link>
-        <Link v-if="activePromo === 3" style="text-decoration: none;" prefetch="false" :href="'/nagrade-partnera-2025'">
+        <Link v-if="activePromo === 3" style="text-decoration: none;" prefetch="false" :href="'/nagrade'">
         <div class="logo-wrapp abramo">
             <AbramoBanner />
         </div>
@@ -352,8 +352,8 @@ watch(
                 :class="{ active: $page.url === '/statistika' }">Statistika</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">Dodaj turnir ili ligu</Link>
-            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/nagrade-partnera-2025'"
-                :class="{ active: $page.url === '/nagrade-partnera-2025' }">nagrade partnera 2025</Link>
+            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/nagrade'"
+                :class="{ active: $page.url === '/nagrade' }">nagrade</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/crazy-pizza'"
                 :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/uputstva'"
@@ -428,8 +428,8 @@ watch(
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj turnir ili ligu</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/nagrade-partnera-2025'"
-                :class="{ active: $page.url === '/nagrade-partnera-2025' }">nagrade partnera 2025</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/nagrade'"
+                :class="{ active: $page.url === '/nagrade' }">nagrade</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/crazy-pizza'"
                 :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"

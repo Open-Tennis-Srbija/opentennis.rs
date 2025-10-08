@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 // PROMO
 Route::inertia('/crazy-pizza', 'static/CrazyPizza')->name('crazyPizza');
-Route::inertia('/nagrade-partnera-2025', 'static/Rewards')->name('rewards');
+Route::inertia('/nagrade', 'static/Rewards')->name('rewards');
 
 Route::inertia('/', 'players/Players')->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);
