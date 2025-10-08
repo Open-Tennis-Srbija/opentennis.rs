@@ -35,7 +35,7 @@ const activePromo = ref(0);
                     <br>
                     u <a href="https://crazypizza.com/belgrade/" target="_blank">Crazy Pizza Beograd</a>
                     <br>
-                    <Link class="blue" prefetch="false" href="/crazy-pizza">procitaj više</Link>
+                    <Link class="blue" prefetch="false" href="/crazy-pizza">pročitaj više</Link>
                 </p>
             </div>
             <div class="promo" :class="{'active': activePromo === 2}">
