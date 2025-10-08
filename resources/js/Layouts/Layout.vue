@@ -7,6 +7,8 @@ import { bus } from "vue3-eventbus";
 import Logo from "@components/Logo.vue";
 import Loader from "@components/Loader.vue";
 import utils from "../utils";
+import AbramoBanner from "../Pages/components/promo/AbramoBanner.vue";
+import PlavinciBanner from "../Pages/components/promo/PlavinciBanner.vue";
 
 const mobileMenu = reactive({ state: false });
 const sideMenu = reactive({ state: false });
@@ -290,12 +292,12 @@ watch(
         </Link>
         <Link v-if="activePromo === 2" style="text-decoration: none;" prefetch="false" :href="'/nagrade-partnera-2025'">
         <div class="logo-wrapp plavinci">
-            <img src="/promo/img/vinarija-plavinci.jpg" alt="Vinarija Plavinci" class="banner-icon" />
+            <PlavinciBanner />
         </div>
         </Link>
         <Link v-if="activePromo === 3" style="text-decoration: none;" prefetch="false" :href="'/nagrade-partnera-2025'">
         <div class="logo-wrapp abramo">
-            <img src="/promo/img/abramo.jpg" alt="Abramo caffee" class="banner-icon" />
+            <AbramoBanner />
         </div>
         </Link>
         <div class="links-wrapper">
@@ -618,22 +620,24 @@ watch(
         background-color: $plavinci-blue !important;
         height: 40px !important;
 
-        img {
-            height: 30px !important;
+        svg {
+            height: 28px !important;
+            transition: all 0.3s ease-in-out;
         }
 
         @media screen and (max-width: 450px) {
-            img {
-                padding-top: 5px;
-                height: 30px !important;
+            svg {
+                top: unset !important;
             }
             
         }
 
         &:hover {
-            img {
-                transform: scale(1.05);
-                transition: all 0.3s ease-in-out;
+            svg {
+                height: 29px !important;
+               .cls-1{
+                    fill: #fedf37 !important;
+               }
             }
         }
     }
@@ -641,23 +645,25 @@ watch(
     .abramo {
         background-color: $abramo-black !important;
         height: 40px !important;
-
-        img {
-            height: 30px !important;
+        svg {
+            margin-top: 4px;
+            height: 25px !important;
+            transition: all 0.3s ease-in-out;
         }
 
           @media screen and (max-width: 450px) {
-            img {
-                padding-top: 5px;
-                height: 30px !important;
+            svg {
+                top: unset !important;
             }
             
         }
 
         &:hover {
-            img {
-                transform: scale(1.05);
-                transition: all 0.3s ease-in-out;
+            svg {
+                height: 26px !important;
+               .cls-1{
+                    fill: #fedf37 !important;
+               }
             }
         }
     }

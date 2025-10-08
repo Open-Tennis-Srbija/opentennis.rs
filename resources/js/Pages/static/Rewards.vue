@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 import { nextTick, onMounted } from 'vue';
 import bus from 'vue3-eventbus';
+import AbramoLogo from '../components/promo/AbramoLogo.vue';
+import PlavinciLogo from '../components/promo/PlavinciLogo.vue';
 onMounted(async () => {
     await nextTick();
     bus.emit('loading', false);
@@ -19,7 +21,8 @@ const activePromo = ref(0);
             <div class="promo" :class="{'active': activePromo === 1}">
                 <a href="https://crazypizza.com/belgrade/" target="_blank">
                     <div class="img-wrapper crazy-pizza">
-                        <img @mouseover="activePromo = 1" @mouseleave="activePromo = 0" src="/promo/img/crazy-pizza-promo-logo.png" alt="Crazy pizza" class="promo-image">
+                        <img @mouseover="activePromo = 1" @mouseleave="activePromo = 0" src="/promo/img/crazy-pizza-logo.png" alt="Crazy pizza" class="promo-image">
+                        
                     </div>
                 </a>
                 <p class="points">1,000</p>
@@ -38,7 +41,7 @@ const activePromo = ref(0);
             <div class="promo" :class="{'active': activePromo === 2}">
                 <a href="https://www.plavinci.rs/" target="_blank">
                     <div class="img-wrapper plavinci">
-                        <img @mouseover="activePromo = 2" @mouseleave="activePromo = 0" src="/promo/img/plavinci-promo-logo.png" alt="Vinarija Plavinci" class="promo-image">
+                        <PlavinciLogo />
                     </div>
                 </a>
                 <p class="points">2,000</p>
@@ -55,7 +58,7 @@ const activePromo = ref(0);
             <div class="promo" :class="{'active': activePromo === 4}">
                 <a href="https://crazypizza.com/belgrade/" target="_blank">
                     <div class="img-wrapper crazy-pizza">
-                        <img @mouseover="activePromo = 4" @mouseleave="activePromo = 0" src="/promo/img/crazy-pizza-promo-logo.png" alt="Crazy pizza" class="promo-image">
+                        <img @mouseover="activePromo = 4" @mouseleave="activePromo = 0" src="/promo/img/crazy-pizza-logo.png" alt="Crazy pizza" class="promo-image">
                     </div>
                 </a>
                  <p class="points">5,000</p>
@@ -72,7 +75,7 @@ const activePromo = ref(0);
             <div class="promo" :class="{'active': activePromo === 3}">
                 <a href="http://abramocaffe.rs/" target="_blank">
                     <div class="img-wrapper abramo">
-                        <img @mouseover="activePromo = 3" @mouseleave="activePromo = 0" src="/promo/img/abramo-promo-logo.png" alt="Abramo caffee" class="promo-image">
+                        <AbramoLogo />
                     </div>
                 </a>
                 <p class="points">10,000 </p>
@@ -160,6 +163,11 @@ h2{
                 transform: scale(1.05);
                 transition: transform 0.3s ease;
                 z-index: 5;
+
+                @media screen and (max-width: 768px) {
+                    transform: scale(1.05) translateZ(0);
+                    -webkit-transform: scale(1.05) translateZ(0);
+                }
             }
 
             &.crazy-pizza{
@@ -173,7 +181,7 @@ h2{
             }
             .promo-image{
                 display: block;
-                max-width: 100%;
+                max-width: 180px;
             }
         }
 
