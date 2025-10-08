@@ -189,7 +189,8 @@ h2{
             font-family: 'Helvetica Neue';
             font-size: 26px;
             color: $red;
-            margin-bottom: 10px;
+            margin-top: 10px;
+            margin-bottom: 5px;
         }
 
         .text{
