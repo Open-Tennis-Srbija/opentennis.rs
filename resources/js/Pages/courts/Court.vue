@@ -263,9 +263,9 @@ const getRandomWidth = () => {
                     <template v-if="court.leagues?.length > 0">
                         <template v-for="league in leagues">
                             <p>
-                                <Link prefetch="false" :href="`/${league.uri}`">{{
+                                <a target="_blank" prefetch="false" :href="`/${league.uri}`">{{
                                     league.name
-                                }}</Link>
+                                }}</a target="_blank">
                             </p>
                         </template>
                         <p
@@ -290,9 +290,9 @@ const getRandomWidth = () => {
                     <template v-if="court.players?.length > 0">
                         <template v-for="player in players">
                             <p>
-                                <Link prefetch="false" :href="`/${player.uri}`">{{
+                                <a target="_blank" prefetch="false" :href="`/${player.uri}`">{{
                                     player.name
-                                }}</Link>
+                                }}</a target="_blank">
                             </p>
                         </template>
                         <p

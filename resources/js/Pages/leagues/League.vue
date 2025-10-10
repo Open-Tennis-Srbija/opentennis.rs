@@ -228,9 +228,9 @@ onBeforeUnmount(() => {
                     <template v-if="league.players?.length > 0">
                         <template v-for="player in players">
                             <p>
-                                <Link prefetch="false" :href="`/${player.uri}`">{{
+                                <a target="_blank" prefetch="false" :href="`/${player.uri}`">{{
                                     player.name
-                                }}</Link>
+                                }}</a target="_blank">
                             </p>
                         </template>
                         <p
