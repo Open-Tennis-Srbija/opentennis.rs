@@ -68,7 +68,7 @@ const activePromo = ref(0);
                
             </div>
             <div class="promo" :class="{'active': activePromo === 3}">
-                <a href="http://abramocaffe.rs/" target="_blank">
+                <a href="https://abramocaffe.rs/" target="_blank">
                     <div class="img-wrapper abramo">
                         <AbramoLogo />
                     </div>
@@ -77,7 +77,7 @@ const activePromo = ref(0);
                 <a class="player" target="_blank" href="/srdjan-jovanovic">Srđan Jovanović</a>
                 <p class="text">
                     <span class="reward">nagrada</span>
-                    1 kg <a href="http://abramocaffe.rs/" target="_blank">Abramo kafe</a>
+                    1 kg <a href="https://abramocaffe.rs/" target="_blank">Abramo kafe</a>
                     
                 </p>
             </div>
