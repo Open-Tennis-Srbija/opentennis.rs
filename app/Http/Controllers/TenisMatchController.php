@@ -327,17 +327,28 @@ class TenisMatchController extends Controller
                 $match->loser_point_gain = 0;
                 $match->save();
 
-                $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
+                // Find the correct position based on date order
+                $laterMatches = TennisMatch::where('date', '>', $match->date)
+                    ->orWhere(function($query) use ($match) {
+                        $query->where('date', '=', $match->date)
+                              ->where('created_at', '>', $match->created_at);
+                    })
+                    ->orderBy('number', 'asc')
+                    ->get();
 
-                $match->number = $compare->number + 1;
-
-                $rest_matches = TennisMatch::where('number', '>=', $match->number)->get();
-
-                foreach($rest_matches as $m){
-                    if($m->id !== $match->id){
-                        $m->number = $m->number + 1;
-                        $m->save();
-                    }
+                if ($laterMatches->isEmpty()) {
+                    // This is the latest match, assign next number
+                    $maxNumber = TennisMatch::max('number') ?? 0;
+                    $match->number = $maxNumber + 1;
+                } else {
+                    // Insert at the position of the first later match
+                    $insertPosition = $laterMatches->first()->number;
+                    $match->number = $insertPosition;
+                    
+                    // Increment all later matches by 1
+                    TennisMatch::where('number', '>=', $insertPosition)
+                        ->where('id', '!=', $match->id)
+                        ->increment('number');
                 }
 
 
@@ -558,17 +569,28 @@ fclose($handle);
                 $match->loser_point_gain = 0;
                 $match->save();
 
-                $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
+                // Find the correct position based on date order
+                $laterMatches = TennisMatch::where('date', '>', $match->date)
+                    ->orWhere(function($query) use ($match) {
+                        $query->where('date', '=', $match->date)
+                              ->where('created_at', '>', $match->created_at);
+                    })
+                    ->orderBy('number', 'asc')
+                    ->get();
 
-                $match->number = $compare->number + 1;
-
-                $rest_matches = TennisMatch::where('number', '>=', $match->number)->get();
-
-                foreach($rest_matches as $m){
-                    if($m->id !== $match->id){
-                        $m->number = $m->number + 1;
-                        $m->save();
-                    }
+                if ($laterMatches->isEmpty()) {
+                    // This is the latest match, assign next number
+                    $maxNumber = TennisMatch::max('number') ?? 0;
+                    $match->number = $maxNumber + 1;
+                } else {
+                    // Insert at the position of the first later match
+                    $insertPosition = $laterMatches->first()->number;
+                    $match->number = $insertPosition;
+                    
+                    // Increment all later matches by 1
+                    TennisMatch::where('number', '>=', $insertPosition)
+                        ->where('id', '!=', $match->id)
+                        ->increment('number');
                 }
 
 
@@ -845,15 +867,19 @@ fclose($handle);
         return [
             'winner1_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
             'winner1_uri' => $match->winners()->first()->uri,
+            'winner1_rank' => $match->winners()->first()->rank,
             'winner1_category' => $match->winners()->first()->category,
             'winner2_name' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->first_name . ' ' . $match->winners()->skip(1)->first()->last_name : null,
             'winner2_uri' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->uri : null,
+            'winner2_rank' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->rank : null,
             'winner2_category' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->category : null,
             'loser1_name' => $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name,
             'loser1_uri' => $match->losers()->first()->uri,
+            'loser1_rank' => $match->losers()->first()->rank,
             'loser1_category' => $match->losers()->first()->category,
             'loser2_name' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->first_name . ' ' . $match->losers()->skip(1)->first()->last_name : null,
             'loser2_uri' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->uri : null,
+            'loser2_rank' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->rank : null,
             'loser2_category' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->category : null,
             'number' => $match->number,
             'winner_point_gain' => $match->winner_point_gain,
@@ -1055,9 +1081,29 @@ fclose($handle);
         $match->players()->attach($winner_id, ['team' => 'winner']);
         $match->players()->attach($loser_id, ['team' => 'loser']);
 
-        $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
+        // Find the correct position based on date order
+        $laterMatches = TennisMatch::where('date', '>', $match->date)
+            ->orWhere(function($query) use ($match) {
+                $query->where('date', '=', $match->date)
+                      ->where('created_at', '>', $match->created_at);
+            })
+            ->orderBy('number', 'asc')
+            ->get();
 
-        $match->number = $compare->number + 1;
+        if ($laterMatches->isEmpty()) {
+            // This is the latest match, assign next number
+            $maxNumber = TennisMatch::max('number') ?? 0;
+            $match->number = $maxNumber + 1;
+        } else {
+            // Insert at the position of the first later match
+            $insertPosition = $laterMatches->first()->number;
+            $match->number = $insertPosition;
+            
+            // Increment all later matches by 1
+            TennisMatch::where('number', '>=', $insertPosition)
+                ->where('id', '!=', $match->id)
+                ->increment('number');
+        }
 
         [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
         $match->winner_point_gain = $winner_gains;
@@ -1117,10 +1163,15 @@ fclose($handle);
          else
              Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
 
-        return redirect()->back()->with('data',[
+        // Generate URI for the created match
+        $matchUri = self::generateMatchUri($match->number);
+
+        return Inertia::render('matches/AddMatch', [
             'players' => PlayerController::getPlayersForDropdown(),
             'courts' => CourtsController::getCourts(),
-            'leagues' => LeaguesController::getLeagues()
+            'leagues' => LeaguesController::getLeagues(),
+            'match_uri' => $matchUri,
+            'success' => true
         ]);
     }
  public function storeDouble(Request $request)
@@ -1223,9 +1274,29 @@ fclose($handle);
         $match->players()->attach($loser1_id, ['team' => 'loser']);
         $match->players()->attach($loser2_id, ['team' => 'loser']);
 
-        $compare = TennisMatch::where('date', '<=', $match->date)->orderByDesc('number')->orderByDesc('created_at')->first();
+        // Find the correct position based on date order
+        $laterMatches = TennisMatch::where('date', '>', $match->date)
+            ->orWhere(function($query) use ($match) {
+                $query->where('date', '=', $match->date)
+                      ->where('created_at', '>', $match->created_at);
+            })
+            ->orderBy('number', 'asc')
+            ->get();
 
-        $match->number = $compare->number + 1;
+        if ($laterMatches->isEmpty()) {
+            // This is the latest match, assign next number
+            $maxNumber = TennisMatch::max('number') ?? 0;
+            $match->number = $maxNumber + 1;
+        } else {
+            // Insert at the position of the first later match
+            $insertPosition = $laterMatches->first()->number;
+            $match->number = $insertPosition;
+            
+            // Increment all later matches by 1
+            TennisMatch::where('number', '>=', $insertPosition)
+                ->where('id', '!=', $match->id)
+                ->increment('number');
+        }
         
 
         [$winner_gains, $loser_gains] = NikolaAlgoV1::getMatchEloGains($match);
@@ -1288,10 +1359,15 @@ fclose($handle);
          else
              Mail::to('bogdan@openinnovation.me')->send(new DoubleMatchNotification($match));
 
-        return redirect()->back()->with('data',[
+        // Generate URI for the created match
+        $matchUri = self::generateMatchUri($match->number);
+
+        return Inertia::render('matches/AddDouble', [
             'players' => PlayerController::getPlayersForDropdown(),
             'courts' => CourtsController::getCourts(),
-            'leagues' => LeaguesController::getLeagues()
+            'leagues' => LeaguesController::getLeagues(),
+            'match_uri' => $matchUri,
+            'success' => true
         ]);
     }
 
@@ -1334,6 +1410,18 @@ fclose($handle);
         $match->players()->detach();
 
         $match->delete();
+
+        $matches = TennisMatch::orderBy('date', 'asc')
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        $i = 1;
+        // Fix the matches
+        foreach ($matches as $match) {
+            $match->number = $i;
+            $match->save();
+            $i++;
+        }
 
         return redirect('/mecevi');
     }

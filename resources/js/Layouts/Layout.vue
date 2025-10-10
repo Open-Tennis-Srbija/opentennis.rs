@@ -634,7 +634,6 @@ watch(
 
         &:hover {
             svg {
-                height: 29px !important;
                .cls-1{
                     fill: #fedf37 !important;
                }
@@ -660,7 +659,6 @@ watch(
 
         &:hover {
             svg {
-                height: 26px !important;
                .cls-1{
                     fill: #fedf37 !important;
                }

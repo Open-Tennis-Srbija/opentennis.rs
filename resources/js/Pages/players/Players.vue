@@ -193,7 +193,7 @@ const playersText = computed(() => {
             <span class="number" :class="{'category-unknown': player.category == '?', [`category-${player.category}`]: player.category != '?'}">{{player.category}}</span>
           </span>
           </div>
-          <div class="name helvetica"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
+          <div class="name helvetica"><Link target="_blank" class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
           <div class="elo">{{utl.formatAsThousands(player.points)}}</div>
           <div class="total-matches">{{player.total_matches}}</div>
           <div class="wins">{{player.wins}}</div>

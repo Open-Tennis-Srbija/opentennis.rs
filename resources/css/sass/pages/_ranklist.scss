@@ -21,7 +21,7 @@
   .ranking-entry {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 60px 120px 312px 133px 133px 133px 133px 133px;
+    grid-template-columns: 60px 120px 345px 133px 133px 133px 133px 133px;
   }
 
   .rankings-header {
@@ -205,6 +205,7 @@
 
       &.align-left{
         padding-right: 2px;
+        padding-top: 3px;
       }
 
       &.first {

@@ -444,10 +444,17 @@
       &:hover {
         color: #c6373d;
       }
+
+      &.red{
+        color: #c6373d;
+
+        &:hover {
+          color: #0d4075;
+        }
+      }
     }
 
     .add {
-      color: #c6373d;
 
       &:hover {
         cursor: pointer;

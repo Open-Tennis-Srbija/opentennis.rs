@@ -7,6 +7,16 @@
     src: url('@fonts/helvetica-neue-55/HelveticaNeue-Extended.otf'), format('opentype');
 }
 
+@font-face {
+    font-family: "HelveticaNeueMedium";
+    src: url('@fonts/helvetica-neue-55/HelveticaNeue-Medium.otf'), format('opentype');
+}
+
+@font-face {
+    font-family: "HelveticaNeueRoman";
+    src: url('@fonts/HelveticaNeue-Roman.ttf') format('truetype');
+}
+
 @font-face{
     font-family: 'Gill Sans';
     src: url('@fonts/gill-sans/Gill-Sans.otf') format('opentype');

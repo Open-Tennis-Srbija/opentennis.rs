@@ -113,16 +113,29 @@ const formatedMatch = computed(() => {
                         formatedMatch.winner1_last_name
                     }}
                     </Link>
-
-                    <div class="category-wrapp">
-                        <span class="diamond"
-                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner1_category] || 'transparent'}` }">
-                        <span
-                            class="category"
-                            :class="{ 'category-unknown': formatedMatch.winner1_category == '?', [`category-${formatedMatch.winner1_category}`]: formatedMatch.winner1_category }">{{
-                                formatedMatch.winner1_category }}</span>
-                        </span>
-
+                    <div class="ranks">
+                            	<div
+					class="rank"
+					:class="{
+						first: formatedMatch.winner1_rank == 1,
+						second: formatedMatch.winner1_rank == 2,
+						third: formatedMatch.winner1_rank == 3,
+					}"
+				>
+					<p :class="{ 'align-left': formatedMatch.winner1_rank > 9,'n40': formatedMatch.winner1_rank >= 40 && formatedMatch.winner1_rank < 50,'fix-hundreds': formatedMatch.winner1_rank >= 100, [`strict-${formatedMatch.winner1_rank}`]: true }">
+						{{ formatedMatch.winner1_rank }}
+					</p>
+				</div>
+                        <div class="category-wrapp">
+                            <span class="diamond"
+                                :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner1_category] || 'transparent'}` }">
+                            <span
+                                class="category"
+                                :class="{ 'category-unknown': formatedMatch.winner1_category == '?', [`category-${formatedMatch.winner1_category}`]: formatedMatch.winner1_category }">{{
+                                    formatedMatch.winner1_category }}</span>
+                            </span>
+    
+                        </div>
                     </div>
                     <span class="points">+{{ formatedMatch.winner2_first_name ?
                         Math.round(formatedMatch.winner_point_gain / 2) : formatedMatch.winner_point_gain }}</span>
@@ -135,15 +148,30 @@ const formatedMatch = computed(() => {
                     }}
 
                     </Link>
-                    <div class="category-wrapp">
-                        <span class="diamond"
-                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner2_category] || 'transparent'}` }">
-                        <span
-                            class="category"
-                            :class="{ 'category-unknown': formatedMatch.winner2_category == '?', [`category-${formatedMatch.winner2_category}`]: formatedMatch.winner2_category }">{{
-                                formatedMatch.winner2_category }}</span>
-                        </span>
+                         <div class="ranks">
+                            	<div
+					class="rank"
+					:class="{
+						first: formatedMatch.winner2_rank == 1,
+						second: formatedMatch.winner2_rank == 2,
+						third: formatedMatch.winner2_rank == 3,
+					}"
+				>
+					<p :class="{ 'align-left': formatedMatch.winner2_rank > 9,'n40': formatedMatch.winner2_rank >= 40 && formatedMatch.winner2_rank < 50, 'fix-hundreds': formatedMatch.winner2_rank >= 100,[`strict-${formatedMatch.winner2_rank}`]: true }">
+						{{ formatedMatch.winner2_rank }}
+					</p>
+				</div>
 
+                        <div class="category-wrapp">
+                            <span class="diamond"
+                                :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner2_category] || 'transparent'}` }">
+                            <span
+                                class="category"
+                                :class="{ 'category-unknown': formatedMatch.winner2_category == '?', [`category-${formatedMatch.winner2_category}`]: formatedMatch.winner2_category }">{{
+                                    formatedMatch.winner2_category }}</span>
+                            </span>
+    
+                        </div>
                     </div>
                     <span class="points">+{{ Math.round(formatedMatch.winner_point_gain / 2) }}</span>
 
@@ -161,16 +189,30 @@ const formatedMatch = computed(() => {
 
 
                     </Link>
-                    <div class="category-wrapp">
-                        <span class="diamond"
-                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser1_category] || 'transparent'}` }">
-                        <span
-                            class="category"
-                            :class="{ 'category-unknown': formatedMatch.loser1_category == '?', [`category-${formatedMatch.loser1_category}`]: formatedMatch.loser1_category }">{{
-                                formatedMatch.loser1_category }}</span>
-                        </span>
-                        
-
+                    <div class="ranks">
+                            	<div
+					class="rank"
+					:class="{
+						first: formatedMatch.loser1_rank == 1,
+						second: formatedMatch.loser1_rank == 2,
+						third: formatedMatch.loser1_rank == 3,
+					}"
+				>
+					<p :class="{ 'align-left': formatedMatch.loser1_rank > 9,'n40': formatedMatch.loser1_rank >= 40 && formatedMatch.loser1_rank < 50,'fix-hundreds': formatedMatch.loser1_rank >= 100, [`strict-${formatedMatch.loser1_rank}`]: true }">
+						{{ formatedMatch.loser1_rank }}
+					</p>
+				</div>
+                        <div class="category-wrapp">
+                            <span class="diamond"
+                                :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser1_category] || 'transparent'}` }">
+                            <span
+                                class="category"
+                                :class="{ 'category-unknown': formatedMatch.loser1_category == '?', [`category-${formatedMatch.loser1_category}`]: formatedMatch.loser1_category }">{{
+                                    formatedMatch.loser1_category }}</span>
+                            </span>
+                            
+    
+                        </div>
                     </div>
                     <span class="points">+{{ formatedMatch.loser2_first_name ? Math.round(formatedMatch.loser_point_gain
                         / 2) : formatedMatch.loser_point_gain }}</span>
@@ -181,16 +223,31 @@ const formatedMatch = computed(() => {
                     }}<br class="show-mobile" /> {{
                         formatedMatch.loser2_last_name
                     }}</Link>
-                    <div class="category-wrapp">
-                        <span class="diamond"
-                            :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser2_category] || 'transparent'}` }">
-                        <span
-                            class="category"
-                            :class="{ 'category-unknown': formatedMatch.loser2_category == '?', [`category-${formatedMatch.loser2_category}`]: formatedMatch.loser2_category }">{{
-                                formatedMatch.loser2_category }}</span>
-                        </span>
-                        
 
+                    <div class="ranks">
+                            		<div
+					class="rank"
+					:class="{
+						first: formatedMatch.loser2_rank == 1,
+						second: formatedMatch.loser2_rank == 2,
+						third: formatedMatch.loser2_rank == 3,
+					}"
+				>
+					<p :class="{ 'align-left': formatedMatch.loser2_rank > 9,'n40': formatedMatch.loser2_rank >= 40 && formatedMatch.loser2_rank < 50, 'fix-hundreds': formatedMatch.loser2_rank >= 100, [`strict-${formatedMatch.loser2_rank}`]: true }">
+						{{ formatedMatch.loser2_rank }}
+					</p>
+				</div>
+                        <div class="category-wrapp">
+                            <span class="diamond"
+                                :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser2_category] || 'transparent'}` }">
+                            <span
+                                class="category"
+                                :class="{ 'category-unknown': formatedMatch.loser2_category == '?', [`category-${formatedMatch.loser2_category}`]: formatedMatch.loser2_category }">{{
+                                    formatedMatch.loser2_category }}</span>
+                            </span>
+                            
+    
+                        </div>
                     </div>
                     <span class="points">+{{ Math.round(formatedMatch.loser_point_gain / 2) }}</span>
                 </div>
@@ -257,11 +314,109 @@ $text-color-gray: #949494;
     padding: 100px 0 100px 0;
     margin-bottom: 100px;
 
+
+       .ranks{
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+
+           .rank {
+        width: 60px;
+        height: 60px;
+        position: relative;
+        border-radius: 100px;
+        border: 2px solid $rank-border-color;
+        padding: 0;
+
+        &.first {
+            border-width: 6px;
+            border-color: $gold;
+        }
+
+        &.second {
+            border-width: 6px;
+            border-color: $silver;
+        }
+
+        &.third {
+            border-width: 6px;
+            border-color: $bronze;
+        }
+
+
+        p {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            line-height: 1;
+            margin: 0;
+            padding: 0;
+            font-size: 30px;
+
+
+            &.strict-2 {
+                left: 51%;
+            }
+
+            &.strict-3 {
+                top: 51%;
+                left: 51%;
+            }
+
+            &.strict-4 {
+                top: 51%;
+            }
+
+            &.strict-5 {
+                top: 51%;
+                left: 51%;
+            }
+
+            &.strict-6 {
+                top: 51%;
+            }
+
+            &.strict-7 {
+                top: 51%;
+                left: 51%;
+            }
+
+            &.strict-8 {
+                top: 51%;
+                left: 51%;
+            }
+
+            &.strict-9 {
+                top: 51%;
+                left: 51%;
+            }
+
+            &.strict-10 {
+                top: 51%;
+                left: 49%;
+            }
+
+            &.align-left {
+                &.n40 {
+                    transform: translate(-51%, -48%);
+                }
+            }
+
+            &.fix-hundreds{
+                top: 51%;
+            }
+        }
+    }
+            
+        }
+
     .category-wrapp {
 
         display: block;
         position: relative;
-        margin: 0 auto;
 
 
         .diamond {
@@ -519,6 +674,30 @@ $text-color-gray: #949494;
             }
         }
     }
+    
+        .rank{
+            height: 40px !important;
+            width: 40px !important;
+
+            &.first {
+                border-width: 4px !important;
+            }
+
+            &.second {
+                border-width: 4px !important;
+            }
+
+            &.third {
+                border-width: 4px !important;
+            }
+            
+            
+            p{
+                font-size: 20px !important;
+            }
+
+
+        }
 
         .category-wrapp {
 

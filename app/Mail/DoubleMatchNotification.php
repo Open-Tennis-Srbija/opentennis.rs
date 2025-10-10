@@ -12,6 +12,7 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Http\Controllers\TenisMatchController;
 
 
 
@@ -53,6 +54,7 @@ class DoubleMatchNotification extends Mailable
                     'set_score' => $this->match->set_score,
                     'game_score' => $this->match->game_score,
                     'date' => $this->match->getFormatedDate(),
+                    'match_uri' => TenisMatchController::generateMatchUri($this->match->number),
                     'location' => $this->match->county,
                     'court' => Court::find($this->match->court_id),
                     'league' => League::find($this->match->league_id),

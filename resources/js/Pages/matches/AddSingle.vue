@@ -1,16 +1,19 @@
 
 <script setup>
 import {useForm} from '@inertiajs/vue3'
-import {reactive,onMounted, defineAsyncComponent, computed, onUpdated, onBeforeMount} from 'vue';
+import {reactive,onMounted, defineAsyncComponent, computed, onUpdated, onBeforeMount, ref} from 'vue';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import opstine from '@assets/regions_serbia.json';
 import bus from 'vue3-eventbus';
 import { nextTick } from 'vue';
 
-const props = defineProps({players: Array,courts: Array, leagues: Array, court_id: Number, league_id: Number});
+const props = defineProps({players: Array,courts: Array, leagues: Array, court_id: Number, league_id: Number, matchUri: String});
 
-const emit = defineEmits(['submitted','success']);
+const emit = defineEmits(['submitted','success','matchCreated']);
+
+// Create a reactive variable to store the match URI
+const matchUri = ref(props.matchUri || null);
 
 const form = useForm({
     winner: null,
@@ -77,6 +80,14 @@ const submit = () =>{
 
     form.post('/dodaj',{
         onSuccess: (data) => {
+          
+          // Update the match URI from the response
+          if (data.props && data.props.match_uri) {
+            matchUri.value = data.props.match_uri;
+            // Emit the match URI to parent component
+            emit('matchCreated', data.props.match_uri);
+          }
+          
           emit('success');
           formState.shouldReset = true;
           form.reset('game_score');

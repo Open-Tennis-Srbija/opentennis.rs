@@ -16,8 +16,13 @@ const formState = reactive({
 const court_id = ref(null)
 const league_id = ref(null)
 
+const matchUri = ref('');
+
 const handleSuccess = () => {
     formState.success = true;
+};
+const handleCreated = (uri) => {
+    matchUri.value = uri;
 };
 const selectedForm = reactive({
     type: 'single',
@@ -44,13 +49,14 @@ onBeforeMount(() => {
     </div>
     <h1 id="success" :class="{'show': formState.success}">Meč je uspešno dodat</h1>
     <div id="success-links" :class="{'show': formState.success}">
+      <Link prefetch="false" class="red" :href="`/mec/${matchUri}`">vidi dodat meč</Link>
       <p class="add" @click.prevent="formState.success = false">dodaj još jedan meč</p>
-      <Link prefetch="false" class="blue" :href="'/mecevi'">vidi mečeve</Link>
-      <Link prefetch="false" class="red" :href="'/'">vidi tenisere</Link>
+      <Link prefetch="false" :href="'/mecevi'">vidi mečeve</Link>
+      <Link prefetch="false" :href="'/'">vidi tenisere</Link>
     </div>
     <div v-if="!formState.success">
-      <AddSingle :court_id="court_id" :league_id="league_id" @success="handleSuccess" v-if="selectedForm.type === 'single'" :players="props.players" :courts="props.courts" :leagues="props.leagues" />
-      <AddDouble :court_id="court_id" :league_id="league_id" @success="handleSuccess" v-if="selectedForm.type === 'double'" :players="props.players" :courts="props.courts" :leagues="props.leagues" />
+      <AddSingle :matchUri="matchUri" :court_id="court_id" :league_id="league_id" @matchCreated="handleCreated" @success="handleSuccess" v-if="selectedForm.type === 'single'" :players="props.players" :courts="props.courts" :leagues="props.leagues" />
+      <AddDouble :matchUri="matchUri" :court_id="court_id" :league_id="league_id" @matchCreated="handleCreated" @success="handleSuccess" v-if="selectedForm.type === 'double'" :players="props.players" :courts="props.courts" :leagues="props.leagues" />
     </div>
   </div>
 </template>

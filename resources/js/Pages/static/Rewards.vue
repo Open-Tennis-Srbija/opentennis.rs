@@ -25,13 +25,10 @@ const activePromo = ref(0);
                         
                     </div>
                 </a>
-                <p class="points">1,000</p>
+                <p class="points">svi sa 1,000+</p>
                 <p class="text">
-                    <b>Svi sa 1,000 poena i više</b>
-                    <br>
-                    imaju besplatnu
-                    <br>
-                    margarita pizzu
+                    <span class="reward">nagrada</span>
+                    besplatna margarita pica
                     <br>
                     u <a href="https://crazypizza.com/belgrade/" target="_blank">Crazy Pizza Beograd</a>
                     <br>
@@ -44,13 +41,11 @@ const activePromo = ref(0);
                         <PlavinciLogo />
                     </div>
                 </a>
-                <p class="points">2,000</p>
+                <p class="points">prvi do 2,000</p>
+                <a class="player" target="_blank" href="/srdjan-jovanovic">Srđan Jovanović</a>
                 <p class="text">
-                    <b>Prvi do 2,000 poena</b>
-                    <br>
-                    je dobio flašu
-                    <br>
-                    organskog vina
+                    <span class="reward">nagrada</span>
+                    flaša organskog vina
                     <br>
                     <a href="https://www.plavinci.rs/" target="_blank">vinarije Plavinci</a>
                 </p>
@@ -61,11 +56,11 @@ const activePromo = ref(0);
                         <img @mouseover="activePromo = 4" @mouseleave="activePromo = 0" src="/promo/img/crazy-pizza-logo.png" alt="Crazy pizza" class="promo-image">
                     </div>
                 </a>
-                 <p class="points">5,000</p>
+                 <p class="points">prvi do 5,000</p>
+                 <a class="player" target="_blank" href="/srdjan-jovanovic">Srđan Jovanović</a>
                 <p class="text">
-                    <b>Prvi do 5,000 poena</b>
-                    <br>
-                    je dobio 5,000 RSD
+                    <span class="reward">nagrada</span>
+                    5,000 RSD vaučer
                     <br>
                     u <a href="https://crazypizza.com/belgrade/" target="_blank">Crazy Pizza Beograd</a>
 
@@ -78,12 +73,10 @@ const activePromo = ref(0);
                         <AbramoLogo />
                     </div>
                 </a>
-                <p class="points">10,000 </p>
+                <p class="points">prvi do 10,000</p>
+                <a class="player" target="_blank" href="/srdjan-jovanovic">Srđan Jovanović</a>
                 <p class="text">
-                    <b>Prvi do 10,000 poena</b>
-                    <br>
-                    je dobio
-                    <br>
+                    <span class="reward">nagrada</span>
                     1 kg <a href="http://abramocaffe.rs/" target="_blank">Abramo kafe</a>
                     
                 </p>
@@ -117,13 +110,16 @@ h2{
 
         &:first-of-type{
             margin-left: 0;
+            margin-top: 150px;
             z-index: 4
         }
         &:nth-of-type(2){
-            z-index: 3
+            z-index: 3;
+            margin-top: 100px;
         }
         &:nth-of-type(3){
-            z-index: 2
+            z-index: 2;
+            margin-top: 50px;
         }
         &:last-of-type{
             z-index: 1
@@ -136,6 +132,7 @@ h2{
 
         @media screen and (max-width: 1200px) {
             margin-left: 0 !important;
+            margin-top: 0 !important;
             
         }
 
@@ -187,14 +184,36 @@ h2{
 
         .points{
             font-family: 'Helvetica Neue';
-            font-size: 26px;
+            font-size: 20px;
             color: $red;
-            margin-top: 10px;
-            margin-bottom: 5px;
+            margin-top: -5px;
+            margin-bottom: -3px;
         }
+        .player{
+            font-family: 'Helvetica Neue';
+            font-size: 20px;
+            color: $blue;
+            text-transform: uppercase;
+            text-decoration: none;
 
+            &:hover{
+                color: $red;
+            }
+        }
         .text{
             text-align: center;
+            font-family: 'HelveticaNeueRoman';
+            line-height: 1.2;
+            
+            .reward{
+                font-family: 'HelveticaNeueMedium';
+                display: block;
+                width: max-content;
+                margin: 0 auto;
+                margin-bottom: 7px;
+                margin-top: 7px;
+            }
+
             .blue{
                 color: $blue;
                 font-weight: bold;

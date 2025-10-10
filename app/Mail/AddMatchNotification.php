@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Http\Controllers\TenisMatchController;
 use App\Models\Court;
 use App\Models\League;
 use App\Models\TennisMatch;
@@ -48,6 +49,7 @@ class AddMatchNotification extends Mailable
                     'loser' => $this->match->losers()->first()->first_name . ' ' . $this->match->losers()->first()->last_name,
                     'loser_uri' => $this->match->losers()->first()->uri,
                     'set_score' => $this->match->set_score,
+                    'match_uri' => TenisMatchController::generateMatchUri($this->match->number),
                     'game_score' => $this->match->game_score,
                     'date' => $this->match->getFormatedDate(),
                     'location' => $this->match->county,

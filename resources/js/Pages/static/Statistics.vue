@@ -155,25 +155,25 @@ import { ref } from 'vue';
                 <div class="summary-item">
                     <h2 class="mb-10">najviše mečeva</h2>
                     <p class="smaller f20" v-for="player in data.players?.total">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> ({{ utils.formatAsThousands(player.count) }})
+                        </a> ({{ utils.formatAsThousands(player.count) }})
                     </p>
                 </div>
                 <div class="summary-item">
                     <h2 class="mb-10">najviše pobeda</h2>
                     <p class="smaller f20" v-for="player in data.players?.wins">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> ({{ utils.formatAsThousands(player.count) }})
+                        </a> ({{ utils.formatAsThousands(player.count) }})
                     </p>
                 </div>
                 <div class="summary-item">
                     <h2 class="mb-10">najviše gubitaka</h2>
                     <p class="smaller f20" v-for="player in data.players?.loses">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link>  ({{ utils.formatAsThousands(player.count) }})
+                        </a>  ({{ utils.formatAsThousands(player.count) }})
                     </p>
                 </div>
             </div>
@@ -187,9 +187,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[1]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                       <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> 
+                        </a> 
                     </p>
                     <p v-if="data.categories?.[1]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -202,9 +202,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[2]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> 
+                        </a> 
                     </p>
                     <p v-if="data.categories?.[2]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -217,9 +217,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[3]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link>
+                        </a>
                     </p>
                     <p v-if="data.categories?.[3]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -232,9 +232,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[4]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link>
+                        </a>
                     </p>
                     <p v-if="data.categories?.[4]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -247,9 +247,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[5]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link>
+                        </a>
                     </p>
                     <p v-if="data.categories?.[5]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -262,9 +262,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[6]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link>
+                        </a>
                     </p>
                     <p v-if="data.categories?.[6]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -277,9 +277,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[7]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> 
+                        </a> 
                     </p>
                     <p v-if="data.categories?.[7]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -292,9 +292,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[8]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link>
+                        </a>
                     </p>
                     <p v-if="data.categories?.[8]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -307,9 +307,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-for="player in data.categories?.[9]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> 
+                        </a> 
                     </p>
                     <p v-if="data.categories?.[9]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -322,9 +322,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-if="data.categories?.[10]?.length > 0" v-for="player in data.categories?.[10]">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> 
+                        </a> 
                     </p>
                     <p v-if="data.categories?.[10]?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -337,9 +337,9 @@ import { ref } from 'vue';
                         </span>
                     </h2>
                     <p class="smaller f20" v-if="data.categories?.['?']?.length > 0" v-for="player in data.categories?.['?']">
-                        <Link prefetch="false" :href="`/${player.uri}`">
+                        <a prefetch="false" target="_blank" :href="`/${player.uri}`">
                             {{ player.name }}
-                        </Link> 
+                        </a> 
                     </p>
                     <p v-if="data.categories?.['?']?.length == 0" class="no-players">
                         nema nikoga još &#128578;  
@@ -359,7 +359,7 @@ import { ref } from 'vue';
                     <h2 class="mb-10">najkorišćeniji tereni</h2>
                     <p class="smaller f20" v-for="court in locations.courts">
                         <template v-if="court.id > 1">
-                            <a  :href="`/tereni/${court.uri}`">
+                            <a target="_blank" :href="`/tereni/${court.uri}`">
                                 {{ court.name }}
                             </a>
                         </template>
@@ -376,7 +376,7 @@ import { ref } from 'vue';
                         <h2 class="mb-10">najaktivnije lige i turniri</h2>
                         <p class="smaller f20" style="text-align: center;" v-for="league in locations.leagues">
                             <template v-if="league.uri != ''">
-                                <a :href="`/${league.uri}`">
+                                <a target="_blank" :href="`/${league.uri}`">
                                     {{ league.name }}
                                 </a>
                             </template>

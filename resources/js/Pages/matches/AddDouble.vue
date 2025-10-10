@@ -85,6 +85,13 @@ const submit = () =>{
     form.post('/dodaj-dubl',{
         onSuccess: (data) => {
           formState.shouldReset = true;
+            // Update the match URI from the response
+          if (data.props && data.props.match_uri) {
+            matchUri.value = data.props.match_uri;
+            // Emit the match URI to parent component
+            emit('matchCreated', data.props.match_uri);
+          }
+          
           emit('success');
           form.reset('game_score');
           form.reset('set_score');
