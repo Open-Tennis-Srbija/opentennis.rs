@@ -674,6 +674,10 @@ $text-color-gray: #949494;
             }
         }
     }
+
+    .ranks{
+        gap: 15px;
+    }
     
         .rank{
             height: 40px !important;
