@@ -216,14 +216,16 @@ const playersText = computed(() => {
 
 const courtsText = computed(() => {
     //check last digit of headerStats.totalCourts
-    const lastDigit = headerStats.value.totalCourts % 10;
+    const totalCourts = headerStats.value.totalCourts - 1; // Subtract 1 first
+    const lastDigit = totalCourts % 10;
+    
     if (headerStats.value.totalCourts === 0) {
         return "Tereni";
     }
-    else if (lastDigit === 1) {
-        return utils.formatAsThousands(headerStats.value.totalCourts - 1) + " Teren";
+    else if (lastDigit === 1 && totalCourts !== 11) { // Avoid "11 Teren", should be "11 Terena"
+        return utils.formatAsThousands(totalCourts) + " Teren";
     } else {
-        return utils.formatAsThousands(headerStats.value.totalCourts - 1) + " Terena";
+        return utils.formatAsThousands(totalCourts) + " Terena";
     }
 });
 const leaguesText = computed(() => {
