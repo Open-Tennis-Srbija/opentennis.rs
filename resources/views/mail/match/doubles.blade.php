@@ -9,6 +9,7 @@
 <p><b>Datum</b> {{ $date }}</p>
 <br>
 
+<a href="https://srpskatenisliga.rs/mec/{{$match_uri}}">Pogledaj dodat meč</a>
 <a href="https://srpskatenisliga.rs/{{$winner1_uri}}">Pogledaj {{$winner1}}</a>
 <br>
 <a href="https://srpskatenisliga.rs/{{$winner2_uri}}">Pogledaj {{$winner2}}</a>
