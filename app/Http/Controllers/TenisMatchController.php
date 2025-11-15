@@ -751,15 +751,15 @@ fclose($handle);
         
         if ($winner2 && $loser2) {
             // Doubles match
-            return $formatName($winner1->first_name, $winner1->last_name) . '-' .
-                   $formatName($winner2->first_name, $winner2->last_name) . '-' .
-                   $formatName($loser1->first_name, $loser1->last_name) . '-' .
-                   $formatName($loser2->first_name, $loser2->last_name) . '-' .
+            return $winner1->uri . '-' .
+                   $winner2->uri . '-' .
+                   $loser1->uri . '-' .
+                   $loser2->uri . '-' .
                    $matchNumber;
         } else {
             // Singles match
-            return $formatName($winner1->first_name, $winner1->last_name) . '-' .
-                   $formatName($loser1->first_name, $loser1->last_name) . '-' .
+            return $winner1->uri . '-' .
+                   $loser1->uri . '-' .
                    $matchNumber;
         }
     }
