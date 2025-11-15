@@ -5,8 +5,9 @@ import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import opstine from '@assets/regions_serbia.json';
 import bus from 'vue3-eventbus';
+import { ref } from 'vue';
 
-const props = defineProps({players: Array, match: Object, courts: Array, leagues: Array});
+const props = defineProps({players: Array, match: Object, courts: Array, leagues: Array, match_uri: String, success: Boolean});
 
 
 const page = usePage();
@@ -15,7 +16,20 @@ onMounted(async () => {
     page.props['title'] = `Izmeni meč`;
     await nextTick();
     bus.emit('loading', false);
+    
+    // Set initial success state if provided
+    if (props.success) {
+        formState.success = true;
+    }
+    
+    // Set match URL if provided
+    if (props.match_uri) {
+        matchUrl.value = props.match_uri;
+        console.log('Match URL:', matchUrl.value);
+    }
 });
+
+const matchUrl = ref('');
 
 const form = useForm({
     id: props.match.id,
@@ -74,10 +88,15 @@ const submit = () =>{
   form.location.trim();
 
     form.post(`/izmeni`,{
-        onSuccess: () => {
+        onSuccess: (data) => {
           bus.emit('loading', false);
           formState.submitted = false;
           formState.success = true;
+          // Update match URL if provided
+          if (data.props && data.props.match_uri) {
+            matchUrl.value = data.props.match_uri;
+            console.log('Match updated successfully. New URL:', matchUrl.value);
+          }
         },
         onError: (errors) => {
             bus.emit('loading', false);
@@ -169,8 +188,9 @@ const handleInputs = (event,isDate = false) => {
     <h1 id="title" :class="{'hide': formState.success}">Izmeni meč</h1>
     <h1 id="success" :class="{'show': formState.success}">Meč je uspešno izmenjen</h1>
     <div id="success-links" :class="{'show': formState.success}">
-      <Link prefetch="false" class="blue" :href="'/mecevi'">vidi mečeve</Link>
-      <Link prefetch="false" class="red" :href="'/'">vidi tenisere</Link>
+      <Link prefetch="false" class="red" :href="`/mec/${match_uri}`">vidi meč</Link>
+      <Link prefetch="false" class="blue" :href="'/mecevi'">vidi sve mečeve</Link>
+      <Link prefetch="false" class="blue" :href="'/'">vidi tenisere</Link>
     </div>
     <form id="form" @submit.prevent="submit" :class="{'hide': formState.success}">
 

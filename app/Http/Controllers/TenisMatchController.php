@@ -1685,8 +1685,17 @@ fclose($handle);
         Helpers::UpdateRanks();
         Helpers::UpdateStatsChart($new_players, $winner_gains + $loser_gains, $match->date);
 
+        // Generate URI for the updated match
+        $matchUri = self::generateMatchUri($match->number);
 
-        return redirect()->back()->with('success', 'Meč je uspešno izmenjen.');
+        return Inertia::render('Auth/admin/matches/EditDouble', [
+            'players' => PlayerController::getPlayersForDropdown(),
+            'match' => TenisMatchController::getDoubleForEdit($match->number),
+            'courts' => CourtsController::getCourts(),
+            'leagues' => LeaguesController::getLeagues(),
+            'match_uri' => $matchUri,
+            'success' => true
+        ]);
 
     }
     public function updateMatch(Request $request){
@@ -1857,8 +1866,17 @@ fclose($handle);
         Helpers::UpdateRanks();
         Helpers::UpdateStatsChart($new_players, $winner_gains + $loser_gains, $match->date);
 
+        // Generate URI for the updated match
+        $matchUri = self::generateMatchUri($match->number);
 
-        return redirect()->back()->with('success', 'Meč je uspešno izmenjen.');
+        return Inertia::render('Auth/admin/matches/EditMatch', [
+            'players' => PlayerController::getPlayersForDropdown(),
+            'match' => TenisMatchController::getMatchForEdit($match->number),
+            'courts' => CourtsController::getCourts(),
+            'leagues' => LeaguesController::getLeagues(),
+            'match_uri' => $matchUri,
+            'success' => true
+        ]);
 
     }
 
