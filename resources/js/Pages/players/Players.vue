@@ -185,7 +185,7 @@ const playersText = computed(() => {
         <div class="ranking-entry" v-for="(player, index) in players" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
                   <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
                   <div style="place-self: center;;" class="rank"
-                  :class="{'first': player.rank == 1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9}">
+                  :class="{'first': player.rank == 1, 'second': player.rank == 2, 'third': player.rank ==3, 'align-left': player.rank > 9 && player.rank < 1000}">
                   {{ player.rank}}
                 </div>
           <div class="place"

@@ -51,7 +51,7 @@ $border-color-dark: #e2e0e1;
 
   .matches-header {
     margin-top: 57px;
-    padding: 0 10px 5px;
+    padding: 0 0px 5px;
     font-size: 15px;
     color: $text-color-gray;
     border-bottom: 2px solid $border-color-light;
@@ -174,7 +174,6 @@ $border-color-dark: #e2e0e1;
     display: grid;
     place-items: center;
     align-items: center;
-    padding-left: 2px;
     padding-top: 2px;
   }
 
