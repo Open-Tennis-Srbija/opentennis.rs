@@ -35,7 +35,7 @@ class Court extends Model {
     }
 
     public function getPosition(){
-        $raw_courts = Court::all();
+        $raw_courts = Court::where('id', '>', 1)->get();
 
         $courts = [];
 
