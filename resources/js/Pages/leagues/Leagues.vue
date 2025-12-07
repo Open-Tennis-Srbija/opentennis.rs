@@ -22,6 +22,9 @@ const formatDate = ((start, end) =>{
     if(raw_start.getFullYear() == raw_end.getFullYear()){
       if(raw_start.getMonth() == raw_end.getMonth()){
         if(raw_start.getFullYear() ==  new Date().getFullYear()) 
+          if(raw_start.getDate() == raw_end.getDate())
+            return `${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)}`
+          else
           return `${utl.getDateDay(start)} ${raw_start.getDate()} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(start)}`
         else
           return `${utl.getDateDay(start)} ${raw_start.getDate()} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(start)} ${raw_end.getFullYear()}`
@@ -42,6 +45,9 @@ const formatDates =((start,end)=>{
 
     if(raw_start.getFullYear() == raw_end.getFullYear()){
         if(raw_start.getFullYear() ==  new Date().getFullYear()) 
+          if(raw_start.getDate() == raw_end.getDate())
+            return [`${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)}`, `${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(end)}`]
+          else
           return [`${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)}`, `${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(end)}`]
         else
           return [`${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)}`, `${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(end)} ${raw_end.getFullYear()}`]
@@ -58,7 +64,13 @@ const isInactive = (date_end) => {
   return end < now.setHours(0,0,0,0);
 };
 
-
+const areSameDate = (start, end) => {
+    const raw_start = new Date(start);
+    const raw_end = new Date(end);
+    return raw_start.getDate() === raw_end.getDate() &&
+           raw_start.getMonth() === raw_end.getMonth() &&
+           raw_start.getFullYear() === raw_end.getFullYear();
+}
 
 onMounted(() => {
   isClient.value = true;
@@ -199,7 +211,7 @@ const leaguesText = computed(() => {
           <div class="elo league-points" :class="{'unknown': league.points == 0}">{{utl.formatAsThousands(league.points)}}</div>
           <div class="total-matches">{{league.match_number}}</div>
           <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
-          <div style="text-align: center; line-height: 1.6;" :class="{'inactive' : isInactive(league.date_end)}" class="wins smaller-font">{{formatDates(league.date_start, league.date_end)[0]}}<br>{{formatDates(league.date_start, league.date_end)[1]}}</div>
+          <div style="text-align: center; line-height: 1.6;" :class="{'inactive' : isInactive(league.date_end)}" class="wins smaller-font">{{formatDates(league.date_start, league.date_end)[0]}}<template v-if="!areSameDate(league.date_start, league.date_end)"><br>{{formatDates(league.date_start, league.date_end)[1]}}</template></div>
           <div style="text-align:center" class="wins smaller-font" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
         </div>
       </div>

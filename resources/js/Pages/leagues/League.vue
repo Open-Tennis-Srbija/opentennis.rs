@@ -53,7 +53,13 @@ const formatDate = ((start, end) =>{
 
     if(raw_start.getFullYear() == raw_end.getFullYear()){
       if(raw_start.getMonth() == raw_end.getMonth()){
-        return `${utl.getDateDay(start)} ${raw_start.getDate()} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(start)} ${raw_end.getFullYear()}`
+        if(raw_start.getFullYear() ==  new Date().getFullYear()) 
+          if(raw_start.getDate() == raw_end.getDate())
+            return `${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)}`
+          else
+          return `${utl.getDateDay(start)} ${raw_start.getDate()} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(start)}`
+        else
+          return `${utl.getDateDay(start)} ${raw_start.getDate()} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(start)} ${raw_end.getFullYear()}`
       }
       else{
         return `${utl.getDateDay(start)} ${raw_start.getDate()} ${utl.getDateMonth(start)} - ${utl.getDateDay(end)} ${raw_end.getDate()} ${utl.getDateMonth(end)} ${raw_end.getFullYear()}`
