@@ -47,24 +47,3 @@
             transform="translate(-307.19 -183.82)" />
     </svg>
 </template>
-  <style scoped>
-                .cls-2 {
-                    f1ll: #cf0;
-                }
-
-                .cls-2 {
-                    fill: #fff;
-                }
-
-                .cls-3 {
-                    fill: #c7373d;
-                }
-
-                .cls-4 {
-                    fill: #194477;
-                }
-
-                .cls-5 {
-                    fill: #00aeef;
-                }
-            </style>

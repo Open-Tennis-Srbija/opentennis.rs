@@ -24,7 +24,7 @@ onMounted(async () => {
             Da dodate ligu ili turnir pošaljite ime takmičenja, početni datum, završni datum, opštinu, terene, i link ili email za kontakt na <a href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>.
         </p>
         <p>
-            Da dodate sve mečeve sa lige ili turnira popunite spreadsheet za <a href="/storage/opentennis.rs prijava turnira i liga - šablon.xlsx" target="_blank">singlove</a> i/ili za <a href="/storage/opentennis.rs prijava turnira i liga - dublovi - šablon.xlsx" target="_blank">dublove</a> i pošaljite ih na <a href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>.
+            Da dodate sve mečeve sa lige ili turnira popunite spreadsheet za <a href="/storage/Open Tennis Srbija prijava turnira i liga - šablon.xlsx" target="_blank">singlove</a> i/ili za <a href="/storage/Open Tennis Srbija prijava turnira i liga - dublovi - šablon.xlsx" target="_blank">dublove</a> i pošaljite ih na <a href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>.
         </p>
         <p>
             Takođe možete da nam samo pošaljete i fotografije rezultata na <a href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>.
