@@ -19,7 +19,7 @@ router.on("finish", () => {
 });
 
 createInertiaApp({
-    title: (title) => `${title} Srpska Tenis Liga`,
+    title: (title) => `${title} Open Tennis Srbija`,
 
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });

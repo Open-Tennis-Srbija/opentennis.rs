@@ -15,7 +15,7 @@ createServer((page) =>
   createInertiaApp({
     page,
     render: renderToString,
-    title: (title) => `${title} Srpska Tenis Liga`,
+    title: (title) => `${title} Open Tennis Srbija`,
     resolve: (name) => {
       const pages = import.meta.glob('./Pages/**/*.vue', { eager: true });
       const resolved = pages[`./Pages/${name}.vue`];

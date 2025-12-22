@@ -104,7 +104,7 @@ const handleInputs = (event,isDate = false) => {
           </div>
  <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
             <label for="winner-fname" class="input-label">
-              URI (srpskatenisliga.rs/tereni/URI)<span class="required">*</span>
+              URI (opentennis.rs/tereni/URI)<span class="required">*</span>
             </label>
             <input v-model="form.uri" @input="handleInputs($event)" :class="{'invalid': form.errors.uri}" :disabled="formState.submitted" id="uri" type="text">
             <p class="error-message">{{ form.errors.uri }}</p>

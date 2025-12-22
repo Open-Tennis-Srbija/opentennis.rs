@@ -11,7 +11,7 @@
             rekreativni tenis u korist tenisera, klubova, terena, i firmi.
         </p>
         <p>
-          <a target="_blank" href="https://www.linkedin.com/in/nikolatosic/">Nikola Tošić</a>, osnivač, <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>
+          <a target="_blank" href="https://www.linkedin.com/in/nikolatosic/">Nikola Tošić</a>, osnivač, <a href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>
           <br>
          Bogdan Ranđelović, programer, <a href="mailto:bogdan@openinnovation.me">bogdan@openinnovation.me</a>
          <br>

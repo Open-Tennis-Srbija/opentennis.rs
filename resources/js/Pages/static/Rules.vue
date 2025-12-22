@@ -10,39 +10,51 @@ onMounted(async () => {
 
     <Head title="Uputstva -" />
     <div class="static-wrapper">
-        <h1 class="mobile-neg-margin text-align-center">UPUTSTVA I PRAVILA SRPSKATENISLIGA.RS
-</h1>
+        <h1 class="mobile-neg-margin text-align-center">UPUTSTVA I PRAVILA OPEN TENNIS SRBIJA</h1>
+
+
+
+        <p class="bigger-center">
+            Misija Open Tennis Srbija je
+            <br>
+            transparentan i dugoročan razvoj srpskog tenisa
+            <br>
+            kroz skupljanje, analiza i publikovanje svih podataka srpskog tenisa
+        </p>
+        <p class="bigger-center last">
+            Svi teniseri, lige i turniri, tereni, i mečevi na jednom mestu
+        </p>
         <p>
-            <Link prefetch="false" :href="'/'">SrpskaTenisLiga.rs</Link> je osnovao <a
+            <Link prefetch="false" :href="'/'">Open Tennis Srbija</Link> je osnovao <a
                 href="https://www.linkedin.com/in/nikolatosic/" target="_blank">Nikola Tošić</a> 9 decembra 2024.
         </p>
-        <p>SrpskaTenisLiga.rs je sajt posvećen rekreativnom tenisu u Srbiji. SrpskaTenisLiga.rs samo dokumentuje
-            rezultate spariga, turnira i liga koje organizuju teniseri, klubovi i drugi. Dakle, SrpskaTenisLiga.rs je
+        <p>Open Tennis Srbija je sajt posvećen rekreativnom tenisu u Srbiji. Open Tennis Srbija samo dokumentuje
+            rezultate spariga, turnira i liga koje organizuju teniseri, klubovi i drugi. Dakle, Open Tennis Srbija je
             agregator svih sparinga, liga i turnira u Srbiji.
         </p>
-        <p>Ciljevi sajta SrpskaTenisLiga.rs su:</p>
+        <p>Ciljevi sajta Open Tennis Srbija su:</p>
         <p style="margin-bottom: 0;">1) Dokumentacija i analiza svih podataka korisnih za rekreativni tenis u Srbiji,
         </p>
         <p>2) Motivacija tenisera da igraju više i generalni razvoj rekreativnog tenisa.</p>
 
-        <p>SrpskaTenisLiga.rs postiže ove ciljeve kroz sledeće aktivnosti:</p>
+        <p>Open Tennis Srbija postiže ove ciljeve kroz sledeće aktivnosti:</p>
         <p style="margin-bottom: 0;">1) Kategorisanje svih tenisera u Srbiji, od početnika do Novaka Đokovica.
             Kategorisanje pomaže teniserima da nađu druge tenisere, učestvuju u takmičenjima, i prate svoj napredak,</p>
         <p style="margin-bottom: 0;">2) Merenje aktivnosti tenisera kroz poene,</p>
         <p>3) Dokumentovanje svih liga, turnira, i terena.</p>
 
-        <p>SrpskaTenisLiga.rs je besplatna za korišćenje - nema kvalifikacija, naplate, rokove, niti obaveze. Na
+        <p>Open Tennis Srbija je besplatna za korišćenje - nema kvalifikacija, naplate, rokove, niti obaveze. Na
             teniserima je da dodaju svoje mečeve i na organizatorima takmičenja da dodaju mečeve sa takmičenja. Svaki
             teniser može biti dodat na sajt, dovoljno je da dokumentuje jedan meč koji je odigrao.</p>
 
 
         <h2>Privatnost tenisera</h2>
         <br>
-        <p>Mečevi na SrpskaTenisLiga.rs su dodati na sledeće načine:</p>
+        <p>Mečevi na Open Tennis Srbija su dodati na sledeće načine:</p>
         <p style="margin-bottom: 0;">1) Teniseri ih sami dodaju kroz <a href="/dodaj">dodaj meč formu</a>,</p>
         <p style="margin-bottom: 0;">2) Naš tim dodaje javno objavljene rezultate liga i turnira,</p>
         <p>3) Naš tim, u saradnji sa organizatorima, dodaje rezultate liga i turnira koji nisu javno objavljeni.</p>
-        <p>Ako teniser ne želi da bude vidljiv na sajtu njihovo ime može da se zameni inicijalima ili da se potpuno sakrije. Ako oba tenisera u dodatom meču ne žele da budu vidljivi, njihov meč može da se obriše. Za obe akcije pošaljite email na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
+        <p>Ako teniser ne želi da bude vidljiv na sajtu njihovo ime može da se zameni inicijalima ili da se potpuno sakrije. Ako oba tenisera u dodatom meču ne žele da budu vidljivi, njihov meč može da se obriše. Za obe akcije pošaljite email na <a href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>.
         </p>
        
 
@@ -141,13 +153,13 @@ onMounted(async () => {
             Ručno određivanje kategorija je privremeno rešenje i biće zamenjeno automatskim kategorisanjem tenisera na osnovu rezultata mečeva.
         </p>
         <p> Ako se ne slažete sa svojom kategorijom pošaljite email na <a
-                href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>.
+                href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>.
         </p>
 
         <h2>Pristup podatcima</h2>
         <br>
         <p>
-            Ako želite podatke svih mečeva u formatu tabela, za vaše sopstveno istraživanje, pošaljite email na <a href="mailto:nikola@srpskatenisliga.rs">nikola@srpskatenisliga.rs</a>. Uvek smo zainteresovani da vidimo nove načine prikazivanja podataka.
+            Ako želite podatke svih mečeva u formatu tabela, za vaše sopstveno istraživanje, pošaljite email na <a href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>. Uvek smo zainteresovani da vidimo nove načine prikazivanja podataka.
 
         </p>
 

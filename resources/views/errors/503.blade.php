@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Srpska Tenis Liga</title>
+	<title>Open Tennis Srbija</title>
 </head>
 <style>
 @font-face {
@@ -16,8 +16,8 @@ body {
 </style>
 <body>
 	<div style="text-align: center; margin-top: 50px;">
-		<h1 style="font-family: 'Helvetica Neue'">SRPSKA TENIS LIGA</h1>
-		<p>Srpska Tenis Liga je trenutno nedostupna zbog održavanja. <br>Molimo vas da se vratite kasnije.</p>
+		<h1 style="font-family: 'Helvetica Neue'">Open Tennis Srbija</h1>
+		<p>Open Tennis Srbija je trenutno nedostupna zbog održavanja. <br>Molimo vas da se vratite kasnije.</p>
 		<p>Hvala na razumevanju!</p>
 	</div>
 </body>

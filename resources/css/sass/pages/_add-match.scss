@@ -71,6 +71,20 @@
       margin-bottom: 30px;
       line-height: 166%;
 
+      &.bigger-center{
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+
+        &.last{
+          margin-bottom: 80px;
+        }
+
+        @media screen and (max-width: 800px) {
+          font-size: 24px;
+        }
+      }
+
       &.subtitle{
         font-size: 19px;
         color: $mid-gray;

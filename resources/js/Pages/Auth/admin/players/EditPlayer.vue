@@ -136,7 +136,7 @@ const handleInputs = (event,isDate = false) => {
         <div class="form-row">
           <div class="form-group">
             <label for="full-score" class="input-label">
-              URI (srpskatenisliga.rs/URI) <span class="required">*</span>
+              URI (opentennis.rs/URI) <span class="required">*</span>
             </label>
             <input v-if="form.uri" v-model="form.uri" :class="{'invalid': form.errors.uri}" :disabled="formState.submitted" id="uri" />
             <p class="error-message">{{ form.errors.uri }}</p>

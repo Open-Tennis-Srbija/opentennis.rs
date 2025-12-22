@@ -38,7 +38,7 @@ onMounted(() => {
 	bus.emit('headTitle', 'teniser')
 		player.value = response.data;
 		console.log('Player data:', player.value);
-		pageTitle.value = `${player.value.name} - Srpska Tenis Liga`;
+		pageTitle.value = `${player.value.name} - Open Tennis Srbija`;
 		isLoading.value = false;
 		bus.emit('loading', false)
 	}).catch((error) => {
@@ -94,7 +94,7 @@ const matchups = computed(() => {
 	}
 	return data;
 });
-const pageTitle = ref('Srpska Tenis Liga');
+const pageTitle = ref('Open Tennis Srbija');
 
 const points = computed(() => {
 	if (!player.value.points) {

@@ -31,8 +31,8 @@ class DoubleMatchNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('info@srpskatenisliga.rs', 'Srpska Tenis Liga'),
-            subject: 'Novi dubl meč je dodat na SrpskaTenisLiga.rs',
+            from: new Address('info@opentennis.rs', 'Open Tennis Srbija'),
+            subject: 'Novi dubl meč je dodat na opentennis.rs',
 
         );
     }

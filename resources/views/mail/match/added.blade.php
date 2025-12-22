@@ -8,10 +8,10 @@
 <p><b>Datum</b> {{ $date }}</p>
 <br>
 
-<a href="https://srpskatenisliga.rs/mec/{{$match_uri}}">Pogledaj dodat meč</a>
+<a href="https://opentennis.rs/mec/{{$match_uri}}">Pogledaj dodat meč</a>
 <br>
-<a href="https://srpskatenisliga.rs/{{$winner_uri}}">Pogledaj pobednika</a>
+<a href="https://opentennis.rs/{{$winner_uri}}">Pogledaj pobednika</a>
 <br>
-<a href="https://srpskatenisliga.rs/{{$loser_uri}}">Pogledaj gubitnika</a>
+<a href="https://opentennis.rs/{{$loser_uri}}">Pogledaj gubitnika</a>
 <br>
-<a href="https://srpskatenisliga.rs/mecevi">Pogledaj mečeve</a>
+<a href="https://opentennis.rs/mecevi">Pogledaj mečeve</a>
