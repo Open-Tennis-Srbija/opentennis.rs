@@ -164,7 +164,7 @@ const handleInputs = (event,isDate = false) => {
             <p class="error-message">{{ form.errors.league }}</p>
           </div>
           <div class="form-group">
-            <p>Potrebno je exportovati <a href="/storage/opentennis.rs prijava turnira i liga - dublovi - šablon.xlsx" target="_blank">spreadsheet</a> (Google sheet ili Excel) kao .csv fajl.</p>
+            <p>Potrebno je exportovati <a href="/storage/Open Tennis Srbija prijava turnira i liga - dublovi - šablon.xlsx" target="_blank">spreadsheet</a> (Google sheet ili Excel) kao .csv fajl.</p>
             <p>File > Download > Coma Separated Values (.csv)</p>
           </div>
         </div>
