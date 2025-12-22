@@ -8,9 +8,15 @@ onMounted(async () => {
 </script>
 <template>
 
+<<<<<<< HEAD
     <Head title="O nama -" />
     <div class="static-wrapper static">
         <h1 class="mobile-neg-margin text-align-center">O NAMA</h1>
+=======
+    <Head title="Uputstva -" />
+    <div class="static-wrapper">
+        <h1 class="mobile-neg-margin text-align-center">UPUTSTVA I PRAVILA OPEN TENNIS SRBIJA</h1>
+>>>>>>> ade4fe2 (Rebranding)
 
 
 
@@ -44,13 +50,21 @@ onMounted(async () => {
         <p>3) Dokumentovanje svih liga, turnira, i terena.</p>
 
         <p>Open Tennis Srbija je besplatna za korišćenje - nema kvalifikacija, naplate, rokove, niti obaveze. Na
+<<<<<<< HEAD
             teniserima je da <Link prefetch="false" :href="'/dodaj'">dodaju svoje mečeve</Link> i na organizatorima takmičenja da<Link prefetch="false" :href="'/dodaj-ligu'"> dodaju mečeve sa takmičenja</Link>. Svaki
+=======
+            teniserima je da dodaju svoje mečeve i na organizatorima takmičenja da dodaju mečeve sa takmičenja. Svaki
+>>>>>>> ade4fe2 (Rebranding)
             teniser može biti dodat na sajt, dovoljno je da dokumentuje jedan meč koji je odigrao.</p>
 
 
         <h2>Privatnost tenisera</h2>
         <br>
+<<<<<<< HEAD
         <p>Mečevi na <Link prefetch="false" :href="'/'">Open Tennis Srbija</Link> su dodati na sledeće načine:</p>
+=======
+        <p>Mečevi na Open Tennis Srbija su dodati na sledeće načine:</p>
+>>>>>>> ade4fe2 (Rebranding)
         <p style="margin-bottom: 0;">1) Teniseri ih sami dodaju kroz <a href="/dodaj">dodaj meč formu</a>,</p>
         <p style="margin-bottom: 0;">2) Naš tim dodaje javno objavljene rezultate liga i turnira,</p>
         <p>3) Naš tim, u saradnji sa organizatorima, dodaje rezultate liga i turnira koji nisu javno objavljeni.</p>
