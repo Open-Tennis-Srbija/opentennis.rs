@@ -118,7 +118,7 @@ const chartOptions = {
               enabled: true,
             },
     },
-    colors: ['#c6373d'],
+    colors: ['#ec008c'],
     noData: {
         text: 'grafikon se učitava',
         align: 'center',
@@ -203,7 +203,7 @@ const chartOptionsLine2 = {
         },
 
     },
-    colors: ['#0d4075'],
+    colors: ['#00aeef'],
     noData: {
         text: 'grafikon se učitava',
         align: 'center',

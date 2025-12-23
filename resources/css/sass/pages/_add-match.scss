@@ -131,10 +131,10 @@
 
       a {
         text-decoration: none;
-        color: #c6373d;
+        color: #ec008c;
 
         &:hover {
-          color: #0d4075;
+          color: #00aeef;
         }
       }
     }
@@ -185,13 +185,13 @@
           cursor: text;
 
           .required {
-            color: #c6373d;
+            color: #ec008c;
           }
         }
 
         .error-message {
           font-size: 16px;
-          color: #c6373d;
+          color: #ec008c;
           position: absolute;
           left: 0;
           top: 110%;
@@ -214,7 +214,7 @@
           }
 
           &.invalid {
-            border-color: #c6373d;
+            border-color: #ec008c;
           }
         }
         .dp__input_wrap{
@@ -376,15 +376,15 @@
         text-transform: uppercase;
         border: 0;
         outline: 0;
-        background: #0d4075;
+        background: #00aeef;
         color: white;
         cursor: pointer;
 
         &:hover {
-          background: #c6373d;
+          background: #ec008c;
         }
         &.red{
-          background: #c6373d;
+          background: #ec008c;
         }
 
         .lottie-container{
@@ -456,14 +456,14 @@
       margin-bottom: 0;
 
       &:hover {
-        color: #c6373d;
+        color: #ec008c;
       }
 
       &.red{
-        color: #c6373d;
+        color: #ec008c;
 
         &:hover {
-          color: #0d4075;
+          color: #00aeef;
         }
       }
     }
@@ -472,7 +472,7 @@
 
       &:hover {
         cursor: pointer;
-        color: #0d4075;
+        color: #00aeef;
       }
     }
   }

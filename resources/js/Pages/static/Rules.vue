@@ -44,13 +44,13 @@ onMounted(async () => {
         <p>3) Dokumentovanje svih liga, turnira, i terena.</p>
 
         <p>Open Tennis Srbija je besplatna za korišćenje - nema kvalifikacija, naplate, rokove, niti obaveze. Na
-            teniserima je da dodaju svoje mečeve i na organizatorima takmičenja da dodaju mečeve sa takmičenja. Svaki
+            teniserima je da <Link prefetch="false" :href="'/dodaj'">dodaju svoje mečeve</Link> i na organizatorima takmičenja da<Link prefetch="false" :href="'/dodaj-ligu'"> dodaju mečeve sa takmičenja</Link>. Svaki
             teniser može biti dodat na sajt, dovoljno je da dokumentuje jedan meč koji je odigrao.</p>
 
 
         <h2>Privatnost tenisera</h2>
         <br>
-        <p>Mečevi na Open Tennis Srbija su dodati na sledeće načine:</p>
+        <p>Mečevi na <Link prefetch="false" :href="'/'">Open Tennis Srbija</Link> su dodati na sledeće načine:</p>
         <p style="margin-bottom: 0;">1) Teniseri ih sami dodaju kroz <a href="/dodaj">dodaj meč formu</a>,</p>
         <p style="margin-bottom: 0;">2) Naš tim dodaje javno objavljene rezultate liga i turnira,</p>
         <p>3) Naš tim, u saradnji sa organizatorima, dodaje rezultate liga i turnira koji nisu javno objavljeni.</p>
@@ -68,7 +68,47 @@ onMounted(async () => {
         </p>
 
 
-        <h2>Poeni za aktivnost</h2>
+         <h2>Kategorije tenisera</h2>
+        <br>
+        <p>Kategorija tenisera je za sada definisana ručno na osnovu subjektivne ocene. Kategorije su:</p>
+        <p style="margin-bottom: 0;">
+            Kategorija 1) Odigrao prvi meč - dobrodošao je u svet tenisa.
+        </p>
+        <p style="margin-bottom: 0;">
+            Kategorija 2) Teniser je igrao više mečeva ali ima nestabilne osnovne udarce.
+        </p>
+        <p style="margin-bottom: 0;">
+            Kategorija 3) Dobra kontrolu jednog ili dva udarca, bez snage i preciznosti.
+        </p>
+        <p style="margin-bottom: 0;">
+            Kategorija 4) Dobra kontrola osnovnih udaraca, snaga u nekim.
+        </p>
+        <p style="margin-bottom: 0;">
+            Kategorija 5) Stabilnost, snaga i preciznost u svim osnovnim udarcima.
+        </p>
+        <p style="margin-bottom: 0;">
+            Kategorija 6) Stabilni, snažni, i precizni osnovni udarci sa dobrom strategijom.
+        </p>
+        <p style="margin-bottom: 0;">
+            Kategorija 7) Bivši takmičari i treneri.
+        </p>
+        <p style="margin-bottom: 0;">
+            Kategorija 8) Juniorski i mlađi takmičari.
+        </p>
+        <p style="margin-bottom: 0;">
+            Kategorija 9) Seniorski, ATP, ITF takmičari.
+        </p>
+        <p>
+            Kategorija 10) Novak Djoković.
+        </p>
+        <p>
+            Ručno određivanje kategorija je privremeno rešenje i biće zamenjeno automatskim kategorisanjem tenisera na osnovu rezultata mečeva.
+        </p>
+        <p> Ako se ne slažete sa svojom kategorijom pošaljite email na <a
+                href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>.
+        </p>
+
+        <h2>Rangiranje tenisera putem poena</h2>
         <br>
         <p>Rang tenisera favorizuje aktivnost tenisera i kalkuliše se dodavanjem poena za svaki pobedu, gubitak, i osvojeni gem.</p>
         <table class="rules-table">
@@ -116,45 +156,7 @@ onMounted(async () => {
             Cilj poena aktivnosti je da se motiviše što više igranja (čak i ako se gubi) i da se motiviše različitost u izboru tenisera.
         </p>
 
-        <h2>Kategorije tenisera</h2>
-        <br>
-        <p>Kategorija tenisera je za sada definisana ručno na osnovu subjektivne ocene. Kategorije su:</p>
-        <p style="margin-bottom: 0;">
-            Kategorija 1) Odigrao prvi meč - dobrodošao je u svet tenisa.
-        </p>
-        <p style="margin-bottom: 0;">
-            Kategorija 2) Teniser je igrao više mečeva ali ima nestabilne osnovne udarce.
-        </p>
-        <p style="margin-bottom: 0;">
-            Kategorija 3) Dobra kontrolu jednog ili dva udarca, bez snage i preciznosti.
-        </p>
-        <p style="margin-bottom: 0;">
-            Kategorija 4) Dobra kontrola osnovnih udaraca, snaga u nekim.
-        </p>
-        <p style="margin-bottom: 0;">
-            Kategorija 5) Stabilnost, snaga i preciznost u svim osnovnim udarcima.
-        </p>
-        <p style="margin-bottom: 0;">
-            Kategorija 6) Stabilni, snažni, i precizni osnovni udarci sa dobrom strategijom.
-        </p>
-        <p style="margin-bottom: 0;">
-            Kategorija 7) Bivši takmičari i treneri.
-        </p>
-        <p style="margin-bottom: 0;">
-            Kategorija 8) Juniorski i mlađi takmičari.
-        </p>
-        <p style="margin-bottom: 0;">
-            Kategorija 9) Seniorski, ATP, ITF takmičari.
-        </p>
-        <p>
-            Kategorija 10) Novak Djoković.
-        </p>
-        <p>
-            Ručno određivanje kategorija je privremeno rešenje i biće zamenjeno automatskim kategorisanjem tenisera na osnovu rezultata mečeva.
-        </p>
-        <p> Ako se ne slažete sa svojom kategorijom pošaljite email na <a
-                href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>.
-        </p>
+       
 
         <h2>Pristup podatcima</h2>
         <br>
