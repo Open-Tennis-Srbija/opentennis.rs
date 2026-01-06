@@ -354,7 +354,7 @@ const matchesText = computed(() => {
                 <Link :class="{child: !isHome}" prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni/${match.number}`">
                 <EditIcon />
                 </Link>
-                <div style="place-self: center;;" class="number"><Link prefetch="false" :href="generateMatchUri(match)">{{ match.number }}</Link></div>
+                <div style="place-self: center;;" class="number"><Link prefetch="false" :href="'/mec/'+match.uri">{{ match.number }}</Link></div>
                 <div class="winner">
                     <div class="players">
                         <div class="player-1" :class="{ 'mt-10': match.winner2_name }">
@@ -428,7 +428,7 @@ const matchesText = computed(() => {
                     </div>
                 </div>
                 <div class="score">
-                    <Link prefetch="false" :href="generateMatchUri(match)">
+                    <Link prefetch="false" :href="'/mec/'+match.uri">
                     {{ match.set_score }}<br /><span class="gray">{{
                         match.game_score
                         }}</span>
@@ -560,7 +560,7 @@ const matchesText = computed(() => {
                 <EditIcon />
                 </Link>
                 <div class="score">
-                    <Link prefetch="false" :href="generateMatchUri(match)">
+                    <Link prefetch="false" :href="'/mec/'+match.uri">
                     {{ match.set_score }}
                     <br v-if="match.game_score && match.game_score !== ''" />
                     <span class="games">{{ match.game_score }}</span>
@@ -664,7 +664,7 @@ const matchesText = computed(() => {
                     {{ match.day }} {{ match.date }} {{ match.month }}
                     {{ match.year }}
                     <br />
-                    <Link prefetch="false" :href="generateMatchUri(match)">
+                    <Link prefetch="false" :href="'/mec/'+match.uri">
                         {{ match.number || matches.length - index }}
                     </Link>
                 </div>
