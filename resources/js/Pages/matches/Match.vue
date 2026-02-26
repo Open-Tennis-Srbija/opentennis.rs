@@ -341,8 +341,8 @@ $text-color-gray: #949494;
             justify-content: center;
 
            .rank {
-        width: 60px;
-        height: 60px;
+        width: 75px;
+        height: 75px;
         position: relative;
         border-radius: 100px;
         border: 2px solid $rank-border-color;
@@ -440,8 +440,8 @@ $text-color-gray: #949494;
 
         .diamond {
             position: relative;
-            width: 55px;
-            height: 55px;
+            width: 68.75px;
+            height: 68.75px;
             border-width: 3px !important;
             display: grid;
             place-items: center;
