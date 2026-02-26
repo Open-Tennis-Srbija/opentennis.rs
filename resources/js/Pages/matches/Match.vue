@@ -680,8 +680,8 @@ $text-color-gray: #949494;
     }
     
         .rank{
-            height: 40px !important;
-            width: 40px !important;
+            height: 60px !important;
+            width: 60px !important;
 
             &.first {
                 border-width: 4px !important;
@@ -712,8 +712,8 @@ $text-color-gray: #949494;
 
             .diamond {
                 position: relative;
-                width: 35px;
-                height: 35px;
+                width: 52.5px;
+                height: 52.5px;
                 border-width: 3px !important;
                 display: grid;
                 place-items: center;
