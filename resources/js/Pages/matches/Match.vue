@@ -91,9 +91,28 @@ const formatedMatch = computed(() => {
         date: new Date(match.value?.date).getDate(),
     };
 });
+
+const matchTitle = computed(() => {
+    if (!match.value?.winner1_name || !match.value?.loser1_name) {
+        return `Meč ${formatedMatch.value.number || ''} -`;
+    }
+
+    const isDoubles = match.value?.winner2_name && match.value?.loser2_name;
+    const score = formatedMatch.value.set_score || '';
+
+    if (isDoubles) {
+        const winners = `${formatedMatch.value.winner1_first_name} ${formatedMatch.value.winner1_last_name} i ${formatedMatch.value.winner2_first_name} ${formatedMatch.value.winner2_last_name}`;
+        const losers = `${formatedMatch.value.loser1_first_name} ${formatedMatch.value.loser1_last_name} i ${formatedMatch.value.loser2_first_name} ${formatedMatch.value.loser2_last_name}`;
+        return `${winners} vs ${losers} ${score}`;
+    } else {
+        const winner = `${formatedMatch.value.winner1_first_name} ${formatedMatch.value.winner1_last_name}`;
+        const loser = `${formatedMatch.value.loser1_first_name} ${formatedMatch.value.loser1_last_name}`;
+        return `${winner} vs ${loser} ${score}`;
+    }
+});
 </script>
 <template>
-    <Head :title="`Meč ${formatedMatch.number || ''} -`" />
+    <Head :title="matchTitle + ' -'" />
     <div class="match-entry">
         <Link :class="{ child: !isHome }" prefetch="false" class="edit-btn" v-if="$page.props.auth.user"
             :href="`/izmeni/${formatedMatch.number}`">
