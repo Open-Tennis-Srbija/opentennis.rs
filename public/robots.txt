@@ -1,2 +1,38 @@
+# Robots.txt for Open Tennis Srbija (opentennis.rs)
+# Omogućava indeksiranje svih javnih stranica
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Blokiranje admin stranica
+Disallow: /admin/
+Disallow: /login/
+Disallow: /logout/
+Disallow: /auth/
+
+# Blokiranje API endpoint-ova koji nisu relevantni za SEO
+Disallow: /api/
+Disallow: /get-*
+Disallow: /dodaj*
+Disallow: /izmeni*
+Disallow: /obrisi*
+
+# Omogućavanje pristupa statičkim resursima
+Allow: /build/
+Allow: /images/
+Allow: /storage/
+Allow: *.css
+Allow: *.js
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.png
+Allow: *.gif
+Allow: *.webp
+Allow: *.svg
+
+# Sitemap reference
+Sitemap: https://opentennis.rs/sitemap.xml
+
+# Crawl delay za sporije botove
+User-agent: *
+Crawl-delay: 1

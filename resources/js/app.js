@@ -19,7 +19,18 @@ router.on("finish", () => {
 });
 
 createInertiaApp({
-    title: (title) => `${title} Open Tennis Srbija`,
+    title: (title) => {
+        // Remove trailing " -" if present and clean up the title
+        const cleanTitle = title ? title.replace(/\s*-\s*$/, '') : '';
+        
+        // If no title provided, return just the site name
+        if (!cleanTitle || cleanTitle.trim() === '') {
+            return 'Srpska Tenis Liga - Open Tennis Srbija';
+        }
+        
+        // Return formatted title with separator
+        return `${cleanTitle} - Open Tennis Srbija`;
+    },
 
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });

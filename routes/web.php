@@ -3,22 +3,24 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LeagueController;
 use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\StaticController;
 use App\Http\Controllers\TenisMatchController;
 use App\Http\Controllers\CourtsController;
 use App\Http\Controllers\LeaguesController;
 use App\Http\Controllers\ResolverController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Middleware\RedirectLoggedIn;
 use Illuminate\Support\Facades\Route;
 
 
 // PROMO
 Route::inertia('/crazy-pizza', 'static/CrazyPizza')->name('crazyPizza');
-Route::inertia('/nagrade', 'static/Rewards')->name('rewards');
+Route::get('/nagrade', [StaticController::class, 'rewards'])->name('rewards');
 
-Route::inertia('/', 'players/Players')->name('home');
+Route::get('/', [StaticController::class, 'players'])->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);
 
-Route::inertia('/mecevi', 'matches/Matches', ['loadMatches' => true])->name('matches');
+Route::get('/mecevi', [StaticController::class, 'matches'])->name('matches');
 Route::get('/mec/{uri}', [TenisMatchController::class, 'getMatchByUri'])->name('match');
 Route::get('/get-matches', [TenisMatchController::class, 'getMatches']);
 Route::get('/api/matches', [TenisMatchController::class, 'getMatchesApi']);
@@ -28,24 +30,14 @@ Route::get('/get-player/{uri}', [PlayerController::class, 'get_player_by_uri']);
 Route::get('/api/player/{id}/matches', [PlayerController::class, 'getPlayerMatchesApi']);
 Route::get('/get-player-chart/{id}', [PlayerController::class, 'getChart']);
 
-Route::inertia('/dodaj', 'matches/AddMatch',
-    ['players' => PlayerController::getPlayersForDropdown(),
-    'courts' => CourtsController::getCourts(),
-    'leagues' => LeaguesController::getLeagues(),
-    ]
-)->name('addMatch');
+Route::get('/dodaj', [StaticController::class, 'addMatch'])->name('addMatch');
 Route::post('/dodaj', [TenisMatchController::class, 'store']);
 
-Route::inertia('/dodaj-dubl', 'matches/AddDouble',
-    ['players' => PlayerController::getPlayersForDropdown(),
-    'courts' => CourtsController::getCourts(),
-    'leagues' => LeaguesController::getLeagues(),
-    ]
-)->name('addDouble');
+Route::get('/dodaj-dubl', [StaticController::class, 'addDouble'])->name('addDouble');
 Route::post('/dodaj-dubl', [TenisMatchController::class, 'storeDouble']);
 
-Route::inertia('/lige', 'leagues/Leagues')->name('leagues');
-Route::inertia('/turniri', 'tournaments/Tournaments')->name('tournaments');
+Route::get('/lige', [StaticController::class, 'leagues'])->name('leagues');
+Route::get('/turniri', [StaticController::class, 'tournaments'])->name('tournaments');
 
 Route::get('/get-leagues', [LeaguesController::class, 'getLeaguesForList']);
 Route::get('/get-tournaments', [LeaguesController::class, 'getTournamentsForList']);
@@ -54,7 +46,7 @@ Route::get('/api/league/{id}/matches', [LeaguesController::class, 'getLeagueMatc
 
 Route::inertia('/dodaj-ligu', 'static/ForClubs')->name('clubs');
 
-Route::inertia('/misija', 'static/Mision')->name('mision');
+Route::get('/misija', [StaticController::class, 'mission'])->name('mision');
 
 Route::inertia('/statistika', 'static/Statistics')->name('leagueStats');
 Route::get('/get-statistics', [LeagueController::class, 'getStatistics']);
@@ -63,8 +55,8 @@ Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
 /* Route::post('/leagueChart',[LeagueController::class, 'getChart'])->name('leagueChart'); */
 /**/
 
-Route::inertia('/uputstva', 'static/Rules')->name('rules');
-Route::inertia('/tereni', 'courts/Courts')->name('courts');
+Route::get('/uputstva', [StaticController::class, 'rules'])->name('rules');
+Route::get('/tereni', [StaticController::class, 'courts'])->name('courts');
 Route::get('/tereni/{uri}',[CourtsController::class, 'getCourt'])->name('court');
 Route::get('/get-court/{id}',[CourtsController::class, 'get_court'])->name('court');
 Route::get('/get-courts', [CourtsController::class, 'getCourtList']);
@@ -114,6 +106,18 @@ Route::get('/api/court/{id}/matches', [CourtsController::class, 'getCourtMatches
 
      Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
  });
+
+// SEO Sitemap Routes
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/sitemap-static.xml', function() {
+    return response()->view('sitemap.static', [
+        'staticPages' => config('seo.sitemap.static_pages', [])
+    ])->header('Content-Type', 'text/xml');
+});
+Route::get('/sitemap-players.xml', [SitemapController::class, 'players']);
+Route::get('/sitemap-matches.xml', [SitemapController::class, 'matches']);
+Route::get('/sitemap-leagues.xml', [SitemapController::class, 'leagues']);
+Route::get('/sitemap-courts.xml', [SitemapController::class, 'courts']);
 
 Route::get('/{uri}',[ResolverController::class, 'resolveUri'])->name('player');
 
