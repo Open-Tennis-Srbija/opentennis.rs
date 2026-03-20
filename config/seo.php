@@ -73,7 +73,7 @@ return [
         ],
         'players_list' => [
             'title' => 'Teniseri',
-            'description' => 'Oficijalno rangiranje tenisera Open Tennis Srbija. Najbolji teniseri Srbije poeni kategorije i statistike svih registrovanih igrača.',
+            'description' => 'Dokumentacija i kategorisanje svih tenisera u Srbiji. Lista svih teniskih meceva, terena, turnira i liga u Srbiji',
             'keywords' => 'rangiranje tenisera srbija, najbolji igrači, tenis, poeni, kategorije',
         ],
         'leagues_list' => [
