@@ -15,7 +15,7 @@ return [
     'defaults' => [
         'title' => 'Open Tennis Srbija',
         'title_suffix' => ' - Open Tennis Srbija',
-        'description' => 'Oficijelni sajt Open Tennis Srbija. Rangiranje tenisera rezultati mečeva lige और turniri. Pratite najbolje tenisere Srbije i njihove rezultate.',
+        'description' => 'Oficijalni sajt Open Tennis Srbija. Rangiranje tenisera rezultati mečeva lige & turniri. Pratite najbolje tenisere Srbije i njihove rezultate.',
         'keywords' => 'open tennis srbija, tenis srbija, rangiranje tenisera, tenis mečevi, tenis turniri, tenis lige srbija, srpska tenis liga',
         'author' => 'Open Tennis Srbija',
         'image' => '/images/og-default.jpg',
