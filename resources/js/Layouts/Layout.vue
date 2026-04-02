@@ -44,11 +44,11 @@ onMounted(() => {
             },
         );
 
-        activePromo.value = Math.floor(Math.random() * 3) + 1;
+        activePromo.value = Math.floor(Math.random() * 2) + 1;
         console.log(activePromo.value);
         router.on('start', (e) => {
             console.log(e)
-            activePromo.value = Math.floor(Math.random() * 3) + 1;
+            activePromo.value = Math.floor(Math.random() * 2) + 1;
             loading.value = true
         })
         router.on('finish', (e) => {
@@ -283,25 +283,12 @@ watch(
 <template>
     <Loader :show="loading" />
     <header class="header-wrapper">
-        <Link v-if="activePromo === 1" style="text-decoration: none;" prefetch="false" :href="'/crazy-pizza'">
-        <div class="logo-wrapp crazy-pizza">
-            <img src="/promo/crazy-pizza/crazy-pizza-banner-icon.png" alt="Crazy Pizza Beograd" class="banner-icon" />
-            <p>
-                Crazy pizza beograd <br>
-                <span>BESPLATNA PICA ZA SVAKOGA SA 1,000 I VIŠE POENA</span>
-            </p>
-        </div>
-        </Link>
-        <Link v-if="activePromo === 2" style="text-decoration: none;" prefetch="false" :href="'/nagrade'">
-        <div class="logo-wrapp plavinci">
+        <div v-if="activePromo == 1" class="logo-wrapp plavinci">
             <PlavinciBanner />
         </div>
-        </Link>
-        <Link v-if="activePromo === 3" style="text-decoration: none;" prefetch="false" :href="'/nagrade'">
-        <div class="logo-wrapp abramo">
+        <div v-if="activePromo == 2" class="logo-wrapp abramo">
             <AbramoBanner />
         </div>
-        </Link>
         <div class="links-wrapper">
             <Link prefetch="false" :href="'/'">
             <Logo :style="{ top: 50 + 'px' }" />
@@ -354,10 +341,6 @@ watch(
                 :class="{ active: $page.url === '/statistika' }">Statistika</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">Dodaj turnir ili ligu</Link>
-            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/nagrade'"
-                :class="{ active: $page.url === '/nagrade' }">nagrade</Link>
-            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/crazy-pizza'"
-                :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/uputstva'"
                 :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
 
@@ -368,6 +351,8 @@ watch(
                 :href="'/dodaj-teren'" :class="{ active: $page.url === '/dodaj-teren' }">Dodaj teren</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">Dodaj turnir</Link>
+             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
+                :href="'/upravljaj-serijama'" :class="{ active: $page.url === '/upravljaj-serijama' }">upravljaj serijama</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/dodaj-novu-ligu'" :class="{ active: $page.url === '/dodaj-novu-ligu' }">Dodaj novu ligu</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
@@ -430,10 +415,6 @@ watch(
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj turnir ili ligu</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/nagrade'"
-                :class="{ active: $page.url === '/nagrade' }">nagrade</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/crazy-pizza'"
-                :class="{ active: $page.url === '/crazy-pizza' }">crazy pizza</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
                 :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
 
@@ -634,13 +615,7 @@ watch(
             
         }
 
-        &:hover {
-            svg {
-               .cls-1{
-                    fill: #fedf37 !important;
-               }
-            }
-        }
+      
     }
 
     .abramo {
@@ -659,13 +634,7 @@ watch(
             
         }
 
-        &:hover {
-            svg {
-               .cls-1{
-                    fill: #fedf37 !important;
-               }
-            }
-        }
+    
     }
 }
 </style>
