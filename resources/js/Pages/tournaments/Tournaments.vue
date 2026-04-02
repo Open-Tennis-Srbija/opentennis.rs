@@ -601,7 +601,7 @@ const tournamentsText = computed(() => {
       @click-date="handleDateClick"
     >
       <template #day-content="{ day }">
-        <div class="custom-day-number">{{ serbianDayNamesShort[day.getDay()] }} {{ day.getDate() }} <span class="month-abbr">{{ serbianMonthNames[day.getMonth()].toLowerCase().substring(0, 3) }}</span></div>
+        <div class="custom-day-number"><span class="day-name">{{ serbianDayNamesShort[day.getDay()] }}</span> {{ day.getDate() }} <span class="month-abbr">{{ serbianMonthNames[day.getMonth()].toLowerCase().substring(0, 3) }}</span></div>
       </template>
     </CalendarView>
   </div>
