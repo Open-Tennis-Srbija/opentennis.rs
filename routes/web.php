@@ -9,13 +9,14 @@ use App\Http\Controllers\CourtsController;
 use App\Http\Controllers\LeaguesController;
 use App\Http\Controllers\ResolverController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\TournamentSeriesController;
 use App\Http\Middleware\RedirectLoggedIn;
 use Illuminate\Support\Facades\Route;
 
 
 // PROMO
-Route::inertia('/crazy-pizza', 'static/CrazyPizza')->name('crazyPizza');
-Route::get('/nagrade', [StaticController::class, 'rewards'])->name('rewards');
+Route::redirect('/crazy-pizza', '/');
+Route::redirect('/nagrade', '/');
 
 Route::get('/', [StaticController::class, 'players'])->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);
