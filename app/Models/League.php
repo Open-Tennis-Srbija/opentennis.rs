@@ -15,8 +15,18 @@ class League extends Model
     protected $fillable = [
         'name',
         'link',
+        'uri',
+        'county',
+        'court_id',
         'date_begin',
-        'date_end'
+        'date_end',
+        'type',
+        'tournament_series_id'
+    ];
+
+    protected $casts = [
+        'date_begin' => 'date',
+        'date_end' => 'date'
     ];
 
 
@@ -141,5 +151,37 @@ class League extends Model
         }
 
         return $points;
+    }
+
+    /**
+     * Get the tournament series this league belongs to
+     */
+    public function tournamentSeries()
+    {
+        return $this->belongsTo(TournamentSeries::class);
+    }
+
+    /**
+     * Get the court this league is played at
+     */
+    public function court()
+    {
+        return $this->belongsTo(Court::class);
+    }
+
+    /**
+     * Scope for tournament type leagues
+     */
+    public function scopeTournaments($query)
+    {
+        return $query->where('type', 'tournament');
+    }
+
+    /**
+     * Scope for league type leagues
+     */
+    public function scopeLeagues($query)
+    {
+        return $query->where('type', 'league');
     }
 }

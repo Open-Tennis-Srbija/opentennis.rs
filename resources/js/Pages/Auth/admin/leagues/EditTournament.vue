@@ -1,7 +1,6 @@
-
 <script setup>
 import {useForm, usePage} from '@inertiajs/vue3'
-import {nextTick, onMounted, reactive} from 'vue';
+import {onMounted, reactive} from 'vue';
 import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import { ref } from 'vue';
@@ -10,15 +9,32 @@ import bus from 'vue3-eventbus';
 import Dropdown from '@components/Dropdown.vue';
 import opstine from '@assets/regions_serbia.json';
 
-const props = defineProps({courts: Array, series: Array});
+const props = defineProps({uri: String, courts: Array, series: Array});
 
 const page = usePage();
+const league = ref({});
 const focusInput = ref(null);
 
-onMounted(async () => {
-    page.props['title'] = `Dodaj turnir`;
-    await nextTick();
-    bus.emit('loading', false);
+onMounted(() => {
+    page.props['title'] = `Izmeni turnir`;
+    axios.get(`/turnir/${props.uri}`).then((response) => {
+       console.log(response.data)
+        form.id = response.data.id;
+        form.name = response.data.name;
+        form.location = response.data.county;
+        form.date_begin = response.data.date_begin;
+        form.uri = response.data.uri;
+        form.date_end = response.data.date_end;
+        form.series = response.data.series;
+        form.link = response.data.link;
+        form.type = response.data.type == 'league' ? 'liga' : 'turnir';
+        form.court = response.data.court;
+        league.value = response.data;
+        bus.emit('loading', false);
+        focusInput.value.focus();
+    }).catch((error) => {
+        console.error('Error fetching league:', error);
+    });
 });
 
 const handleTemp = (mode) => {
@@ -31,6 +47,13 @@ const handleTemp = (mode) => {
 }
 
 
+
+const minDate = (date) =>{
+  let temp = date;
+  temp.setFullYear(temp.getFullYear() - 1);
+
+  return temp;
+}
 const formatDate = (date) => {
     let days = ['ned', 'pon', 'uto', 'sre', 'čet', 'pet', 'sub'];
     let months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'];
@@ -38,21 +61,37 @@ const formatDate = (date) => {
 }
 
 const form = useForm({
+    id: null,
     name: null,
     date_begin: null,
     date_end: null,
     name: null,
-    type: 'Turnir',
     location: null,
     link: null,
     court: null,
+    type: null,
     series: null,
+    uri: null,
 });
+
+const types = ['Liga', 'Turnir'];
 
 const formState = reactive({
     submitted: false,
     success: false,
 });
+const deleteLeague = () =>{
+    if(confirm('Da li ste sigurni da želite da obrišete ovu ligu?')){
+        form.post(`/obrisi-ligu`,{
+            onSuccess: () => {
+                location.href = '/lige';
+            },
+            onError: (errors) => {
+                formState.submitted = false;
+            },
+        });
+    }
+}
 const submit = () =>{
 
   formState.submitted = true;
@@ -60,7 +99,25 @@ const submit = () =>{
   if(form.location)
     form.location.trim();
 
-    form.post(`/dodaj-ligu`,{
+    // Prepare form data with complete objects
+    const formData = {
+        id: form.id,
+        name: form.name,
+        date_begin: form.date_begin,
+        date_end: form.date_end,
+        location: form.location,
+        link: form.link,
+        court: form.court,
+        type: form.type,
+        series: form.series, // Send complete series object {id, name}
+        uri: form.uri,
+    };
+
+    // Create new form instance with processed data
+    const processedForm = useForm(formData);
+
+
+    processedForm.post(`/izmeni-turnir/${props.uri}`,{
         onSuccess: (response) => {
           form.reset();
           formState.submitted = false;
@@ -86,38 +143,41 @@ const handleInputs = (event,isDate = false) => {
 
 </script>
 <template>
-   <Head title="Dodaj turnir -" />
+   <Head title="Izmeni ligu -" />
     <div class="static-wrapper">
-    <h1 id="title" :class="{'hide': formState.success}">dodaj turnir</h1>
+    <h1 id="title" :class="{'hide': formState.success}">izmeni turnir</h1>
     <form id="form" @submit.prevent="submit">
 
       <div class="form-section">
         <div class="form-row three">
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
+          <div class="form-group">
             <label for="winner-fname" class="input-label">
               Ime<span class="required">*</span>
             </label>
             <input ref="focusInput" v-model="form.name" @input="handleInputs($event)" :class="{'invalid': form.errors.first_name}" :disabled="formState.submitted" id="first_name" type="text">
             <p class="error-message">{{ form.errors.first_name }}</p>
           </div>
-           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
+          <div class="form-group">
             <label for="winner-fname" class="input-label">
               Serija
             </label>
             <Dropdown
+              v-if="form.series || series"
               label="name"
               :options="series"
+              :multiple="false"
               v-model="form.series"
               :class="{'invalid': form.errors.series}"
               :shouldReset="formState.shouldReset"
             ></Dropdown>
             <p class="error-message">{{ form.errors.series }}</p>
           </div>
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
+          <div class="form-group">
             <label for="winner-fname" class="input-label">
               Opstina<span class="required">*</span>
             </label>
             <Dropdown
+              v-if="form.location"
               label="name"
               :options="opstine.data"
               v-model="form.location"
@@ -133,18 +193,19 @@ const handleInputs = (event,isDate = false) => {
 
       <div class="form-section">
         <div class="form-row">
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
+          <div class="form-group">
             <label for="winner-fname" class="input-label">
               Organizator (link)
             </label>
             <input v-model="form.link" @input="handleInputs($event)" :class="{'invalid': form.errors.link}" :disabled="formState.submitted" id="link" type="text">
             <p class="error-message">{{ form.errors.link }}</p>
           </div>
-          <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('loser')">
+          <div class="form-group">
             <label for="winner-fname" class="input-label">
               Teren
             </label>
             <Dropdown
+              v-if="form.court"
               label="name"
               :options="courts"
               v-model="form.court"
@@ -152,6 +213,32 @@ const handleInputs = (event,isDate = false) => {
               :shouldReset="formState.shouldReset"
             ></Dropdown>
             <p class="error-message">{{ form.errors.court }}</p>
+          </div>
+        </div>
+      </div>
+          <div class="form-section">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="winner-fname" class="input-label">
+              URI (opentennis.rs/URI)
+            </label>
+            <input v-model="form.uri" @input="handleInputs($event)" :class="{'invalid': form.errors.uri}" :disabled="formState.submitted" id="uri" type="text">
+            <p class="error-message">{{ form.errors.uri }}</p>
+          </div>
+          <div class="form-group">
+              <label for="winner-fname" class="input-label">
+              Tip<span class="required">*</span>
+            </label>
+            <Dropdown
+              v-if="form.type"
+              label="name"
+              :options="types"
+              v-model="form.type"
+              :type="'array'"
+              :class="{'invalid': form.errors.type}"
+              :shouldReset="formState.shouldReset"
+            ></Dropdown>
+            <p class="error-message">{{ form.errors.last_name }}</p>
           </div>
         </div>
       </div>
@@ -171,7 +258,6 @@ const handleInputs = (event,isDate = false) => {
               v-model="form.date_begin"
               :class="{'invalid': form.errors.date}"
               :clearable="false"
-              :year-range="[new Date().getFullYear()-1, new Date().getFullYear()]"
               cancel-text="Otkaži"
               select-text="Potvrdi"
               :disabled="formState.submitted"
@@ -193,7 +279,6 @@ const handleInputs = (event,isDate = false) => {
               v-model="form.date_end"
               :class="{'invalid': form.errors.date}"
               :clearable="false"
-              :year-range="[new Date().getFullYear()-1, new Date().getFullYear()]"
               cancel-text="Otkaži"
               select-text="Potvrdi"
               :disabled="formState.submitted"
@@ -204,14 +289,16 @@ const handleInputs = (event,isDate = false) => {
         </div>
       </div>
 
+  
       <div class="form-section">
         <div class="form-row">
           <button id="submit">
-            <span id="add-btn">dodaj</span>
+            <span id="add-btn">izmeni</span>
           </button>
         </div>
       </div>
 
     </form>
+    <button @click.prevent="deleteLeague()" class="delete">obriši</button>
   </div>
 </template>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Court;
 use App\Models\League;
 use App\Models\TennisMatch;
+use App\Models\TournamentSeries;
 use DateTime;
 use Helper;
 use Illuminate\Http\Request;
@@ -99,10 +100,91 @@ class LeaguesController extends Controller
         }
     }
 
+    public function updateTournament(Request $request){
+        $data = $request->validate([
+            'id' => 'required',
+            'name' => 'required',
+            'location' => 'required',
+            'date_begin' => 'required',
+            'date_end' => 'required',
+            'type' => 'required|in:turnir,liga,Turnir,Liga',
+            'uri' => 'max:50|regex:/^[a-zA-Z0-9-]+$/',
+            'link' => '',
+            'court' => '',
+            'series' => '',
+        ], [
+            'name.required' => 'Ime je obavezno.',
+            'county.required' => 'Opština je obavezna.',
+            'date_begin.required' => 'Datum početka je obavezan.',
+            'date_end.required' => 'Datum završetka je obavezan.',
+        ]);
+
+        $league = League::find($data['id']);
+        if($league){
+            $league->name = $data['name'];
+            $league->county = $data['location'];
+            $date_begin = new DateTime($data['date_begin']);
+            $league->date_begin = $date_begin->format('Y-m-d');
+            $date_end = new DateTime($data['date_end']);
+            $league->date_end = $date_end->format('Y-m-d');
+            $league->link = $data['link'] ?? '';
+            $league->type = $data['type'] == 'liga' || $data['type'] == 'Liga' ? 'league' : 'tournament';
+
+            if($data['uri'] != $league->uri)
+            {
+                $league->uri = $data['uri'];
+            }
+            else{
+                // Generate a new URI if not provided
+                $uri = str_replace(' ', '-', strtolower($data['name']));
+                $uri = str_replace('--', '-', $uri);
+                $uri = Helper::formatName($uri);
+                $league->uri = $uri;
+            }
+
+           if($data['series'] && !is_numeric($data['series']['id'])){
+                $series = new TournamentSeries();
+                $series->name = $data['series']['name'];
+                $series->uri = Str::slug($data['series']['name']);
+                $series->county = $data['location'];
+                $series->save();
+                
+                $league->tournament_series_id = $series->id;
+            } else {
+                if(isset($data['series']['id']) && is_numeric($data['series']['id']))
+                    $league->tournament_series_id = $data['series']['id'];
+                else
+                    $league->tournament_series_id = null; // No series selected
+            }
+
+               if(!is_numeric($data['court']['id'])){
+                $court = new Court();
+                $court->name = $data['court']['name'];
+                $court->link = '';
+                $court->save();
+                
+                $league->court_id = $court->id;
+            } else {
+                $league->court_id = $data['court']['id'];
+            }
+
+            $league->save();
+            $uri = '/'.$league->uri;
+            return redirect($uri);
+        }
+    }
+
     public static function getLeagueForEdit($uri){
 		return Inertia::render('Auth/admin/leagues/EditLeague', [
 			'uri' => $uri,
             'courts' => CourtsController::getCourts(),
+		]);
+    }
+       public static function getTournamentForEdit($uri){
+		return Inertia::render('Auth/admin/leagues/EditTournament', [
+			'uri' => $uri,
+            'courts' => CourtsController::getCourts(),
+            'series' => TournamentSeriesController::getAllSeries(),
 		]);
     }
 
@@ -154,6 +236,26 @@ class LeaguesController extends Controller
             'court' => Court::find($league->court_id),
         ];
     }
+
+    public static function returnTournamentForEdit($tournament_uri){
+        $tournament = League::where('uri', $tournament_uri)->first();
+        return [
+            'id' => $tournament->id,
+            'name' => $tournament->name,
+            'county' => $tournament->county,
+            'date_begin' => $tournament->date_begin,
+            'uri' => $tournament->uri,
+            'date_end' => $tournament->date_end,
+            'type' => $tournament->type,
+            'link' => $tournament->link,
+            'court' => Court::find($tournament->court_id),
+            'series' => $tournament->tournamentSeries ? [
+                'id' => $tournament->tournamentSeries->id,
+                'name' => $tournament->tournamentSeries->name
+            ] : null
+        ];
+    }
+
     public static function returnCachedLeague($uri){
     if(file_exists(storage_path('app/public/leagues/'.$uri.'.json'))){
                 $cache = json_decode(file_get_contents(storage_path('app/public/leagues/'.$uri.'.json')), true);
@@ -234,7 +336,12 @@ public static function getTournamentsForList(){
             'county' => $league->county,
             'player_number' => $league->getPlayerCount(),
             'points' => $league->getPoints(),
-            'link' => $league->link
+            'link' => $league->link,
+            'series' => $league->tournamentSeries ? [
+                'id' => $league->tournamentSeries->id,
+                'name' => $league->tournamentSeries->name,
+            ] : null,
+            'color' => $league->tournamentSeries ? $league->tournamentSeries->color : '#ebebeb',
         ]);
     }
 
@@ -343,6 +450,7 @@ public static function getTournamentsForList(){
             'type' => 'required|in:Turnir,Liga,turnir,liga',
             'link' => '',
             'court' => '',
+            'series' => '',
         ], [
             'name.required' => 'Ime je obavezno.',
             'county.required' => 'Opština je obavezna.',
@@ -376,6 +484,21 @@ public static function getTournamentsForList(){
                 $league->court_id = $data['court']['id'];
             else
                 $league->court_id = 1; // No court selected
+        }
+
+        if($data['series'] && !is_numeric($data['series']['id'])){
+            $series = new TournamentSeries();
+            $series->name = $data['series']['name'];
+            $series->uri = Str::slug($data['series']['name']);
+            $series->county = $data['location'];
+            $series->save();
+            
+            $league->tournament_series_id = $series->id;
+        } else {
+            if(isset($data['series']['id']) && is_numeric($data['series']['id']))
+                $league->tournament_series_id = $data['series']['id'];
+            else
+                $league->tournament_series_id = null; // No series selected
         }
 
         $league->save();

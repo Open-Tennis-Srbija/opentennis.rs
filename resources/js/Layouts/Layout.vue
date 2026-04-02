@@ -300,18 +300,18 @@ watch(
             <div class="links" :class="{ 'admin': $page.props.auth.user }">
                 <div class="link-group">
                     <Link prefetch="false" :href="'/'"
-                        :class="{ active: $page.url === '/', activeChild: activeChilds.players }">{{ playersText }}</Link>
+                        :class="{ active: $page.url === '/', activeChild: activeChilds.tournaments }">
+                    {{ tournamentsText }}</Link>
+                    <Link prefetch="false" :href="'/teniseri'"
+                        :class="{ active: $page.url === '/teniseri', activeChild: activeChilds.players }">{{ playersText }}</Link>
                     <Link prefetch="false" :href="'/mecevi'"
                         :class="{ active: $page.url === '/mecevi', activeChild: activeChilds.matches }">{{ matchesText }}
                     </Link>
+                </div>
+                <div class="link-group">
                     <Link prefetch="false" :href="'/tereni'"
                         :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">{{ courtsText }}
                     </Link>
-                </div>
-                <div class="link-group">
-                    <Link prefetch="false" :href="'/turniri'"
-                        :class="{ active: $page.url === '/turniri', activeChild: activeChilds.tournaments }">
-                    {{ tournamentsText }}</Link>
                     <Link prefetch="false" :href="'/lige'"
                         :class="{ active: $page.url === '/lige', activeChild: activeChilds.leagues }">
                     {{ leaguesText }}</Link>

@@ -1,0 +1,243 @@
+/* Calendar styling */
+.calendar-container {
+    min-height: 600px;
+    margin: 60px auto !important;
+    margin-top: 35px !important;
+    margin-bottom: 100px !important;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.calendar-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 10px;
+    position: relative;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+
+    &:hover {
+        color: #00aeef;
+    }
+
+    &.prev {
+        justify-self: flex-start;
+        margin-left: 200px;
+    }
+
+    &.next {
+        justify-self: flex-end;
+        margin-right: 200px;
+    }
+}
+
+.current-month {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+        color: #1f2937;
+        text-transform: capitalize;
+        text-align: center;
+    }
+}
+
+.calendar-loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 16px;
+}
+
+/* Override vue-simple-calendar styles */
+.cv-wrapper {
+    font-family: Arial, sans-serif;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent;
+    min-height: 500px;
+    padding: 0 !important;
+    overflow: visible;
+
+    @media only screen and (max-width: 1200px) {
+        padding-inline: 10px !important;
+    }
+}
+
+.cv-weeks {
+    overflow: visible;
+}
+
+.cv-week {
+    overflow: visible;
+    flex-basis: unset;
+}
+
+.cv-header {
+    display: none;
+}
+
+.cv-day {
+    min-height: 180px;
+    border: 1px solid #e5e7eb;
+    background: white !important;
+    overflow: visible;
+
+    &.today {
+        background: white !important;
+    }
+
+    &.past {
+        background: white !important;
+    }
+
+    &.outsideOfMonth {
+        background: white !important;
+    }
+
+    .cv-day-number {
+        display: none;
+    }
+}
+
+.custom-day-number {
+    text-align: center;
+    width: 100%;
+    padding: 4px 0;
+    padding-bottom: 14px !important;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+
+    @media (max-width: 768px) {
+        .month-abbr {
+            display: none;
+        }
+    }
+}
+
+.cv-item {
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin: 2px 0;
+    font-family: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 13px !important;
+    font-weight: 500;
+    min-height: 28px;
+    line-height: 1.3;
+    cursor: pointer;
+    border: none !important;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    padding-top: 0px;
+    border-radius: 0 !important;
+    margin-top: 15px !important;
+
+    &.toBeContinued::after,
+    &.toBeContinued::before {
+        display: none !important;
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        filter: brightness(0.9);
+        text-decoration: none !important;
+    }
+
+    @media screen and (max-width: 768px) {
+        margin-top: 20px !important;
+    }
+}
+
+.cv-event {
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 11px;
+    cursor: pointer;
+
+    &:hover {
+        background: #0056b3;
+    }
+}
+
+/* Mobile responsiveness for calendar */
+@media (max-width: 768px) {
+    .calendar-container {
+        margin: 20px 10px;
+        max-width: calc(100vw - 20px);
+    }
+    
+    .calendar-navigation {
+        flex-direction: row;
+        gap: 0;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .current-month {
+        position: static;
+        transform: none;
+
+        h2 {
+            font-size: 18px;
+            text-align: center;
+        }
+    }
+    
+    .nav-link {
+        font-size: 14px;
+        gap: 3px;
+
+        &.prev {
+            margin-left: 0;
+        }
+        
+        &.next {
+            margin-right: 0;
+        }
+
+        svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+    
+    .cv-wrapper {
+        font-size: 12px;
+    }
+    
+    .cv-day {
+        min-height: 140px;
+        overflow: visible;
+    }
+    
+    .cv-item {
+        font-size: 13px;
+        padding: 4px 8px;
+        min-height: 24px;
+    }
+}
+
+.cv-header-days{
+    display: none !important;
+}

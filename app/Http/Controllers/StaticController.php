@@ -58,6 +58,7 @@ class StaticController extends Controller
         
         return Inertia::render('tournaments/Tournaments', [
             'seo' => $seoData,
+            'series' => TournamentSeriesController::getAllSeries(),
         ]);
     }
     

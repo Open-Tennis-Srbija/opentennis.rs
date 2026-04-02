@@ -1,0 +1,335 @@
+@use '../abstracts/' as *;
+.list-title{
+  font-family: 'Helvetica Neue';
+  text-transform: uppercase;
+  font-size: 40px;
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 0px;
+
+  @media screen and (max-width: 1200px) {
+    font-size: 27px;
+    margin-bottom: 20px;
+  }
+}
+/* Skeleton loading styles */
+.skeleton-wrapper {
+    pointer-events: none;
+}
+
+/* Skeleton Loading Styles */
+.skeleton-item {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+}
+
+.skeleton {
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+    height: 16px;
+    margin: 2px 0;
+}
+
+.skeleton-text {
+    height: 16px;
+
+    &.small {
+        height: 14px;
+        width: 40%;
+        margin: 0 auto;
+    }
+
+    &.medium {
+        height: 16px;
+        width: 60%;
+        margin: 0 auto;
+    }
+}
+
+.ranking-entry.skeleton {
+    opacity: 0.7;
+    pointer-events: none;
+
+    .skeleton-item {
+        color: transparent;
+    }
+
+    .rank,
+    .name {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .elo,
+    .wins,
+    .total-matches,
+    .loses {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Calendar navigation styles (legacy - may be unused) */
+.calendar-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    position: relative;
+}
+
+.nav-btn {
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background-color: #00aeef;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.2s ease;
+    border-radius: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    &:hover {
+        background-color: $red;
+    }
+
+    &.prev {
+        left: calc(50% - 200px - 25px);
+    }
+
+    &.next {
+        left: calc(50% + 200px - 25px);
+    }
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    pointer-events: none !important;
+}
+
+.current-month {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h2 {
+        margin: 0;
+        font-size: 24px;
+        text-align: center;
+    }
+}
+
+/* New tournament controls styles */
+.tournament-controls {
+    display: flex;
+    gap: 61px;
+    align-items: center;
+    justify-content: center;
+    margin: 36px auto 50px auto;
+    max-width: 1200px;
+    width: 100%;
+    z-index: 5;
+    position: relative;
+    transition: opacity 0.3s ease;
+
+    &.hidden-nav {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+.control-group {
+    display: flex;
+    gap: 0;
+    width: 254px;
+    flex-shrink: 0;
+}
+
+.view-btn {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 0;
+    padding-top: 5px;
+    height: 50px;
+    flex: 1;
+    cursor: pointer;
+    font-family: 'Helvetica Neue',Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.active {
+        background-color: $red;
+        color: white;
+    }
+
+    &:hover:not(.active) {
+        background-color: $blue;
+        color: white;
+    }
+}
+
+.series-filter {
+    width: 244px;
+    flex-shrink: 0;
+
+     .dropdown-wrapper {
+        width: 100% !important;
+    }
+}
+
+.county-filter {
+    width: 244px;
+    flex-shrink: 0;
+
+     .dropdown-wrapper {
+        width: 100% !important;
+    }
+}
+
+.month-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 274px;
+    flex-shrink: 0;
+
+    &.hidden-nav {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+.month-dropdown {
+    width: 174px;
+    margin-right: 10px;
+
+    .dropdown-wrapper {
+        width: 100% !important;
+    }
+}
+
+.nav-arrow-btn {
+    background-color: #f0f0f0;
+    border: none;
+    width: 45px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    fill: #8f8f8f;
+
+    &:hover {
+        background-color: $red;
+        fill: white;
+    }
+
+    .dropdown-arrow {
+        width: 26px;
+        height: 26px;
+        pointer-events: none;
+    }
+}
+
+/* Mobile skeleton adjustments */
+@media (max-width: 768px) {
+    .ranking-entry.skeleton {
+        .name,
+        .date,
+        .county {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4px 0;
+        }
+    }
+
+    .skeleton-text {
+        height: 14px;
+    }
+
+    .tournament-controls {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+        padding: 0 20px;
+
+        &.hidden-nav {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+    
+    .control-group {
+        justify-content: center;
+        width: 100%;
+        gap: 0;
+
+        .view-btn {
+            flex: 1;
+            width: auto;
+        }
+    }
+    
+    .series-filter {
+        width: 100%;
+    }
+    
+    .county-filter {
+        width: 100%;
+    }
+    
+    .month-navigation {
+        justify-content: center;
+        width: 100%;
+        gap: 20px;
+
+        &.hidden-nav {
+            display: none;
+        }
+
+        .month-dropdown {
+            flex: 1;
+            width: auto;
+        }
+    }
+}
