@@ -283,12 +283,16 @@ watch(
 <template>
     <Loader :show="loading" />
     <header class="header-wrapper">
-        <div v-if="activePromo == 1" class="logo-wrapp plavinci">
-            <PlavinciBanner />
-        </div>
-        <div v-if="activePromo == 2" class="logo-wrapp abramo">
-            <AbramoBanner />
-        </div>
+        <a v-if="activePromo == 1" href="https://www.plavinci.rs/" target="_blank" rel="noopener noreferrer">
+            <div class="logo-wrapp plavinci">
+                <PlavinciBanner />
+            </div>
+        </a>
+        <a v-if="activePromo == 2" href="https://abramocaffe.rs/" target="_blank" rel="noopener noreferrer">
+            <div class="logo-wrapp abramo">
+                <AbramoBanner />
+            </div>
+        </a>
         <div class="links-wrapper">
             <Link prefetch="false" :href="'/'">
             <Logo :style="{ top: 50 + 'px' }" />
@@ -614,8 +618,14 @@ watch(
             }
             
         }
-
-      
+         &:hover {
+            svg {
+               .cls-1{
+                    fill: #fedf37 !important;
+               }
+            }
+        }
+        
     }
 
     .abramo {
@@ -633,7 +643,13 @@ watch(
             }
             
         }
-
+         &:hover {
+            svg {
+               .cls-1{
+                    fill: #fedf37 !important;
+               }
+            }
+        }
     
     }
 }
