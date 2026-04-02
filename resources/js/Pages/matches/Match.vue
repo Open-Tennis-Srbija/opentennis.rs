@@ -554,6 +554,7 @@ $text-color-gray: #949494;
             font-size: 18px;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             margin-top: -10px;
+            margin-bottom: 10px;
             display: block;
         }
     }
