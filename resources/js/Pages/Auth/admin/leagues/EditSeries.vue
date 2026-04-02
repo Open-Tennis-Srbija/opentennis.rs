@@ -248,6 +248,10 @@ const saveAll = async () => {
 }
 .btn-add, .btn-save-all{
     padding-top: 1px !important;
+
+    @media only screen and (max-width: 900px) {
+        padding-top: 5px !important;
+    }
 }
 
 .buttons {
@@ -274,6 +278,10 @@ const saveAll = async () => {
           background-color: $red;
           color: white;
         }
+
+           @media only screen and (max-width: 900px) {
+        padding-top: 5px !important;
+    }
     }
 }
 

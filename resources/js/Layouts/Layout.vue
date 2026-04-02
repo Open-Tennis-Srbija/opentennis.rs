@@ -446,6 +446,8 @@ watch(
 
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
                 :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">dodaj turnir</Link>
+             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
+                :href="'/upravljaj-serijama'" :class="{ active: $page.url === '/upravljaj-serijama' }">upravljaj serijama</Link>
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
                 :href="'/dodaj-novu-ligu'" :class="{ active: $page.url === '/dodaj-novu-ligu' }">dodaj novu ligu</Link>
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
