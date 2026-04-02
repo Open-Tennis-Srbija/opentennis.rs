@@ -889,7 +889,16 @@ fclose($handle);
             'game_score' => $match->game_score,
             'county' => $match->county,
             'court' => Court::find($match->court_id),
-            'league' => League::find($match->league_id),
+            'league' => [
+                'id' => $match->league_id,
+                'name' => League::find($match->league_id)->name,
+                'uri' => League::find($match->league_id)->uri,
+                'series' => [
+                    'name' => League::find($match->league_id)->tournamentSeries ? League::find($match->league_id)->tournamentSeries->name : null,
+                    'uri' => League::find($match->league_id)->tournamentSeries ? League::find($match->league_id)->tournamentSeries->uri : null,
+                    'color' => League::find($match->league_id)->tournamentSeries ? League::find($match->league_id)->tournamentSeries->color : null,
+                ],
+            ],
             'court_link' => $match->court ? $match->court->link : null,
             'date' => $match->date,
         ];

@@ -109,6 +109,7 @@ const isInactive = (date_end) => {
 
 onMounted(() => {
   isClient.value = true;
+  bus.emit('clearActive');
   
   // Initialize selectedMonth with current date
   const now = new Date();

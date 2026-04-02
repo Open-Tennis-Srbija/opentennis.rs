@@ -113,10 +113,11 @@ onMounted(() => {
             }
         });
         bus.on('clearActive', (e) => {
-            activeChilds.players = false;
-            activeChilds.leagues = false;
-            activeChilds.courts = false;
-            activeChilds.tournaments = false;
+             activeChilds.players = false;
+                activeChilds.leagues = false;
+                activeChilds.matches = false;
+                activeChilds.courts = false;
+                activeChilds.tournaments = false;
         });
         window.addEventListener('pageshow', (event) => {
             // If coming from bfcache and user is not logged in, reload to get fresh state
@@ -177,6 +178,8 @@ function computeHeaderMessage() {
 
     switch (page.url) {
         case "/":
+            return "turniri";
+        case "/teniseri":
             return "teniseri";
         case "/mecevi":
             return "mečevi";

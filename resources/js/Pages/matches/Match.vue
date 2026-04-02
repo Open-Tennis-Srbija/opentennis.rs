@@ -274,12 +274,17 @@ const matchTitle = computed(() => {
         </div>
 
         <div class="location">
-                <a v-if="formatedMatch.league?.uri !== ''" class="black" :href="`/${formatedMatch.league?.uri}`">{{
+                <template v-if="formatedMatch.league?.uri !== ''">
+                <a class="black" :href="`/${formatedMatch.league?.uri}`">{{
                     formatedMatch.league?.name
                     }}</a>
-            <p v-else>
-                sparing
-            </p>
+                    <span class="series" :style="{color: formatedMatch.league?.series?.color || '#8f8f8f'}">{{ formatedMatch.league?.series?.name || 'nezavistan' }}</span>
+                </template>
+                <template v-else>
+                    <p>
+                        sparing
+                    </p>
+                </template>
             <a class="court" :href="`/tereni/${formatedMatch.court?.uri}`">{{
                 formatedMatch.court?.name
             }}</a>
@@ -544,6 +549,12 @@ $text-color-gray: #949494;
                     color: $blue;
                 }
             }
+        }
+        .series{
+            font-size: 18px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin-top: -10px;
+            display: block;
         }
     }
 
