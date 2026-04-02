@@ -36,6 +36,7 @@ class LeaguesController extends Controller
             'match_number' => $league->getMatchCount(),
             'link' => $league->link,
             'rank' => $league->getRank(),
+            'type'=> $league->type,
             'players' => $league->getPlayers(),
             'matches' => $league->getMatches(),
             'court' => Court::find($league->court_id),
@@ -303,6 +304,7 @@ public static function getLeaguesForList(){
         array_push($response,[
             'name'=> $league->name,
             'uri'=> $league->uri,
+            'type'=> $league->type,
             'date_start' => $league->date_begin,
             'date_end' => $league->date_end,
             'match_number' => $league->getMatchCount(),

@@ -321,7 +321,7 @@
     .month-navigation {
         justify-content: center;
         width: 100%;
-        gap: 20px;
+        gap: 0;
 
         &.hidden-nav {
             display: none;
@@ -330,6 +330,7 @@
         .month-dropdown {
             flex: 1;
             width: auto;
+            margin-right: 10px;
         }
     }
 }

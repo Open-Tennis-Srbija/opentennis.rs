@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
         <Link prefetch="false"
 				class="edit-btn"
 				v-if="$page.props.auth.user"
-				:href="`/izmeni-ligu/${league.uri}`"
+				:href="`/${league.type === 'tournament' ? 'izmeni-turnir' : 'izmeni-ligu'}/${league.uri}`"
 				><EditIcon
                 class="league"
 			/></Link>

@@ -58,7 +58,7 @@ const handleInputs = (event,isDate = false) => {
 </script>
 <template>
     <Head>
-      <title>Admin Login</title>
+      <title>Admin prijava</title>
       <meta name="robots" content="noindex, nofollow">
       <meta name="googlebot" content="noindex, nofollow">
   </Head>
@@ -89,3 +89,19 @@ const handleInputs = (event,isDate = false) => {
     </form>
   </div>
 </template>
+
+<style scoped lang="scss">
+.form-row.column {
+    .form-group {
+        input {
+            width: 500px;
+        }
+    }
+
+    :deep(.password-field) {
+        input {
+            width: 500px;
+        }
+    }
+}
+</style>
