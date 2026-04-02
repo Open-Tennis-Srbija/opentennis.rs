@@ -144,7 +144,7 @@ onMounted(() => {
       { id: null, name: 'dropdown-spacer' },
       ...response.data,
       { id: null, name: 'dropdown-spacer' },
-      { id: 'nezavisni', name: 'NEZAVISNI' }
+      { id: 'nezavisni', name: 'Nezavisni' }
     ];
     series.value = allSeriesData;
     
@@ -167,7 +167,7 @@ const handleScroll = (top) => {
 
 const topOffset = computed(() => {
     if (scrollPos.value >= 70) {
-        return 209;
+        return 225;
     } else {
         return scrollPos.value * 2;
     }
@@ -486,7 +486,7 @@ const tournamentsText = computed(() => {
     <!-- Skeleton Loading State -->
     <div v-if="isLoading" class="skeleton-wrapper">
       <div id="desktop">
-        <div class="rankings-header" :style="{ top: 289 - topOffset + 'px' }">
+        <div class="rankings-header" :style="{ top: 304 - topOffset + 'px' }">
           <div class="spacer"></div>
           <div class="name">turniri</div>
           <div class="wins">poeni</div>
@@ -541,7 +541,7 @@ const tournamentsText = computed(() => {
     <!-- Actual Content -->
     <div v-else>
       <div id="desktop">
-        <div class="rankings-header" :style="{ top: 289 - topOffset + 'px' }">
+        <div class="rankings-header" :style="{ top: 304 - topOffset + 'px' }">
         <!-- <div class="rankings-header" :style="{top: `${ 50 - topOffset}px`}"> -->
           <div class="spacer"></div>
           <div class="name">turniri</div>
@@ -551,12 +551,12 @@ const tournamentsText = computed(() => {
           <div class="elo">početak - kraj</div>
           <div class="elo">opština</div>
         </div>
-        <div v-if="leagues.length" class="ranking-entry" v-for="(league, index) in leagues" :style="{marginTop: index === 0 ? 1 - topOffset/2.4 + 'px' : '0'}" >
+        <div v-if="leagues.length" class="ranking-entry" v-for="(league, index) in leagues" :style="{marginTop: index === 0 ? 16 - topOffset/2.4 + 'px' : '0'}" >
         <div class="rank">
             {{ index+1 }}
           </div>
           <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-turnir/${league.uri}`"><EditBtn/></Link>
-          <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
+          <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link><br><span class="series" :style="{'color': league.series?.color || '#8f8f8f'}">{{ league.series?.name || 'nezavistan' }}</span></div>
           <div class="elo league-points" :class="{'unknown': league.points == 0}">{{utl.formatAsThousands(league.points)}}</div>
           <div class="total-matches">{{league.match_number}}</div>
           <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
@@ -569,7 +569,10 @@ const tournamentsText = computed(() => {
           <div class="rank">
             {{ index + 1 }}
           </div>
-          <div class="name" style="font-weight: bold; text-align: center;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
+          <div class="name" style="font-weight: bold; text-align: center;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link>
+            <br>
+          <span class="series" :style="{'color': league.series?.color || '#8f8f8f'}">{{ league.series?.name || 'nezavistan' }}</span>
+          </div>
           <div :class="{'inactive' : isInactive(league.date_end)}" class="date">{{formatDate(league.date_start, league.date_end)}}</div>
           <div class="county" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
           <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-turnir/${league.uri}`"><EditBtn/></Link>

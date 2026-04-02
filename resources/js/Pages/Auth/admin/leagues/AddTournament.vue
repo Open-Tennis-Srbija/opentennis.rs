@@ -107,6 +107,7 @@ const handleInputs = (event,isDate = false) => {
             <Dropdown
               label="name"
               :options="series"
+              :clearable="true"
               v-model="form.series"
               :class="{'invalid': form.errors.series}"
               :shouldReset="formState.shouldReset"

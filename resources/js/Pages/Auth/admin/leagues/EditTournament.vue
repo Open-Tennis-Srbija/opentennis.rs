@@ -166,6 +166,7 @@ const handleInputs = (event,isDate = false) => {
               label="name"
               :options="series"
               :multiple="false"
+              :clearable="true"
               v-model="form.series"
               :class="{'invalid': form.errors.series}"
               :shouldReset="formState.shouldReset"

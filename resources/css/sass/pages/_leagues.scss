@@ -27,6 +27,15 @@
                     color: black;
                 }
             }
+
+            .series{
+                font-size: 14px;
+                text-transform: uppercase;
+
+                @media only screen and (max-width: 900px) {
+                    font-size: 16px;
+                }
+            }
         }
 
         .unknown{

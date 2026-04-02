@@ -202,7 +202,7 @@ onBeforeUnmount(() => {
         <h1 class="red" :class="{'fix-letters': containsGreek(league.name)}">
             {{ league.name }}        </h1>
 
-        <p class="subtitle small-margin">{{ league.county }}{{ league.court && league.court.id > 1 ? ',' : '' }} <a class="court-link" v-if="league.court && league.court.id > 1" :href="`/tereni/${league.court.uri}`">{{ league.court.name }}</a></p>
+        <p class="subtitle small-margin"><span v-if="league.type=='tournament'" :style="{'color': league.series?.color || 'inherit'}">{{league.series?.name || 'Nezavistan'}}</span>{{league.type == 'tournament' ? ',' : ''}}{{ league.county }}{{ league.court && league.court.id > 1 ? ',' : '' }} <a class="court-link" v-if="league.court && league.court.id > 1" :href="`/tereni/${league.court.uri}`">{{ league.court.name }}</a></p>
         <p v-if="league.date_start || league.date_end" :style="{color: isInactive(league.date_end) ? '#949494' : 'black'}" class="subtitle smaller-margin league-margin">
             {{formatDate(league.date_start, league.date_end)}} 
         </p>

@@ -85,6 +85,16 @@ const deleteSeries = async (series, index) => {
 
 const isSavingAll = ref(false);
 
+const addSeries = () => {
+    allSeries.value.push({
+        id: null,
+        name: '',
+        color: '#ebebeb',
+        isEditing: false,
+        isSaving: false
+    });
+};
+
 const saveAll = async () => {
     const invalid = allSeries.value.find(s => !s.name || s.name.trim() === '');
     if (invalid) {
@@ -167,15 +177,6 @@ const saveAll = async () => {
                             </div>
                         </div>
                         <div class="form-group buttons">
-                           <button 
-                            @click="saveSeries(series, index)"
-                            :disabled="series.isSaving"
-                            class="btn-save"
-                            id="submit"
-                        >
-                            <span>{{ series.isSaving ? 'Čuvanje...' : 'Sačuvaj' }}</span>
-                        </button>
-                        
                         <button 
                             @click="deleteSeries(series, index)"
                             :disabled="series.isSaving"
@@ -190,12 +191,18 @@ const saveAll = async () => {
 
             <div class="save-all-wrapper">
                 <button
+                    @click="addSeries"
+                    class="btn-add"
+                >
+                    <span>DODAJ</span>
+                </button>
+                <button
                     @click="saveAll"
                     :disabled="isSavingAll"
                     class="btn-save-all"
                     id="submit"
                 >
-                    <span>{{ isSavingAll ? 'ČUVANJE...' : 'SAČUVAJ SVE' }}</span>
+                    <span>{{ isSavingAll ? 'ČUVANJE...' : 'SAČUVAJ' }}</span>
                 </button>
             </div>
         </div>
@@ -239,13 +246,16 @@ const saveAll = async () => {
 .hex-input {
     width: 283px !important;
 }
+.btn-add, .btn-save-all{
+    padding-top: 1px !important;
+}
 
 .buttons {
     display: flex;
     flex-direction: row !important;
     gap: 20px;
     
-    .btn-save, .delete {
+    .delete {
         flex: 1;
         width: auto !important;
         margin: 0 !important;
@@ -256,22 +266,10 @@ const saveAll = async () => {
         right: unset !important;
         bottom: unset !important;
         transform: unset !important;
-        padding-top: 5px;
+        padding-top: 1px;
         background-color: #e0e0e0;
         color: #333;
-        span{
-          font-family: 'Helvetica Neue' !important;
-        }
 
-        &:hover{
-          color: white;
-          background-color: $blue;
-        }
-    }
-
-    .delete{
-      background-color: #e0e0e0;
-      color: #333;
         &:hover{
           background-color: $red;
           color: white;
@@ -281,10 +279,10 @@ const saveAll = async () => {
 
 .save-all-wrapper {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-top: 20px;
 
-    .btn-save-all {
+    .btn-add {
         width: 350px !important;
         height: 50px;
         margin: 0 !important;
@@ -307,7 +305,35 @@ const saveAll = async () => {
         }
 
         &:hover {
-            background-color: $blue;
+            background-color: $red;
+            color: white;
+        }
+    }
+
+    .btn-save-all {
+        width: 350px !important;
+        height: 50px;
+        margin: 0 !important;
+        display: block !important;
+        position: relative !important;
+        top: unset !important;
+        left: unset !important;
+        right: unset !important;
+        bottom: unset !important;
+        transform: unset !important;
+        padding-top: 5px;
+        background-color: $blue;
+        color: white;
+        font-size: 18px;
+        font-weight: inherit;
+        border: none;
+        cursor: pointer;
+        span {
+            font-family: 'Helvetica Neue' !important;
+        }
+
+        &:hover {
+            background-color: $red;
             color: white;
         }
     }
@@ -332,13 +358,17 @@ const saveAll = async () => {
     }
 
     .buttons {
-        .btn-save, .delete {
+        .delete {
             width: 100% !important;
         }
     }
 
     .save-all-wrapper {
         justify-content: stretch;
+
+        .btn-add {
+            width: 100% !important;
+        }
 
         .btn-save-all {
             width: 100% !important;

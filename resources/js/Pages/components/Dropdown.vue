@@ -13,7 +13,8 @@ const props = defineProps({
     canAdd: Boolean,
     disabledOption: Object,
     disabledOptions: Array,
-    minWidth: String
+    minWidth: String,
+    clearable: Boolean
 });
 
 const model = defineModel();
@@ -41,6 +42,7 @@ onBeforeMount(() => {
 
 const dropdownInput = ref(null);
 const dropdownDiv = ref(null);
+const dropdownWrapper = ref(null);
 
 const state = reactive({
     isOpen: false,
@@ -238,10 +240,8 @@ const handleInteraction = () => {
 
 const handleClickOutside = (event) => {
     if (
-        dropdownInput.value &&
-        !dropdownInput.value.contains(event.target) &&
-        dropdownDiv.value &&
-        !dropdownDiv.value.contains(event.target)
+        dropdownWrapper.value &&
+        !dropdownWrapper.value.contains(event.target)
     ) {
         state.searching = false;
         state.isOpen = false;
@@ -275,10 +275,30 @@ const onBlur = () => {
 };
 
 const toggleDropdown = () => {
-    if(state.isOpen)
+    if(state.isOpen) {
         onBlur();
-    else
-        onFocus({ target: dropdownInput.value });
+    } else {
+        dropdownInput.value.focus();
+    }
+};
+
+const hasSelection = computed(() => {
+    if (props.multiple) return false;
+    return model.value && model.value.id && model.value.id !== 'temp' && model.value.name;
+});
+
+const clearSelection = (e) => {
+    e.stopPropagation();
+    if (props.type !== 'array') {
+        model.value.id = null;
+        model.value.name = '';
+    } else {
+        model.value = null;
+    }
+    state.search = '';
+    state.placeholder = '';
+    state.isOpen = false;
+    state.searching = false;
 };
 
 const onTab = () => {
@@ -354,7 +374,7 @@ const selectOption = (option, e) => {
 };
 </script>
 <template>
-    <div class="dropdown-wrapper" :style="minWidth ? { minWidth: minWidth } : {}">
+    <div class="dropdown-wrapper" ref="dropdownWrapper" :style="minWidth ? { minWidth: minWidth } : {}">
         <input type="text" 
                :placeholder="state.placeholder" 
                :value="state.search" 
@@ -400,6 +420,11 @@ const selectOption = (option, e) => {
                 </li>
             </ul>
         </div>
+        <div class="clear-btn" v-if="props.clearable && !props.multiple && hasSelection && !state.isOpen" @click="clearSelection">
+            <svg viewBox="0 0 16 16" width="20" height="20">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" fill="currentColor"/>
+            </svg>
+        </div>
         <div class="arrow" @click="toggleDropdown" :class="{ open: state.isOpen }">
             <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
                 <g>
@@ -410,7 +435,7 @@ const selectOption = (option, e) => {
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .dropdown-wrapper {
     position: relative;
 }
@@ -505,6 +530,31 @@ const selectOption = (option, e) => {
     transform: translateY(-50%) rotate(0deg);
     transition: 0.1s ease-in-out;
     cursor: pointer;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
+    svg {
+        fill: #8f8f8f;
+        transition: 0.15s ease-in-out;
+
+        path{
+            fill: #8f8f8f;
+        }
+    }
+
+    &:hover svg {
+        fill: #333;
+    }
 }
 
 .arrow svg {

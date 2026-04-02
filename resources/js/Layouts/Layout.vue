@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref, onMounted, nextTick, watch } from "vue";
+import { computed, reactive, ref, onMounted, onBeforeUnmount, nextTick, watch } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import "overlayscrollbars/overlayscrollbars.css";
 import { OverlayScrollbars } from "overlayscrollbars";
@@ -145,9 +145,29 @@ function toggleMenu() {
 }
 
 
+const sideMenuRef = ref(null);
+const sideMenuButtonRef = ref(null);
+
 function toggleSideMenu() {
     sideMenu.state = !sideMenu.state;
 }
+
+const handleClickOutside = (event) => {
+    if (!sideMenu.state) return;
+    const menuEl = sideMenuRef.value;
+    const buttonEl = sideMenuButtonRef.value;
+    if (menuEl && !menuEl.contains(event.target) && buttonEl && !buttonEl.contains(event.target)) {
+        sideMenu.state = false;
+    }
+};
+
+onMounted(() => {
+    document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+    document.removeEventListener('click', handleClickOutside);
+});
 
 const page = usePage();
 const headerMessage = ref("");
@@ -319,7 +339,7 @@ watch(
                     dodaj meč</Link>
                 </div>
                 <!-- <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link> -->
-                <div @click="toggleSideMenu" class="side-menu-button">
+                <div ref="sideMenuButtonRef" @click="toggleSideMenu" class="side-menu-button">
                     <div class="button" :class="{ 'open-left': sideMenu.state }"></div>
                     <div class="button" :class="{ 'open-middle': sideMenu.state }"></div>
                     <div class="button" :class="{ 'open-right': sideMenu.state }"></div>
@@ -338,7 +358,7 @@ watch(
         </div> -->
     </header>
     <!-- top: 90 - topOffset + 'px', -->
-    <div class="side-menu" style="top: 90px;" :style="{ height: 'calc(100vh - ' + (90 - topOffset) + 'px)' }"
+    <div ref="sideMenuRef" class="side-menu" style="top: 90px;" :style="{ height: 'calc(100vh - ' + (90 - topOffset) + 'px)' }"
         :class="{ open: sideMenu.state }">
         <div class="links">
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/statistika'"
@@ -366,7 +386,7 @@ watch(
             <Link v-if="$page.props.auth.user" @click="toggleSideMenu()" class="bigger logout" :href="'/logout'"
                 method="post">odjavi se</Link>
 
-            <div class="socials">
+            <!-- <div class="socials">
                 <a class="viber" target="_blank"
                     href="https://invite.viber.com/?g2=AQBO6Yhe7XWiGlQ11H197bPnIWHJjH2nT7C42UhORV%2F3VIU5EWEozbBE%2BLo11vym">
                     <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38.34 40.43">
@@ -396,7 +416,7 @@ watch(
                             transform="translate(-400.61 -277.64)" />
                     </svg>
                 </a>
-            </div>
+            </div> -->
         </div>
     </div>
     <div id="mobile-menu" :class="{ open: mobileMenu.state }">
@@ -438,7 +458,7 @@ watch(
             <Link prefetch="false" @click.prevent="mobileMenu.state = false" class="logout-mobile" method="post"
                 :href="'/logout'" v-if="$page.props.auth.user">odjavi se</Link>
 
-            <div class="socials">
+            <!-- <div class="socials">
                 <a class="viber" target="_blank"
                     href="https://invite.viber.com/?g2=AQBO6Yhe7XWiGlQ11H197bPnIWHJjH2nT7C42UhORV%2F3VIU5EWEozbBE%2BLo11vym">
                     <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38.34 40.43">
@@ -468,7 +488,7 @@ watch(
                             transform="translate(-400.61 -277.64)" />
                     </svg>
                 </a>
-            </div>
+            </div> -->
 
         </div>
     </div>
@@ -481,7 +501,7 @@ watch(
                 <Link prefetch="false" :href="'/dodaj'">dodaj meč</Link>
                 <Link class="hide-mobile" prefetch="false" :href="'/dodaj-ligu'">dodaj ligu</Link>
             </p>
-            <div class="icons-wrapper">
+            <!-- <div class="icons-wrapper">
                 <a class="viber" target="_blank"
                     href="https://invite.viber.com/?g2=AQBO6Yhe7XWiGlQ11H197bPnIWHJjH2nT7C42UhORV%2F3VIU5EWEozbBE%2BLo11vym">
                     <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38.34 40.43">
@@ -511,7 +531,7 @@ watch(
                             transform="translate(-400.61 -277.64)" />
                     </svg>
                 </a>
-            </div>
+            </div> -->
             <div class="footer-text hide-mobile">
                 <Link prefetch="false" :href="'/uputstva'">uputstva</Link>
             </div>

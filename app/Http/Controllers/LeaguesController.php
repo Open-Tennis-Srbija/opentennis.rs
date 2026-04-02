@@ -40,6 +40,11 @@ class LeaguesController extends Controller
             'players' => $league->getPlayers(),
             'matches' => $league->getMatches(),
             'court' => Court::find($league->court_id),
+            'series' => $league->tournamentSeries ? [
+                'id' => $league->tournamentSeries->id,
+                'name' => $league->tournamentSeries->name,
+                'color' => $league->tournamentSeries->color
+            ] : null,
         ];
 
     }
@@ -143,7 +148,7 @@ class LeaguesController extends Controller
                 $league->uri = $uri;
             }
 
-           if($data['series'] && !is_numeric($data['series']['id'])){
+           if($data['series'] && !empty($data['series']['name']) && !is_numeric($data['series']['id'])){
                 $series = new TournamentSeries();
                 $series->name = $data['series']['name'];
                 $series->uri = Str::slug($data['series']['name']);
@@ -342,6 +347,7 @@ public static function getTournamentsForList(){
             'series' => $league->tournamentSeries ? [
                 'id' => $league->tournamentSeries->id,
                 'name' => $league->tournamentSeries->name,
+                'color' => $league->tournamentSeries->color
             ] : null,
             'color' => $league->tournamentSeries ? $league->tournamentSeries->color : '#ebebeb',
         ]);
@@ -488,7 +494,7 @@ public static function getTournamentsForList(){
                 $league->court_id = 1; // No court selected
         }
 
-        if($data['series'] && !is_numeric($data['series']['id'])){
+        if($data['series'] && !empty($data['series']['name']) && !is_numeric($data['series']['id'])){
             $series = new TournamentSeries();
             $series->name = $data['series']['name'];
             $series->uri = Str::slug($data['series']['name']);
