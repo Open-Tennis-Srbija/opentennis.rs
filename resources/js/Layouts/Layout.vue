@@ -420,7 +420,7 @@ watch(
             <Link class="bigger blue" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj'"
                 :class="{ active: $page.url === '/dodaj' }">dodaj meč</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/turniri'"
-                :class="{ active: $page.url === '/', childActive: activeChilds.leagues }">{{ tournamentsText }}
+                :class="{ active: $page.url === '/turniri', childActive: activeChilds.leagues }">{{ tournamentsText }}
             </Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/teniseri'"
                 :class="{ active: $page.url === '/teniseri', childActive: activeChilds.players }">{{ playersText }}</Link>

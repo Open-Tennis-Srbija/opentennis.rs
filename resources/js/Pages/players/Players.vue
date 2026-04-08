@@ -142,6 +142,26 @@ const playersText = computed(() => {
    }
 });
 
+const showFilterPopup = ref(false);
+
+const sortLabels = [
+    { key: 'total_matches', label: 'mečevi' },
+    { key: 'name', label: 'teniser' },
+    { key: 'category', label: 'kategorija' },
+    { key: 'wins', label: 'pobede' },
+    { key: 'loses', label: 'gubitci' },
+    { key: 'win_precentage', label: '% pobeda' },
+];
+
+const selectMobileSort = (key) => {
+    if (sortKey.value === key) {
+        sortDir.value = sortDir.value === 'desc' ? 'asc' : 'desc';
+    } else {
+        sortKey.value = key;
+        sortDir.value = 'desc';
+    }
+};
+
 </script>
 <template>
   <!-- <div class="loader" :class="{'close' : isLoading}">
@@ -270,6 +290,39 @@ const playersText = computed(() => {
       </div>
     </div>
   </div>
+
+  <!-- Mobile filter FAB -->
+  <!-- <div class="mobile-filter-fab" @click="showFilterPopup = !showFilterPopup">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="7" y1="12" x2="17" y2="12" />
+      <line x1="10" y1="18" x2="14" y2="18" />
+    </svg>
+  </div> -->
+
+  <!-- Mobile filter popup -->
+  <!-- <Teleport to="body">
+    <div v-if="showFilterPopup" class="mobile-filter-overlay" @click.self="showFilterPopup = false">
+      <div class="mobile-filter-popup">
+        <div class="mobile-filter-header">
+          <span>Sortiraj po</span>
+          <button class="mobile-filter-close" @click="showFilterPopup = false">&times;</button>
+        </div>
+        <div class="mobile-filter-options">
+          <button
+            v-for="item in sortLabels"
+            :key="item.key"
+            class="mobile-filter-option"
+            :class="{ active: sortKey === item.key }"
+            @click="selectMobileSort(item.key)"
+          >
+            {{ item.label }}
+            <span v-if="sortKey === item.key" class="sort-arrow">{{ sortDir === 'desc' ? '▼' : '▲' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </Teleport> -->
 </template>
 
 <style scoped>
@@ -430,4 +483,101 @@ const playersText = computed(() => {
         display: block;
     }
 } */
+
+/* Mobile filter FAB + popup */
+.mobile-filter-fab {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #00aeef;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    z-index: 1000;
+    transition: background 0.2s;
+
+    &:active {
+        background: #0090c7;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .mobile-filter-fab {
+        display: flex;
+    }
+}
+
+.mobile-filter-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 1001;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.mobile-filter-popup {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 16px 16px 0 0;
+    padding: 20px 20px 32px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.mobile-filter-close {
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+}
+
+.mobile-filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.mobile-filter-option {
+    padding: 10px 18px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 24px;
+    background: white;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &.active {
+        border-color: #00aeef;
+        color: #00aeef;
+        background: #f0faff;
+    }
+
+    .sort-arrow {
+        margin-left: 4px;
+        font-size: 11px;
+    }
+}
 </style>
