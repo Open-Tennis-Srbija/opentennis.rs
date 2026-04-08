@@ -49,15 +49,40 @@ watch(selectedSort, (val) => {
 }, { deep: true });
 
 const sortedCourts = computed(() => {
-    return [...courts.value].sort((a, b) => {
-        let aVal = a[sortKey.value];
-        let bVal = b[sortKey.value];
-        if (sortKey.value === 'name' || sortKey.value === 'county') {
+    const compareByKey = (a, b, key, dir) => {
+        let aVal = a[key];
+        let bVal = b[key];
+        if (key === 'name' || key === 'county') {
             aVal = (aVal || '').toLowerCase();
             bVal = (bVal || '').toLowerCase();
-            return sortDir.value === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+            return dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
         }
-        return sortDir.value === 'asc' ? aVal - bVal : bVal - aVal;
+        return dir === 'asc' ? aVal - bVal : bVal - aVal;
+    };
+
+    return [...courts.value].sort((a, b) => {
+        // 1. Primary: current sort key
+        let result = compareByKey(a, b, sortKey.value, sortDir.value);
+        if (result !== 0) return result;
+
+        // 2. matches_number desc (if not primary)
+        if (sortKey.value !== 'matches_number') {
+            result = compareByKey(a, b, 'matches_number', 'desc');
+            if (result !== 0) return result;
+        }
+
+        // 3. player_number desc (if not primary)
+        if (sortKey.value !== 'player_number') {
+            result = compareByKey(a, b, 'player_number', 'desc');
+            if (result !== 0) return result;
+        }
+
+        // 4. Alphabetically asc (if not primary)
+        if (sortKey.value !== 'name') {
+            result = compareByKey(a, b, 'name', 'asc');
+        }
+
+        return result;
     });
 });
 

@@ -51,19 +51,44 @@ watch(selectedSort, (val) => {
 }, { deep: true });
 
 const sortedLeagues = computed(() => {
-    return [...leagues.value].sort((a, b) => {
-        let aVal = a[sortKey.value];
-        let bVal = b[sortKey.value];
-        if (sortKey.value === 'name' || sortKey.value === 'county') {
+    const compareByKey = (a, b, key, dir) => {
+        let aVal = a[key];
+        let bVal = b[key];
+        if (key === 'name' || key === 'county') {
             aVal = (aVal || '').toLowerCase();
             bVal = (bVal || '').toLowerCase();
-            return sortDir.value === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+            return dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
         }
-        if (sortKey.value === 'date_start') {
+        if (key === 'date_start') {
             aVal = new Date(aVal || 0).getTime();
             bVal = new Date(bVal || 0).getTime();
         }
-        return sortDir.value === 'asc' ? aVal - bVal : bVal - aVal;
+        return dir === 'asc' ? aVal - bVal : bVal - aVal;
+    };
+
+    return [...leagues.value].sort((a, b) => {
+        // 1. Primary: current sort key
+        let result = compareByKey(a, b, sortKey.value, sortDir.value);
+        if (result !== 0) return result;
+
+        // 2. match_number desc (if not primary)
+        if (sortKey.value !== 'match_number') {
+            result = compareByKey(a, b, 'match_number', 'desc');
+            if (result !== 0) return result;
+        }
+
+        // 3. player_number desc (if not primary)
+        if (sortKey.value !== 'player_number') {
+            result = compareByKey(a, b, 'player_number', 'desc');
+            if (result !== 0) return result;
+        }
+
+        // 4. Alphabetically asc (if not primary)
+        if (sortKey.value !== 'name') {
+            result = compareByKey(a, b, 'name', 'asc');
+        }
+
+        return result;
     });
 });
 
