@@ -50,20 +50,45 @@ watch(selectedSort, (val) => {
 }, { deep: true });
 
 const sortedPlayers = computed(() => {
-    return [...players.value].sort((a, b) => {
-        let aVal = a[sortKey.value];
-        let bVal = b[sortKey.value];
-        if (sortKey.value === 'name') {
+    const compareByKey = (a, b, key, dir) => {
+        let aVal = a[key];
+        let bVal = b[key];
+        if (key === 'name') {
             aVal = (aVal || '').toLowerCase();
             bVal = (bVal || '').toLowerCase();
-            return sortDir.value === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+            return dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
         }
-        if (sortKey.value === 'category') {
+        if (key === 'category') {
             const aNum = (aVal === '?' || aVal === '' || aVal == null) ? 0 : Number(aVal);
             const bNum = (bVal === '?' || bVal === '' || bVal == null) ? 0 : Number(bVal);
-            return sortDir.value === 'asc' ? aNum - bNum : bNum - aNum;
+            return dir === 'asc' ? aNum - bNum : bNum - aNum;
         }
-        return sortDir.value === 'asc' ? aVal - bVal : bVal - aVal;
+        return dir === 'asc' ? aVal - bVal : bVal - aVal;
+    };
+
+    return [...players.value].sort((a, b) => {
+        // 1. Primary: current sort key
+        let result = compareByKey(a, b, sortKey.value, sortDir.value);
+        if (result !== 0) return result;
+
+        // 2. Secondary: total_matches desc (if not primary)
+        if (sortKey.value !== 'total_matches') {
+            result = compareByKey(a, b, 'total_matches', 'desc');
+            if (result !== 0) return result;
+        }
+
+        // 3. Tertiary: wins desc (if not primary)
+        if (sortKey.value !== 'wins') {
+            result = compareByKey(a, b, 'wins', 'desc');
+            if (result !== 0) return result;
+        }
+
+        // 4. Alphabetically asc (if not primary)
+        if (sortKey.value !== 'name') {
+            result = compareByKey(a, b, 'name', 'asc');
+        }
+
+        return result;
     });
 });
 
