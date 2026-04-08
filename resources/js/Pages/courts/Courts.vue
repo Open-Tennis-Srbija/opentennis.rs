@@ -182,7 +182,7 @@ const courtsText = computed(() => {
           <div class="name helvetica text-align-center">
             <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
           </div>
-          <div class="info">
+          <div class="info two">
             <div class="info-wrapp">
               <div class="sup">mečevi</div>
               <div class="text">
@@ -231,7 +231,7 @@ const courtsText = computed(() => {
       <div class="ranking-entry" v-for="(court, index) in sortedCourts">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
         <div class="name helvetica text-align-center"><Link prefetch="false" :href="`/tereni/${court.uri}`">{{court.name}}</Link></div>
-        <div class="info">
+        <div class="info two">
           <div class="info-wrapp">
             <div class="sup">mečevi</div>
             <div class="text">{{ court.matches_number }}</div>

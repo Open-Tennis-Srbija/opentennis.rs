@@ -361,8 +361,8 @@ watch(
                 :class="{ active: $page.url === '/statistika' }">Statistika</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">Dodaj turnir ili ligu</Link>
-            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/uputstva'"
-                :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
+            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/o-nama'"
+                :class="{ active: $page.url === '/o-nama' }">O nama</Link>
 
 
             <div v-if="$page.props.auth.user" class="admin-separator"></div>
@@ -435,8 +435,8 @@ watch(
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
                 :class="{ active: $page.url === '/dodaj-ligu' }">dodaj turnir ili ligu</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/uputstva'"
-                :class="{ active: $page.url === '/uputstva' }">uputstva</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/o-nama'"
+                :class="{ active: $page.url === '/o-nama' }">O nama</Link>
 
             <div v-if="$page.props.auth.user" class="admin-separator"></div>
 
@@ -531,7 +531,7 @@ watch(
                 </a>
             </div> -->
             <div class="footer-text hide-mobile">
-                <Link prefetch="false" :href="'/uputstva'">uputstva</Link>
+                <Link prefetch="false" :href="'/o-nama'">O nama</Link>
             </div>
         </footer>
     </div>

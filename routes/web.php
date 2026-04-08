@@ -60,7 +60,7 @@ Route::get('/get-league-chart', [LeagueController::class, 'getLeagueChart']);
 /* Route::post('/leagueChart',[LeagueController::class, 'getChart'])->name('leagueChart'); */
 /**/
 
-Route::get('/uputstva', [StaticController::class, 'rules'])->name('rules');
+Route::get('/o-nama', [StaticController::class, 'rules'])->name('rules');
 Route::get('/tereni', [StaticController::class, 'courts'])->name('courts');
 Route::get('/tereni/{uri}',[CourtsController::class, 'getCourt'])->name('court');
 Route::get('/get-court/{id}',[CourtsController::class, 'get_court'])->name('court');

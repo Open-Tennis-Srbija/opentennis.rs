@@ -8,9 +8,9 @@ onMounted(async () => {
 </script>
 <template>
 
-    <Head title="Uputstva -" />
+    <Head title="O nama -" />
     <div class="static-wrapper">
-        <h1 class="mobile-neg-margin text-align-center">UPUTSTVA I PRAVILA OPEN TENNIS SRBIJA</h1>
+        <h1 class="mobile-neg-margin text-align-center">O NAMA</h1>
 
 
 
@@ -108,55 +108,6 @@ onMounted(async () => {
                 href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>.
         </p>
 
-        <h2>Rangiranje tenisera putem poena</h2>
-        <br>
-        <p>Rang tenisera favorizuje aktivnost tenisera i kalkuliše se dodavanjem poena za svaki pobedu, gubitak, i osvojeni gem.</p>
-        <table class="rules-table">
-          
-            <tbody>
-                <tr>
-                    <td class="under-header" colspan="2">za pobednika</td>
-                </tr>
-                <tr>
-                    <td>za meč u kome je teniser pobedio</td> <td class="points">+100</td>
-                </tr>
-                <tr>
-                    <td>za svaki dobijeni gem u meču koji je teniser pobedio</td> <td>+10</td>
-                </tr>
-                <tr>
-                    <td>drugi dobijeni meč sa istim gubitnikom u roku od 30 dana</td> <td>+75</td>
-                </tr>
-                <tr>
-                    <td>svaki sledeći dobijeni meč sa istim gubitnikom u roku od 30 dana</td> <td>+50</td>
-                </tr>
-                <tr>
-                    <td class="under-header" colspan="2">za gubitnika</td>
-                </tr>
-                <tr>
-                    <td>za meč u kome je teniser izgubio</td> <td>+25</td>
-                </tr>
-                <tr>
-                    <td>za svaki dobijeni gem u meču koji je teniser izgubio</td> <td>+7</td>
-                </tr>
-                <tr>
-                    <td>drugi izgubljeni meč sa istim pobednikom u roku od 30 dana</td> <td>+20</td>
-                </tr>
-                <tr>
-                    <td>svaki sledeći izgubljeni meč sa istim pobednikom u roku od 30 dana</td> <td>+15</td>
-                </tr>
-                <tr>
-                    <td class="under-header" colspan="2">vremenski faktor</td>
-                </tr>
-                <tr>
-                    <td>svakih 30 dana svi poeni se smanjuju za</td> <td>-5%</td>
-                </tr>
-            </tbody>
-        </table>
-        <p>
-            Cilj poena aktivnosti je da se motiviše što više igranja (čak i ako se gubi) i da se motiviše različitost u izboru tenisera.
-        </p>
-
-       
 
         <h2>Pristup podatcima</h2>
         <br>

@@ -246,7 +246,7 @@ onBeforeUnmount(() => {
                 <div class="summary-item players mobile-hide">
                 </div>
             </div>
-            <h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
+            <h2 class="summary-title no-border big-margin mobile-mt-60 mobile-mb-0">mečevi</h2>
             <div class="player-matches">
                 <Matches
                 :isHome="false"

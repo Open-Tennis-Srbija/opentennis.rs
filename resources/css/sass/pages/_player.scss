@@ -36,6 +36,10 @@
 
         &.league {
             margin-top: 0;
+
+            @media only screen and (max-width: 800px) {
+                margin-bottom: -10px;
+            }
         }
 
         &:hover {
@@ -430,10 +434,20 @@
         padding-bottom: 20px;
         margin-bottom: 30px;
         border-bottom: 2px solid #e2e0e1;
-        margin-top: 40px;
+        margin-top: 40px;    
+
+        &:first-of-type{
+            margin-top: 60px;
+        }
+
+
 
         &.big-margin {
-            margin-top: 110px;
+            margin-top: 80px;
+
+            @media only screen and (max-width: 1200px) {
+                margin-top: 40px;
+            }
         }
 
         &.no-border {
@@ -576,9 +590,9 @@
 
                         &.show-more {
                             font-family: 'Helvetica Neue';
-                            font-size: 14px;
+                            font-size: 12px;
                             text-transform: uppercase;
-                            color: $blue;
+                            color: #8f8f8f;
                             margin-top: 12px;
                             cursor: pointer;
 
@@ -620,9 +634,9 @@
 
                         &.show-more {
                             font-family: 'Helvetica Neue';
-                            font-size: 14px;
+                            font-size: 14px !important;
                             text-transform: uppercase;
-                            color: $blue;
+                            color: #8f8f8f;
                             margin-top: 12px;
                             cursor: pointer;
 
@@ -720,6 +734,11 @@
 
             &.align-top-mobile {
                 margin-top: 12px;
+
+
+                &.court{
+                    margin-bottom: -10px;
+                }
             }
         }
 
@@ -839,7 +858,7 @@
                             text-align: center;
 
                             &.show-more {
-                                font-size: 14px !important;
+                                font-size: 12px !important;
                             }
 
                         }
@@ -865,6 +884,10 @@
 
                 .summary-item {
                     width: 50%;
+                    margin-bottom: 0;
+                    .big{
+                        margin-bottom: 0;
+                    }
                 }
             }
         }
@@ -971,7 +994,9 @@
 @media only screen and (max-width: 768px){
      .static-wrapper.player {
      .summary-item {
-            margin-bottom: 50px;
+            margin-bottom: 0px;
+
+            
 
 
             p {

@@ -102,9 +102,9 @@ return [
             'keywords' => 'dodaj meč, tenis',
         ],
         'rules' => [
-            'title' => 'Uputstva',
-            'description' => 'Uputstva za učešće u Open Tennis Srbija.',
-            'keywords' => 'uputstva, pravila, tenis',
+            'title' => 'O nama',
+            'description' => 'Open Tennis Srbija. Transparentan i dugoročan razvoj srpskog tenisa kroz skupljanje analizu i publikovanje svih podataka srpskog tenisa. Svi teniseri lige turniri tereni i mečevi na jednom mestu.',
+            'keywords' => 'o nama, open tennis srbija, rekreativni tenis, kategorije tenisera, dodavanje mečeva, pravila, tenis srbija',
         ],
         'rewards' => [
             'title' => 'Nagrade partnera 2025',
@@ -165,7 +165,7 @@ return [
             '/turniri' => ['priority' => '0.8', 'changefreq' => 'weekly'],
             '/statistika' => ['priority' => '0.6', 'changefreq' => 'weekly'],
             '/misija' => ['priority' => '0.5', 'changefreq' => 'monthly'],
-            '/uputstva' => ['priority' => '0.5', 'changefreq' => 'monthly'],
+            '/o-nama' => ['priority' => '0.5', 'changefreq' => 'monthly'],
         ],
     ],
 

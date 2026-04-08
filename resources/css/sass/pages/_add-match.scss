@@ -71,6 +71,10 @@
       margin-bottom: 30px;
       line-height: 166%;
 
+        @media screen and (max-width: 800px) {
+          margin-bottom: 0px;
+        }
+
       &.bigger-center{
         text-align: center;
         font-size: 30px;

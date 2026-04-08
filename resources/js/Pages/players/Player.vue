@@ -439,7 +439,7 @@ onBeforeUnmount(() => {
 			<div class="chart-wrapper">
 				<PlayerChart v-if="player.id" :player_id="player.id" />
 			</div> -->
-			<h2 class="summary-title no-border big-margin">mečevi</h2>
+			<h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
 			<div class="player-matches">
 				<Matches
 					v-if="player.id"
