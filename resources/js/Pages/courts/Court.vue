@@ -65,11 +65,11 @@ const formatDate = ((start, end) =>{
 const players = computed(()=>{
     if (!court.value.players) return [];
     let data = []
-    if(court.value.players.length <= 10 || isExpanded.players){
+    if(court.value.players.length <= 5 || isExpanded.players){
             data =  court.value.players
     }
     else {
-        data = court.value.players.slice(0, 10)
+        data = court.value.players.slice(0, 5)
     }
     return data;
 
@@ -77,11 +77,11 @@ const players = computed(()=>{
 const leagues = computed(()=>{
     if (!court.value.leagues) return [];
     let data = []
-    if(court.value.leagues.length <= 10 || isExpanded.leagues){
+    if(court.value.leagues.length <= 5 || isExpanded.leagues){
             data =  court.value.leagues
     }
     else {
-        data = court.value.leagues.slice(0, 10)
+        data = court.value.leagues.slice(0, 5)
     }
     return data;
 
@@ -106,11 +106,6 @@ const getRandomWidth = () => {
 <template>
     <!-- Skeleton Loading State -->
     <div v-if="isLoading" class="static-wrapper player league mobile-mb-300 skeleton-wrapper">
-        <!-- Rank skeleton -->
-        <div class="rank skeleton-rank">
-            <div class="skeleton skeleton-circle"></div>
-        </div>
-        
         <!-- Court name skeleton -->
         <div class="skeleton-title">
             <div class="skeleton skeleton-text large"></div>
@@ -203,12 +198,6 @@ const getRandomWidth = () => {
 
     <!-- Actual Content -->
     <div v-else style="margin-bottom: -20px; padding-bottom: 0;" class="static-wrapper player league mobile-mb-300">
-        <div
-			class="rank">
-			<p :class="{ 'align-left': court.position > 9,'n40': court.position >= 40 && court.position < 50 }">
-				{{ court.position }}
-			</p>
-		</div>
         <h1 :class="{'fix-letters': containsGreek(court.name)}">
             {{ court.name }}<Link prefetch="false"
 				class="edit-btn"
@@ -241,11 +230,7 @@ const getRandomWidth = () => {
 
         <div class="dashboard-wrapper">
             <h2 class="summary-title">Statistika</h2>
-            <div class="summary player three">
-                <div class="summary-item">
-                    <h2>poeni</h2>
-                    <p class="big">{{ points }}</p>
-                </div>
+            <div class="summary player two">
                 <div class="summary-item">
                     <h2>teniseri</h2>
                     <p class="big">{{ court.player_number }}</p>
@@ -269,7 +254,7 @@ const getRandomWidth = () => {
                             </p>
                         </template>
                         <p
-                            v-if="Object.values(court.leagues).length > 10"
+                            v-if="Object.values(court.leagues).length > 5"
                             class="show-more"
                             @click="isExpanded.leagues = !isExpanded.leagues">
                             {{ !isExpanded.leagues ? 'vidi sve' : 'vidi manje' }}
@@ -296,7 +281,7 @@ const getRandomWidth = () => {
                             </p>
                         </template>
                         <p
-                            v-if="Object.values(court.players).length > 10"
+                            v-if="Object.values(court.players).length > 5"
                             class="show-more"
                             @click="isExpanded.players = !isExpanded.players">
                             {{ !isExpanded.players ? 'vidi sve' : 'vidi manje' }}

@@ -46,6 +46,11 @@ return [
     */
     
     'templates' => [
+        'home' => [
+            'title' => 'Open Tennis Srbija - Dokumentacija srpskog tenisa',
+            'description' => 'Open Tennis Srbija je nezavisni volonterski projekat koji skuplja i organizuje podatke srpskog elitnog i rekreativnog tenisa. Dodaj tenisera, teren i meč - registracija nije potrebna.',
+            'keywords' => 'open tennis srbija, tenis srbija, srpski tenis, rekreativni tenis, rangiranje tenisera, tenis mečevi, tenis turniri, tenis lige srbija',
+        ],
         'player' => [
             'title' => ':name - Teniser',
             'description' => ':name je rangiran kao :rank. teniser Open Tennis Srbija sa :points poena. Pogledajte rezultate mečeva statistike i napredak kroz kategorije.',
@@ -126,8 +131,8 @@ return [
     'schema' => [
         'organization' => [
             'name' => 'Open Tennis Srbija',
-            'url' => 'https://opentennis.rs',
-            'logo' => 'https://opentennis.rs/images/logo.png',
+            'url' => env('APP_URL', 'https://opentennis.rs'),
+            'logo' => env('APP_URL', 'https://opentennis.rs') . '/images/logo.png',
             'sameAs' => [
                 'https://www.facebook.com/srpskatenisliga',
                 'https://www.instagram.com/srpskatenisliga',

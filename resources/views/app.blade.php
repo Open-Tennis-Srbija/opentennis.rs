@@ -20,22 +20,7 @@
     <!-- Canonical Tag -->
     <link rel="canonical" href="{{ $page['props']['seo']['canonical'] ?? url()->current() }}" />
     
-    @if(request()->is('crazy-pizza'))
-      <!-- Crazy Pizza Meta Tags -->
-      <meta name="twitter:card" content="summary_large_image"/>
-      <meta name="twitter:title" content="Crazy Pizza - Open Tennis Srbija"/>
-      <meta name="twitter:description" content="BESPLATNA PICA ZA SVAKOGA SA 1,000 I VIŠE POENA"/>
-      <!-- Crazy Pizza promo twitter image -->
-      <meta name="twitter:image:src" content="{{ asset('/promo/crazy-pizza/ots-crazy-pizza.png') }}"/>
-      <meta name="twitter:image:alt" content="Crazy Pizza"/>
-      <!-- Open Graph data -->
-      <meta property="og:url" content="https://opentennis.rs/crazy-pizza"/>
-      <meta property="og:title" content="Crazy Pizza - Open Tennis Srbija"/>
-      <!-- Crazy Pizza promo og:image -->
-      <meta property="og:image" content="{{ asset('/promo/crazy-pizza/ots-crazy-pizza.png') }}"/>
-      <meta property="og:description" content="BESPLATNA PICA ZA SVAKOGA SA 1,000 I VIŠE POENA"/>
-      <meta property="og:site_name" content="opentennis.rs"/>
-    @else
+    
       <!-- Dynamic Twitter Card Meta Tags -->
       <meta name="twitter:card" content="summary_large_image"/>
       <meta name="twitter:title" content="{{ $page['props']['seo']['title'] ?? config('seo.defaults.title') }}"/>
@@ -54,7 +39,6 @@
       <meta property="og:image" content="{{ $page['props']['seo']['og_image'] ?? asset('/ots-social-media-share.png') }}"/>
       <meta property="og:description" content="{{ $page['props']['seo']['description'] ?? config('seo.defaults.description') }}"/>
       <meta property="og:site_name" content="Open Tennis Srbija"/>
-    @endif
     
     <!-- Structured Data JSON-LD -->
     @if(isset($page['props']['seo']['schema']))
@@ -65,19 +49,19 @@
       <!-- Default Organization Schema -->
       <script type="application/ld+json">
       {
-        "@context": "https://schema.org",
-        "@type": "SportsOrganization", 
+        "@@context": "https://schema.org",
+        "@@type": "SportsOrganization", 
         "name": "Open Tennis Srbija",
         "alternateName": "Srpska Tenis Liga",
-        "url": "https://opentennis.rs",
-        "logo": "https://opentennis.rs/images/logo.png",
+        "url": "{{ url('/') }}",
+        "logo": "{{ asset('/images/logo.png') }}",
         "sport": "Tennis",
         "areaServed": {
-          "@type": "Country",
+          "@@type": "Country",
           "name": "Serbia"
         },
         "contactPoint": {
-          "@type": "ContactPoint",
+          "@@type": "ContactPoint",
           "contactType": "customer service",
           "areaServed": "RS",
           "availableLanguage": "Serbian"
@@ -88,14 +72,17 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8TR2L5FC85"></script>
+    @php $gaId = env('GOOGLE_ANALYTICS_ID'); @endphp
+    @if($gaId)
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
     
-      gtag('config', 'G-8TR2L5FC85');
+      gtag('config', '{{ $gaId }}');
     </script>
+    @endif
     @inertiaHead
   </head>
   <body>

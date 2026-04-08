@@ -31,13 +31,6 @@ import { ref } from 'vue';
             leagues: data.value.locations?.leagues,
         };
     });
-    const points = computed(() => {
-        if(!data.value || !data.value.totals) {
-            return 0;
-        }
-        else
-        return utils.formatAsThousands(data.value.totals.points);
-    });
 
     const categoryColors = {
     1: '#8dc73f',
@@ -135,11 +128,7 @@ import { ref } from 'vue';
         <div class="dashboard-wrapper">
         <h1 class="statistics">Statistika</h1>
             <h2 class="summary-title">ukupno</h2>
-            <div class="summary player three desktop">
-                <div class="summary-item">
-                    <h2>poeni</h2>
-                    <p>{{ points }}</p>
-                </div>
+            <div class="summary player two desktop">
                 <div class="summary-item">
                     <h2>teniseri</h2>
                     <p>{{ utils.formatAsThousands(data.totals?.players) }}</p>

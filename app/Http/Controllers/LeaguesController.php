@@ -518,11 +518,19 @@ public static function getTournamentsForList(){
     {
         $page = $request->get('page', 1);
         $perPage = $request->get('per_page', 100);
+        $sortBy = $request->get('sort_by', 'number');
+        $sortDir = $request->get('sort_dir', 'desc');
         $offset = ($page - 1) * $perPage;
+
+        $allowedSorts = ['number', 'date', 'set_score', 'county', 'winner', 'loser', 'league', 'court'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'number';
+        }
+        $sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
 
         // Get matches for the specific league using offset and limit
         $league = League::findOrFail($id);
-        $matches = $league->getMatches();
+        $matches = $league->getMatches($sortBy, $sortDir);
         
         // Manually paginate the matches since getMatches() returns an array
         $total = count($matches);

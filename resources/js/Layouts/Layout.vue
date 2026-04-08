@@ -306,40 +306,33 @@ watch(
 <template>
     <Loader :show="loading" />
     <header class="header-wrapper">
-        <a v-if="activePromo == 1" href="https://www.plavinci.rs/" target="_blank" rel="noopener noreferrer">
-            <div class="logo-wrapp plavinci">
-                <PlavinciBanner />
-            </div>
-        </a>
-        <a v-if="activePromo == 2" href="https://abramocaffe.rs/" target="_blank" rel="noopener noreferrer">
-            <div class="logo-wrapp abramo">
-                <AbramoBanner />
-            </div>
-        </a>
         <div class="links-wrapper">
-            <Link prefetch="false" :href="'/'">
+            <Link prefetch="false" :href="'/'" @click="mobileMenu.state = false">
             <Logo :style="{ top: 50 + 'px' }" />
             </Link>
             <div class="links" :class="{ 'admin': $page.props.auth.user }">
                 <div class="link-group">
                     <Link prefetch="false" :href="'/'"
                         :class="{ active: $page.url === '/', activeChild: activeChilds.tournaments }">
+                    {{ 'home' }}</Link>
+                    <Link prefetch="false" :href="'/turniri'"
+                        :class="{ active: $page.url === '/turniri', activeChild: activeChilds.tournaments }">
                     {{ tournamentsText }}</Link>
                     <Link prefetch="false" :href="'/teniseri'"
                         :class="{ active: $page.url === '/teniseri', activeChild: activeChilds.players }">{{ playersText }}</Link>
+                    </div>
+                    <div class="link-group">
                     <Link prefetch="false" :href="'/mecevi'"
                         :class="{ active: $page.url === '/mecevi', activeChild: activeChilds.matches }">{{ matchesText }}
                     </Link>
-                </div>
-                <div class="link-group">
                     <Link prefetch="false" :href="'/tereni'"
                         :class="{ active: $page.url === '/tereni', activeChild: activeChilds.courts }">{{ courtsText }}
                     </Link>
                     <Link prefetch="false" :href="'/lige'"
                         :class="{ active: $page.url === '/lige', activeChild: activeChilds.leagues }">
                     {{ leaguesText }}</Link>
-                    <Link prefetch="false" class="blue" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">
-                    dodaj meč</Link>
+                    <!-- <Link prefetch="false" class="blue" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">
+                    dodaj meč</Link> -->
                 </div>
                 <!-- <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link> -->
                 <div ref="sideMenuButtonRef" @click="toggleSideMenu" class="side-menu-button">
@@ -361,7 +354,7 @@ watch(
         </div> -->
     </header>
     <!-- top: 90 - topOffset + 'px', -->
-    <div ref="sideMenuRef" class="side-menu" style="top: 90px;" :style="{ height: 'calc(100vh - ' + (90 - topOffset) + 'px)' }"
+    <div ref="sideMenuRef" class="side-menu" style="top: 50px;" :style="{ height: 'calc(100vh - ' + (90 - topOffset) + 'px)' }"
         :class="{ open: sideMenu.state }">
         <div class="links">
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/statistika'"

@@ -83,8 +83,8 @@ class Court extends Model {
             ->count('match_players.player_id');
     }
     
-    public function getMatches($offset = 0 , $limit = 100){
-        $matches = TennisMatch::where('court_id', $this->id)->skip($offset)->take($limit)->get();
+    public function getMatches($offset = 0 , $limit = 100, $sortBy = 'number', $sortDir = 'desc'){
+        $matches = TennisMatch::where('court_id', $this->id)->select('tennis_matches.*')->applySort($sortBy, $sortDir)->skip($offset)->take($limit)->get();
 
         $response = [];
 
@@ -113,9 +113,6 @@ class Court extends Model {
                 'league' => League::find($match->league_id),
                 'court'=> $this,
             ]);
-            usort($response, function($a, $b) {
-                return $b['number'] <=> $a['number'];
-            });
         }
         return $response;
     }

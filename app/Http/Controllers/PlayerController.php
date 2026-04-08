@@ -39,25 +39,25 @@ class PlayerController extends Controller
 	public static function getPlayers(){
 		return Player::withCount([
 			'wins','losses'])
-			->select('first_name', 'last_name','category','uri', 'location','rank','points')
+			->select('id', 'first_name', 'last_name','category','uri', 'location','rank','points')
 			->withCount([
 			'wins','losses'])
-			->orderBy('rank')
 			->get()
 			->map(function ($player) {
 				return [
 					'uri' => $player->uri,
 					'name' => $player->first_name . ' ' . $player->last_name,
 					'location' => $player->location,
-					'rank' => $player->rank,
-					'points' => $player->points,
+					'total_games' => $player->getTotalGames(),
 					'wins' => $player->wins_count,
 					'category' => $player->category,
 					'loses' => $player->losses_count,
 					'total_matches' => $player->wins_count + $player->losses_count,
 					'win_precentage' => $player->wins_count + $player->losses_count == 0 ? 0 : round($player->wins_count / ($player->wins_count + $player->losses_count) * 100),
 				];
-			});
+			})
+			->sortByDesc('total_games')
+			->values();
 
 	}
 
@@ -135,7 +135,6 @@ class PlayerController extends Controller
 			'matchups' => $player->getMatchups(),
 			'loses' => $loses,
 			'location' => $player->location,
-			'locations' => LeagueController::getLocationsForPlayer($player->id),
 		];
 	}
 	public function deletePlayer(){
@@ -344,13 +343,21 @@ class PlayerController extends Controller
 	{
 		$page = $request->get('page', 1);
 		$perPage = $request->get('per_page', 100);
+		$sortBy = $request->get('sort_by', 'number');
+		$sortDir = $request->get('sort_dir', 'desc');
 		$offset = ($page - 1) * $perPage;
+
+		$allowedSorts = ['number', 'date', 'set_score', 'county', 'winner', 'loser', 'league', 'court'];
+		if (!in_array($sortBy, $allowedSorts)) {
+			$sortBy = 'number';
+		}
+		$sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
 
 		// Get matches for the specific player using the same logic as in get_player_by_uri
 		$player = Player::with('wins', 'losses')->findOrFail($id);
 		
-		// Get all matches (both wins and losses) and sort by number descending
-		$allMatches = $player->matches()->orderBy('number', 'desc')->get();
+		// Get all matches (both wins and losses) and sort
+		$allMatches = $player->matches()->select('tennis_matches.*')->applySort($sortBy, $sortDir)->get();
 		
 		// Format matches the same way as in get_player_by_uri
 		$formattedMatches = $allMatches->map(function ($match) {

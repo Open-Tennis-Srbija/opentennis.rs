@@ -1,6 +1,7 @@
 <script setup>
-import { computed, onMounted, onBeforeMount, ref } from "vue";
+import { computed, onMounted, onBeforeMount, ref, watch } from "vue";
 import EditIcon from "@components/EditIcon.vue";
+import Dropdown from '@components/Dropdown.vue';
 import axios from "axios";
 import bus from "vue3-eventbus";
 import { usePage } from "@inertiajs/vue3";
@@ -33,6 +34,52 @@ const isLoading = ref(false);
 const hasMoreData = ref(true);
 const totalMatches = ref(0);
 const isInitialLoading = ref(true); // Add initial loading state
+const sortKey = ref('number');
+const sortDir = ref('desc');
+
+const toggleSort = (key) => {
+    if (sortKey.value === key) {
+        sortDir.value = sortDir.value === 'desc' ? 'asc' : 'desc';
+    } else {
+        sortKey.value = key;
+        sortDir.value = 'desc';
+    }
+};
+
+const sortOptions = [
+    { id: 'number_desc', name: 'broj ▼', key: 'number', dir: 'desc' },
+    { id: 'number_asc', name: 'broj ▲', key: 'number', dir: 'asc' },
+    { id: 'winner_asc', name: 'pobednik A-Ž', key: 'winner', dir: 'asc' },
+    { id: 'winner_desc', name: 'pobednik Ž-A', key: 'winner', dir: 'desc' },
+    { id: 'loser_asc', name: 'gubitnik A-Ž', key: 'loser', dir: 'asc' },
+    { id: 'loser_desc', name: 'gubitnik Ž-A', key: 'loser', dir: 'desc' },
+    { id: 'set_score_desc', name: 'rezultat ▼', key: 'set_score', dir: 'desc' },
+    { id: 'set_score_asc', name: 'rezultat ▲', key: 'set_score', dir: 'asc' },
+    { id: 'league_asc', name: 'liga A-Ž', key: 'league', dir: 'asc' },
+    { id: 'league_desc', name: 'liga Ž-A', key: 'league', dir: 'desc' },
+    { id: 'court_asc', name: 'teren A-Ž', key: 'court', dir: 'asc' },
+    { id: 'court_desc', name: 'teren Ž-A', key: 'court', dir: 'desc' },
+    { id: 'date_desc', name: 'datum ▼', key: 'date', dir: 'desc' },
+    { id: 'date_asc', name: 'datum ▲', key: 'date', dir: 'asc' },
+];
+
+const selectedSort = ref({ ...sortOptions[0] });
+
+watch(selectedSort, (val) => {
+    const option = sortOptions.find(o => o.id === val.id);
+    if (option) {
+        sortKey.value = option.key;
+        sortDir.value = option.dir;
+    }
+}, { deep: true });
+
+watch([sortKey, sortDir], () => {
+    if (!props.loadMatches) return;
+    matches.value = [];
+    currentPage.value = 1;
+    hasMoreData.value = true;
+    loadInitialMatches();
+});
 
 const isHome = computed(() => window.location.pathname === '/mecevi');
 // Computed property to determine loading context
@@ -68,13 +115,13 @@ const loadInitialMatches = async () => {
         // Determine API endpoint based on court_id, league_id, or player_id props
         let apiUrl;
         if (props.court_id) {
-            apiUrl = `/api/court/${props.court_id}/matches?page=1&per_page=100`;
+            apiUrl = `/api/court/${props.court_id}/matches?page=1&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`;
         } else if (props.league_id) {
-            apiUrl = `/api/league/${props.league_id}/matches?page=1&per_page=100`;
+            apiUrl = `/api/league/${props.league_id}/matches?page=1&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`;
         } else if (props.player_id) {
-            apiUrl = `/api/player/${props.player_id}/matches?page=1&per_page=100`;
+            apiUrl = `/api/player/${props.player_id}/matches?page=1&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`;
         } else {
-            apiUrl = "/api/matches?page=1&per_page=100";
+            apiUrl = `/api/matches?page=1&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`;
         }
             
         const response = await axios.get(apiUrl);
@@ -123,13 +170,13 @@ const loadMoreMatches = async () => {
     // Determine API endpoint based on court_id, league_id, or player_id props
     let apiUrl;
     if (props.court_id) {
-        apiUrl = `/api/court/${props.court_id}/matches?page=${currentPage.value + 1}&per_page=100`;
+        apiUrl = `/api/court/${props.court_id}/matches?page=${currentPage.value + 1}&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`;
     } else if (props.league_id) {
-        apiUrl = `/api/league/${props.league_id}/matches?page=${currentPage.value + 1}&per_page=100`;
+        apiUrl = `/api/league/${props.league_id}/matches?page=${currentPage.value + 1}&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`;
     } else if (props.player_id) {
-        apiUrl = `/api/player/${props.player_id}/matches?page=${currentPage.value + 1}&per_page=100`;
+        apiUrl = `/api/player/${props.player_id}/matches?page=${currentPage.value + 1}&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`;
     } else {
-        apiUrl = `/api/matches?page=${currentPage.value + 1}&per_page=100`;
+        apiUrl = `/api/matches?page=${currentPage.value + 1}&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`;
     }
         
     const response = await axios.get(apiUrl);
@@ -282,15 +329,15 @@ const matchesText = computed(() => {
     <h1 v-if="isHome" class="list-title matches">{{matchesText}}</h1>
     <div class="matches-wrapper" :class="{'home': isHome, 'mobile-mb-300': isHome}">
         <div id="desktop">
-            <div class="matches-header" :class="{'home': isHome}" :style="{ top: isHome ? (180 - topOffset) + 'px' : ''}">
-                <div class="spacer number"></div>
-                <div class="winner">pobednik</div>
-                <div class="loser">gubitnik</div>
-                <div class="score">rezultat</div>
-                <div class="location">liga ili turnir</div>
-                <div class="location">teren</div>
-                <div class="location">opština</div>
-                <div class="date">datum</div>
+            <div class="matches-header" :class="{'home': isHome}" :style="{ top: isHome ? (140 - topOffset) + 'px' : ''}">
+                <div class="spacer number sortable" :class="{ active: sortKey === 'number', asc: sortKey === 'number' && sortDir === 'asc' }" @click="toggleSort('number')">broj</div>
+                <div class="winner sortable" :class="{ active: sortKey === 'winner', asc: sortKey === 'winner' && sortDir === 'asc' }" @click="toggleSort('winner')">pobednik</div>
+                <div class="loser sortable" :class="{ active: sortKey === 'loser', asc: sortKey === 'loser' && sortDir === 'asc' }" @click="toggleSort('loser')">gubitnik</div>
+                <div class="score sortable" :class="{ active: sortKey === 'set_score', asc: sortKey === 'set_score' && sortDir === 'asc' }" @click="toggleSort('set_score')">rezultat</div>
+                <div class="location sortable" :class="{ active: sortKey === 'league', asc: sortKey === 'league' && sortDir === 'asc' }" @click="toggleSort('league')">liga ili turnir</div>
+                <div class="location sortable" :class="{ active: sortKey === 'court', asc: sortKey === 'court' && sortDir === 'asc' }" @click="toggleSort('court')">teren</div>
+                <div class="location sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
+                <div class="date sortable" :class="{ active: sortKey === 'date', asc: sortKey === 'date' && sortDir === 'asc' }" @click="toggleSort('date')">datum</div>
             </div>
             <div v-if="props.showMessage">
                 <p v-if="props.showMessage.wins" class="message">
@@ -315,7 +362,6 @@ const matchesText = computed(() => {
                                 <div class="category-wrapp">
                                     <span class="skeleton-item skeleton-category"></span>
                                 </div>
-                                <div class="skeleton-item skeleton-points"></div>
                             </div>
                         </div>
                     </div>
@@ -326,7 +372,6 @@ const matchesText = computed(() => {
                                 <div class="category-wrapp">
                                     <span class="skeleton-item skeleton-category"></span>
                                 </div>
-                                <div class="skeleton-item skeleton-points"></div>
                             </div>
                         </div>
                     </div>
@@ -334,17 +379,17 @@ const matchesText = computed(() => {
                         <div class="skeleton-item skeleton-score"></div>
                         <div class="skeleton-item skeleton-games"></div>
                     </div>
+                    <div class="location smaller-font">
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
+                    <div class="location smaller-font">
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
+                    <div class="location smaller-font">
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
                     <div class="date smaller-font">
                         <div class="skeleton-item skeleton-date"></div>
-                    </div>
-                    <div class="location smaller-font">
-                        <div class="skeleton-item skeleton-location"></div>
-                    </div>
-                    <div class="location smaller-font">
-                        <div class="skeleton-item skeleton-location"></div>
-                    </div>
-                    <div class="location smaller-font">
-                        <div class="skeleton-item skeleton-location"></div>
                     </div>
                 </div>
             </div>
@@ -369,8 +414,7 @@ const matchesText = computed(() => {
                                         :class="{ 'category-unknown': match.winner1_category == '?',[`category-${match.winner1_category}`]: match.winner1_category  }">{{ match.winner1_category }}</span>
                                 </span>
 
-                            </div> <br /><span class="points">+{{ match.winner2_name ?
-                                Math.round(match.winner_point_gain / 2) : match.winner_point_gain }}</span>
+                            </div>
                         </div>
                         <div v-if="match.winner2_name" class="player-2">
                             <a target="_blank" prefetch="false" :href="`/${match.winner2_uri}`">{{
@@ -385,7 +429,6 @@ const matchesText = computed(() => {
                                 </span>
 
                             </div>
-                            <br /><span class="points">+{{ Math.round(match.winner_point_gain / 2) }}</span>
                         </div>
                     </div>
                 </div>
@@ -407,8 +450,6 @@ const matchesText = computed(() => {
 
                             </div>
 
-                            <br /> <span class="points">+{{ match.loser2_name ? Math.round(match.loser_point_gain / 2) :
-                                match.loser_point_gain }}</span>
                         </div>
                         <div v-if="match.loser2_name" class="player-2">
                             <a target="_blank" prefetch="false" :href="`/${match.loser2_uri}`">{{
@@ -423,7 +464,6 @@ const matchesText = computed(() => {
                                 </span>
 
                             </div>
-                            <br /><span class="points">+{{ Math.round(match.loser_point_gain / 2) }}</span>
                         </div>
                     </div>
                 </div>
@@ -472,7 +512,6 @@ const matchesText = computed(() => {
                                 <div class="category-wrapp">
                                     <span class="skeleton-item skeleton-category"></span>
                                 </div>
-                                <div class="skeleton-item skeleton-points"></div>
                             </div>
                         </div>
                     </div>
@@ -483,7 +522,6 @@ const matchesText = computed(() => {
                                 <div class="category-wrapp">
                                     <span class="skeleton-item skeleton-category"></span>
                                 </div>
-                                <div class="skeleton-item skeleton-points"></div>
                             </div>
                         </div>
                     </div>
@@ -491,17 +529,17 @@ const matchesText = computed(() => {
                         <div class="skeleton-item skeleton-score"></div>
                         <div class="skeleton-item skeleton-games"></div>
                     </div>
+                    <div class="location smaller-font">
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
+                    <div class="location smaller-font">
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
+                    <div class="location smaller-font">
+                        <div class="skeleton-item skeleton-location"></div>
+                    </div>
                     <div class="date smaller-font">
                         <div class="skeleton-item skeleton-date"></div>
-                    </div>
-                    <div class="location smaller-font">
-                        <div class="skeleton-item skeleton-location"></div>
-                    </div>
-                    <div class="location smaller-font">
-                        <div class="skeleton-item skeleton-location"></div>
-                    </div>
-                    <div class="location smaller-font">
-                        <div class="skeleton-item skeleton-location"></div>
                     </div>
                 </div>
             </div>
@@ -509,6 +547,15 @@ const matchesText = computed(() => {
           
         </div>
         <div id="mobile">
+            <!-- <div class="mobile-sort-filter">
+                <Dropdown
+                    label="name"
+                    :options="sortOptions"
+                    v-model="selectedSort"
+                    :multiple="false"
+                    :searchable="false"
+                />
+            </div> -->
             <div v-if="props.showMessage">
                 <p v-if="props.showMessage.wins" class="message">
                     Ovaj teniser nikada nije pobedio &#128577;
@@ -532,7 +579,6 @@ const matchesText = computed(() => {
                                 <div class="category-wrapp">
                                     <span class="skeleton-item skeleton-category"></span>
                                 </div>
-                                <div class="skeleton-item skeleton-points"></div>
                             </div>
                         </div>
                         <div class="sep">:</div>
@@ -542,7 +588,6 @@ const matchesText = computed(() => {
                                 <div class="category-wrapp">
                                     <span class="skeleton-item skeleton-category"></span>
                                 </div>
-                                <div class="skeleton-item skeleton-points"></div>
                             </div>
                         </div>
                     </div>
@@ -583,7 +628,6 @@ const matchesText = computed(() => {
                                     :class="{ 'category-unknown': match.winner1_category == '?' ,[`category-${match.winner1_category}`]: match.winner1_category }">{{ match.winner1_category }}</span>
 
                             </div>
-                            <span class="points">+{{ match.winner2_first_name ? Math.round(match.winner_point_gain / 2) : match.winner_point_gain }}</span>
                         </div>
 
                         <div class="text" style="margin-top: 20px;"  v-if="match.winner2_name">
@@ -600,7 +644,6 @@ const matchesText = computed(() => {
         :class="{ 'category-unknown': match.winner2_category == '?' ,[`category-${match.winner2_category}`]: match.winner2_category }">{{ match.winner2_category }}</span>
 
 </div>
-                            <span class="points">+{{ Math.round(match.winner_point_gain / 2) }}</span>
 
                         </div>
                     </div>
@@ -622,7 +665,6 @@ const matchesText = computed(() => {
                                     :class="{ 'category-unknown': match.loser1_category == '?' ,[`category-${match.loser1_category}`]: match.loser1_category }">{{ match.loser1_category }}</span>
 
                             </div>
-                        <span class="points">+{{ match.loser2_first_name ? Math.round(match.loser_point_gain / 2) : match.loser_point_gain }}</span>
                         </div>
 
                         <div class="text" v-if="match.loser2_name" style="margin-top: 20px;">
@@ -636,7 +678,6 @@ const matchesText = computed(() => {
                                     :class="{ 'category-unknown': match.loser2_category == '?' ,[`category-${match.loser2_category}`]: match.loser2_category }">{{ match.loser2_category }}</span>
 
                             </div>
-                            <span class="points">+{{ Math.round(match.loser_point_gain / 2) }}</span>
                         </div>
                     </div>
                 </div>
@@ -684,7 +725,6 @@ const matchesText = computed(() => {
                                 <div class="category-wrapp">
                                     <span class="skeleton-item skeleton-category"></span>
                                 </div>
-                                <div class="skeleton-item skeleton-points"></div>
                             </div>
                         </div>
                         <div class="sep">:</div>
@@ -694,7 +734,6 @@ const matchesText = computed(() => {
                                 <div class="category-wrapp">
                                     <span class="skeleton-item skeleton-category"></span>
                                 </div>
-                                <div class="skeleton-item skeleton-points"></div>
                             </div>
                         </div>
                     </div>
@@ -769,12 +808,6 @@ const matchesText = computed(() => {
     margin-left: 4px;
 }
 
-#desktop .skeleton-points {
-    height: 12px;
-    width: 40px;
-    margin-top: 4px;
-}
-
 #desktop .skeleton-score {
     height: 16px;
     width: 60px;
@@ -813,12 +846,6 @@ const matchesText = computed(() => {
     width: 16px;
     display: inline-block;
     margin-left: 2px;
-}
-
-#mobile .skeleton-points {
-    height: 10px;
-    width: 30px;
-    margin-top: 2px;
 }
 
 #mobile .skeleton-score {
@@ -893,4 +920,57 @@ const matchesText = computed(() => {
         background-position: -200% 0;
     }
 }
+
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    &::before {
+        content: '▼';
+        font-size: 10px;
+        margin-right: 4px;
+        visibility: hidden;
+    }
+    &::after {
+        content: '▼';
+        font-size: 10px;
+        margin-left: 4px;
+        visibility: hidden;
+    }
+    &:hover {
+        color: #00aeef;
+    }
+    &.active {
+        color: #ec008c;
+        &::after {
+            visibility: visible;
+            content: '▼';
+        }
+        &.asc::after {
+            content: '▲';
+        }
+    }
+}
+.winner.sortable::before,
+.loser.sortable::before {
+    content: none;
+}
+
+/* .mobile-sort-filter {
+    display: none;
+    padding: 0 20px;
+    max-width: 400px;
+    margin: 20px auto 50px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .mobile-sort-filter {
+        display: block;
+    }
+    .match-entry{
+           &:first-of-type{
+            border-top: 2px solid #e2e0e1 !important;
+            }
+
+    }
+} */
 </style>

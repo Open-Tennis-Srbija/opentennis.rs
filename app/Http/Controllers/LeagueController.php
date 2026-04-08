@@ -361,14 +361,6 @@ class LeagueController extends Controller
         $data['locations'] = Self::getLocations();
         $players = PlayerController::getPlayers();
 
-
-        $points = 0;
-
-        foreach($players as $player){
-            $points += $player['points'];
-        }
-
-        $data['totals']['points'] = $points;
         $players = $players->toArray();
        usort($players, function($a, $b) {
             $matchComparison = $b['total_matches'] <=> $a['total_matches'];
@@ -506,74 +498,6 @@ class LeagueController extends Controller
     }
 
 
-    public static function getLocationsForPlayer($player_id){
-        $matches = TenisMatch::where('winner_id', $player_id)->orWhere('loser_id', $player_id)->get();
-
-        $data = [
-            'courts'=>[],
-            'locations'=>[],
-            'leagues'=>[]
-        ];
-
-        foreach ($matches as $match) {
-            $court = Court::find($match->court_id);
-            $league = League::find($match->league_id);
-
-            if($league->id != 1){
-                if(!isset($data['leagues'][$league->id])){
-                    $data['leagues'][$league->id] = [
-                        'name' => $league->name,
-                        'uri' => $league->uri,
-                        'link' => $league->link,
-                        'count' => 1
-                    ];
-                }
-                else{
-                    $data['leagues'][$league->id]['count']++;
-                }
-            }
-            if($court->id != 1){
-                if(!isset($data['courts'][$court->id])){
-                    $data['courts'][$court->id] = [
-                        'name' => $court->name,
-                        'link' => $court->link,
-                        'count' => 1
-                    ];
-                }
-                else{
-                    $data['courts'][$court->id]['count']++;
-                }
-            }
-
-            if(!isset($data['locations'][$match->match_location])){
-                $data['locations'][$match->match_location] = [
-                    'name' => $match->match_location,
-                    'count' => 1
-                ];
-            }
-            else{
-                $data['locations'][$match->match_location]['count']++;
-            }
-        }
-
-       usort($data['courts'], function($a, $b) {
-            $matchComparison = $b['count'] <=> $a['count'];
-
-            return $matchComparison ?: strcmp($a['name'], $b['name']);
-        });
-        usort($data['locations'], function($a, $b) {
-            $comparison = $b['count'] <=> $a['count'];
-
-            return $comparison ?: strcmp($a['name'], $b['name']);
-        });
-        usort($data['leagues'], function($a, $b) {
-            $comparison = $b['count'] <=> $a['count'];
-
-            return $comparison ?: strcmp($a['name'], $b['name']);
-        });
-
-        return $data;
-    }
 
 
 }

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\SEOHelper;
+use App\Models\Player;
+use App\Models\Court;
+use App\Models\League;
 use Inertia\Inertia;
 
 class StaticController extends Controller
@@ -13,6 +16,44 @@ class StaticController extends Controller
         
         return Inertia::render('static/Mision', [
             'seo' => $seoData,
+        ]);
+    }
+
+    public function home()
+    {
+        $seoData = SEOHelper::generateStaticPageSEO('home');
+
+        $players = Player::select('first_name', 'last_name', 'uri')
+            ->orderBy('first_name')
+            ->get()
+            ->map(fn($p) => ['name' => $p->first_name . ' ' . $p->last_name, 'uri' => $p->uri]);
+
+        $courts = Court::where('id', '>', 1)
+            ->select('name', 'uri')
+            ->orderBy('name')
+            ->get()
+            ->map(fn($c) => ['name' => $c->name, 'uri' => $c->uri]);
+
+        $tournaments = League::where('id', '>', 1)
+            ->where('type', 'tournament')
+            ->select('name', 'uri')
+            ->orderBy('name')
+            ->get()
+            ->map(fn($l) => ['name' => $l->name, 'uri' => $l->uri]);
+
+        $leagues = League::where('id', '>', 1)
+            ->where('type', 'league')
+            ->select('name', 'uri')
+            ->orderBy('name')
+            ->get()
+            ->map(fn($l) => ['name' => $l->name, 'uri' => $l->uri]);
+
+        return Inertia::render('home/Home', [
+            'seo' => $seoData,
+            'players' => $players,
+            'courts' => $courts,
+            'tournaments' => $tournaments,
+            'leagues' => $leagues,
         ]);
     }
     

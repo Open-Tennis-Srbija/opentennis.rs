@@ -7,6 +7,7 @@ $border-color-dark: #e2e0e1;
 .matches-wrapper {
   max-width: 1200px;
   margin: 0 auto 100px;
+  
 
   &.home{
     padding-top: 91px;
@@ -78,6 +79,10 @@ $border-color-dark: #e2e0e1;
         align-self: auto;
         text-align: center;
       }
+      .winner,
+      .loser {
+        align-self: auto;
+      }
     }
   }
 }
@@ -89,6 +94,11 @@ $border-color-dark: #e2e0e1;
   text-align: center;
 }
 
+.winner,
+.loser {
+  text-align: left;
+}
+
 .score .gray {
   color: $text-color-gray;
 }
@@ -98,6 +108,10 @@ $border-color-dark: #e2e0e1;
   border-bottom: 2px solid $border-color-dark;
   align-items: center;
   position: relative;
+
+  &:nth-of-type(2) {
+    border-top: 2px solid $border-color-dark;
+  }
   
   .edit-btn{
     position: absolute;
@@ -427,9 +441,14 @@ $border-color-dark: #e2e0e1;
 
   .match-entry{
     &:first-of-type{
-      border-top: 2px solid $border-color-dark;
+      border-top: 2px solid $border-color-dark !important;
     }
   }
+
+  // .mobile-sort-filter ~ .match-entry:first-of-type,
+  // .mobile-sort-filter ~ .initial-loading-skeletons .match-entry:first-of-type {
+  //   border-top: 2px solid $border-color-dark !important;
+  // }
 
 
   .info {

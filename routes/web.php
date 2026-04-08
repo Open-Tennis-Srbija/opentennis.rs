@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/crazy-pizza', '/');
 Route::redirect('/nagrade', '/');
 
-Route::get('/', [StaticController::class, 'tournaments'])->name('home');
+Route::get('/', [StaticController::class, 'home'])->name('home');
 
 Route::get('/teniseri', [StaticController::class, 'players'])->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);

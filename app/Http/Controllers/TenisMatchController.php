@@ -76,7 +76,7 @@ class TenisMatchController extends Controller
             ->first();
             
         if (!$match) {
-            return abort(404);
+            return redirect('/');
         }
 
         $winnersCount = $match->winners()->count();
@@ -90,7 +90,7 @@ class TenisMatchController extends Controller
             return $this->validateAndRenderMatch($match, $parts, $matchNumber, 'doubles');
         }
         
-        return abort(404);
+         return redirect('/');
     }
 
     private function validateAndRenderMatch($match, $parts, $matchNumber, $type) {
@@ -910,9 +910,18 @@ fclose($handle);
     {
         $page = $request->get('page', 1);
         $perPage = $request->get('per_page', 100);
+        $sortBy = $request->get('sort_by', 'number');
+        $sortDir = $request->get('sort_dir', 'desc');
+
+        $allowedSorts = ['number', 'date', 'set_score', 'county', 'winner', 'loser', 'league', 'court'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'number';
+        }
+        $sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
         
         return TennisMatch::with(['winners', 'losers'])
-            ->orderByDesc('number')
+            ->select('tennis_matches.*')
+            ->applySort($sortBy, $sortDir)
             ->paginate($perPage, ['*'], 'page', $page)
             ->through(function ($match) {
                 return [
@@ -1166,13 +1175,13 @@ fclose($handle);
 
 
         if(env('APP_ENV') == 'production'){
-            Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
-            Mail::to('nikola@openinnovation.me')->send(new AddMatchNotification($match));
-            Mail::to('')->send(new AddMatchNotification($match));
-            Mail::to('')->send(new AddMatchNotification($match));
+            $emails = array_filter(array_map('trim', explode(',', env('NOTIFICATION_EMAILS', ''))));
+            foreach ($emails as $email) {
+                Mail::to($email)->send(new AddMatchNotification($match));
+            }
+        } elseif(env('DEV_NOTIFICATION_EMAIL')) {
+            Mail::to(env('DEV_NOTIFICATION_EMAIL'))->send(new AddMatchNotification($match));
         }
-         else
-             Mail::to('bogdan@openinnovation.me')->send(new AddMatchNotification($match));
 
         // Generate URI for the created match
         $matchUri = self::generateMatchUri($match->number);
@@ -1363,12 +1372,13 @@ fclose($handle);
 
 
         if(env('APP_ENV') == 'production'){
-            Mail::to('bogdan@openinnovation.me')->send(new DoubleMatchNotification($match));
-            Mail::to('nikola@openinnovation.me')->send(new DoubleMatchNotification($match));
-            Mail::to('')->send(new DoubleMatchNotification($match));
+            $emails = array_filter(array_map('trim', explode(',', env('NOTIFICATION_EMAILS', ''))));
+            foreach ($emails as $email) {
+                Mail::to($email)->send(new DoubleMatchNotification($match));
+            }
+        } elseif(env('DEV_NOTIFICATION_EMAIL')) {
+            Mail::to(env('DEV_NOTIFICATION_EMAIL'))->send(new DoubleMatchNotification($match));
         }
-         else
-             Mail::to('bogdan@openinnovation.me')->send(new DoubleMatchNotification($match));
 
         // Generate URI for the created match
         $matchUri = self::generateMatchUri($match->number);
@@ -1440,30 +1450,6 @@ fclose($handle);
     /**
      * Display the specified resource.
      */
-    public function show(TenisMatch $tenisMatch)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TenisMatch $tenisMatch)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTenisMatchRequest $request, TenisMatch $tenisMatch,$id)
-    {
-        $tenisMatch = TenisMatch::find($id);
-
-        dd($tenisMatch);
-
-        // return redirect()->back()->with('success', 'Meč je uspešno izmenjen.');
-    }
 
     public function updateDouble(Request $request){
         $data = $request->validate([
@@ -1891,11 +1877,5 @@ fclose($handle);
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TenisMatch $tenisMatch)
-    {
-        //
-    }
+  
 }

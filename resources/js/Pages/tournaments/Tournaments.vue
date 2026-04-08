@@ -14,6 +14,40 @@ import 'vue-simple-calendar/dist/css/default.css';
 
 const utl = utils;
 
+const sortKey = ref('date_start');
+const sortDir = ref('desc');
+
+const toggleSort = (key) => {
+    if (sortKey.value === key) {
+        sortDir.value = sortDir.value === 'desc' ? 'asc' : 'desc';
+    } else {
+        sortKey.value = key;
+        sortDir.value = 'desc';
+    }
+};
+
+const sortedLeagues = computed(() => {
+    return [...leagues.value].sort((a, b) => {
+        let aVal = a[sortKey.value];
+        let bVal = b[sortKey.value];
+        if (sortKey.value === 'name') {
+            aVal = (aVal || '').toLowerCase();
+            bVal = (bVal || '').toLowerCase();
+            return sortDir.value === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+        }
+        if (sortKey.value === 'county') {
+            aVal = (aVal === '?' || !aVal) ? '' : aVal.toLowerCase();
+            bVal = (bVal === '?' || !bVal) ? '' : bVal.toLowerCase();
+            return sortDir.value === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+        }
+        if (sortKey.value === 'date_start') {
+            aVal = new Date(aVal).getTime();
+            bVal = new Date(bVal).getTime();
+        }
+        return sortDir.value === 'asc' ? aVal - bVal : bVal - aVal;
+    });
+});
+
 const isClient = ref(false);
 
 const leagues = ref([]);
@@ -488,23 +522,19 @@ const tournamentsText = computed(() => {
     <div v-if="isLoading" class="skeleton-wrapper">
       <div id="desktop">
         <div class="rankings-header" :style="{ top: 304 - topOffset + 'px' }">
-          <div class="spacer"></div>
-          <div class="name">turniri</div>
-          <div class="wins">poeni</div>
-          <div class="total-matches">mečevi</div>
-          <div class="loses">teniseri</div>
-          <div class="elo">početak - kraj</div>
-          <div class="elo">opština</div>
+          <div class="name sortable" :class="{ active: sortKey === 'name', asc: sortKey === 'name' && sortDir === 'asc' }" @click="toggleSort('name')">turniri</div>
+          <div class="elo date-range sortable" :class="{ active: sortKey === 'date_start', asc: sortKey === 'date_start' && sortDir === 'asc' }" @click="toggleSort('date_start')">početak - kraj</div>
+          <div class="total-matches sortable" :class="{ active: sortKey === 'match_number', asc: sortKey === 'match_number' && sortDir === 'asc' }" @click="toggleSort('match_number')">mečevi</div>
+          <div class="loses sortable" :class="{ active: sortKey === 'player_number', asc: sortKey === 'player_number' && sortDir === 'asc' }" @click="toggleSort('player_number')">teniseri</div>
+          <div class="elo county-col sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
         </div>
         <div v-for="(n, index) in 8" :key="`desktop-skeleton-${n}`" class="ranking-entry skeleton" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
-          <div class="rank">
-            <div class="skeleton-item skeleton-text small"></div>
-          </div>
           <div class="name">
             <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
           </div>
-          <div class="elo league-points">
-            <div class="skeleton-item skeleton-text medium"></div>
+          <div class="wins smaller-font">
+            <div class="skeleton-item skeleton-text" style="margin-bottom: 4px; width: 70%;"></div>
+            <div class="skeleton-item skeleton-text" style="width: 80%;"></div>
           </div>
           <div class="total-matches">
             <div class="skeleton-item skeleton-text small"></div>
@@ -513,19 +543,12 @@ const tournamentsText = computed(() => {
             <div class="skeleton-item skeleton-text small"></div>
           </div>
           <div class="wins smaller-font">
-            <div class="skeleton-item skeleton-text" style="margin-bottom: 4px; width: 70%;"></div>
-            <div class="skeleton-item skeleton-text" style="width: 80%;"></div>
-          </div>
-          <div class="wins smaller-font">
             <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
           </div>
         </div>
       </div>
       <div id="mobile">
         <div v-for="n in 8" :key="`mobile-skeleton-${n}`" class="ranking-entry skeleton">
-          <div class="rank">
-            <div class="skeleton-item skeleton-text small"></div>
-          </div>
           <div class="name" style="font-weight: bold; text-align: center;">
             <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
           </div>
@@ -542,34 +565,25 @@ const tournamentsText = computed(() => {
     <!-- Actual Content -->
     <div v-else>
       <div id="desktop">
-        <div class="rankings-header" :style="{ top: 304 - topOffset + 'px' }">
+        <div class="rankings-header" :style="{ top: 264 - topOffset + 'px' }">
         <!-- <div class="rankings-header" :style="{top: `${ 50 - topOffset}px`}"> -->
-          <div class="spacer"></div>
-          <div class="name">turniri</div>
-          <div class="wins">poeni</div>
-          <div class="total-matches">mečevi</div>
-          <div class="loses">teniseri</div>
-          <div class="elo">početak - kraj</div>
-          <div class="elo">opština</div>
+          <div class="name sortable" :class="{ active: sortKey === 'name', asc: sortKey === 'name' && sortDir === 'asc' }" @click="toggleSort('name')">turniri</div>
+          <div class="elo date-range sortable" :class="{ active: sortKey === 'date_start', asc: sortKey === 'date_start' && sortDir === 'asc' }" @click="toggleSort('date_start')">početak - kraj</div>
+          <div class="total-matches sortable" :class="{ active: sortKey === 'match_number', asc: sortKey === 'match_number' && sortDir === 'asc' }" @click="toggleSort('match_number')">mečevi</div>
+          <div class="loses sortable" :class="{ active: sortKey === 'player_number', asc: sortKey === 'player_number' && sortDir === 'asc' }" @click="toggleSort('player_number')">teniseri</div>
+          <div class="elo county-col sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
         </div>
-        <div v-if="leagues.length" class="ranking-entry" v-for="(league, index) in leagues" :style="{marginTop: index === 0 ? 16 - topOffset/2.4 + 'px' : '0'}" >
-        <div class="rank">
-            {{ index+1 }}
-          </div>
+        <div v-if="sortedLeagues.length" class="ranking-entry" v-for="(league, index) in sortedLeagues" :style="{marginTop: index === 0 ? 16 - topOffset/2.4 + 'px' : '0'}" >
           <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-turnir/${league.uri}`"><EditBtn/></Link>
           <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link><br><span class="series" :style="{'color': league.series?.color || '#8f8f8f'}">{{ league.series?.name || 'nezavistan' }}</span></div>
-          <div class="elo league-points" :class="{'unknown': league.points == 0}">{{utl.formatAsThousands(league.points)}}</div>
+          <div style="text-align: center; line-height: 1.6;" :class="{'inactive' : isInactive(league.date_end)}" class="wins smaller-font">{{formatDates(league.date_start, league.date_end)[0]}}<template v-if="!areSameDate(league.date_start, league.date_end)"><br>{{formatDates(league.date_start, league.date_end)[1]}}</template></div>
           <div class="total-matches">{{league.match_number}}</div>
           <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
-          <div style="text-align: center; line-height: 1.6;" :class="{'inactive' : isInactive(league.date_end)}" class="wins smaller-font">{{formatDates(league.date_start, league.date_end)[0]}}<template v-if="!areSameDate(league.date_start, league.date_end)"><br>{{formatDates(league.date_start, league.date_end)[1]}}</template></div>
           <div style="text-align:center" class="wins smaller-font" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
         </div>
       </div>
       <div v-if="leagues" id="mobile">
         <div class="ranking-entry" v-for="(league, index) in leagues">
-          <div class="rank">
-            {{ index + 1 }}
-          </div>
           <div class="name" style="font-weight: bold; text-align: center;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link>
             <br>
           <span class="series" :style="{'color': league.series?.color || '#8f8f8f'}">{{ league.series?.name || 'nezavistan' }}</span>
@@ -584,8 +598,17 @@ const tournamentsText = computed(() => {
   </div>
   <div v-else-if="currentView === 'calendar'" class="calendar-container">
     <!-- Calendar view content -->
-    <div v-if="isLoading" class="calendar-loading">
-      Loading calendar...
+    <div v-if="isLoading" class="calendar-skeleton">
+      <div class="calendar-skeleton-header">
+        <div v-for="day in ['Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned']" :key="day" class="calendar-skeleton-day-name">{{ day }}</div>
+      </div>
+      <div v-for="week in 5" :key="week" class="calendar-skeleton-row">
+        <div v-for="day in 7" :key="day" class="calendar-skeleton-cell">
+          <div class="calendar-skeleton-date">
+            <div class="skeleton-item" style="width: 70px; height: 12px; margin: 0 auto;"></div>
+          </div>
+        </div>
+      </div>
     </div>
     <CalendarView
       v-else
@@ -609,4 +632,89 @@ const tournamentsText = computed(() => {
 
 <style scoped lang="scss">
 @use '../../../css/sass/pages/tournaments';
+
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    &::before {
+        content: '▼';
+        font-size: 10px;
+        margin-right: 4px;
+        visibility: hidden;
+    }
+    &::after {
+        content: '▼';
+        font-size: 10px;
+        margin-left: 4px;
+        visibility: hidden;
+    }
+    &.name::before {
+        content: none;
+    }
+    &:hover {
+        color: #00aeef;
+    }
+    &.active {
+        color: #ec008c;
+        &::after {
+            visibility: visible;
+            content: '▼';
+        }
+        &.asc::after {
+            content: '▲';
+        }
+    }
+}
+
+.calendar-skeleton {
+    max-width: 1200px;
+    margin: 0 auto;
+    border: 1px solid #e0e0e0;
+}
+
+.calendar-skeleton-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.calendar-skeleton-day-name {
+    padding: 8px;
+    text-align: center;
+    font-size: 13px;
+    color: #949494;
+    text-transform: capitalize;
+}
+
+.calendar-skeleton-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-skeleton-cell {
+    min-height: 170px;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 8px;
+
+    &:last-child {
+        border-right: none;
+    }
+}
+
+.calendar-skeleton-date {
+    margin-bottom: 8px;
+}
+
+.skeleton-item {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: calendar-loading 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes calendar-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
 </style>

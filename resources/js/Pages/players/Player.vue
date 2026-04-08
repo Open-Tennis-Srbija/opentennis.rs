@@ -17,6 +17,9 @@ const isExpanded = reactive({
 	wins: false,
 	loses: false,
 	not_played: false,
+	counties: false,
+	courts: false,
+	leagues: false,
 });
 
 const categoryColors = {
@@ -64,30 +67,30 @@ const matchups = computed(() => {
 	let loses = Object.values(player.value.matchups.lost_against);
 
 	if (player.value.matchups.won_against) {
-		if (wins.length <= 10 || isExpanded.wins) {
+		if (wins.length <= 5 || isExpanded.wins) {
 			data = { ...data, wins: player.value.matchups.won_against };
 		} else {
-			data = { ...data, wins: player.value.matchups.won_against.slice(0, 10) };
+			data = { ...data, wins: player.value.matchups.won_against.slice(0, 5) };
 		}
 	} else {
 		data = { ...data, wins: [] };
 	}
 
 	if (player.value.matchups.lost_against) {
-		if (loses.length <= 10 || isExpanded.loses) {
+		if (loses.length <= 5 || isExpanded.loses) {
 			data = { ...data, loses: player.value.matchups.lost_against };
 		} else {
-			data = { ...data, loses: player.value.matchups.lost_against.slice(0, 10) };
+			data = { ...data, loses: player.value.matchups.lost_against.slice(0, 5) };
 		}
 	} else {
 		data = { ...data, loses: [] };
 	}
 
 	if (player.value.matchups.not_played) {
-		if (player.value.matchups.not_played.length <= 10 || isExpanded.not_played) {
+		if (player.value.matchups.not_played.length <= 5 || isExpanded.not_played) {
 			data = { ...data, not_played: player.value.matchups.not_played };
 		} else {
-			data = { ...data, not_played: player.value.matchups.not_played.slice(0, 10) };
+			data = { ...data, not_played: player.value.matchups.not_played.slice(0, 5) };
 		}
 	} else {
 		data = { ...data, not_played: [] };
@@ -143,11 +146,6 @@ onBeforeUnmount(() => {
 	
 	<!-- Skeleton Loading State -->
 	<div v-if="isLoading" class="static-wrapper player mobile-mb-300 skeleton-wrapper">
-		<!-- Rank skeleton -->
-		<div class="rank skeleton-rank">
-			<div class="skeleton skeleton-circle"></div>
-		</div>
-		
 		<!-- Name skeleton -->
 		<div class="skeleton-title">
 			<div class="skeleton skeleton-text large"></div>
@@ -157,6 +155,11 @@ onBeforeUnmount(() => {
 		<div class="skeleton-subtitle">
 			<div class="skeleton skeleton-text medium"></div>
 		</div>
+
+		<!-- Category skeleton -->
+		<div class="skeleton-subtitle">
+			<div class="skeleton skeleton-square" style="width: 90px; height: 90px;"></div>
+		</div>
 		
 		<!-- Dashboard skeleton -->
 		<div class="dashboard-wrapper">
@@ -165,17 +168,17 @@ onBeforeUnmount(() => {
 				<div class="skeleton skeleton-text medium"></div>
 			</div>
 			
-			<!-- Desktop stats (6 items) -->
-			<div class="summary player six desktop">
-				<div class="summary-item" v-for="i in 6" :key="i">
+			<!-- Desktop stats (4 items) -->
+			<div class="summary player four desktop">
+				<div class="summary-item" v-for="i in 4" :key="i">
 					<div class="skeleton skeleton-text small" style="margin-bottom: 8px;"></div>
 					<div class="skeleton skeleton-text medium"></div>
 				</div>
 			</div>
 			
-			<!-- Mobile stats (5 items) -->
-			<div class="summary player five mobile">
-				<div class="summary-item" v-for="i in 6" :key="i">
+			<!-- Mobile stats (4 items) -->
+			<div class="summary player four mobile">
+				<div class="summary-item" v-for="i in 4" :key="i">
 					<div class="skeleton skeleton-text small" style="margin-bottom: 8px;"></div>
 					<div class="skeleton skeleton-text medium"></div>
 				</div>
@@ -260,26 +263,6 @@ onBeforeUnmount(() => {
 				><EditIcon
 			/></Link>
 
-			<div class="ranks">
-				<div
-					class="rank"
-					:class="{
-						first: player.rank == 1,
-						second: player.rank == 2,
-						third: player.rank == 3,
-					}"
-				>
-					<p :class="{ 'align-left': player.rank > 9,'n40': player.rank >= 40 && player.rank < 50, [`strict-${player.rank}`]: true }">
-						{{ player.rank }}
-					</p>
-				</div>
-				<div class="category">
-					<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }">
-						<span class="number" :class="{[`category-${player.category}`]: true, 'category-unknown': player.category == '?'}">{{ player.category }}</span>
-					</span>
-				</div>
-			</div>
-
 
 		<h1 v-if="player.name" class="blue" :class="{'fix-letters': containsGreek(player.name)}">
 			{{ player.name.split(' ')[0]}} <br class="show-mobile"> {{  player.name.split(' ')[1] }}
@@ -291,13 +274,17 @@ onBeforeUnmount(() => {
 			{{ player.location }}
 		</p>
 
+		<div class="ranks">
+			<div class="category">
+				<span class="diamond" :style="{ border: `1px solid ${categoryColors[player.category] || 'transparent'}` }">
+					<span class="number" :class="{[`category-${player.category}`]: true, 'category-unknown': player.category == '?'}">{{ player.category }}</span>
+				</span>
+			</div>
+		</div>
+
 		<div class="dashboard-wrapper">
 			<h2 class="summary-title">Statistika</h2>
-			<div class="summary player five desktop">
-				<div class="summary-item">
-					<h2>poeni</h2>
-					<p>{{ points}}</p>
-				</div>
+			<div class="summary player four desktop">
 				<div class="summary-item">
 					<h2>mečevi</h2>
 					<p>{{ player.total_matches }}</p>
@@ -314,17 +301,8 @@ onBeforeUnmount(() => {
 					<h2>% pobeda</h2>
 					<p>{{ player.win_precentage }}%</p>
 				</div>
-				
 			</div>
-			<div class="summary player five mobile">
-				<div class="summary-item half">
-					<h2>poeni</h2>
-					<p class="big">{{ points }}</p>
-				</div>
-				<div class="summary-item half">
-					<h2>% pobeda</h2>
-					<p class="big">{{ player.win_precentage }}%</p>
-				</div>
+			<div class="summary player four mobile">
 				<div class="summary-item">
 					<h2>mečevi</h2>
 					<p class="big">{{ player.total_matches }}</p>
@@ -336,6 +314,10 @@ onBeforeUnmount(() => {
 				<div class="summary-item">
 					<h2>gubitci</h2>
 					<p class="big">{{ player.losses_number }}</p>
+				</div>
+				<div class="summary-item">
+					<h2>% pobeda</h2>
+					<p class="big">{{ player.win_precentage }}%</p>
 				</div>
 			</div>
 			<h2 class="summary-title">Teniseri</h2>
@@ -352,7 +334,7 @@ onBeforeUnmount(() => {
 							</p>
 						</template>
 						<p
-							v-if="Object.values(player.matchups.won_against).length > 10"
+							v-if="Object.values(player.matchups.won_against).length > 5"
 							class="show-more"
 							@click="isExpanded.wins = !isExpanded.wins">
 							{{ !isExpanded.wins ? 'vidi sve' : 'vidi manje' }}
@@ -374,7 +356,7 @@ onBeforeUnmount(() => {
 							</p>
 						</template>
 						<p
-							v-if="Object.values(player.matchups.lost_against).length > 10"
+							v-if="Object.values(player.matchups.lost_against).length > 5"
 							class="show-more"
 							@click="isExpanded.loses = !isExpanded.loses">
 							{{ !isExpanded.loses ? 'vidi sve' : 'vidi manje' }}
@@ -390,16 +372,22 @@ onBeforeUnmount(() => {
 			<div class="summary player three col">
 				<div class="summary-item players">
 					<h2>opštine</h2>
-					<template v-for="location in locations.locations">
+					<template v-for="location in (isExpanded.counties ? locations.locations : locations.locations.slice(0, 5))">
 						<p>
 							{{location.county}}
 							({{ location.count }})
 						</p>
 					</template>
+					<p
+						v-if="locations.locations.length > 5"
+						class="show-more"
+						@click="isExpanded.counties = !isExpanded.counties">
+						{{ !isExpanded.counties ? 'vidi sve' : 'vidi manje' }}
+					</p>
 				</div>
 				<div class="summary-item players">
 						<h2>tereni</h2>
-						<template v-for="court in locations.courts">
+						<template v-for="court in (isExpanded.courts ? locations.courts : locations.courts.slice(0, 5))">
 							<p style="text-align: center;">
 								<template v-if="court.id > 1">
 									<a  :href="`/tereni/${court.uri}`">
@@ -412,11 +400,17 @@ onBeforeUnmount(() => {
 								({{ court.count}})
 							</p>
 						</template>
+						<p
+							v-if="locations.courts.length > 5"
+							class="show-more"
+							@click="isExpanded.courts = !isExpanded.courts">
+							{{ !isExpanded.courts ? 'vidi sve' : 'vidi manje' }}
+						</p>
 				</div>
 				<div class="summary-item players">
 					<h2>lige i turniri</h2>
 					<template v-if="locations.leagues.length > 0">
-						<template v-for="league in locations.leagues">
+						<template v-for="league in (isExpanded.leagues ? locations.leagues : locations.leagues.slice(0, 5))">
 							<p>
 								<template v-if="league.uri != ''">
 									<a :href="`/${league.uri}`">
@@ -429,16 +423,22 @@ onBeforeUnmount(() => {
 								({{ league.count }})
 							</p>
 						</template>
+						<p
+							v-if="locations.leagues.length > 5"
+							class="show-more"
+							@click="isExpanded.leagues = !isExpanded.leagues">
+							{{ !isExpanded.leagues ? 'vidi sve' : 'vidi manje' }}
+						</p>
 					</template>
 					<template v-else>
 						<h2 class="black">ovaj teniser nije učestvovao u ligama &#128577;</h2>
 					</template>
 				</div>
 			</div>
-			<h2 class="summary-title big-margin">Grafikoni</h2>
+			<!-- <h2 class="summary-title big-margin">Grafikoni</h2>
 			<div class="chart-wrapper">
 				<PlayerChart v-if="player.id" :player_id="player.id" />
-			</div>
+			</div> -->
 			<h2 class="summary-title no-border big-margin">mečevi</h2>
 			<div class="player-matches">
 				<Matches

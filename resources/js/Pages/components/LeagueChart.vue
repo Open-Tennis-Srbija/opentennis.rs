@@ -285,9 +285,9 @@ const chartOptionsLine3 = {
 </script>
 <template>
     <div id="wrapper">
-        <div id="chart-line">
+        <!-- <div id="chart-line">
             <VueApexCharts type="line" height="300" :options="chartOptions" :series="points" />
-        </div>
+        </div> -->
         <div id="chart-line2">
             <VueApexCharts type="line" height="300" :options="chartOptionsLine2" :series="players" />
         </div>

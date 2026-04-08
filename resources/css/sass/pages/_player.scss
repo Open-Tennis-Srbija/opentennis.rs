@@ -230,10 +230,13 @@
         justify-content: center;
         margin: 0 auto;
         position: relative;
-        margin-top: -20px;
+        margin-top: 0px;
         width: max-content;
-        gap: 70px;
-        margin-bottom: 50px;
+        margin-bottom: 10px;
+
+        @media only screen and (max-width: 1200px) {
+            margin-top: 20px;
+        }
 
         .rank {
             width: 100px;
@@ -427,7 +430,7 @@
         padding-bottom: 20px;
         margin-bottom: 30px;
         border-bottom: 2px solid #e2e0e1;
-        margin-top: 70px;
+        margin-top: 40px;
 
         &.big-margin {
             margin-top: 110px;
@@ -451,6 +454,17 @@
     }
 
     .summary.player {
+        &.four {
+            display: grid;
+            grid-template-columns: repeat(4, 25%);
+            row-gap: 30px;
+
+            .summary-item {
+                display: grid;
+                place-items: center;
+            }
+        }
+
         &.five {
             display: grid;
             grid-template-columns: repeat(5, 20%);
@@ -837,6 +851,21 @@
         .summary.player.six {
             &.desktop {
                 display: none !important;
+            }
+        }
+
+        .summary.player.four {
+            &.desktop {
+                display: none !important;
+            }
+
+            &.mobile {
+                flex-wrap: wrap;
+                display: flex;
+
+                .summary-item {
+                    width: 50%;
+                }
             }
         }
 

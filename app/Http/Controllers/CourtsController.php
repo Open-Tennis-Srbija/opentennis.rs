@@ -98,7 +98,7 @@ class CourtsController extends Controller
     public static function getCourt($uri){
         $court = Court::where('uri', $uri)->first();
         if(!$court){
-            return response()->json(['error' => 'Court not found'], 404);
+            return redirect('/');
         }
 
         $matches = TennisMatch::where('court_id', $court->id)->get();
@@ -145,14 +145,22 @@ class CourtsController extends Controller
     {
         $page = $request->get('page', 1);
         $perPage = $request->get('per_page', 100);
+        $sortBy = $request->get('sort_by', 'number');
+        $sortDir = $request->get('sort_dir', 'desc');
         $offset = ($page - 1) * $perPage;
+
+        $allowedSorts = ['number', 'date', 'set_score', 'county', 'winner', 'loser', 'league', 'court'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'number';
+        }
+        $sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
         
         $court = Court::find($id);
         if (!$court) {
             return response()->json(['error' => 'Court not found'], 404);
         }
         
-        $matches = $court->getMatches($offset, $perPage);
+        $matches = $court->getMatches($offset, $perPage, $sortBy, $sortDir);
         $totalMatches = $court->getMatchCount();
         $lastPage = ceil($totalMatches / $perPage);
         

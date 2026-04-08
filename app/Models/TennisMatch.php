@@ -59,4 +59,34 @@ class TennisMatch extends Model
             $this->players()->attach($player instanceof Player ? $player->id : $player, ['team' => $team]);
         }
     }
+
+    public function scopeApplySort($query, $sortBy, $sortDir)
+    {
+        if (in_array($sortBy, ['winner', 'loser'])) {
+            $query->addSelect(['sort_name' => Player::query()
+                ->select('players.last_name')
+                ->join('match_players', 'players.id', '=', 'match_players.player_id')
+                ->whereColumn('match_players.tennis_match_id', 'tennis_matches.id')
+                ->where('match_players.team', $sortBy)
+                ->orderBy('players.last_name')
+                ->limit(1)
+            ])->orderBy('sort_name', $sortDir);
+        } elseif ($sortBy === 'league') {
+            $query->addSelect(['sort_name' => League::query()
+                ->select('leagues.name')
+                ->whereColumn('leagues.id', 'tennis_matches.league_id')
+                ->limit(1)
+            ])->orderBy('sort_name', $sortDir);
+        } elseif ($sortBy === 'court') {
+            $query->addSelect(['sort_name' => Court::query()
+                ->select('courts.name')
+                ->whereColumn('courts.id', 'tennis_matches.court_id')
+                ->limit(1)
+            ])->orderBy('sort_name', $sortDir);
+        } else {
+            $query->orderBy($sortBy, $sortDir);
+        }
+
+        return $query;
+    }
 }

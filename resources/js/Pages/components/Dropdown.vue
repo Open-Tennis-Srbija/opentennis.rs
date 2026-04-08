@@ -14,7 +14,8 @@ const props = defineProps({
     disabledOption: Object,
     disabledOptions: Array,
     minWidth: String,
-    clearable: Boolean
+    clearable: Boolean,
+    searchable: { type: Boolean, default: true }
 });
 
 const model = defineModel();
@@ -125,8 +126,8 @@ const handleSearch = (e) => {
 };
 
 const filteredOptions = computed(() => {
-    // For multi-select mode, always show all options (no filtering)
-    if (props.multiple) {
+    // For multi-select mode or non-searchable, always show all options
+    if (props.multiple || !props.searchable) {
         return state.options;
     }
     
@@ -367,9 +368,9 @@ const selectOption = (option, e) => {
             state.search = option;
             state.placeholder = option;
         }
+        state.isOpen = false;
         state.isBlured = true;
-        e.target.blur();
-        onClickOutside.value(e);
+        dropdownInput.value?.blur();
     }
 };
 </script>
@@ -378,7 +379,7 @@ const selectOption = (option, e) => {
         <input type="text" 
                :placeholder="state.placeholder" 
                :value="state.search" 
-               :readonly="props.multiple"
+               :readonly="props.multiple || !props.searchable"
                ref="dropdownInput"
             @input="handleSearch" @focus="onFocus" @blur="onBlur" @keydown.down.prevent="onKeyDown"
             @keydown.up.prevent="onKeyUp" @keydown.esc.prevent="onEsc" @keydown.tab.prevent="onTab" />

@@ -73,11 +73,11 @@ const formatDate = ((start, end) =>{
 const players = computed(()=>{
     if (!league.value.players) return [];
     let data = []
-    if(league.value.players.length <= 10 || isExpanded.players){
+    if(league.value.players.length <= 5 || isExpanded.players){
             data =  league.value.players
     }
     else {
-        data = league.value.players.slice(0, 10)
+        data = league.value.players.slice(0, 5)
     }
     return data;
 
@@ -105,11 +105,6 @@ onBeforeUnmount(() => {
 <template>
     <!-- Skeleton Loading State -->
     <div v-if="isLoading" class="static-wrapper player league mobile-mb-300 skeleton-wrapper">
-        <!-- Rank skeleton -->
-        <div class="rank skeleton-rank">
-            <div class="skeleton skeleton-circle"></div>
-        </div>
-        
         <!-- Title skeleton -->
         <div class="skeleton-title">
             <div class="skeleton skeleton-text large"></div>
@@ -192,13 +187,7 @@ onBeforeUnmount(() => {
 				><EditIcon
                 class="league"
 			/></Link>
-            <div
-                class="rank"
-            >
-			<p :class="{ 'align-left': league.rank > 9,'n40': league.rank >= 40 && league.rank < 50, [`strict-${league.rank}`]: true }">
-				{{ league.type == 'tournament' ? league.rank + 1 : league.rank }}
-			</p>
-		</div>
+
         <h1 class="red" :class="{'fix-letters': containsGreek(league.name)}">
             {{ league.name }}        
             <br>  
@@ -220,11 +209,7 @@ onBeforeUnmount(() => {
         </a>
         <div class="dashboard-wrapper">
             <h2 class="summary-title">Statistika</h2>
-            <div class="summary player three">
-                <div class="summary-item">
-                    <h2>poeni</h2>
-                    <p class="big">{{ points }}</p>
-                </div>
+            <div class="summary player two">
                 <div class="summary-item">
                     <h2>teniseri</h2>
                     <p class="big">{{ league.player_number }}</p>
@@ -248,7 +233,7 @@ onBeforeUnmount(() => {
                             </p>
                         </template>
                         <p
-                            v-if="Object.values(league.players).length > 10"
+                            v-if="Object.values(league.players).length > 5"
                             class="show-more"
                             @click="isExpanded.players = !isExpanded.players">
                             {{ !isExpanded.players ? 'vidi sve' : 'vidi manje' }}

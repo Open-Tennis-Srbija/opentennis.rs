@@ -197,7 +197,7 @@
                 font-size: 15px;
                 font-family: "Helvetica Neue";
                 text-transform: uppercase;
-                margin-top: -21px;
+                margin-top: -23px;
 
                 &.blue {
                     color: $blue;
@@ -453,7 +453,7 @@
     display: block;
     z-index: 4;
     position: fixed;
-    top: 90px;
+    top: 50px;
     height: calc(100vh - 100px);
     width: 100%;
     background: white;

@@ -133,18 +133,6 @@ const matchTitle = computed(() => {
                     }}
                     </Link>
                     <div class="ranks">
-                            	<div
-					class="rank"
-					:class="{
-						first: formatedMatch.winner1_rank == 1,
-						second: formatedMatch.winner1_rank == 2,
-						third: formatedMatch.winner1_rank == 3,
-					}"
-				>
-					<p :class="{ 'align-left': formatedMatch.winner1_rank > 9,'n40': formatedMatch.winner1_rank >= 40 && formatedMatch.winner1_rank < 50,'fix-hundreds': formatedMatch.winner1_rank >= 100, [`strict-${formatedMatch.winner1_rank}`]: true }">
-						{{ formatedMatch.winner1_rank }}
-					</p>
-				</div>
                         <div class="category-wrapp">
                             <span class="diamond"
                                 :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner1_category] || 'transparent'}` }">
@@ -156,8 +144,6 @@ const matchTitle = computed(() => {
     
                         </div>
                     </div>
-                    <span class="points">+{{ formatedMatch.winner2_first_name ?
-                        Math.round(formatedMatch.winner_point_gain / 2) : formatedMatch.winner_point_gain }}</span>
                 </div>
 
                 <div class="text" style="margin-top: 20px;" v-if="formatedMatch.winner2_name">
@@ -168,19 +154,6 @@ const matchTitle = computed(() => {
 
                     </Link>
                          <div class="ranks">
-                            	<div
-					class="rank"
-					:class="{
-						first: formatedMatch.winner2_rank == 1,
-						second: formatedMatch.winner2_rank == 2,
-						third: formatedMatch.winner2_rank == 3,
-					}"
-				>
-					<p :class="{ 'align-left': formatedMatch.winner2_rank > 9,'n40': formatedMatch.winner2_rank >= 40 && formatedMatch.winner2_rank < 50, 'fix-hundreds': formatedMatch.winner2_rank >= 100,[`strict-${formatedMatch.winner2_rank}`]: true }">
-						{{ formatedMatch.winner2_rank }}
-					</p>
-				</div>
-
                         <div class="category-wrapp">
                             <span class="diamond"
                                 :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.winner2_category] || 'transparent'}` }">
@@ -192,8 +165,6 @@ const matchTitle = computed(() => {
     
                         </div>
                     </div>
-                    <span class="points">+{{ Math.round(formatedMatch.winner_point_gain / 2) }}</span>
-
                 </div>
             </div>
 
@@ -209,18 +180,6 @@ const matchTitle = computed(() => {
 
                     </Link>
                     <div class="ranks">
-                            	<div
-					class="rank"
-					:class="{
-						first: formatedMatch.loser1_rank == 1,
-						second: formatedMatch.loser1_rank == 2,
-						third: formatedMatch.loser1_rank == 3,
-					}"
-				>
-					<p :class="{ 'align-left': formatedMatch.loser1_rank > 9,'n40': formatedMatch.loser1_rank >= 40 && formatedMatch.loser1_rank < 50,'fix-hundreds': formatedMatch.loser1_rank >= 100, [`strict-${formatedMatch.loser1_rank}`]: true }">
-						{{ formatedMatch.loser1_rank }}
-					</p>
-				</div>
                         <div class="category-wrapp">
                             <span class="diamond"
                                 :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser1_category] || 'transparent'}` }">
@@ -233,8 +192,6 @@ const matchTitle = computed(() => {
     
                         </div>
                     </div>
-                    <span class="points">+{{ formatedMatch.loser2_first_name ? Math.round(formatedMatch.loser_point_gain
-                        / 2) : formatedMatch.loser_point_gain }}</span>
                 </div>
 
                 <div class="text" v-if="formatedMatch.loser2_name" style="margin-top: 20px;">
@@ -244,18 +201,6 @@ const matchTitle = computed(() => {
                     }}</Link>
 
                     <div class="ranks">
-                            		<div
-					class="rank"
-					:class="{
-						first: formatedMatch.loser2_rank == 1,
-						second: formatedMatch.loser2_rank == 2,
-						third: formatedMatch.loser2_rank == 3,
-					}"
-				>
-					<p :class="{ 'align-left': formatedMatch.loser2_rank > 9,'n40': formatedMatch.loser2_rank >= 40 && formatedMatch.loser2_rank < 50, 'fix-hundreds': formatedMatch.loser2_rank >= 100, [`strict-${formatedMatch.loser2_rank}`]: true }">
-						{{ formatedMatch.loser2_rank }}
-					</p>
-				</div>
                         <div class="category-wrapp">
                             <span class="diamond"
                                 :style="{ border: `1px solid ${categoryColorsAll[formatedMatch.loser2_category] || 'transparent'}` }">
@@ -268,7 +213,6 @@ const matchTitle = computed(() => {
     
                         </div>
                     </div>
-                    <span class="points">+{{ Math.round(formatedMatch.loser_point_gain / 2) }}</span>
                 </div>
             </div>
         </div>
@@ -827,6 +771,7 @@ $text-color-gray: #949494;
         }
 
 
+         
     }
 }
 </style>

@@ -67,6 +67,11 @@ class Player extends Model
                     'name' => $player ? $player->getName() : 'Unknown',
                     'count' => $row->win_count,
                 ];
+            })->sort(function($a, $b) {
+                if ($a['count'] !== $b['count']) {
+                    return $b['count'] <=> $a['count'];
+                }
+                return strcmp($a['name'], $b['name']);
             })->values();
     }
 
@@ -92,6 +97,11 @@ class Player extends Model
                     'name' => $player ? $player->getName() : 'Unknown',
                     'count' => $row->loss_count,
                 ];
+            })->sort(function($a, $b) {
+                if ($a['count'] !== $b['count']) {
+                    return $b['count'] <=> $a['count'];
+                }
+                return strcmp($a['name'], $b['name']);
             })->values();
     }
 
@@ -130,61 +140,35 @@ class Player extends Model
         return $this->first_name . ' ' . $this->last_name;
     }
 
-    public function getMatches(){
-        $raw_wins =TenisMatch::where('winner_id', $this->id)->get()->sortBy('match_date', SORT_REGULAR,true)->sortBy('date_created', SORT_REGULAR);
-        $raw_loses = TenisMatch::where('loser_id', $this->id)->get()->sortBy('match_date', SORT_REGULAR,true)->sortBy('date_created', SORT_REGULAR);;
+    /**
+     * Calculate total games played across all matches.
+     * Parses game_score (e.g. "6:3,6:2") to sum all games.
+     * If no game_score, falls back to set_score (e.g. "2:0") and counts sets as games.
+     */
+    public function getTotalGames()
+    {
+        $totalGames = 0;
+        $matches = $this->matches()->get();
 
-
-        $wins = [];
-        foreach($raw_wins as $match){
-            $loser = Player::find($match->loser_id);
-
-            array_push($wins, [
-                'id' => $match->id,
-                'winner_points' =>NikolaAlgoV1::getMatchEloGains($match,'winner'),
-                'loser_points' => NikolaAlgoV1::getMatchEloGains($match,'loser'),
-                'winner_uri' => $match->getPlayerUri('winner'),
-                'loser_uri' => $match->getPlayerUri('loser'),
-                'winner' => $this->first_name . ' ' . $this->last_name,
-                'loser' => $loser->first_name . ' ' . $loser->last_name,
-                'set_score' => $match->set_score,
-                'number' => $match->getNumber(),
-                'game_score' => $match->game_score,
-                'date' => $match->match_date,
-                'location' => $match->match_location,
-                'court' => $match->getCourt(),
-                'league'=> $match->getLeague(),
-            ]);
+        foreach ($matches as $match) {
+            if ($match->game_score && trim($match->game_score) !== '') {
+                $sets = explode(',', $match->game_score);
+                foreach ($sets as $set) {
+                    $parts = explode(':', trim($set));
+                    if (count($parts) === 2 && is_numeric(trim($parts[0])) && is_numeric(trim($parts[1]))) {
+                        $totalGames += intval(trim($parts[0])) + intval(trim($parts[1]));
+                    }
+                }
+            } else if ($match->set_score && trim($match->set_score) !== '') {
+                $parts = explode(':', trim($match->set_score));
+                if (count($parts) === 2 && is_numeric(trim($parts[0])) && is_numeric(trim($parts[1]))) {
+                    $totalGames += intval(trim($parts[0])) + intval(trim($parts[1]));
+                }
+            }
         }
 
-        $loses = [];
-
-        foreach($raw_loses as $match){
-            $winner = Player::find($match->winner_id);
-
-            array_push($loses, [
-                'id' => $match->id,
-                'winner_points' => NikolaAlgoV1::getMatchEloGains($match,'winner'),
-                'loser_points' => NikolaAlgoV1::getMatchEloGains($match,'loser'),
-                'winner_uri' => $match->getPlayerUri('winner'),
-                'loser_uri' => $match->getPlayerUri('loser'),
-                'winner' => $winner->first_name . ' ' . $winner->last_name,
-                'loser' => $this->first_name . ' ' . $this->last_name,
-                'set_score' => $match->set_score,
-                'number' => $match->getNumber(),
-                'game_score' => $match->game_score,
-                'date' => $match->match_date,
-                'location' => $match->match_location,
-                'league'=> $match->getLeague(),
-                'court' => $match->getCourt(),
-            ]);
-        }
-
-        return [
-            $wins, $loses
-        ];
+        return $totalGames;
     }
-
  
 
     public function getStatsOnDate($date)

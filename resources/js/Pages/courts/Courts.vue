@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import utils from '../../utils';
 import axios from 'axios';
 import bus from 'vue3-eventbus';
 import EditBtn from '@components/EditIcon.vue';
+import Dropdown from '@components/Dropdown.vue';
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 
@@ -13,6 +14,52 @@ const isClient = ref(false);
 
 const courts = ref([]);
 const isLoading = ref(true); // Add loading state
+
+const sortKey = ref('matches_number');
+const sortDir = ref('desc');
+
+const toggleSort = (key) => {
+    if (sortKey.value === key) {
+        sortDir.value = sortDir.value === 'desc' ? 'asc' : 'desc';
+    } else {
+        sortKey.value = key;
+        sortDir.value = 'desc';
+    }
+};
+
+const sortOptions = [
+    { id: 'matches_number_desc', name: 'mečevi ▼', key: 'matches_number', dir: 'desc' },
+    { id: 'matches_number_asc', name: 'mečevi ▲', key: 'matches_number', dir: 'asc' },
+    { id: 'name_asc', name: 'teren A-Ž', key: 'name', dir: 'asc' },
+    { id: 'name_desc', name: 'teren Ž-A', key: 'name', dir: 'desc' },
+    { id: 'player_number_desc', name: 'teniseri ▼', key: 'player_number', dir: 'desc' },
+    { id: 'player_number_asc', name: 'teniseri ▲', key: 'player_number', dir: 'asc' },
+    { id: 'county_asc', name: 'opština A-Ž', key: 'county', dir: 'asc' },
+    { id: 'county_desc', name: 'opština Ž-A', key: 'county', dir: 'desc' },
+];
+
+const selectedSort = ref({ ...sortOptions[0] });
+
+watch(selectedSort, (val) => {
+    const option = sortOptions.find(o => o.id === val.id);
+    if (option) {
+        sortKey.value = option.key;
+        sortDir.value = option.dir;
+    }
+}, { deep: true });
+
+const sortedCourts = computed(() => {
+    return [...courts.value].sort((a, b) => {
+        let aVal = a[sortKey.value];
+        let bVal = b[sortKey.value];
+        if (sortKey.value === 'name' || sortKey.value === 'county') {
+            aVal = (aVal || '').toLowerCase();
+            bVal = (bVal || '').toLowerCase();
+            return sortDir.value === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+        }
+        return sortDir.value === 'asc' ? aVal - bVal : bVal - aVal;
+    });
+});
 
 onMounted(() => {
   isClient.value = true;
@@ -74,27 +121,15 @@ const courtsText = computed(() => {
     <!-- Skeleton Loading State -->
     <div v-if="isLoading" class="skeleton-wrapper">
       <div id="desktop">
-        <div class="rankings-header" :style="{ top: 240 - topOffset + 'px' }">
-          <div class="spacer"></div>
+        <div class="rankings-header" :style="{ top: 200 - topOffset + 'px' }">
           <div class="name">teren</div>
-          <div class="spacer"></div>
-          <div></div>
-          <div class="elo">poeni</div>
           <div class="total-matches">mečevi</div>
           <div class="total-matches">teniseri</div>
           <div class="total-matches">opština</div>
         </div>
         <div v-for="n in 8" :key="`desktop-skeleton-${n}`" class="ranking-entry skeleton" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
-          <div class="rank">
-            <div class="skeleton-item skeleton-text small"></div>
-          </div>
           <div class="name helvetica">
             <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
-          </div>
-          <div class="spacer"></div>
-          <div></div>
-          <div class="elo">
-            <div class="skeleton-item skeleton-text medium"></div>
           </div>
           <div class="total-matches">
             <div class="skeleton-item skeleton-text small"></div>
@@ -109,20 +144,20 @@ const courtsText = computed(() => {
       </div>
 
       <div id="mobile">
+        <!-- <div class="mobile-sort-filter">
+          <Dropdown
+            label="name"
+            :options="sortOptions"
+            v-model="selectedSort"
+            :multiple="false"
+            :searchable="false"
+          />
+        </div> -->
         <div v-for="n in 8" :key="`mobile-skeleton-${n}`" class="ranking-entry skeleton">
-          <div class="rank">
-            <div class="skeleton-item skeleton-text small"></div>
-          </div>
           <div class="name helvetica text-align-center">
             <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
           </div>
           <div class="info">
-            <div class="info-wrapp">
-              <div class="sup">poeni</div>
-              <div class="text">
-                <div class="skeleton-item skeleton-text medium"></div>
-              </div>
-            </div>
             <div class="info-wrapp">
               <div class="sup">mečevi</div>
               <div class="text">
@@ -143,21 +178,15 @@ const courtsText = computed(() => {
     <!-- Actual Content -->
     <div v-else>
       <div id="desktop">
-      <div class="rankings-header" :style="{ top: 240 - topOffset + 'px' }">
-        <div class="spacer"></div>
-        <div class="name">teren</div>
-        <div class="elo">poeni</div>
-        <div class="total-matches">mečevi</div>
-        <div class="total-matches">teniseri</div>
-        <div class="total-matches">opština</div>
+      <div class="rankings-header" :style="{ top: 200 - topOffset + 'px' }">
+        <div class="name sortable" :class="{ active: sortKey === 'name', asc: sortKey === 'name' && sortDir === 'asc' }" @click="toggleSort('name')">teren</div>
+        <div class="total-matches sortable" :class="{ active: sortKey === 'matches_number', asc: sortKey === 'matches_number' && sortDir === 'asc' }" @click="toggleSort('matches_number')">mečevi</div>
+        <div class="total-matches sortable" :class="{ active: sortKey === 'player_number', asc: sortKey === 'player_number' && sortDir === 'asc' }" @click="toggleSort('player_number')">teniseri</div>
+        <div class="total-matches sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
       </div>
-      <div class="ranking-entry" v-for="(court, index) in courts" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
+      <div class="ranking-entry" v-for="(court, index) in sortedCourts" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
-        <div class="rank">
-          {{ index+1 }}
-        </div>
         <div class="name helvetica"><Link prefetch="false" :href="`/tereni/${court.uri}`">{{court.name}}</Link></div>
-        <div class="elo">{{utl.formatAsThousands(court.points)}}</div>
         <div class="total-matches">{{court.matches_number}}</div>
         <div class="total-matches">{{court.player_number}}</div>
         <div class="total-matches smaller-font" style="text-align: center;">{{court.county}}</div>
@@ -165,17 +194,19 @@ const courtsText = computed(() => {
     </div>
 
     <div id="mobile">
-      <div class="ranking-entry" v-for="(court, index) in courts">
+      <!-- <div class="mobile-sort-filter">
+        <Dropdown
+          label="name"
+          :options="sortOptions"
+          v-model="selectedSort"
+          :multiple="false"
+          :searchable="false"
+        />
+      </div> -->
+      <div class="ranking-entry" v-for="(court, index) in sortedCourts">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
-        <div class="rank">
-          {{ index+1 }}
-        </div>
         <div class="name helvetica text-align-center"><Link prefetch="false" :href="`/tereni/${court.uri}`">{{court.name}}</Link></div>
         <div class="info">
-          <div class="info-wrapp">
-            <div class="sup">poeni</div>
-            <div class="text">{{ utl.formatAsThousands(court.points) }}</div>
-          </div>
           <div class="info-wrapp">
             <div class="sup">mečevi</div>
             <div class="text">{{ court.matches_number }}</div>
@@ -272,12 +303,46 @@ const courtsText = computed(() => {
     }
 }
 
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    &::before {
+        content: '▼';
+        font-size: 10px;
+        margin-right: 4px;
+        visibility: hidden;
+    }
+    &::after {
+        content: '▼';
+        font-size: 10px;
+        margin-left: 4px;
+        visibility: hidden;
+    }
+    &.name::before {
+        content: none;
+    }
+    &:hover {
+        color: #00aeef;
+    }
+    &.active {
+        color: #ec008c;
+        &::after {
+            visibility: visible;
+            content: '▼';
+        }
+        &.asc::after {
+            content: '▲';
+        }
+    }
+}
+
 /* Mobile skeleton adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .ranking-entry.skeleton .name {
         display: flex;
         justify-content: center;
         align-items: center;
+        width: 100%;
         padding: 4px 0;
     }
 
@@ -285,4 +350,21 @@ const courtsText = computed(() => {
         height: 14px;
     }
 }
+
+/* .mobile-sort-filter {
+    display: none;
+    padding: 0 20px;
+    max-width: 400px;
+    margin: 20px auto 50px;
+
+    & + .ranking-entry {
+        border-top: 2px solid #e2e0e1;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .mobile-sort-filter {
+        display: block;
+    }
+} */
 </style>
