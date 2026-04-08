@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 // PROMO
 Route::redirect('/crazy-pizza', '/');
 Route::redirect('/nagrade', '/');
+Route::redirect('/uputstva', '/o-nama');
 
 Route::get('/', [StaticController::class, 'home'])->name('home');
 
