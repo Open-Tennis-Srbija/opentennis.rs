@@ -109,9 +109,11 @@ $border-color-dark: #e2e0e1;
   align-items: center;
   position: relative;
 
+  @media only screen and (max-width: 1200px) {
   &:nth-of-type(2) {
     border-top: 2px solid $border-color-dark;
   }
+}
   
   .edit-btn{
     position: absolute;
