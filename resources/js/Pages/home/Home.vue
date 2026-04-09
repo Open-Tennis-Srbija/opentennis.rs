@@ -71,7 +71,7 @@ const page = usePage();
         <span class="hero-author">Peter Drucker</span>
       </p>
       <p class="hero-description">
-        Open tennis srbija je nezavisni volonterski projekat<br class="hide-mobile" />
+        Open Tennis Srbija je nezavisni volonterski projekat<br class="hide-mobile" />
         koji skuplja i organizuje podatke srpskog elitnog i rekreativnog tenisa
       </p>
       <p class="hero-description small">
