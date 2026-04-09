@@ -38,7 +38,7 @@
   .ranking-entry {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 525px 133px 133px 133px 133px 133px;
+    grid-template-columns: 535px 133px 133px 133px 133px 133px;
   }
 
   .rankings-header {
@@ -354,6 +354,8 @@
 
       &.two {
         grid-template-columns: repeat(2, 50%);
+
+      
       }
     }
 
