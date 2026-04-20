@@ -117,6 +117,11 @@ return [
             'keywords' => 'misija, tenis',
             'robots' => 'noindex, nofollow',
         ],
+        'volunteers' => [
+            'title' => 'Volontiraj',
+            'description' => 'Postani volonter Open Tennis Srbija i pomozi u razvoju srpskog tenisa. Skupljaj i organizuj teniske podatke, razvijaj digitalne veštine i ostvaruj nove kontakte u tenisu.',
+            'keywords' => 'volonteri tenis srbija, volontiranje, open tennis srbija, tenis volonter, razvoj veština, digitalne veštine, tenis srbija, volonterski rad',
+        ],
     ],
 
     /*

@@ -7,9 +7,9 @@ onMounted(async () => {
 });
 </script>
 <template>
-    <Head title="Dodaj ligu ili turnir -" />
+    <Head title="Dodaj turnir ili ligu -" />
     <div class="static-wrapper">
-        <h1 class="text-align-center">DODAJ LIGU ILI TURNIR NA opentennis.rs</h1>
+        <h1 class="text-align-center">DODAJ TURNIR ILI LIGU</h1>
         <!-- <p>
             Open Tennis Srbija povećava broj mečeva, iznajmljivanje terena, i
             zapošljavanje trenera.

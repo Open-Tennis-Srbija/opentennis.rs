@@ -183,7 +183,7 @@ function computeHeaderMessage() {
             return "teniseri";
         case "/mecevi":
             return "mečevi";
-        case "/dodaj-ligu":
+        case "/dodaj-turnir":
             return "dodaj ligu & turnir";
         case "/dodaj":
             return "dodaj meč";
@@ -334,7 +334,7 @@ watch(
                     <!-- <Link prefetch="false" class="blue" :href="'/dodaj'" :class="{ active: $page.url === '/dodaj' }">
                     dodaj meč</Link> -->
                 </div>
-                <!-- <Link prefetch="false" :href="'/dodaj-ligu'" :class="{ active: $page.url === '/dodaj-ligu' }">dodaj ligu</Link> -->
+                <!-- <Link prefetch="false" :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">dodaj ligu</Link> -->
                 <div ref="sideMenuButtonRef" @click="toggleSideMenu" class="side-menu-button">
                     <div class="button" :class="{ 'open-left': sideMenu.state }"></div>
                     <div class="button" :class="{ 'open-middle': sideMenu.state }"></div>
@@ -359,8 +359,10 @@ watch(
         <div class="links">
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">Statistika</Link>
-            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/dodaj-ligu'"
-                :class="{ active: $page.url === '/dodaj-ligu' }">Dodaj turnir ili ligu</Link>
+            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/dodaj-turnir'"
+                :class="{ active: $page.url === '/dodaj-turnir' }">Dodaj turnir ili ligu</Link>
+            <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/volontiraj'"
+                :class="{ active: $page.url === '/volontiraj' }">Volontiraj</Link>
             <Link @click="toggleSideMenu()" class="bigger" prefetch="false" :href="'/o-nama'"
                 :class="{ active: $page.url === '/o-nama' }">O nama</Link>
 
@@ -370,7 +372,7 @@ watch(
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/dodaj-teren'" :class="{ active: $page.url === '/dodaj-teren' }">Dodaj teren</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
-                :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">Dodaj turnir</Link>
+                :href="'/dodaj-novi-turnir'" :class="{ active: $page.url === '/dodaj-novi-turnir' }">Dodaj novi turnir</Link>
              <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/upravljaj-serijama'" :class="{ active: $page.url === '/upravljaj-serijama' }">upravljaj serijama</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
@@ -433,15 +435,17 @@ watch(
             </Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/statistika'"
                 :class="{ active: $page.url === '/statistika' }">statistika</Link>
-            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-ligu'"
-                :class="{ active: $page.url === '/dodaj-ligu' }">dodaj turnir ili ligu</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/dodaj-turnir'"
+                :class="{ active: $page.url === '/dodaj-turnir' }">dodaj turnir ili ligu</Link>
+            <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/volontiraj'"
+                    :class="{ active: $page.url === '/volontiraj' }">Volontiraj</Link>
             <Link class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false" :href="'/o-nama'"
                 :class="{ active: $page.url === '/o-nama' }">O nama</Link>
 
             <div v-if="$page.props.auth.user" class="admin-separator"></div>
 
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
-                :href="'/dodaj-turnir'" :class="{ active: $page.url === '/dodaj-turnir' }">dodaj turnir</Link>
+                :href="'/dodaj-novi-turnir'" :class="{ active: $page.url === '/dodaj-novi-turnir' }">dodaj novi turnir</Link>
              <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/upravljaj-serijama'" :class="{ active: $page.url === '/upravljaj-serijama' }">upravljaj serijama</Link>
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
@@ -497,7 +501,7 @@ watch(
         <footer class="footer-wrapper">
             <p class="footer-text">
                 <Link prefetch="false" :href="'/dodaj'">dodaj meč</Link>
-                <Link class="hide-mobile" prefetch="false" :href="'/dodaj-ligu'">dodaj ligu</Link>
+                <Link class="hide-mobile" prefetch="false" :href="'/dodaj-turnir'">dodaj ligu</Link>
             </p>
             <!-- <div class="icons-wrapper">
                 <a class="viber" target="_blank"

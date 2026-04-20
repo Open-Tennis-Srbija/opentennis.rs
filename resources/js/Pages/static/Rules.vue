@@ -72,34 +72,34 @@ onMounted(async () => {
         <br>
         <p>Kategorija tenisera je za sada definisana ručno na osnovu subjektivne ocene. Kategorije su:</p>
         <p style="margin-bottom: 0;">
-            Kategorija 1) Odigrao prvi meč - dobrodošao je u svet tenisa.
+            Kategorija 1) Odigrao prvi meč - dobrodošao je u svet tenisa,
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 2) Teniser je igrao više mečeva ali ima nestabilne osnovne udarce.
+            Kategorija 2) Teniser je igrao više mečeva ali ima nestabilne osnovne udarce,
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 3) Dobra kontrolu jednog ili dva udarca, bez snage i preciznosti.
+            Kategorija 3) Dobra kontrolu jednog ili dva udarca, bez snage i preciznosti,
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 4) Dobra kontrola osnovnih udaraca, snaga u nekim.
+            Kategorija 4) Dobra kontrola osnovnih udaraca, snaga u nekim,
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 5) Stabilnost, snaga i preciznost u svim osnovnim udarcima.
+            Kategorija 5) Stabilnost, snaga i preciznost u svim osnovnim udarcima,
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 6) Stabilni, snažni, i precizni osnovni udarci sa dobrom strategijom.
+            Kategorija 6) Stabilni, snažni, i precizni osnovni udarci sa dobrom strategijom,
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 7) Bivši takmičari i treneri.
+            Kategorija 7) Bivši takmičari i treneri,
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 8) Juniorski i mlađi takmičari.
+            Kategorija 8) Juniorski i mlađi takmičari,
         </p>
         <p style="margin-bottom: 0;">
-            Kategorija 9) Seniorski, ATP, ITF takmičari.
+            Kategorija 9) Seniorski takmičari koji nisu na ATP listi,
         </p>
         <p>
-            Kategorija 10) Novak Djoković.
+            Kategorija 10) Novak Đoković i drugi ATP takmičari.
         </p>
         <p>
             Ručno određivanje kategorija je privremeno rešenje i biće zamenjeno automatskim kategorisanjem tenisera na osnovu rezultata mečeva.

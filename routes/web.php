@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/crazy-pizza', '/');
 Route::redirect('/nagrade', '/');
 Route::redirect('/uputstva', '/o-nama');
+Route::redirect('/dodaj-turnir', '/dodaj-ligu');
 
 Route::get('/', [StaticController::class, 'home'])->name('home');
 
@@ -50,9 +51,10 @@ Route::get('/api/tournament-series', [TournamentSeriesController::class, 'index'
 Route::get('/get-league/{uri}', [LeaguesController::class, 'returnLeague']);
 Route::get('/api/league/{id}/matches', [LeaguesController::class, 'getLeagueMatchesApi']);
 
-Route::inertia('/dodaj-ligu', 'static/ForClubs')->name('clubs');
+Route::inertia('/dodaj-turnir', 'static/ForClubs')->name('clubs');
 
 Route::get('/misija', [StaticController::class, 'mission'])->name('mision');
+Route::get('/volontiraj', [StaticController::class, 'volunteers'])->name('volunteers');
 
 Route::inertia('/statistika', 'static/Statistics')->name('leagueStats');
 Route::get('/get-statistics', [LeagueController::class, 'getStatistics']);
@@ -81,7 +83,7 @@ Route::get('/api/court/{id}/matches', [CourtsController::class, 'getCourtMatches
      Route::post('/mec/obrisi',[TenisMatchController::class, 'deleteMatch']);
 
 
-     Route::inertia('/dodaj-turnir','Auth/admin/leagues/AddTournament',['courts' => CourtsController::getCourts(),'series' => TournamentSeriesController::getAllSeries()])->name('addTournament');
+     Route::inertia('/dodaj-novi-turnir','Auth/admin/leagues/AddTournament',['courts' => CourtsController::getCourts(),'series' => TournamentSeriesController::getAllSeries()])->name('addTournament');
      Route::get('/izmeni-turnir/{uri}', [LeaguesController::class, 'getTournamentForEdit'])->name('editTournament');
     
      Route::inertia('/dodaj-novu-ligu','Auth/admin/leagues/AddLeague',['courts' => CourtsController::getCourts()])->name('addLeague');

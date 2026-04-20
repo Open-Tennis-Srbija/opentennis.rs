@@ -112,6 +112,15 @@ class StaticController extends Controller
             'loadMatches' => true,
         ]);
     }
+
+    public function volunteers()
+    {
+        $seoData = SEOHelper::generateStaticPageSEO('volunteers');
+        
+        return Inertia::render('static/Volonteri', [
+            'seo' => $seoData,
+        ]);
+    }
     
     public function addMatch()
     {
