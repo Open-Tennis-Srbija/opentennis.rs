@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/crazy-pizza', '/');
 Route::redirect('/nagrade', '/');
 Route::redirect('/uputstva', '/o-nama');
-Route::redirect('/dodaj-turnir', '/dodaj-ligu');
+Route::redirect('/dodaj-ligu', '/dodaj-turnir');
 
 Route::get('/', [StaticController::class, 'home'])->name('home');
 
