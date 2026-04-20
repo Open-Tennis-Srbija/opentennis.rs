@@ -9,7 +9,7 @@ onMounted(async () => {
 <template>
 
     <Head title="O nama -" />
-    <div class="static-wrapper">
+    <div class="static-wrapper static">
         <h1 class="mobile-neg-margin text-align-center">O NAMA</h1>
 
 
