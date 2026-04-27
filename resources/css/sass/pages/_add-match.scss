@@ -7,6 +7,10 @@
     border-bottom: 2px solid #e7e7e7;
     position: relative;
 
+    &.static{
+      padding-bottom: 80px;
+    }
+
     .delete{
       position: absolute;
       bottom: 20px;
