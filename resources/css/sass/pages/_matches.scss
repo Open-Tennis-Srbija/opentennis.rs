@@ -11,7 +11,11 @@ $border-color-dark: #e2e0e1;
 
   &.home{
     padding-top: 91px;
-    
+    .match-entry{
+      &:first-of-type{
+        border-top: 2px solid $border-color-dark !important;
+      }
+    }
   }
 
   .message{
@@ -438,11 +442,7 @@ $border-color-dark: #e2e0e1;
 
   }
 
-  .match-entry{
-    &:first-of-type{
-      border-top: 2px solid $border-color-dark !important;
-    }
-  }
+ 
 
   // .mobile-sort-filter ~ .match-entry:first-of-type,
   // .mobile-sort-filter ~ .initial-loading-skeletons .match-entry:first-of-type {

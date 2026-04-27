@@ -436,9 +436,10 @@
         border-bottom: 2px solid #e2e0e1;
         margin-top: 40px;    
 
-        &:first-of-type{
             margin-top: 60px;
-        }
+               @media only screen and (max-width: 1200px) {
+                margin-top: 80px;
+            }
 
 
 
@@ -446,7 +447,7 @@
             margin-top: 80px;
 
             @media only screen and (max-width: 1200px) {
-                margin-top: 40px;
+                margin-top: 80px;
             }
         }
 
@@ -625,8 +626,20 @@
                 &.players {
                     h2 {
                         margin-bottom: 10px;
-                    }
 
+                    }
+                    
+                    @media only screen and (max-width: 1200px) {
+                        h2{
+                            margin-top: 30px;
+                        }
+                        &:first-of-type{
+                            h2{
+                                margin-top: 0 !important;
+                            }
+                        }
+                    }
+                    
                     p {
                         margin-bottom: 0;
                         font-size: 20px;

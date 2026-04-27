@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\TenisMatchController;
 use App\Http\Requests\StorePlayerRequest;
 use App\Http\Requests\UpdatePlayerRequest;
 use App\Models\Court;
@@ -375,6 +376,7 @@ class PlayerController extends Controller
 				'loser2_uri' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->uri : null,
 				'loser2_category' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->category : null,
 				'number' => $match->number,
+				'uri' => TenisMatchController::generateMatchUri($match->number),
 				'winner_point_gain' => $match->winner_point_gain,
 				'loser_point_gain' => $match->loser_point_gain,
 				'set_score' => $match->set_score,

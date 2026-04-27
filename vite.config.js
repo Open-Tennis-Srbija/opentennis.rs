@@ -30,6 +30,9 @@ export default defineConfig({
             '@abstracts': path.resolve(__dirname, 'resources/css/sass/abstracts')
         },
     },
+    css: {
+        devSourcemap: true,
+    },
     server: {
         host: true, // This allows external access
         port: 5173,
