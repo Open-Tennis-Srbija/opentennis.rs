@@ -243,6 +243,12 @@
     .support-grid {
       grid-template-columns: 1fr;
       gap: 30px;
+
+      .support-item,
+      .support-item:nth-child(4),
+      .support-item:nth-child(5) {
+        grid-column: 1;
+      }
     }
   }
 
