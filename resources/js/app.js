@@ -19,7 +19,6 @@ router.on("finish", () => {
 });
 
 createInertiaApp({
-<<<<<<< HEAD
     title: (title) => {
         // Remove trailing " -" if present and clean up the title
         const cleanTitle = title ? title.replace(/\s*-\s*$/, '') : '';
@@ -32,9 +31,6 @@ createInertiaApp({
         // Return formatted title with separator
         return `${cleanTitle} - Open Tennis Srbija`;
     },
-=======
-    title: (title) => `${title} Open Tennis Srbija`,
->>>>>>> ade4fe2 (Rebranding)
 
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
