@@ -132,7 +132,7 @@ const page = usePage();
           <h3>Volontiraj</h3>
           <p>
             Svako može da bude opentennis.rs volonter.<br />
-            Volonteri dodaju i organizuju podatke preko weba.<br />
+            Volonteri dodaju i organizuju podatke preko weba.
             Pošalji prijavu na<br />
             <a href="mailto:volonteri@opentennis.rs">volonteri@opentennis.rs</a>
           </p>
