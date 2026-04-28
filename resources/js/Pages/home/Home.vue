@@ -129,6 +129,15 @@ const page = usePage();
       <h2 class="section-title blue">Učestvuj</h2>
       <div class="support-grid">
         <div class="support-item">
+          <h3>Volontiraj</h3>
+          <p>
+            Svako može da bude opentennis.rs volonter.<br />
+            Volonteri dodaju i organizuju podatke preko weba.<br />
+            Pošalji prijavu na<br />
+            <a href="mailto:volonteri@opentennis.rs">volonteri@opentennis.rs</a>
+          </p>
+        </div>
+        <div class="support-item">
           <h3>Predloži Izmenu</h3>
           <p>
             Pošalji link strane koji hoćeš da izmeniš<br />
@@ -145,16 +154,7 @@ const page = usePage();
           </p>
         </div>
         <div class="support-item">
-          <h3>Postani volonter</h3>
-          <p>
-            Svako može da bude opentennis.rs volonter.<br />
-            Volonteri dodaju i organizuju podatke preko weba.<br />
-            Pošalji prijavu na<br />
-            <a href="mailto:volonteri@opentennis.rs">volonteri@opentennis.rs</a>
-          </p>
-        </div>
-        <div class="support-item">
-          <h3>Skini podatke</h3>
+          <h3>open data</h3>
           <p>
             Ako želiš da koristiš opentennis.rs podatke<br />
             u svom istraživanju ili projektu<br />
@@ -166,7 +166,7 @@ const page = usePage();
           <h3>open source</h3>
           <p>
             opentennis.rs je open source projekat<br />
-           Poseti nas na <a href="https://github.com/Open-Tennis-Srbija/opentennis.rs" target="_blank">Github</a>.<br />
+            Poseti nas na <a href="https://github.com/Open-Tennis-Srbija/opentennis.rs" target="_blank">Github</a>.<br />
           </p>
         </div>
       </div>
