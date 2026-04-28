@@ -125,6 +125,10 @@
 
       &:last-child {
         margin-bottom: 30px;
+        grid-column: 1 / -1;
+        max-width: 420px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       h3 {

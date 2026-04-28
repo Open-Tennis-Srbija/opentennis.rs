@@ -162,13 +162,13 @@ const page = usePage();
             <a href="mailto:nikola@opentennis.rs">nikola@opentennis.rs</a>
           </p>
         </div>
-      </div>
-      <div class="support-bottom">
-        <h3>open source</h3>
-        <p>
-          opentennis.rs je open source projekat<br />
-         Poseti nas na <a href="https://github.com/Open-Tennis-Srbija/opentennis.rs" target="_blank">Github</a>.<br />
-        </p>
+        <div class="support-item">
+          <h3>open source</h3>
+          <p>
+            opentennis.rs je open source projekat<br />
+           Poseti nas na <a href="https://github.com/Open-Tennis-Srbija/opentennis.rs" target="_blank">Github</a>.<br />
+          </p>
+        </div>
       </div>
     </div>
   </div>
