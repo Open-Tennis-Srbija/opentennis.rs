@@ -13,7 +13,7 @@ An open-source platform for documenting Serbian elite and recreational tennis. B
 - **Backend:** Laravel 13, PHP 8.2+
 - **Frontend:** Vue 3 + Inertia.js, SCSS
 - **Build:** Vite, Tailwind CSS
-- **Database:** SQLite (default) or MySQL/PostgreSQL
+- **Database:** MySQL/PostgreSQL
 
 ## Getting Started
 

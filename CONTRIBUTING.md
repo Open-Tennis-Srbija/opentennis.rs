@@ -74,7 +74,7 @@ git commit -m "Add player search filter"
 
 ## What to Work On
 
-- Check [open issues](https://github.com/bemapps/opentennis.rs/issues) for tasks labeled `good first issue` or `help wanted`
+- Check [open issues](https://github.com/Open-Tennis-Srbija/opentennis.rs/issues) for tasks labeled `good first issue` or `help wanted`
 - Bug fixes and test coverage improvements are always welcome
 - For larger features, open an issue first to discuss the approach
 
