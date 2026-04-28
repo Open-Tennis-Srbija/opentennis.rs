@@ -12,11 +12,7 @@ onMounted(async () => {
     <div class="static-wrapper">
         <h1 class="mobile-neg-margin text-align-center">CRAZY PIZZA PROMOCIJA</h1>
 
-<<<<<<< HEAD
         <img src="/promo/crazy-pizza/ots-crazy-pizza.png" alt="CRAZY PIZZA PROMOCIJA">
-=======
-        <img src="/promo/crazy-pizza/crazy-pizza-open-tennis-srbija.png" alt="CRAZY PIZZA PROMOCIJA">
->>>>>>> ade4fe2 (Rebranding)
         <p>
             <a target="_blank" href="https://crazypizza.com/belgrade/">Restoran Crazy Pizza Beograd</a> 
             će pokloniti besplatnu margarita picu svakom teniseru koji na Open Tennis Srbija pređe 1,000 poena.

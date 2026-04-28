@@ -9,7 +9,6 @@
 <p><b>Datum</b> {{ $date }}</p>
 <br>
 
-<<<<<<< HEAD
 <a href="{{ url('/mec/' . $match_uri) }}">Pogledaj dodat meč</a>
 <br>
 <a href="{{ url('/' . $winner1_uri) }}">Pogledaj {{$winner1}}</a>
@@ -21,16 +20,3 @@
 <a href="{{ url('/' . $loser2_uri) }}">Pogledaj {{$loser2}}</a>
 <br>
 <a href="{{ url('/mecevi') }}">Pogledaj mečeve</a>
-=======
-<a href="https://opentennis.rs/mec/{{$match_uri}}">Pogledaj dodat meč</a>
-<br>
-<a href="https://opentennis.rs/{{$winner1_uri}}">Pogledaj {{$winner1}}</a>
-<br>
-<a href="https://opentennis.rs/{{$winner2_uri}}">Pogledaj {{$winner2}}</a>
-<br>
-<a href="https://opentennis.rs/{{$loser1_uri}}">Pogledaj {{$loser1}}</a>
-<br>
-<a href="https://opentennis.rs/{{$loser2_uri}}">Pogledaj {{$loser2}}</a>
-<br>
-<a href="https://opentennis.rs/mecevi">Pogledaj mečeve</a>
->>>>>>> ade4fe2 (Rebranding)
