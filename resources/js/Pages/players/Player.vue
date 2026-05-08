@@ -267,7 +267,7 @@ onBeforeUnmount(() => {
 		<h1 v-if="player.name" class="blue" :class="{'fix-letters': containsGreek(player.name)}">
 			{{ player.name.split(' ')[0]}} <br class="show-mobile"> {{  player.name.split(' ')[1] }}
 		</h1>
-		<p class="subtitle-spacer" v-if="!player.club && !player.location">
+		<p class="subtitle-spacer" v-if="!player.location">
 			&nbsp;
 		</p>
 		<p class="subtitle small-margin">
