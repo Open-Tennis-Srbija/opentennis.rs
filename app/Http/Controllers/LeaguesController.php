@@ -478,7 +478,7 @@ public static function getTournamentsForList(){
 
         $league->uri = Str::slug($data['name'], '-');
 
-        if($data['court'] && !is_numeric($data['court']['id'])){
+        if($data['court'] && !is_numeric($data['court']['id']) && !empty($data['court']['name'])){
             $court = new Court();
             $court->name = $data['court']['name'];
             $court->link = '';
