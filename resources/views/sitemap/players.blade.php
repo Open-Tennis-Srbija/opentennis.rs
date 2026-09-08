@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 @foreach($players as $player)
     <url>
-        <loc>{{ url('/teniser/' . $player->uri) }}</loc>
+        <loc>{{ url('/' . $player->uri) }}</loc>
         <lastmod>{{ $player->updated_at->toISOString() }}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>

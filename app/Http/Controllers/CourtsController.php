@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Court;
 use App\Models\TennisMatch;
+use App\Helpers\SEOHelper;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 
@@ -114,7 +115,8 @@ class CourtsController extends Controller
         }
 
         return Inertia::render('courts/Court', [
-            'court_id' => $court->id     
+            'court_id' => $court->id,
+            'seo' => SEOHelper::generateCourtSEO($court),
         ]);
     }
        public static function get_court($id){

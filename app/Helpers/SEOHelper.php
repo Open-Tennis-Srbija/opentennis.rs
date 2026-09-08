@@ -42,7 +42,7 @@ class SEOHelper
         return [
             'title' => $title,
             'description' => $description,
-            'canonical' => url('/teniser/' . $player->uri),
+            'canonical' => url('/' . $player->uri),
             'og_image' => $player->photo ? asset('storage/' . $player->photo) : asset('images/player-default.jpg'),
         ];
     }
@@ -82,7 +82,7 @@ class SEOHelper
         return [
             'title' => $title,
             'description' => $description,
-            'canonical' => url('/liga/' . $league->uri),
+            'canonical' => url('/' . $league->uri),
             'og_image' => asset('images/league-default.jpg'),
         ];
     }
@@ -99,7 +99,7 @@ class SEOHelper
         return [
             'title' => $title,
             'description' => $description,
-            'canonical' => url('/teren/' . $court->uri),
+            'canonical' => url('/tereni/' . $court->uri),
             'og_image' => asset('images/court-default.jpg'),
         ];
     }

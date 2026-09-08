@@ -35,11 +35,14 @@ class SitemapController extends Controller
     
     public function matches()
     {
-        $matches = TennisMatch::select('id', 'updated_at')
-            ->with(['winner:id,first_name,last_name', 'loser:id,first_name,last_name'])
+        $matches = TennisMatch::select('id', 'number', 'updated_at')
+            ->with(['winners:id,uri', 'losers:id,uri'])
             ->orderBy('updated_at', 'desc')
             ->limit(10000) // Limit for performance
-            ->get();
+            ->get()
+            ->filter(function ($match) {
+                return $match->winners->isNotEmpty() && $match->losers->isNotEmpty();
+            });
             
         return response()->view('sitemap.matches', [
             'matches' => $matches,
