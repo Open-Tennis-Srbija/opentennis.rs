@@ -53,8 +53,8 @@ return [
         ],
         'player' => [
             'title' => ':name - Teniser',
-            'description' => ':name je rangiran kao :rank. teniser Open Tennis Srbija sa :points poena. Pogledajte rezultate mečeva statistike i napredak kroz kategorije.',
-            'keywords' => 'teniser srbija, poeni, rang, kategorija, statistike',
+            'description' => ':name - teniser Open Tennis Srbija. Odigranih mečeva: :matches, pobeda: :wins, poraza: :losses. Pogledajte rezultate mečeva i statistiku.',
+            'keywords' => 'teniser srbija, mečevi, pobede, porazi, statistike',
         ],
         'match' => [
             'title' => ':player1 vs :player2 :score',

@@ -44,8 +44,9 @@ class SEOHelper
         
         $description = self::generateDescription('player', [
             'name' => $player->first_name . ' ' . $player->last_name,
-            'rank' => $player->rank ?? 'nerangiran',
-            'points' => $player->points ?? '0',
+            'matches' => $player->matches()->count(),
+            'wins' => $player->wins()->count(),
+            'losses' => $player->losses()->count(),
         ]);
         
         return [
