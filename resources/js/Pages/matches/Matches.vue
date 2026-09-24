@@ -239,6 +239,15 @@ const formatedMatchesMobile = computed(() => {
     return formated;
 });
 
+// Long matches (4+ sets) are split over two lines so the score doesn't overflow
+function gameScoreLines(score) {
+    if (!score) return [];
+    const sets = score.split(',');
+    if (sets.length < 4) return [score];
+    const half = Math.ceil(sets.length / 2);
+    return [sets.slice(0, half).join(',') + ',', sets.slice(half).join(',')];
+}
+
 function getDateDay(date) {
     let days = ["ned", "pon", "uto", "sre", "čet", "pet", "sub"];
     let day = new Date(date).getDay();
@@ -469,9 +478,7 @@ const matchesText = computed(() => {
                 </div>
                 <div class="score">
                     <Link prefetch="false" :href="'/mec/'+match.uri">
-                    {{ match.set_score }}<br /><span class="gray">{{
-                        match.game_score
-                        }}</span>
+                    {{ match.set_score }}<br /><span class="gray"><span class="game-line" v-for="(line, i) in gameScoreLines(match.game_score)" :key="i">{{ line }}</span></span>
                     </Link>
                 </div>
                 <div class="location smaller-font" style="padding-right: 10px;">
@@ -608,7 +615,7 @@ const matchesText = computed(() => {
                     <Link prefetch="false" :href="'/mec/'+match.uri">
                     {{ match.set_score }}
                     <br v-if="match.game_score && match.game_score !== ''" />
-                    <span class="games">{{ match.game_score }}</span>
+                    <span class="games"><template v-for="(line, i) in gameScoreLines(match.game_score)" :key="i"><br v-if="i > 0" />{{ line }}</template></span>
                     </Link>
                 </div>
 

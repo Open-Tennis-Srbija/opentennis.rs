@@ -3,6 +3,7 @@
 
 User-agent: *
 Allow: /
+Crawl-delay: 1
 
 # Blokiranje admin stranica
 Disallow: /admin/
@@ -33,6 +34,3 @@ Allow: *.svg
 # Sitemap reference
 Sitemap: https://opentennis.rs/sitemap.xml
 
-# Crawl delay za sporije botove
-User-agent: *
-Crawl-delay: 1

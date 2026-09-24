@@ -8,13 +8,17 @@ class SEOHelper
 {
     public static function generateTitle($pageTitle = null, $useSuffix = true)
     {
-        $suffix = $useSuffix ? Config::get('seo.defaults.title_suffix', '') : '';
-        
         if (!$pageTitle) {
-            return Config::get('seo.defaults.title', '') . $suffix;
+            return Config::get('seo.defaults.title', '');
         }
-        
-        return $pageTitle . $suffix;
+
+        $brand = Config::get('seo.defaults.title');
+
+        if (!$useSuffix || str_contains($pageTitle, $brand)) {
+            return $pageTitle;
+        }
+
+        return $pageTitle . Config::get('seo.defaults.title_suffix', '');
     }
     
     public static function generateDescription($template, $data = [])
@@ -28,10 +32,15 @@ class SEOHelper
         return $description;
     }
     
+    public static function defaultImage()
+    {
+        return asset('ots-social-media-share.png');
+    }
+
     public static function generatePlayerSEO($player)
     {
-        $title = str_replace(':name', $player->first_name . ' ' . $player->last_name, 
-                           Config::get('seo.templates.player.title'));
+        $title = self::generateTitle(str_replace(':name', $player->first_name . ' ' . $player->last_name,
+                           Config::get('seo.templates.player.title')));
         
         $description = self::generateDescription('player', [
             'name' => $player->first_name . ' ' . $player->last_name,
@@ -43,37 +52,38 @@ class SEOHelper
             'title' => $title,
             'description' => $description,
             'canonical' => url('/' . $player->uri),
-            'og_image' => $player->photo ? asset('storage/' . $player->photo) : asset('images/player-default.jpg'),
+            'og_image' => $player->photo ? asset('storage/' . $player->photo) : self::defaultImage(),
         ];
     }
     
     public static function generateMatchSEO($match)
     {
-        $player1Name = $match->winner ? ($match->winner->first_name . ' ' . $match->winner->last_name) : 'Nepoznat';
-        $player2Name = $match->loser ? ($match->loser->first_name . ' ' . $match->loser->last_name) : 'Nepoznat';
-        $score = $match->set_score ?? 'Rezultat nije unesen';
-        
-        $title = str_replace([':player1', ':player2', ':score'], 
-                           [$player1Name, $player2Name, $score], 
-                           Config::get('seo.templates.match.title'));
-        
+        $names = fn($players) => $players->map(fn($p) => trim($p->first_name . ' ' . $p->last_name))->implode(' / ');
+        $winners = $names($match->winners) ?: 'Nepoznat';
+        $losers = $names($match->losers) ?: 'Nepoznat';
+        $score = $match->set_score ?: 'Rezultat nije unesen';
+
+        $title = self::generateTitle(str_replace([':player1', ':player2', ':score'],
+                           [$winners, $losers, $score],
+                           Config::get('seo.templates.match.title')));
+
         $description = self::generateDescription('match', [
-            'player1' => $player1Name,
-            'player2' => $player2Name,
+            'player1' => $winners,
+            'player2' => $losers,
             'score' => $score,
         ]);
-        
+
         return [
             'title' => $title,
             'description' => $description,
-            'canonical' => url('/mec/' . $match->uri),
-            'og_image' => asset('images/match-default.jpg'),
+            'canonical' => request()->url(),
+            'og_image' => self::defaultImage(),
         ];
     }
     
     public static function generateLeagueSEO($league)
     {
-        $title = str_replace(':name', $league->name, Config::get('seo.templates.league.title'));
+        $title = self::generateTitle(str_replace(':name', $league->name, Config::get('seo.templates.league.title')));
         
         $description = self::generateDescription('league', [
             'name' => $league->name,
@@ -83,13 +93,13 @@ class SEOHelper
             'title' => $title,
             'description' => $description,
             'canonical' => url('/' . $league->uri),
-            'og_image' => asset('images/league-default.jpg'),
+            'og_image' => self::defaultImage(),
         ];
     }
     
     public static function generateCourtSEO($court)
     {
-        $title = str_replace(':name', $court->name, Config::get('seo.templates.court.title'));
+        $title = self::generateTitle(str_replace(':name', $court->name, Config::get('seo.templates.court.title')));
         
         $description = self::generateDescription('court', [
             'name' => $court->name,
@@ -100,7 +110,7 @@ class SEOHelper
             'title' => $title,
             'description' => $description,
             'canonical' => url('/tereni/' . $court->uri),
-            'og_image' => asset('images/court-default.jpg'),
+            'og_image' => self::defaultImage(),
         ];
     }
     
@@ -129,7 +139,7 @@ class SEOHelper
             'keywords' => $keywords,
             'robots' => $robots,
             'canonical' => request()->url(),
-            'og_image' => asset('images/og-default.jpg'),
+            'og_image' => self::defaultImage(),
         ];
     }
     
@@ -141,7 +151,7 @@ class SEOHelper
             'keywords' => Config::get('seo.defaults.keywords'),
             'robots' => 'index, follow',
             'canonical' => request()->url(),
-            'og_image' => asset('images/og-default.jpg'),
+            'og_image' => self::defaultImage(),
         ];
     }
     

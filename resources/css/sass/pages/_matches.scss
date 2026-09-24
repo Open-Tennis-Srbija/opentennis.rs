@@ -105,6 +105,16 @@ $border-color-dark: #e2e0e1;
 
 .score .gray {
   color: $text-color-gray;
+  display: block;
+
+  .game-line {
+    display: block;
+  }
+
+  // extra rows of a long match stay tight to the first one
+  .game-line + .game-line {
+    line-height: 1.15;
+  }
 }
 
 .match-entry {

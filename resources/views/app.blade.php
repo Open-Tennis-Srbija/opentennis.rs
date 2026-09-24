@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <link rel="icon" href="{{ asset('/favicon.ico') }}">
     
+    <title inertia>{{ $page['props']['seo']['title'] ?? config('seo.defaults.title') }}</title>
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="{{ $page['props']['seo']['description'] ?? config('seo.defaults.description') }}" />
     <meta name="keywords" content="{{ $page['props']['seo']['keywords'] ?? config('seo.defaults.keywords') }}" />
@@ -26,7 +28,7 @@
       <meta name="twitter:title" content="{{ $page['props']['seo']['title'] ?? config('seo.defaults.title') }}"/>
       <meta name="twitter:description" content="{{ $page['props']['seo']['description'] ?? config('seo.defaults.description') }}"/>
       <!-- Default/dynamic twitter image (ots-social-media-share.png) -->
-      <meta name="twitter:image:src" content="{{ $page['props']['seo']['og_image'] ?? asset('/ots-social-media-share.png') }}"/>
+      <meta name="twitter:image" content="{{ $page['props']['seo']['og_image'] ?? asset('/ots-social-media-share.png') }}"/>
       <meta name="twitter:image:alt" content="open tennis srbija"/>
       <meta name="twitter:site" content="@opentennis"/>
       
@@ -38,6 +40,8 @@
       <!-- Default/dynamic og:image (ots-social-media-share.png) -->
       <meta property="og:image" content="{{ $page['props']['seo']['og_image'] ?? asset('/ots-social-media-share.png') }}"/>
       <meta property="og:description" content="{{ $page['props']['seo']['description'] ?? config('seo.defaults.description') }}"/>
+      <meta property="og:image:width" content="900"/>
+      <meta property="og:image:height" content="450"/>
       <meta property="og:site_name" content="Open Tennis Srbija"/>
     
     <!-- Structured Data JSON-LD -->
@@ -54,7 +58,7 @@
         "name": "Open Tennis Srbija",
         "alternateName": "Srpska Tenis Liga",
         "url": "{{ url('/') }}",
-        "logo": "{{ asset('/images/logo.png') }}",
+        "logo": "{{ asset('/ots-logo.png') }}",
         "sport": "Tennis",
         "areaServed": {
           "@@type": "Country",

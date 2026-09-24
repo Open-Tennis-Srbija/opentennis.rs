@@ -18,7 +18,7 @@ return [
         'description' => 'Oficijalni sajt Open Tennis Srbija. Rangiranje tenisera rezultati mečeva lige & turniri. Pratite najbolje tenisere Srbije i njihove rezultate.',
         'keywords' => 'open tennis srbija, tenis srbija, rangiranje tenisera, tenis mečevi, tenis turniri, tenis lige srbija, srpska tenis liga',
         'author' => 'Open Tennis Srbija',
-        'image' => '/images/og-default.jpg',
+        'image' => '/ots-social-media-share.png',
         'locale' => 'sr_RS',
     ],
 
@@ -100,6 +100,7 @@ return [
             'title' => 'Dodaj meč',
             'description' => 'Dodajte novi tenis meč u Open Tennis Srbija.',
             'keywords' => 'dodaj meč, tenis',
+            'robots' => 'noindex, follow',
         ],
         'rules' => [
             'title' => 'O nama',
@@ -137,7 +138,7 @@ return [
         'organization' => [
             'name' => 'Open Tennis Srbija',
             'url' => env('APP_URL', 'https://opentennis.rs'),
-            'logo' => env('APP_URL', 'https://opentennis.rs') . '/images/logo.png',
+            'logo' => env('APP_URL', 'https://opentennis.rs') . '/ots-logo.png',
             'sameAs' => [
                 'https://www.facebook.com/srpskatenisliga',
                 'https://www.instagram.com/srpskatenisliga',
@@ -169,7 +170,8 @@ return [
             '/tereni' => ['priority' => '0.7', 'changefreq' => 'monthly'],
             '/turniri' => ['priority' => '0.8', 'changefreq' => 'weekly'],
             '/statistika' => ['priority' => '0.6', 'changefreq' => 'weekly'],
-            '/misija' => ['priority' => '0.5', 'changefreq' => 'monthly'],
+            '/teniseri' => ['priority' => '0.9', 'changefreq' => 'daily'],
+            '/volontiraj' => ['priority' => '0.4', 'changefreq' => 'monthly'],
             '/o-nama' => ['priority' => '0.5', 'changefreq' => 'monthly'],
         ],
     ],
