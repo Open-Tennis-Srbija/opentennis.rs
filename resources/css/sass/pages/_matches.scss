@@ -113,7 +113,7 @@ $border-color-dark: #e2e0e1;
 
   // extra rows of a long match stay tight to the first one
   .game-line + .game-line {
-    line-height: 1.15;
+    line-height: 1;
   }
 }
 
