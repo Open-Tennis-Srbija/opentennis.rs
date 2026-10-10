@@ -96,7 +96,7 @@ const handleInputs = (event,isDate = false) => {
     <Head title="Import singlova -" />
     <div class="static-wrapper">
     <h1 id="title" :class="{'hide': formState.success}">Import singlova</h1>
-    <h1 id="success" :class="{'show': formState.success}">Mečevi su uspešno dodati!</h1>
+    <h1 id="success" :class="{'show': formState.success}">Mečevi su uspešno dodati</h1>
     <div id="success-links" :class="{'show': formState.success}">
       <Link prefetch="false" class="red" :href="'/lige'">vidi lige i turnire</Link>
       <Link prefetch="false" class="blue" :href="'/mecevi'">vidi mečeve</Link>
@@ -164,11 +164,7 @@ const handleInputs = (event,isDate = false) => {
             <p class="error-message">{{ form.errors.league }}</p>
           </div>
           <div class="form-group">
-<<<<<<< HEAD
-            <p>Potrebno je exportovati <a href="/storage/Open Tennis Srbija prijava turnira i liga - šablon.xlsx" target="_blank">spreadsheet</a> (Google sheet ili Excel) kao .csv fajl.</p>
-=======
             <p>Potrebno je exportovati <a href="/storage/opentennis.rs prijava turnira i liga - šablon.xlsx" target="_blank">spreadsheet</a> (Google sheet ili Excel) kao .csv fajl.</p>
->>>>>>> ade4fe2 (Rebranding)
             <p>File > Download > Coma Separated Values (.csv)</p>
           </div>
         </div>

@@ -250,7 +250,7 @@ class TenisMatchController extends Controller
             $loser_name = $rowData['gubitnik (ime i prezime)'];
             $set_score = $rowData['rezultat u setovima (2:0)'];
             $game_score = $rowData['rezultat u gemovima (6:3,4:2)'];
-            $date = new DateTime($rowData['datum meča (dd mm gggg)']);
+            $date = $this->parseImportDate($rowData['datum meča (dd mm gggg)']);
 
             if(!isset($league_id)){
                 $league = League::where('name', $league_name)->first();
@@ -487,7 +487,7 @@ fclose($handle);
             $loser2_name = $rowData['gubitnik 2 (ime i prezime)'];
             $set_score = $rowData['rezultat u setovima (2:0)'];
             $game_score = $rowData['rezultat u gemovima (6:3,4:2)'];
-            $date = new DateTime($rowData['datum meča (dd mm gggg)']);
+            $date = $this->parseImportDate($rowData['datum meča (dd mm gggg)']);
 
             if(!isset($league_id)){
                 $league = League::where('name', $league_name)->first();
@@ -670,6 +670,30 @@ fclose($handle);
         fclose($handle);
 
     }
+
+    // Parses import dates like "19 09 2026", "19.09.2026." or Excel-formatted "sub 19 sep 2026"
+    private function parseImportDate($value){
+        $value = mb_strtolower(trim($value));
+
+        // Drop a leading weekday name (e.g. "sub", "ned", "čet", "sre,")
+        $value = preg_replace('/^[\p{L}]+\.?,?\s+(?=\d)/u', '', $value);
+
+        if(preg_match('/^(\d{1,2})[\s.\/-]+(\d{1,2})[\s.\/-]+(\d{4})\.?$/', $value, $m)){
+            return new DateTime(sprintf('%04d-%02d-%02d', $m[3], $m[2], $m[1]));
+        }
+
+        $months = [
+            'januar' => 'jan', 'februar' => 'feb', 'mart' => 'mar', 'april' => 'apr',
+            'maj' => 'may', 'jun' => 'jun', 'jul' => 'jul', 'avgust' => 'aug', 'avg' => 'aug',
+            'septembar' => 'sep', 'oktobar' => 'oct', 'okt' => 'oct', 'novembar' => 'nov', 'decembar' => 'dec',
+        ];
+        $value = preg_replace_callback('/\p{L}+/u', function($m) use ($months){
+            return $months[$m[0]] ?? $m[0];
+        }, $value);
+
+        return new DateTime($value);
+    }
+
     private function check_for_existing($id,$first_name,$last_name){
         if(is_numeric($id)){
             $player = Player::find($id);
