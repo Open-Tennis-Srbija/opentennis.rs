@@ -322,7 +322,7 @@ class TenisMatchController extends Controller
                 $match->date = $date->format('Y-m-d');
                 $match->set_score = $set_score;
                 $match->game_score = $game_score;
-                $match->county = $league->county;
+                $match->county = $county ?: $league->county;
 
 
                 $match->winner_point_gain = 0;
@@ -564,7 +564,7 @@ fclose($handle);
                 $match->date = $date->format('Y-m-d');
                 $match->set_score = $set_score;
                 $match->game_score = $game_score;
-                $match->county = $league->county;
+                $match->county = $county ?: $league->county;
 
 
                 $match->winner_point_gain = 0;
