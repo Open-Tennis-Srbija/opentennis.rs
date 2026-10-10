@@ -11,6 +11,7 @@ use App\Models\Court;
 use App\Models\League;
 use Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use NikolaAlgoV1;
@@ -236,12 +237,23 @@ class TenisMatchController extends Controller
         rewind($handle);
 
         $header = null;
+        // All-or-nothing: a failing row must not leave a half-imported tournament
+        DB::beginTransaction();
+        try {
         while (($row = fgetcsv($handle)) !== false) {
             if (!$header) {
-                $header = $row;
+                // Map columns by position, header text can arrive garbled (e.g. Excel ANSI export)
+                $header = [
+                    'Ime lige ili turnira', 'datum meča (dd mm gggg)', 'pobednik (ime i prezime)', 'gubitnik (ime i prezime)',
+                    'rezultat u setovima (2:0)', 'rezultat u gemovima (6:3,4:2)', 'opština', 'teren ili klub',
+                ];
                 continue;
             }
-            $rowData = array_combine($header, $row);
+            $row = array_map(fn($value) => trim((string) $value), $row);
+            if (implode('', $row) === '') {
+                continue;
+            }
+            $rowData = array_combine($header, array_pad(array_slice($row, 0, count($header)), count($header), ''));
 
             $league_name = $rowData['Ime lige ili turnira'];
             $court_name = $rowData['teren ili klub'];
@@ -398,7 +410,13 @@ class TenisMatchController extends Controller
 
         }
     }
-fclose($handle);
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        } finally {
+            fclose($handle);
+        }
 
     }
 
@@ -471,12 +489,23 @@ fclose($handle);
         rewind($handle);
 
         $header = null;
+        // All-or-nothing: a failing row must not leave a half-imported tournament
+        DB::beginTransaction();
+        try {
         while (($row = fgetcsv($handle)) !== false) {
             if (!$header) {
-                $header = $row;
+                // Map columns by position, header text can arrive garbled (e.g. Excel ANSI export)
+                $header = [
+                    'Ime lige ili turnira', 'datum meča (dd mm gggg)', 'pobednik 1 (ime i prezime)', 'pobednik 2 (ime i prezime)',
+                    'gubitnik 1 (ime i prezime)', 'gubitnik 2 (ime i prezime)', 'rezultat u setovima (2:0)', 'rezultat u gemovima (6:3,4:2)', 'opština', 'teren ili klub',
+                ];
                 continue;
             }
-            $rowData = array_combine($header, $row);
+            $row = array_map(fn($value) => trim((string) $value), $row);
+            if (implode('', $row) === '') {
+                continue;
+            }
+            $rowData = array_combine($header, array_pad(array_slice($row, 0, count($header)), count($header), ''));
 
             $league_name = $rowData['Ime lige ili turnira'];
             $court_name = $rowData['teren ili klub'];
@@ -667,7 +696,13 @@ fclose($handle);
 
         }
     }
-        fclose($handle);
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        } finally {
+            fclose($handle);
+        }
 
     }
 
@@ -729,18 +764,18 @@ fclose($handle);
     }
 
     private function check_existing_player($match,$first_name,$last_name,$mode){
-        $player = Player::where('first_name', $first_name)->where('last_name', $last_name)->first();
+        $uri = strtolower(Helper::formatName($first_name)) . '-' . strtolower(Helper::formatName($last_name));
+
+        // Also match by uri so "Sinisa Djukic" finds the existing "Siniša Đukić"
+        $player = Player::where('first_name', $first_name)->where('last_name', $last_name)->first()
+            ?? Player::where('uri', $uri)->first();
         $new = 0;
 
         if(!$player){
             $player = new Player();
             $player->first_name = $first_name;
             $player->last_name = $last_name;
-
-            $uri_firistname = Helper::formatName($first_name);
-            $uri_lastname = Helper::formatName($last_name);
-
-            $player->uri = strtolower($uri_firistname) . '-' . strtolower($uri_lastname);
+            $player->uri = $uri;
 
             $player->save();
 
