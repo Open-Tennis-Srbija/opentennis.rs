@@ -13,7 +13,10 @@ const props = defineProps({ player_uri: String, player: { type: Object, default:
 // real content instead of the loading skeleton; refreshed client-side below.
 const player = ref(props.player || {});
 const isLoading = ref(!props.player);
-const pageTitle = ref(props.player ? `${props.player.name} - Open Tennis Srbija` : 'Open Tennis Srbija');
+// Matches the ":name - Teniser" template in config/seo.php so this ends up
+// identical to the server-rendered <title> once the global title resolver
+// appends " - Open Tennis Srbija".
+const pageTitle = ref(props.player ? `${props.player.name} - Teniser` : '');
 
 const page = usePage();
 const isExpanded = reactive({
@@ -45,7 +48,7 @@ onMounted(() => {
 	// Refresh in the background, data may have changed since the server rendered this page.
 	axios.get(`/get-player/${props.player_uri}`).then((response) => {
 		player.value = response.data;
-		pageTitle.value = `${player.value.name} - Open Tennis Srbija`;
+		pageTitle.value = `${player.value.name} - Teniser`;
 		isLoading.value = false;
 		bus.emit('loading', false)
 	}).catch((error) => {

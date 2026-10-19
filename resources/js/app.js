@@ -13,24 +13,14 @@ import Dropdown from "@components/Dropdown.vue";
 import AddSingle from "@matches/AddSingle.vue";
 import clickOutside from "./directives/click-outside.js";
 import AddDouble from "@matches/AddDouble.vue";
+import resolveTitle from "./titleResolver.js";
 
 router.on("finish", () => {
     bus.emit("resetScroll");
 });
 
 createInertiaApp({
-    title: (title) => {
-        // Remove trailing " -" if present and clean up the title
-        const cleanTitle = title ? title.replace(/\s*-\s*$/, '') : '';
-        
-        // If no title provided, return just the site name
-        if (!cleanTitle || cleanTitle.trim() === '') {
-            return 'Srpska Tenis Liga - Open Tennis Srbija';
-        }
-        
-        // Return formatted title with separator
-        return `${cleanTitle} - Open Tennis Srbija`;
-    },
+    title: resolveTitle,
 
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });

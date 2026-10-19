@@ -10,12 +10,13 @@ import Dropdown from '@components/Dropdown.vue';
 import Home from './Pages/players/Players.vue';
 import Matches from '@matches/Matches.vue';
 import clickOutside from './directives/click-outside.js';
+import resolveTitle from './titleResolver.js';
 
 createServer((page) =>
   createInertiaApp({
     page,
     render: renderToString,
-    title: (title) => `${title} Open Tennis Srbija`,
+    title: resolveTitle,
     resolve: (name) => {
       const pages = import.meta.glob('./Pages/**/*.vue', { eager: true });
       const resolved = pages[`./Pages/${name}.vue`];

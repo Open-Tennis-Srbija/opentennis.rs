@@ -105,8 +105,10 @@ const matchTitle = computed(() => {
     const score = formatedMatch.value.set_score || '';
 
     if (isDoubles) {
-        const winners = `${formatedMatch.value.winner1_first_name} ${formatedMatch.value.winner1_last_name} i ${formatedMatch.value.winner2_first_name} ${formatedMatch.value.winner2_last_name}`;
-        const losers = `${formatedMatch.value.loser1_first_name} ${formatedMatch.value.loser1_last_name} i ${formatedMatch.value.loser2_first_name} ${formatedMatch.value.loser2_last_name}`;
+        // " / " matches SEOHelper::generateMatchSEO() on the server, so the
+        // client-side <Head> title doesn't drift from the SSR/SEO one.
+        const winners = `${formatedMatch.value.winner1_first_name} ${formatedMatch.value.winner1_last_name} / ${formatedMatch.value.winner2_first_name} ${formatedMatch.value.winner2_last_name}`;
+        const losers = `${formatedMatch.value.loser1_first_name} ${formatedMatch.value.loser1_last_name} / ${formatedMatch.value.loser2_first_name} ${formatedMatch.value.loser2_last_name}`;
         return `${winners} vs ${losers} ${score}`;
     } else {
         const winner = `${formatedMatch.value.winner1_first_name} ${formatedMatch.value.winner1_last_name}`;

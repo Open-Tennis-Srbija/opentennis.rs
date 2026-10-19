@@ -309,7 +309,7 @@ const getRandomWidth = () => {
             </div>
         </div>
     </div>
-    <Head v-if="court && court.name" :title="`${court.name} -`" />
+    <Head v-if="court && court.name" :title="`Teren ${court.name} -`" />
 </template>
 
 <style lang="scss" scoped>
