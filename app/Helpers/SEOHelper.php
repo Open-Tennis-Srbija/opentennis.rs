@@ -37,6 +37,19 @@ class SEOHelper
         return asset('ots-social-media-share.png');
     }
 
+    /**
+     * The current page's canonical URL, always on the APP_URL host/scheme
+     * and without query string, regardless of which host/params the
+     * request actually came in on (www vs apex, ?utm_source=..., etc).
+     */
+    public static function canonicalUrl()
+    {
+        $path = request()->getPathInfo();
+        $base = rtrim(config('app.url'), '/');
+
+        return $path === '/' ? $base : $base . $path;
+    }
+
     public static function generatePlayerSEO($player)
     {
         $title = self::generateTitle(str_replace(':name', $player->first_name . ' ' . $player->last_name,
@@ -77,7 +90,7 @@ class SEOHelper
         return [
             'title' => $title,
             'description' => $description,
-            'canonical' => request()->url(),
+            'canonical' => self::canonicalUrl(),
             'og_image' => self::defaultImage(),
         ];
     }
@@ -139,7 +152,7 @@ class SEOHelper
             'description' => $description,
             'keywords' => $keywords,
             'robots' => $robots,
-            'canonical' => request()->url(),
+            'canonical' => self::canonicalUrl(),
             'og_image' => self::defaultImage(),
         ];
     }
@@ -151,7 +164,7 @@ class SEOHelper
             'description' => Config::get('seo.defaults.description'),
             'keywords' => Config::get('seo.defaults.keywords'),
             'robots' => 'index, follow',
-            'canonical' => request()->url(),
+            'canonical' => self::canonicalUrl(),
             'og_image' => self::defaultImage(),
         ];
     }

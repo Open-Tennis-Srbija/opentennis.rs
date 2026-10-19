@@ -16,11 +16,11 @@
     
     <!-- Language Tags -->
     <meta http-equiv="content-language" content="sr">
-    <link rel="alternate" hreflang="sr" href="{{ url()->current() }}" />
-    <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}" />
+    <link rel="alternate" hreflang="sr" href="{{ \App\Helpers\SEOHelper::canonicalUrl() }}" />
+    <link rel="alternate" hreflang="x-default" href="{{ \App\Helpers\SEOHelper::canonicalUrl() }}" />
     
     <!-- Canonical Tag -->
-    <link rel="canonical" href="{{ $page['props']['seo']['canonical'] ?? url()->current() }}" />
+    <link rel="canonical" href="{{ $page['props']['seo']['canonical'] ?? \App\Helpers\SEOHelper::canonicalUrl() }}" />
     
     
       <!-- Dynamic Twitter Card Meta Tags -->
@@ -35,7 +35,7 @@
       <!-- Dynamic Open Graph data -->
       <meta property="og:type" content="website"/>
       <meta property="og:locale" content="{{ config('seo.defaults.locale') }}"/>
-      <meta property="og:url" content="{{ $page['props']['seo']['canonical'] ?? url()->current() }}"/>
+      <meta property="og:url" content="{{ $page['props']['seo']['canonical'] ?? \App\Helpers\SEOHelper::canonicalUrl() }}"/>
       <meta property="og:title" content="{{ $page['props']['seo']['title'] ?? config('seo.defaults.title') }}"/>
       <!-- Default/dynamic og:image (ots-social-media-share.png) -->
       <meta property="og:image" content="{{ $page['props']['seo']['og_image'] ?? asset('/ots-social-media-share.png') }}"/>
