@@ -116,6 +116,7 @@ class CourtsController extends Controller
 
         return Inertia::render('courts/Court', [
             'court_id' => $court->id,
+            'court' => self::get_court($court->id),
             'seo' => SEOHelper::generateCourtSEO($court),
         ]);
     }

@@ -9,19 +9,23 @@ import EditIcon from "@components/EditIcon.vue";
 import MatchTable from "@matches/Matches.vue";
 
 const utl = utils;
-const court = ref({});
-const isLoading = ref(true);
+const props = defineProps({
+    court_id: [String, Number],
+    court: { type: Object, default: null },
+});
+// Seeded from the server (SSR/initial load) so crawlers and first paint get
+// real content instead of the loading skeleton; refreshed client-side below.
+const court = ref(props.court || {});
+const isLoading = ref(!props.court);
 
 const page = usePage();
 const isExpanded = reactive({
     players: false,
     leagues: false,
 });
-const props = defineProps({
-    court_id: String,
-});
 onMounted(() => {
     page.props["title"] = "Tereni";
+    // Refresh in the background, data may have changed since the server rendered this page.
     axios.get(`/get-court/${props.court_id}`).then((response) => {
         court.value = response.data;
         isLoading.value = false;

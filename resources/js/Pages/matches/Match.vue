@@ -12,13 +12,17 @@ const props = defineProps({
         type: Number,
         required: true
     },
+    match: { type: Object, default: null },
 });
 
-const match = ref({});
+// Seeded from the server (SSR/initial load) so crawlers and first paint get
+// real content instead of a blank match; refreshed client-side below.
+const match = ref(props.match || {});
 
 const page = usePage();
 
 onMounted(() => {
+    // Refresh in the background, data may have changed since the server rendered this page.
     axios.get(`/api/match/${props.match_number}`).then(response => {
         match.value = response.data;
         bus.emit("loading", false);

@@ -18,6 +18,7 @@ class ResolverController extends Controller
 
         if($player) return Inertia::render('players/Player', [
             'player_uri' => $uri,
+            'player' => PlayerController::get_player_by_uri($uri),
             'seo' => SEOHelper::generatePlayerSEO($player),
         ]);
 
@@ -25,6 +26,7 @@ class ResolverController extends Controller
 
         if($league) return Inertia::render('leagues/League', [
             'league_uri' => $uri,
+            'league' => LeaguesController::returnLeague($uri),
             'seo' => SEOHelper::generateLeagueSEO($league),
         ]);
 

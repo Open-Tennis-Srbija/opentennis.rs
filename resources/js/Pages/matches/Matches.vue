@@ -81,7 +81,9 @@ watch([sortKey, sortDir], () => {
     loadInitialMatches();
 });
 
-const isHome = computed(() => window.location.pathname === '/mecevi');
+// `window` doesn't exist during SSR; usePage().url is populated from the
+// request on both server and client, so it's safe there too.
+const isHome = computed(() => page.url === '/mecevi');
 // Computed property to determine loading context
 const isCourtSpecific = computed(() => !!props.court_id);
 const isLeagueSpecific = computed(() => !!props.league_id);

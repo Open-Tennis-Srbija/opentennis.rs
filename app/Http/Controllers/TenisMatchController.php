@@ -111,6 +111,7 @@ class TenisMatchController extends Controller
             if ($winnerUriBase == $expectedWinnerUri && $loserUriBase == $expectedLoserUri) {
                 return Inertia::render('matches/Match', [
                     'match_number' => $matchNumber,
+                    'match' => self::getMatchNumberApi($matchNumber),
                     'seo' => \App\Helpers\SEOHelper::generateMatchSEO($match),
                 ]);
             }
@@ -143,6 +144,7 @@ class TenisMatchController extends Controller
             if ($winnersMatch && $losersMatch) {
                 return Inertia::render('matches/Match', [
                     'match_number' => $matchNumber,
+                    'match' => self::getMatchNumberApi($matchNumber),
                     'seo' => \App\Helpers\SEOHelper::generateMatchSEO($match),
                 ]);
             }

@@ -8,9 +8,12 @@ import EditIcon from "@components/EditIcon.vue";
 import bus from 'vue3-eventbus';
 import Matches from "@matches/Matches.vue";
 
-const props = defineProps({ player_uri: String });
-const player = ref({});
-const isLoading = ref(true);
+const props = defineProps({ player_uri: String, player: { type: Object, default: null } });
+// Seeded from the server (SSR/initial load) so crawlers and first paint get
+// real content instead of the loading skeleton; refreshed client-side below.
+const player = ref(props.player || {});
+const isLoading = ref(!props.player);
+const pageTitle = ref(props.player ? `${props.player.name} - Open Tennis Srbija` : 'Open Tennis Srbija');
 
 const page = usePage();
 const isExpanded = reactive({
@@ -36,11 +39,12 @@ const categoryColors = {
   '?': '#a1a1a1',
 }
 onMounted(() => {
-	axios.get(`/get-player/${props.player_uri}`).then((response) => {
 	bus.emit('active', 'players')
 	bus.emit('headTitle', 'teniser')
+
+	// Refresh in the background, data may have changed since the server rendered this page.
+	axios.get(`/get-player/${props.player_uri}`).then((response) => {
 		player.value = response.data;
-		console.log('Player data:', player.value);
 		pageTitle.value = `${player.value.name} - Open Tennis Srbija`;
 		isLoading.value = false;
 		bus.emit('loading', false)
@@ -97,8 +101,6 @@ const matchups = computed(() => {
 	}
 	return data;
 });
-const pageTitle = ref('Open Tennis Srbija');
-
 const points = computed(() => {
 	if (!player.value.points) {
 		return 0;
