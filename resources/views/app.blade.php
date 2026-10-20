@@ -3,8 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <link rel="icon" href="{{ asset('/favicon.ico') }}">
+    {{-- Google Search needs a >=48px icon and picks the opaque PNG; browser tabs
+         (16/32px) pick the transparent .ico by size. --}}
     <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('/favicon-48x48.png') }}">
+    <link rel="icon" type="image/x-icon" sizes="16x16 32x32" href="{{ asset('/favicon.ico') }}">
     
     <title inertia>{{ $page['props']['seo']['title'] ?? config('seo.defaults.title') }}</title>
 
