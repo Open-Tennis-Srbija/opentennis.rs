@@ -150,6 +150,11 @@ class League extends Model
         return $points;
     }
 
+    public function matches()
+    {
+        return $this->hasMany(TennisMatch::class, 'league_id');
+    }
+
     /**
      * Get the tournament series this league belongs to
      */

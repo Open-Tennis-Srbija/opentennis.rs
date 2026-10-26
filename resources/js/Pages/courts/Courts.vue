@@ -1,19 +1,17 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import utils from '../../utils';
-import axios from 'axios';
 import bus from 'vue3-eventbus';
 import EditBtn from '@components/EditIcon.vue';
 import Dropdown from '@components/Dropdown.vue';
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
+import { useLazyList } from '../../composables/useLazyList';
 
 const utl = utils;
 
 const isClient = ref(false);
 
-const courts = ref([]);
-const isLoading = ref(true); // Add loading state
 
 const sortKey = ref('matches_number');
 const sortDir = ref('desc');
@@ -48,64 +46,41 @@ watch(selectedSort, (val) => {
     }
 }, { deep: true });
 
-const sortedCourts = computed(() => {
-    const compareByKey = (a, b, key, dir) => {
-        let aVal = a[key];
-        let bVal = b[key];
-        if (key === 'name' || key === 'county') {
-            aVal = (aVal || '').toLowerCase();
-            bVal = (bVal || '').toLowerCase();
-            return dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-        }
-        return dir === 'asc' ? aVal - bVal : bVal - aVal;
-    };
+// Current season prices as "1,500 / 2,200 / 2,200", leaving out the ones not set
+const formatPrices = (prices) => {
+    return ['morning', 'afternoon', 'weekend']
+        .filter((key) => prices[key] != null)
+        .map((key) => utl.formatAsThousands(prices[key]))
+        .join(' / ');
+};
 
-    return [...courts.value].sort((a, b) => {
-        // 1. Primary: current sort key
-        let result = compareByKey(a, b, sortKey.value, sortDir.value);
-        if (result !== 0) return result;
+// Courts come sorted from the server, a page of 100 at a time
+const { items: courts, isLoading, isLoadingMore, reload: loadInitialCourts, loadMore: loadMoreCourts } = useLazyList(
+    (pageNumber) => `/api/courts?page=${pageNumber}&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`
+);
 
-        // 2. matches_number desc (if not primary)
-        if (sortKey.value !== 'matches_number') {
-            result = compareByKey(a, b, 'matches_number', 'desc');
-            if (result !== 0) return result;
-        }
-
-        // 3. player_number desc (if not primary)
-        if (sortKey.value !== 'player_number') {
-            result = compareByKey(a, b, 'player_number', 'desc');
-            if (result !== 0) return result;
-        }
-
-        // 4. Alphabetically asc (if not primary)
-        if (sortKey.value !== 'name') {
-            result = compareByKey(a, b, 'name', 'asc');
-        }
-
-        return result;
-    });
+watch([sortKey, sortDir], () => {
+    loadInitialCourts();
 });
 
 onMounted(() => {
   isClient.value = true;
-  axios.get('/get-courts').then((response) => {
-    courts.value = response.data;
-    isLoading.value = false; // Set loading to false when data is loaded
-    bus.emit('loading', false);
-  }).catch((error) => {
-    console.error('Error fetching courts:', error);
-    isLoading.value = false; // Set loading to false on error as well
-    bus.emit('loading', false);
-  });
- bus.on('scroll', (top) => {
-        handleScroll(top);
-    });
+  loadInitialCourts();
+  bus.on('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+  bus.off('scroll', handleScroll);
 });
 
 const scrollPos = ref(0);
 
 const handleScroll = (top) => {
   scrollPos.value = top;
+
+  if (utl.isNearBottom(top)) {
+    loadMoreCourts();
+  }
 }
 
 const topOffset = computed(() => {
@@ -148,6 +123,7 @@ const courtsText = computed(() => {
       <div id="desktop">
         <div class="rankings-header" :style="{ top: 200 - topOffset + 'px' }">
           <div class="name">teren</div>
+          <div class="total-matches">cene RSD</div>
           <div class="total-matches">mečevi</div>
           <div class="total-matches">teniseri</div>
           <div class="total-matches">opština</div>
@@ -155,6 +131,9 @@ const courtsText = computed(() => {
         <div v-for="n in 8" :key="`desktop-skeleton-${n}`" class="ranking-entry skeleton" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
           <div class="name helvetica">
             <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+          </div>
+          <div class="total-matches">
+            <div class="skeleton-item skeleton-text small"></div>
           </div>
           <div class="total-matches">
             <div class="skeleton-item skeleton-text small"></div>
@@ -205,17 +184,38 @@ const courtsText = computed(() => {
       <div id="desktop">
       <div class="rankings-header" :style="{ top: 200 - topOffset + 'px' }">
         <div class="name sortable" :class="{ active: sortKey === 'name', asc: sortKey === 'name' && sortDir === 'asc' }" @click="toggleSort('name')">teren</div>
+        <div class="total-matches sortable" :class="{ active: sortKey === 'price', asc: sortKey === 'price' && sortDir === 'asc' }" @click="toggleSort('price')">cene RSD</div>
         <div class="total-matches sortable" :class="{ active: sortKey === 'matches_number', asc: sortKey === 'matches_number' && sortDir === 'asc' }" @click="toggleSort('matches_number')">mečevi</div>
         <div class="total-matches sortable" :class="{ active: sortKey === 'player_number', asc: sortKey === 'player_number' && sortDir === 'asc' }" @click="toggleSort('player_number')">teniseri</div>
         <div class="total-matches sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
       </div>
-      <div class="ranking-entry" v-for="(court, index) in sortedCourts" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
+      <div class="ranking-entry" v-for="(court, index) in courts" :key="court.id" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
         <div class="name helvetica"><Link prefetch="false" :href="`/tereni/${court.uri}`">{{court.name}}</Link></div>
+        <div class="total-matches">{{ court.prices ? formatPrices(court.prices) : '' }}</div>
         <div class="total-matches">{{court.matches_number}}</div>
         <div class="total-matches">{{court.player_number}}</div>
         <div class="total-matches smaller-font" style="text-align: center;">{{court.county}}</div>
       </div>
+      <template v-if="isLoadingMore">
+        <div v-for="n in 5" :key="`desktop-more-${n}`" class="ranking-entry skeleton">
+          <div class="name helvetica">
+            <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+          </div>
+          <div class="total-matches">
+            <div class="skeleton-item skeleton-text small"></div>
+          </div>
+          <div class="total-matches">
+            <div class="skeleton-item skeleton-text small"></div>
+          </div>
+          <div class="total-matches">
+            <div class="skeleton-item skeleton-text small"></div>
+          </div>
+          <div class="total-matches smaller-font">
+            <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+          </div>
+        </div>
+      </template>
     </div>
 
     <div id="mobile">
@@ -228,9 +228,15 @@ const courtsText = computed(() => {
           :searchable="false"
         />
       </div> -->
-      <div class="ranking-entry" v-for="(court, index) in sortedCourts">
+      <div class="ranking-entry" v-for="(court, index) in courts" :key="court.id">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
         <div class="name helvetica text-align-center"><Link prefetch="false" :href="`/tereni/${court.uri}`">{{court.name}}</Link></div>
+        <div class="info one" v-if="court.prices">
+          <div class="info-wrapp">
+            <div class="sup">cene RSD</div>
+            <div class="text">{{ formatPrices(court.prices) }}</div>
+          </div>
+        </div>
         <div class="info two">
           <div class="info-wrapp">
             <div class="sup">mečevi</div>
@@ -242,6 +248,27 @@ const courtsText = computed(() => {
           </div>
         </div>
       </div>
+      <template v-if="isLoadingMore">
+        <div v-for="n in 5" :key="`mobile-more-${n}`" class="ranking-entry skeleton">
+          <div class="name helvetica text-align-center">
+            <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+          </div>
+          <div class="info two">
+            <div class="info-wrapp">
+              <div class="sup">mečevi</div>
+              <div class="text">
+                <div class="skeleton-item skeleton-text small"></div>
+              </div>
+            </div>
+            <div class="info-wrapp">
+              <div class="sup">teniseri</div>
+              <div class="text">
+                <div class="skeleton-item skeleton-text small"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </div>

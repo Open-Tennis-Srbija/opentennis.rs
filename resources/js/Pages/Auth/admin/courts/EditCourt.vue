@@ -7,6 +7,8 @@ import { ref } from 'vue';
 import axios from 'axios';
 import bus from 'vue3-eventbus';
 import Dropdown from '@components/Dropdown.vue';
+import CourtSeasonFields from '@components/CourtSeasonFields.vue';
+import { courtTypesForm, pricesForm } from '@components/courtSeasons.js';
 import opstine from '@assets/regions_serbia.json';
 
 const props = defineProps({id: Number});
@@ -25,6 +27,8 @@ onMounted(() => {
        form.phone = response.data.phone;
        form.county = response.data.county;
         form.location = response.data.location;
+        form.court_types = courtTypesForm(response.data.court_types);
+        form.prices = pricesForm(response.data.prices);
         court.value = response.data;
         bus.emit('loading', false);
     }).catch((error) => {
@@ -40,6 +44,8 @@ const form = useForm({
     location: null,
     county: null,
     uri: null,
+    court_types: courtTypesForm(),
+    prices: pricesForm(),
 });
 
 const formState = reactive({
@@ -94,6 +100,7 @@ const handleInputs = (event,isDate = false) => {
     <form id="form" @submit.prevent="submit">
 
       <div class="form-section">
+        <h2>Teren</h2>
         <div class="form-row">
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
             <label for="winner-fname" class="input-label">
@@ -155,6 +162,9 @@ const handleInputs = (event,isDate = false) => {
           </div>
         </div>
       </div>
+
+      <!-- Waits for the court to load, the dropdowns only read their value when created -->
+      <CourtSeasonFields v-if="court.id" :form="form" :disabled="formState.submitted" />
 
       <div class="form-section">
         <div class="form-row">

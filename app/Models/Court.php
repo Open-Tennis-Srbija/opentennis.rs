@@ -9,10 +9,36 @@ use Illuminate\Support\Facades\DB;
 class Court extends Model {
     use HasFactory;
 
+    const SEASONS = ['summer', 'winter'];
+    // Courts are open in summer and covered in winter
+    const COURT_TYPES = [
+        'summer' => ['hard', 'gravel'],
+        'winter' => ['hard_indoor', 'gravel_indoor'],
+    ];
+    const PRICE_TYPES = ['morning', 'afternoon', 'weekend'];
+
     protected $fillable = [
         'name',
         'link',
     ];
+
+    protected $casts = [
+        'court_types' => 'array',
+        'prices' => 'array',
+    ];
+
+    /**
+     * The season currently set for all courts.
+     */
+    public static function currentSeason()
+    {
+        return Setting::get('season', 'summer');
+    }
+
+    public function priceChanges()
+    {
+        return $this->hasMany(CourtPriceChange::class);
+    }
 
     public function matches()
     {

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onBeforeMount, ref, watch } from "vue";
+import { computed, onMounted, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import EditIcon from "@components/EditIcon.vue";
 import Dropdown from '@components/Dropdown.vue';
 import axios from "axios";
@@ -105,9 +105,11 @@ onMounted(() => {
     // Load first page of matches
     loadInitialMatches();
     
-    bus.on('scroll', (top) => {
-        handleScroll(top);
-    });
+    bus.on('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+    bus.off('scroll', handleScroll);
 });
 
 const loadInitialMatches = async () => {
@@ -151,13 +153,8 @@ const handleScroll = (top) => {
   
   // Check if we're near the bottom and need to load more
   if (props.loadMatches && !isLoading.value && hasMoreData.value) {
-    const scrollHeight = document.documentElement.scrollHeight;
-    const clientHeight = window.innerHeight;
-
-    console.log(scrollHeight, scrollPos.value, clientHeight);
-
     // Load more when we're 500px from the bottom
-    if (scrollHeight - scrollPos.value - clientHeight < 500) {
+    if (utils.isNearBottom(scrollPos.value)) {
       loadMoreMatches();
     }
   }

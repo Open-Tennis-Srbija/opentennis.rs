@@ -373,7 +373,7 @@ onBeforeUnmount(() => {
 				</div>
 			
 			</div>
-			<h2 class="summary-title big-margin">lokacije</h2>
+			<h2 class="summary-title big-margin after-list">lokacije</h2>
 			<div class="summary player three col">
 				<div class="summary-item players">
 					<h2>opštine</h2>
@@ -444,7 +444,7 @@ onBeforeUnmount(() => {
 			<div class="chart-wrapper">
 				<PlayerChart v-if="player.id" :player_id="player.id" />
 			</div> -->
-			<h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
+			<h2 class="summary-title no-border big-margin mobile-mb-0 after-list">mečevi</h2>
 			<div class="player-matches">
 				<Matches
 					v-if="player.id"
@@ -459,6 +459,15 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
+// Titles after a list of names get the same space as the one after statistika
+.dashboard-wrapper .summary-title.big-margin.after-list {
+  margin-top: 96px;
+
+  @media only screen and (max-width: 1200px) {
+    margin-top: 85px;
+  }
+}
+
 // Skeleton base animation
 @keyframes skeleton-loading {
   0% {

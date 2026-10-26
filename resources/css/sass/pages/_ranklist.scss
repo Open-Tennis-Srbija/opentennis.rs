@@ -75,7 +75,7 @@
     .ranking-entry {
       display: grid;
       grid-auto-flow: column;
-      grid-template-columns: 801px 133px 133px 133px;
+      grid-template-columns: 601px 200px 133px 133px 133px;
     }
   }
 
@@ -351,6 +351,10 @@
       width: 100%;
       grid-auto-flow: column;
       grid-template-columns: repeat(3, 33.3%);
+
+      &.one {
+        grid-template-columns: 100%;
+      }
 
       &.two {
         grid-template-columns: repeat(2, 50%);

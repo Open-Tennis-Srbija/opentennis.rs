@@ -9,6 +9,7 @@ use App\Models\TournamentSeries;
 use DateTime;
 use Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
@@ -327,6 +328,59 @@ public static function getLeaguesForList(){
 
     return $response;
 }
+    /**
+     * Leagues list one page at a time, sorted in the database
+     */
+    public function getLeaguesApi(Request $request)
+    {
+        $perPage = min((int) $request->get('per_page', 100), 500);
+        $sortBy = $request->get('sort_by', 'match_number');
+        $sortDir = $request->get('sort_dir', 'desc') === 'asc' ? 'asc' : 'desc';
+
+        $columns = [
+            'match_number' => 'matches_count',
+            'name' => 'name',
+            'date_start' => 'date_begin',
+            'player_number' => 'player_number',
+            'county' => 'county',
+        ];
+        if (!isset($columns[$sortBy])) {
+            $sortBy = 'match_number';
+        }
+
+        $playerNumber = DB::table('match_players')
+            ->join('tennis_matches', 'match_players.tennis_match_id', '=', 'tennis_matches.id')
+            ->whereColumn('tennis_matches.league_id', 'leagues.id')
+            ->selectRaw('count(distinct match_players.player_id)');
+
+        $query = League::where('id', '>', 1)
+            ->where('type', 'league')
+            ->select('id', 'name', 'uri', 'type', 'county', 'link', 'date_begin', 'date_end')
+            ->withCount('matches')
+            ->selectSub($playerNumber, 'player_number')
+            ->orderBy($columns[$sortBy], $sortDir);
+
+        // Same tie-breakers the list used when it sorted in the browser
+        if ($sortBy !== 'match_number') $query->orderByDesc('matches_count');
+        if ($sortBy !== 'player_number') $query->orderByDesc('player_number');
+        if ($sortBy !== 'name') $query->orderBy('name');
+        $query->orderBy('id');
+
+        return $query->paginate($perPage)->through(function ($league) {
+            return [
+                'name' => $league->name,
+                'uri' => $league->uri,
+                'type' => $league->type,
+                'date_start' => $league->date_begin,
+                'date_end' => $league->date_end,
+                'match_number' => $league->matches_count,
+                'county' => $league->county,
+                'player_number' => $league->player_number,
+                'link' => $league->link,
+            ];
+        });
+    }
+
 public static function getTournamentsForList(){
     $today = date('Y-m-d');
     $leagues = League::where('id', '>', 1)->where('type','tournament')->get();

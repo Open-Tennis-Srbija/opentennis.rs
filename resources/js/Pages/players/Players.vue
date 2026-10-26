@@ -1,15 +1,13 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import utils from '../../utils';
 import EditBtn from '@components/EditIcon.vue';
 import Dropdown from '@components/Dropdown.vue';
-import axios from 'axios';
 import { bus } from "vue3-eventbus";
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
+import { useLazyList } from '../../composables/useLazyList';
 
-const players = ref([]);
-const isLoading = ref(true); // Add loading state
 const utl = utils;
 
 const sortKey = ref('total_matches');
@@ -49,47 +47,13 @@ watch(selectedSort, (val) => {
     }
 }, { deep: true });
 
-const sortedPlayers = computed(() => {
-    const compareByKey = (a, b, key, dir) => {
-        let aVal = a[key];
-        let bVal = b[key];
-        if (key === 'name') {
-            aVal = (aVal || '').toLowerCase();
-            bVal = (bVal || '').toLowerCase();
-            return dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-        }
-        if (key === 'category') {
-            const aNum = (aVal === '?' || aVal === '' || aVal == null) ? 0 : Number(aVal);
-            const bNum = (bVal === '?' || bVal === '' || bVal == null) ? 0 : Number(bVal);
-            return dir === 'asc' ? aNum - bNum : bNum - aNum;
-        }
-        return dir === 'asc' ? aVal - bVal : bVal - aVal;
-    };
+// Players come sorted from the server, a page of 100 at a time
+const { items: players, isLoading, isLoadingMore, reload: loadInitialPlayers, loadMore: loadMorePlayers } = useLazyList(
+    (pageNumber) => `/api/players?page=${pageNumber}&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`
+);
 
-    return [...players.value].sort((a, b) => {
-        // 1. Primary: current sort key
-        let result = compareByKey(a, b, sortKey.value, sortDir.value);
-        if (result !== 0) return result;
-
-        // 2. Secondary: total_matches desc (if not primary)
-        if (sortKey.value !== 'total_matches') {
-            result = compareByKey(a, b, 'total_matches', 'desc');
-            if (result !== 0) return result;
-        }
-
-        // 3. Tertiary: wins desc (if not primary)
-        if (sortKey.value !== 'wins') {
-            result = compareByKey(a, b, 'wins', 'desc');
-            if (result !== 0) return result;
-        }
-
-        // 4. Alphabetically asc (if not primary)
-        if (sortKey.value !== 'name') {
-            result = compareByKey(a, b, 'name', 'asc');
-        }
-
-        return result;
-    });
+watch([sortKey, sortDir], () => {
+    loadInitialPlayers();
 });
 
 const categoryColorsAll = {
@@ -109,26 +73,25 @@ const categoryColorsAll = {
 const scrollPos = ref(0);
 
 onMounted(() => {
-    axios.get('/get-players').then((response) => {
-        players.value = response.data;
-        isLoading.value = false; // Set loading to false when data is loaded
-        bus.emit('loading',false)
-    }).catch((error) => {
-        console.error('Error fetching players:', error);
-        isLoading.value = false; // Set loading to false on error as well
-        bus.emit('loading', false);
-    });
+    loadInitialPlayers();
      window.addEventListener('pageshow', () => {
         bus.emit('loading', false);
     });
 
-    bus.on('scroll', (top) => {
-        handleScroll(top);
-    });
+    bus.on('scroll', handleScroll);
 
 });
+
+onBeforeUnmount(() => {
+    bus.off('scroll', handleScroll);
+});
+
 const handleScroll = (top) => {
   scrollPos.value = top;
+
+  if (utl.isNearBottom(top)) {
+    loadMorePlayers();
+  }
 }
 
 const topOffset = computed(() => {
@@ -271,7 +234,7 @@ const selectMobileSort = (key) => {
           <div class="loses sortable" :class="{ active: sortKey === 'loses', asc: sortKey === 'loses' && sortDir === 'asc' }" @click="toggleSort('loses')">gubitci</div>
           <div class="win-precent sortable" :class="{ active: sortKey === 'win_precentage', asc: sortKey === 'win_precentage' && sortDir === 'asc' }" @click="toggleSort('win_precentage')">% pobeda</div>
         </div>
-        <div class="ranking-entry" v-for="(player, index) in sortedPlayers" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
+        <div class="ranking-entry" v-for="(player, index) in players" :key="player.uri" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
                   <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
           <div class="name helvetica" :class="{ 'no-uppercase': hasSpecialChars(player.name) }"><Link target="_blank" class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
           <div class="place"
@@ -284,6 +247,28 @@ const selectMobileSort = (key) => {
           <div class="loses">{{player.loses}}</div>
           <div class="win-precent">{{player.win_precentage}}%</div>
         </div>
+        <template v-if="isLoadingMore">
+          <div v-for="n in 5" :key="`desktop-more-${n}`" class="ranking-entry skeleton">
+            <div class="name helvetica">
+              <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+            </div>
+            <div class="place">
+              <span class="skeleton-item skeleton-square"></span>
+            </div>
+            <div class="total-matches">
+              <div class="skeleton-item" style="height: 14px; width: 40px;"></div>
+            </div>
+            <div class="wins">
+              <div class="skeleton-item" style="height: 14px; width: 40px;"></div>
+            </div>
+            <div class="loses">
+              <div class="skeleton-item" style="height: 14px; width: 40px;"></div>
+            </div>
+            <div class="win-precent">
+              <div class="skeleton-item" style="height: 14px; width: 40px;"></div>
+            </div>
+          </div>
+        </template>
       </div>
 
       <div id="mobile">
@@ -296,7 +281,7 @@ const selectMobileSort = (key) => {
             :searchable="false"
           />
         </div> -->
-        <div class="ranking-entry" v-for="(player, index) in sortedPlayers">
+        <div class="ranking-entry" v-for="(player, index) in players" :key="player.uri">
                   <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/${player.uri}/izmeni/`"><EditBtn/></Link>
           <div class="name helvetica" :class="{ 'no-uppercase': hasSpecialChars(player.name) }"><Link class="blue" prefetch="false" :href="`/${player.uri}`">{{player.name}}</Link></div>
           <div class="place">
@@ -312,6 +297,24 @@ const selectMobileSort = (key) => {
             </div>
           </div>
         </div>
+        <template v-if="isLoadingMore">
+          <div v-for="n in 5" :key="`mobile-more-${n}`" class="ranking-entry skeleton">
+            <div class="name helvetica">
+              <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+            </div>
+            <div class="place">
+              <span class="skeleton-item skeleton-square"></span>
+            </div>
+            <div class="info" style="grid-template-columns: 1fr;">
+              <div class="info-wrapp" style="gap: 0;">
+                <div class="sup">mečevi (%, p, g)</div>
+                <div class="text">
+                  <div class="skeleton-item skeleton-text medium"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>

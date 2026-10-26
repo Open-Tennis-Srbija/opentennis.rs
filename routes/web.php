@@ -24,6 +24,7 @@ Route::get('/', [StaticController::class, 'home'])->name('home');
 
 Route::get('/teniseri', [StaticController::class, 'players'])->name('home');
 Route::get('/get-players', [PlayerController::class, 'getPlayers']);
+Route::get('/api/players', [PlayerController::class, 'getPlayersApi']);
 
 Route::get('/mecevi', [StaticController::class, 'matches'])->name('matches');
 Route::get('/mec/{uri}', [TenisMatchController::class, 'getMatchByUri'])->name('match');
@@ -45,6 +46,7 @@ Route::get('/lige', [StaticController::class, 'leagues'])->name('leagues');
 Route::get('/turniri', [StaticController::class, 'tournaments'])->name('tournaments');
 
 Route::get('/get-leagues', [LeaguesController::class, 'getLeaguesForList']);
+Route::get('/api/leagues', [LeaguesController::class, 'getLeaguesApi']);
 Route::get('/get-tournaments', [LeaguesController::class, 'getTournamentsForList']);
 Route::get('/tournament-series', [TournamentSeriesController::class, 'index']);
 Route::get('/api/tournament-series', [TournamentSeriesController::class, 'index']);
@@ -68,6 +70,7 @@ Route::get('/tereni', [StaticController::class, 'courts'])->name('courts');
 Route::get('/tereni/{uri}',[CourtsController::class, 'getCourt'])->name('court');
 Route::get('/get-court/{id}',[CourtsController::class, 'get_court'])->name('court');
 Route::get('/get-courts', [CourtsController::class, 'getCourtList']);
+Route::get('/api/courts', [CourtsController::class, 'getCourtsApi']);
 Route::get('/api/court/{id}/matches', [CourtsController::class, 'getCourtMatchesApi']);
 
 
@@ -112,6 +115,8 @@ Route::get('/api/court/{id}/matches', [CourtsController::class, 'getCourtMatches
      Route::get('/get-court-for-edit/{id}',[CourtsController::class, 'getCourtForEdit'])->name('courtById');
      Route::post('/teren/izmeni', [CourtsController::class, 'updateCourt']);
      Route::post('/teren/obrisi', [CourtsController::class, 'deleteCourt']);
+     Route::get('/sezona', [CourtsController::class, 'getSeason'])->name('season');
+     Route::post('/sezona', [CourtsController::class, 'updateSeason']);
 
      Route::get('/{uri}/izmeni',[PlayerController::class, 'getPlayer'])->name('editPlayer');
      Route::get('/teniser/{uri}',[PlayerController::class, 'getPlayerForEdit'])->name('playerByUri');

@@ -23,6 +23,15 @@ class Utils {
 
         return months[month]
     }
+
+    // The page scrolls inside the OverlayScrollbars viewport, not the window,
+    // so its height is what tells how close the scroll position is to the end
+    isNearBottom(scrollTop, distance = 500){
+        const viewport = document.querySelector('[data-overlayscrollbars-viewport]');
+        if (!viewport) return false;
+
+        return viewport.scrollHeight - scrollTop - viewport.clientHeight < distance;
+    }
 }
 
 const utils  = new Utils();

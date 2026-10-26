@@ -62,6 +62,64 @@ class PlayerController extends Controller
 
 	}
 
+	/**
+	 * Players list one page at a time, sorted in the database
+	 */
+	public function getPlayersApi(Request $request)
+	{
+		$perPage = min((int) $request->get('per_page', 100), 500);
+		$sortBy = $request->get('sort_by', 'total_matches');
+		$sortDir = $request->get('sort_dir', 'desc') === 'asc' ? 'asc' : 'desc';
+
+		$allowedSorts = ['total_matches', 'name', 'category', 'wins', 'loses', 'win_precentage'];
+		if (!in_array($sortBy, $allowedSorts)) {
+			$sortBy = 'total_matches';
+		}
+
+		$counts = Player::select('id', 'first_name', 'last_name', 'category', 'uri', 'location')
+			->withCount(['wins', 'losses']);
+
+		// Wrapped so the totals below can be sorted on
+		$query = DB::query()->fromSub($counts, 'p')->select(
+			'p.*',
+			DB::raw('wins_count + losses_count as total_matches'),
+			DB::raw('case when wins_count + losses_count = 0 then 0 else round(wins_count * 100 / (wins_count + losses_count)) end as win_precentage'),
+			DB::raw("case when category regexp '^[0-9]+$' then cast(category as unsigned) else 0 end as category_number")
+		);
+
+		$columns = [
+			'total_matches' => ['total_matches'],
+			'name' => ['first_name', 'last_name'],
+			'category' => ['category_number'],
+			'wins' => ['wins_count'],
+			'loses' => ['losses_count'],
+			'win_precentage' => ['win_precentage'],
+		];
+
+		foreach ($columns[$sortBy] as $column) {
+			$query->orderBy($column, $sortDir);
+		}
+
+		// Same tie-breakers the list used when it sorted in the browser
+		if ($sortBy !== 'total_matches') $query->orderByDesc('total_matches');
+		if ($sortBy !== 'wins') $query->orderByDesc('wins_count');
+		if ($sortBy !== 'name') $query->orderBy('first_name')->orderBy('last_name');
+		$query->orderBy('id');
+
+		return $query->paginate($perPage)->through(function ($player) {
+			return [
+				'uri' => $player->uri,
+				'name' => $player->first_name . ' ' . $player->last_name,
+				'location' => $player->location,
+				'category' => $player->category,
+				'wins' => $player->wins_count,
+				'loses' => $player->losses_count,
+				'total_matches' => $player->total_matches,
+				'win_precentage' => (int) $player->win_precentage,
+			];
+		});
+	}
+
 	public static function getPlayersOnDate($date)
 	{
 		$raw_players = Player::all();

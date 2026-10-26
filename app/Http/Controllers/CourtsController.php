@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Court;
+use App\Models\Setting;
+use Illuminate\Support\Facades\DB;
 use App\Models\TennisMatch;
 use App\Helpers\SEOHelper;
 use Inertia\Inertia;
@@ -11,6 +13,20 @@ use Illuminate\Support\Str;
 
 class CourtsController extends Controller
 {
+    // Court types and prices fields of the add and edit court forms
+    const SEASONAL_RULES = [
+        'court_types.*.*' => 'nullable|integer|min:0|max:20',
+        'prices.*.*' => 'nullable|integer|min:0|max:1000000',
+    ];
+
+    const SEASONAL_MESSAGES = [
+        'court_types.*.*.integer' => 'Unesite broj.',
+        'court_types.*.*.min' => 'Broj ne može biti negativan.',
+        'court_types.*.*.max' => 'Najviše 20 terena.',
+        'prices.*.*.integer' => 'Unesite broj.',
+        'prices.*.*.min' => 'Cena ne može biti negativna.',
+    ];
+
     public static function getCourts(){
         $courts = Court::where('id', '>', 1)->get();
 
@@ -41,6 +57,7 @@ class CourtsController extends Controller
     }
     public static function getCourtList(){
         $courts = Court::where('id', '>', 1)->get();
+        $season = Court::currentSeason();
 
         $serbianLatinAlphabet = [
             'a','b','c','č','ć','d','dž','đ','e','f','g','h','i','j','k','l','lj',
@@ -50,8 +67,11 @@ class CourtsController extends Controller
         $respons = [];
 
         foreach($courts as $c){
+            $prices = $c->prices[$season] ?? null;
+
             array_push($respons,[
                 'name' => $c->name,
+                'prices' => $prices && array_filter($prices, fn($price) => $price !== null) ? $prices : null,
                 'uri' => $c->uri,
                 'id' => $c->id,
                 'location' => $c->location,
@@ -75,6 +95,67 @@ class CourtsController extends Controller
 
         return $respons;
     }
+    /**
+     * Courts list one page at a time, sorted in the database
+     */
+    public function getCourtsApi(Request $request){
+        $perPage = min((int) $request->get('per_page', 100), 500);
+        $sortBy = $request->get('sort_by', 'matches_number');
+        $sortDir = $request->get('sort_dir', 'desc') === 'asc' ? 'asc' : 'desc';
+
+        $allowedSorts = ['name', 'price', 'matches_number', 'player_number', 'county'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'matches_number';
+        }
+
+        $season = Court::currentSeason();
+
+        $playerNumber = DB::table('match_players')
+            ->join('tennis_matches', 'match_players.tennis_match_id', '=', 'tennis_matches.id')
+            ->whereColumn('tennis_matches.court_id', 'courts.id')
+            ->selectRaw('count(distinct match_players.player_id)');
+
+        $courts = Court::where('id', '>', 1)
+            ->select('id', 'name', 'uri', 'county', 'location', 'phone', 'link', 'prices')
+            ->withCount('matches')
+            ->selectSub($playerNumber, 'player_number');
+
+        // Wrapped so the counts and the current season's first price can be sorted on
+        $query = DB::query()->fromSub($courts, 'c')
+            ->select('c.*')
+            ->selectRaw('cast(json_value(prices, ?) as unsigned) as price', ['$.' . $season . '.morning']);
+
+        if ($sortBy === 'price') {
+            // Courts without prices stay at the bottom either way
+            $query->orderByRaw('price is null')->orderBy('price', $sortDir);
+        } else {
+            $query->orderBy($sortBy === 'matches_number' ? 'matches_count' : $sortBy, $sortDir);
+        }
+
+        // Same tie-breakers the list used when it sorted in the browser
+        if ($sortBy !== 'matches_number') $query->orderByDesc('matches_count');
+        if ($sortBy !== 'player_number') $query->orderByDesc('player_number');
+        if ($sortBy !== 'name') $query->orderBy('name');
+        $query->orderBy('id');
+
+        return $query->paginate($perPage)->through(function ($court) use ($season) {
+            $prices = json_decode($court->prices ?? 'null', true)[$season] ?? null;
+
+            return [
+                'name' => $court->name,
+                'prices' => $prices && array_filter($prices, fn($price) => $price !== null) ? $prices : null,
+                'uri' => $court->uri,
+                'id' => $court->id,
+                'location' => $court->location,
+                'phone' => $court->phone,
+                'county' => $court->county,
+                'matches_number' => $court->matches_count,
+                'player_number' => $court->player_number,
+                'link' => $court->link,
+            ];
+        });
+    }
+
     public static function getEditCourt($id){
         return Inertia::render('Auth/admin/courts/EditCourt', [
             'id' => $id 
@@ -92,7 +173,9 @@ class CourtsController extends Controller
             'county' => $court->county,
             'location' => $court->location,
             'phone' => $court->phone,
-            'link' => $court->link
+            'link' => $court->link,
+            'court_types' => $court->court_types,
+            'prices' => $court->prices,
         ]);
     }
 
@@ -122,8 +205,14 @@ class CourtsController extends Controller
     }
        public static function get_court($id){
         $court = Court::where('id', $id)->first();
+        $season = Court::currentSeason();
 
         return [
+            'season' => $season,
+            'court_types' => isset($court->court_types[$season])
+                ? array_intersect_key($court->court_types[$season], array_flip(Court::COURT_TYPES[$season]))
+                : null,
+            'prices' => $court->prices[$season] ?? null,
             'name' => $court->name,
             'uri' => $court->uri,
             'points' => $court->get_points(),
@@ -185,7 +274,7 @@ class CourtsController extends Controller
             'location' => 'string|max:255',
             'county' => 'string|max:255',
             'phone' => 'nullable|string|max:20',
-        ]);
+        ] + self::SEASONAL_RULES, self::SEASONAL_MESSAGES);
 
         $court = new Court();
         $court->name = $request->input('name');
@@ -193,8 +282,13 @@ class CourtsController extends Controller
         $court->location = $request->input('location');
         $court->county = $request->input('county');
         $court->phone = $request->input('phone');
-        $court->link = $request->input('link');
-        $court->save();
+        $court->link = $request->input('link') ?? '';
+        self::fillSeasonalFields($court, $request);
+
+        DB::transaction(function () use ($court) {
+            $court->save();
+            self::recordPriceChanges($court, null);
+        });
 
         return redirect('/tereni/'. $court->uri);
     }
@@ -207,7 +301,10 @@ class CourtsController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-        ]);
+        ] + self::SEASONAL_RULES, self::SEASONAL_MESSAGES);
+
+        $oldPrices = $court->prices;
+        self::fillSeasonalFields($court, $request);
 
         $court->name = $request->input('name');
         $court->link = $request->input('link') ?? '';
@@ -219,7 +316,11 @@ class CourtsController extends Controller
         $court->phone = $request->input('phone');
         $court->location = $request->input('location');
         $court->county = $request->input('county');
-        $court->save();
+
+        DB::transaction(function () use ($court, $oldPrices) {
+            $court->save();
+            self::recordPriceChanges($court, $oldPrices);
+        });
 
         return redirect('/tereni/' . $court->uri);
     }
@@ -243,6 +344,63 @@ class CourtsController extends Controller
         return redirect('/tereni');
 
     }
+    public static function getSeason(){
+        return Inertia::render('Auth/admin/courts/Season', [
+            'season' => Court::currentSeason(),
+        ]);
+    }
+
+    public static function updateSeason(Request $request){
+        $data = $request->validate([
+            'season' => 'required|in:summer,winter',
+        ]);
+
+        Setting::set('season', $data['season']);
+
+        return redirect('/sezona');
+    }
+
+    private static function fillSeasonalFields($court, $request){
+        $court->court_types = self::seasonalValues($request->input('court_types'), Court::COURT_TYPES);
+        $court->prices = self::seasonalValues($request->input('prices'), Court::PRICE_TYPES);
+    }
+
+    // Adds a history row for each season whose prices differ from before the save
+    private static function recordPriceChanges($court, $oldPrices){
+        $empty = array_fill_keys(Court::PRICE_TYPES, null);
+
+        foreach(Court::SEASONS as $season){
+            $old = $oldPrices[$season] ?? $empty;
+            $new = $court->prices[$season] ?? $empty;
+
+            if($old === $new){
+                continue;
+            }
+
+            $court->priceChanges()->create($new + [
+                'season' => $season,
+                'user_id' => auth()->id(),
+            ]);
+        }
+    }
+
+    // Keeps only known keys per season, null when nothing was entered.
+    // $keys is either one list for all seasons or a list per season.
+    private static function seasonalValues($input, $keys){
+        $result = [];
+
+        foreach(Court::SEASONS as $season){
+            foreach($keys[$season] ?? $keys as $key){
+                $value = $input[$season][$key] ?? null;
+                $result[$season][$key] = ($value === null || $value === '') ? null : (int) $value;
+            }
+        }
+
+        $hasValues = collect($result)->flatten()->filter(fn($value) => $value !== null)->isNotEmpty();
+
+        return $hasValues ? $result : null;
+    }
+
     // Normalize string to array of Serbian letters/digraphs
     private static function toAlphabetUnits($word) {
         $word = mb_strtolower($word, 'UTF-8');

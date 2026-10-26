@@ -91,6 +91,43 @@ const leagues = computed(()=>{
 
 })
 
+const priceTitles = {
+    morning: "početak dana",
+    afternoon: "kraj dana",
+    weekend: "vikend",
+};
+
+// Only the prices that are set, empty hides the module
+const prices = computed(() => {
+    const raw = court.value.prices || {};
+
+    return Object.entries(priceTitles)
+        .filter(([key]) => raw[key] != null)
+        .map(([key, title]) => ({ key, title, value: utils.formatAsThousands(raw[key]) }));
+});
+
+// Forms for 1, 2-4 and 5+ courts, e.g. 1 šljaka, 3 šljake, 5 šljaka
+const courtTypeTitles = {
+    hard: ["otvoren beton", "otvorena betona", "otvorenih betona"],
+    gravel: ["šljaka", "šljake", "šljaka"],
+    hard_indoor: ["zatvoren beton", "zatvorena betona", "zatvorenih betona"],
+    gravel_indoor: ["zatvorena šljaka", "zatvorene šljake", "zatvorenih šljaka"],
+};
+
+const pluralForm = (count) => {
+    if (count % 10 === 1 && count % 100 !== 11) return 0;
+    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) return 1;
+    return 2;
+};
+
+const courtTypes = computed(() => {
+    const raw = court.value.court_types || {};
+
+    return Object.entries(courtTypeTitles)
+        .filter(([key]) => raw[key] > 0)
+        .map(([key, titles]) => ({ key, title: titles[pluralForm(raw[key])], count: raw[key] }));
+});
+
 const isInactive = (date_end) => {
   const end = new Date(date_end);
   const now = new Date();
@@ -150,14 +187,12 @@ const getRandomWidth = () => {
             </div>
             
             <!-- Leagues section -->
-            <div class="summary player three col">
-                <div class="summary-item players"></div>
+            <div class="summary player three col single">
                 <div class="summary-item players">
                     <div v-for="i in 5" :key="i" style="margin-bottom: 8px;">
                         <div class="skeleton skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
                     </div>
                 </div>
-                <div class="summary-item players"></div>
             </div>
             
             <!-- Players title -->
@@ -166,14 +201,12 @@ const getRandomWidth = () => {
             </div>
             
             <!-- Players section -->
-            <div class="summary player three col">
-                <div class="summary-item players mobile-hide"></div>
+            <div class="summary player three col single">
                 <div class="summary-item players">
                     <div v-for="i in 6" :key="i" style="margin-bottom: 8px;">
                         <div class="skeleton skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
                     </div>
                 </div>
-                <div class="summary-item players mobile-hide"></div>
             </div>
             
             <!-- Matches title -->
@@ -233,6 +266,26 @@ const getRandomWidth = () => {
         </a>
 
         <div class="dashboard-wrapper">
+            <template v-if="prices.length > 0">
+                <h2 class="summary-title">Cene RSD</h2>
+                <!-- Columns follow how many items there are: one is full width, two split 50/50 -->
+                <div class="summary player three prices" :style="{ gridTemplateColumns: `repeat(${prices.length}, 1fr)` }">
+                    <div class="summary-item" v-for="price in prices" :key="price.key">
+                        <h2>{{ price.title }}</h2>
+                        <p class="big">{{ price.value }}</p>
+                    </div>
+                </div>
+            </template>
+            <template v-if="courtTypes.length > 0">
+                <h2 class="summary-title">tereni</h2>
+                <div class="summary player court-types" :style="{ gridTemplateColumns: `repeat(${courtTypes.length}, 1fr)` }">
+                    <div class="summary-item" v-for="type in courtTypes" :key="type.key">
+                        <img :src="`/courts/court_${type.key}.png`" :alt="type.title">
+                        <p class="big">{{ type.count }}</p>
+                        <h2>{{ type.title }}</h2>
+                    </div>
+                </div>
+            </template>
             <h2 class="summary-title">Statistika</h2>
             <div class="summary player two">
                 <div class="summary-item">
@@ -245,9 +298,7 @@ const getRandomWidth = () => {
                 </div>
             </div>
             <h2 class="summary-title low-margin">lige & turniri</h2>
-            <div class="summary player three col">
-                <div class="summary-item players mobile-hide">
-                </div>
+            <div class="summary player three col single">
                 <div class="summary-item players mobile-mt-20">
                     <template v-if="court.leagues?.length > 0">
                         <template v-for="league in leagues">
@@ -268,13 +319,9 @@ const getRandomWidth = () => {
                         <h2 class="black">na ovom terenu nema liga ili turnira &#128577;</h2>
                     </template>
                 </div>
-                <div class="summary-item players mobile-hide">
-                </div>
             </div>
             <h2 class="summary-title big-margin">teniseri</h2>
-            <div class="summary player three col">
-                <div class="summary-item players mobile-hide">
-                </div>
+            <div class="summary player three col single">
                 <div class="summary-item players">
                     <template v-if="court.players?.length > 0">
                         <template v-for="player in players">
@@ -295,8 +342,6 @@ const getRandomWidth = () => {
                         <h2 class="black">ovaj teren nema aktivnih igrača &#128577;</h2>
                     </template>
                 </div>
-                <div class="summary-item players mobile-hide">
-                </div>
             </div>
             <h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
             <div class="player-matches">
@@ -313,6 +358,53 @@ const getRandomWidth = () => {
 </template>
 
 <style lang="scss" scoped>
+// Bottom spacing matches the prices module, whose numbers carry a 30px margin.
+// Padding, since a margin here would collapse into the next title's margin.
+// On tablets the numbers keep that margin while the other modules lose theirs
+.summary.player.prices .big {
+  @media only screen and (max-width: 1200px) {
+    margin-bottom: 0 !important;
+  }
+}
+
+.summary.player.two {
+  padding-bottom: 20px;
+
+  @media only screen and (max-width: 1200px) {
+    padding-bottom: 10px;
+  }
+}
+
+// Columns are set inline from the number of court types
+.summary.player.court-types {
+  display: grid;
+  // Images start at their edge, text has room above its letters
+  padding-top: 6px;
+  padding-bottom: 40px;
+
+  @media only screen and (max-width: 1200px) {
+    padding-bottom: 9px;
+  }
+
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    img {
+      width: 64px;
+      height: 100px;
+      margin-bottom: 15px;
+    }
+
+    .big {
+      margin-bottom: 0;
+    }
+  }
+
+}
+
 // Skeleton base animation
 @keyframes skeleton-loading {
   0% {

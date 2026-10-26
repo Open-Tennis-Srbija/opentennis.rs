@@ -6,6 +6,8 @@ import 'vue-select/dist/vue-select.css';
 import '@vuepic/vue-datepicker/dist/main.css'
 import bus from 'vue3-eventbus';
 import Dropdown from '@components/Dropdown.vue';
+import CourtSeasonFields from '@components/CourtSeasonFields.vue';
+import { courtTypesForm, pricesForm } from '@components/courtSeasons.js';
 import opstine from '@assets/regions_serbia.json';
 
 
@@ -25,6 +27,8 @@ const form = useForm({
     county: null,
     location: null,
     uri: null,
+    court_types: courtTypesForm(),
+    prices: pricesForm(),
 });
 
 const formState = reactive({
@@ -68,6 +72,7 @@ const handleInputs = (event,isDate = false) => {
     <form id="form" @submit.prevent="submit">
 
       <div class="form-section">
+        <h2>Teren</h2>
         <div class="form-row">
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
             <label for="winner-fname" class="input-label">
@@ -128,6 +133,8 @@ const handleInputs = (event,isDate = false) => {
           </div>
         </div>
       </div>
+
+      <CourtSeasonFields :form="form" :disabled="formState.submitted" />
 
       <div class="form-section">
         <div class="form-row">

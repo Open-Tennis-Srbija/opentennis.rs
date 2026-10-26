@@ -372,6 +372,8 @@ watch(
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/dodaj-teren'" :class="{ active: $page.url === '/dodaj-teren' }">Dodaj teren</Link>
             <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
+                :href="'/sezona'" :class="{ active: $page.url === '/sezona' }">Promeni sezonu</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/dodaj-novi-turnir'" :class="{ active: $page.url === '/dodaj-novi-turnir' }">Dodaj novi turnir</Link>
              <Link v-if="$page.props.auth.user" class="bigger" @click="toggleSideMenu()" prefetch="false"
                 :href="'/upravljaj-serijama'" :class="{ active: $page.url === '/upravljaj-serijama' }">upravljaj serijama</Link>
@@ -452,6 +454,8 @@ watch(
                 :href="'/dodaj-novu-ligu'" :class="{ active: $page.url === '/dodaj-novu-ligu' }">dodaj novu ligu</Link>
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
                 :href="'/dodaj-teren'" :class="{ active: $page.url === '/dodaj-teren' }">dodaj teren</Link>
+            <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
+                :href="'/sezona'" :class="{ active: $page.url === '/sezona' }">promeni sezonu</Link>
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"
                 :href="'/import-meceva'" :class="{ active: $page.url === '/import-meceva' }">import sunglova</Link>
             <Link v-if="$page.props.auth.user" class="bigger" prefetch="false" @click.prevent="mobileMenu.state = false"

@@ -578,6 +578,11 @@
             display: grid;
             grid-template-columns: repeat(3, 33.3%);
 
+            // A module with a single list spans the full width
+            &.single {
+                grid-template-columns: 100%;
+            }
+
             .summary-item {
                 display: flex;
                 flex-direction: column;

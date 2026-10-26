@@ -1,19 +1,17 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import utils from '../../utils';
-import axios from 'axios';
 import bus from 'vue3-eventbus';
 import EditBtn from '@components/EditIcon.vue';
 import Dropdown from '@components/Dropdown.vue';
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
+import { useLazyList } from '../../composables/useLazyList';
 
 const utl = utils;
 
 const isClient = ref(false);
 
-const leagues = ref([]);
-const isLoading = ref(true); // Add loading state
 
 const sortKey = ref('match_number');
 const sortDir = ref('desc');
@@ -50,46 +48,13 @@ watch(selectedSort, (val) => {
     }
 }, { deep: true });
 
-const sortedLeagues = computed(() => {
-    const compareByKey = (a, b, key, dir) => {
-        let aVal = a[key];
-        let bVal = b[key];
-        if (key === 'name' || key === 'county') {
-            aVal = (aVal || '').toLowerCase();
-            bVal = (bVal || '').toLowerCase();
-            return dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-        }
-        if (key === 'date_start') {
-            aVal = new Date(aVal || 0).getTime();
-            bVal = new Date(bVal || 0).getTime();
-        }
-        return dir === 'asc' ? aVal - bVal : bVal - aVal;
-    };
+// Leagues come sorted from the server, a page of 100 at a time
+const { items: leagues, isLoading, isLoadingMore, reload: loadInitialLeagues, loadMore: loadMoreLeagues } = useLazyList(
+    (pageNumber) => `/api/leagues?page=${pageNumber}&per_page=100&sort_by=${sortKey.value}&sort_dir=${sortDir.value}`
+);
 
-    return [...leagues.value].sort((a, b) => {
-        // 1. Primary: current sort key
-        let result = compareByKey(a, b, sortKey.value, sortDir.value);
-        if (result !== 0) return result;
-
-        // 2. match_number desc (if not primary)
-        if (sortKey.value !== 'match_number') {
-            result = compareByKey(a, b, 'match_number', 'desc');
-            if (result !== 0) return result;
-        }
-
-        // 3. player_number desc (if not primary)
-        if (sortKey.value !== 'player_number') {
-            result = compareByKey(a, b, 'player_number', 'desc');
-            if (result !== 0) return result;
-        }
-
-        // 4. Alphabetically asc (if not primary)
-        if (sortKey.value !== 'name') {
-            result = compareByKey(a, b, 'name', 'asc');
-        }
-
-        return result;
-    });
+watch([sortKey, sortDir], () => {
+    loadInitialLeagues();
 });
 
 const formatDate = ((start, end) =>{
@@ -152,24 +117,22 @@ const areSameDate = (start, end) => {
 
 onMounted(() => {
   isClient.value = true;
-  axios.get('/get-leagues').then((response) => {
-    leagues.value = response.data;
-    isLoading.value = false; // Set loading to false when data is loaded
-    bus.emit('loading', false);
-  }).catch((error) => {
-    console.error('Error fetching leagues:', error);
-    isLoading.value = false; // Set loading to false on error as well
-    bus.emit('loading', false);
-  });
- bus.on('scroll', (top) => {
-        handleScroll(top);
-    });
+  loadInitialLeagues();
+  bus.on('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+  bus.off('scroll', handleScroll);
 });
 
 const scrollPos = ref(0);
 
 const handleScroll = (top) => {
   scrollPos.value = top;
+
+  if (utl.isNearBottom(top)) {
+    loadMoreLeagues();
+  }
 }
 
 const topOffset = computed(() => {
@@ -275,7 +238,7 @@ const leaguesText = computed(() => {
           <div class="loses sortable" :class="{ active: sortKey === 'player_number', asc: sortKey === 'player_number' && sortDir === 'asc' }" @click="toggleSort('player_number')">teniseri</div>
           <div class="county-col sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
         </div>
-        <div v-if="sortedLeagues.length" class="ranking-entry" v-for="(league, index) in sortedLeagues" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}" >
+        <div class="ranking-entry" v-for="(league, index) in leagues" :key="league.uri + index" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}" >
           <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-ligu/${league.uri}`"><EditBtn/></Link>
           <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
           <div style="text-align: center; line-height: 1.6;" :class="{'inactive' : isInactive(league.date_end)}" class="date-range smaller-font">{{formatDates(league.date_start, league.date_end)[0]}}<template v-if="!areSameDate(league.date_start, league.date_end)"><br>{{formatDates(league.date_start, league.date_end)[1]}}</template></div>
@@ -283,8 +246,28 @@ const leaguesText = computed(() => {
           <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
           <div style="text-align:center" class="county-col smaller-font" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
         </div>
+        <template v-if="isLoadingMore">
+          <div v-for="n in 5" :key="`desktop-more-${n}`" class="ranking-entry skeleton">
+            <div class="name">
+              <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+            </div>
+            <div class="date-range smaller-font">
+              <div class="skeleton-item skeleton-text" style="margin-bottom: 4px; width: 70%;"></div>
+              <div class="skeleton-item skeleton-text" style="width: 80%;"></div>
+            </div>
+            <div class="total-matches">
+              <div class="skeleton-item skeleton-text small"></div>
+            </div>
+            <div class="loses">
+              <div class="skeleton-item skeleton-text small"></div>
+            </div>
+            <div class="county-col smaller-font">
+              <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+            </div>
+          </div>
+        </template>
       </div>
-      <div v-if="sortedLeagues" id="mobile">
+      <div id="mobile">
         <!-- <div class="mobile-sort-filter">
           <Dropdown
             label="name"
@@ -294,12 +277,25 @@ const leaguesText = computed(() => {
             :searchable="false"
           />
         </div> -->
-        <div class="ranking-entry" v-for="(league, index) in sortedLeagues">
+        <div class="ranking-entry" v-for="(league, index) in leagues" :key="league.uri + index">
           <div class="name" style="font-weight: bold; text-align: center;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
           <div :class="{'inactive' : isInactive(league.date_end)}" class="date">{{formatDate(league.date_start, league.date_end)}}</div>
           <div class="county" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
           <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-ligu/${league.uri}`"><EditBtn/></Link>
         </div>
+        <template v-if="isLoadingMore">
+          <div v-for="n in 5" :key="`mobile-more-${n}`" class="ranking-entry skeleton">
+            <div class="name" style="font-weight: bold; text-align: center;">
+              <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+            </div>
+            <div class="date">
+              <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+            </div>
+            <div class="county">
+              <div class="skeleton-item skeleton-text" :style="{ width: getRandomWidth() + '%' }"></div>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
