@@ -45,6 +45,9 @@ onMounted(() => {
 	bus.emit('active', 'players')
 	bus.emit('headTitle', 'teniser')
 
+	// The server already sent the player, no need to keep the loader up for the refresh below
+	if (props.player) bus.emit('loading', false);
+
 	// Refresh in the background, data may have changed since the server rendered this page.
 	axios.get(`/get-player/${props.player_uri}`).then((response) => {
 		player.value = response.data;
@@ -451,7 +454,7 @@ onBeforeUnmount(() => {
 					:isHome="false"
 					:player_id="player.id"
 					:loadMatches="true"
-					:showMessage="{ matches: player.matches?.length == 0 }"
+					:showMessage="{ matches: player.total_matches == 0 }"
 				/>
 			</div>
 		</div>

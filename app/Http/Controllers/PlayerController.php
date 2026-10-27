@@ -337,7 +337,7 @@ class PlayerController extends Controller
 
 	public static function get_player_by_uri($uri){
 		$p = Player::where('uri', $uri)
-			->with('wins','losses')
+			->withCount(['wins', 'losses'])
 			->get()
 			->map(
 				function ($player) {
@@ -350,47 +350,20 @@ class PlayerController extends Controller
 						'rank' => $player->rank,
 						'category'=> $player->category,
 						'points' => $player->points,
-						'matches' => $player->matches->skip(0)->take(100)->map(
-							function ($win) {
-								return [
-									'winner1_name' => $win->winners()->first()->first_name . ' ' . $win->winners()->first()->last_name,
-									'winner1_uri' => $win->winners()->first()->uri,
-									'winner1_category' => $win->winners()->first()->category,
-									'winner2_name' => $win->winners()->skip(1)->first() ? $win->winners()->skip(1)->first()->first_name . ' ' . $win->winners()->skip(1)->first()->last_name : null,
-									'winner2_uri' => $win->winners()->skip(1)->first() ? $win->winners()->skip(1)->first()->uri : null,
-									'winner2_category' => $win->winners()->skip(1)->first() ? $win->winners()->skip(1)->first()->category : null,
-									'loser1_name' => $win->losers()->first()->first_name . ' ' . $win->losers()->first()->last_name,
-									'loser1_uri' => $win->losers()->first()->uri,
-									'loser1_category' => $win->losers()->first()->category,
-									'loser2_name' => $win->losers()->skip(1)->first() ? $win->losers()->skip(1)->first()->first_name . ' ' . $win->losers()->skip(1)->first()->last_name : null,
-									'loser2_uri' => $win->losers()->skip(1)->first() ? $win->losers()->skip(1)->first()->uri : null,
-									'loser2_category' => $win->losers()->skip(1)->first() ? $win->losers()->skip(1)->first()->category : null,
-									'number' => $win->number,
-									'winner_point_gain' => $win->winner_point_gain,
-									'loser_point_gain' => $win->loser_point_gain,
-									'set_score' => $win->set_score,
-									'game_score' => $win->game_score,
-									'county' => $win->county,
-									'court' => Court::find($win->court_id),
-									'league' => League::find($win->league_id),
-									'date' => $win->date,
-								];
-							}
-						),
+						// The match list loads separately from /api/player/{id}/matches
 						'matchups' => [
 							'won_against' => $player->wonAgainstWithCounts(),
 							'lost_against' => $player->lostAgainstWithCounts(),
-							'not_played' => $player->notPlayedWith(),
 						],
 						'locations' =>[
 							'courts' => $player->mostUsedCourts(),
 							'leagues' => $player->mostUsedLeagues(),
 							'counties' => $player->mostUsedCounties()
 						],
-						'wins_number' => count($player->wins),
-						'losses_number' => count($player->losses),
-						'total_matches' => count($player->wins) + count($player->losses),
-						'win_precentage' => count($player->wins) + count($player->losses) == 0 ? 0 : round(count($player->wins) / (count($player->wins) + count($player->losses)) * 100),
+						'wins_number' => $player->wins_count,
+						'losses_number' => $player->losses_count,
+						'total_matches' => $player->wins_count + $player->losses_count,
+						'win_precentage' => $player->wins_count + $player->losses_count == 0 ? 0 : round($player->wins_count / ($player->wins_count + $player->losses_count) * 100),
 					];
 				}
 			);
@@ -412,44 +385,52 @@ class PlayerController extends Controller
 		}
 		$sortDir = $sortDir === 'asc' ? 'asc' : 'desc';
 
-		// Get matches for the specific player using the same logic as in get_player_by_uri
-		$player = Player::with('wins', 'losses')->findOrFail($id);
-		
-		// Get all matches (both wins and losses) and sort
-		$allMatches = $player->matches()->select('tennis_matches.*')->applySort($sortBy, $sortDir)->get();
-		
-		// Format matches the same way as in get_player_by_uri
-		$formattedMatches = $allMatches->map(function ($match) {
+		$player = Player::findOrFail($id);
+		$total = $player->matches()->count();
+
+		// Only the requested page is loaded, with its players, court and league in a few queries;
+		// reorder() drops the relation's newest-first order so the chosen sort applies,
+		// number breaks ties so pages don't overlap
+		$matches = $player->matches()
+			->reorder()
+			->select('tennis_matches.*')
+			->applySort($sortBy, $sortDir)
+			->orderByDesc('tennis_matches.number')
+			->with(['winners', 'losers', 'court', 'league'])
+			->skip($offset)
+			->take((int) $perPage)
+			->get();
+
+		$paginatedMatches = $matches->map(function ($match) {
+			$winners = $match->winners->values();
+			$losers = $match->losers->values();
+
 			return [
-				'winner1_name' => $match->winners()->first()->first_name . ' ' . $match->winners()->first()->last_name,
-				'winner1_uri' => $match->winners()->first()->uri,
-				'winner1_category' => $match->winners()->first()->category,
-				'winner2_name' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->first_name . ' ' . $match->winners()->skip(1)->first()->last_name : null,
-				'winner2_uri' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->uri : null,
-				'winner2_category' => $match->winners()->skip(1)->first() ? $match->winners()->skip(1)->first()->category : null,
-				'loser1_name' => $match->losers()->first()->first_name . ' ' . $match->losers()->first()->last_name,
-				'loser1_uri' => $match->losers()->first()->uri,
-				'loser1_category' => $match->losers()->first()->category,
-				'loser2_name' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->first_name . ' ' . $match->losers()->skip(1)->first()->last_name : null,
-				'loser2_uri' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->uri : null,
-				'loser2_category' => $match->losers()->skip(1)->first() ? $match->losers()->skip(1)->first()->category : null,
+				'winner1_name' => $winners[0]->first_name . ' ' . $winners[0]->last_name,
+				'winner1_uri' => $winners[0]->uri,
+				'winner1_category' => $winners[0]->category,
+				'winner2_name' => isset($winners[1]) ? $winners[1]->first_name . ' ' . $winners[1]->last_name : null,
+				'winner2_uri' => $winners[1]->uri ?? null,
+				'winner2_category' => $winners[1]->category ?? null,
+				'loser1_name' => $losers[0]->first_name . ' ' . $losers[0]->last_name,
+				'loser1_uri' => $losers[0]->uri,
+				'loser1_category' => $losers[0]->category,
+				'loser2_name' => isset($losers[1]) ? $losers[1]->first_name . ' ' . $losers[1]->last_name : null,
+				'loser2_uri' => $losers[1]->uri ?? null,
+				'loser2_category' => $losers[1]->category ?? null,
 				'number' => $match->number,
-				'uri' => TenisMatchController::generateMatchUri($match->number),
+				'uri' => TenisMatchController::matchUriFromPlayers($match->number, $winners[0], $winners[1] ?? null, $losers[0], $losers[1] ?? null),
 				'winner_point_gain' => $match->winner_point_gain,
 				'loser_point_gain' => $match->loser_point_gain,
 				'set_score' => $match->set_score,
 				'game_score' => $match->game_score,
 				'county' => $match->county,
-				'court' => Court::find($match->court_id),
-				'league' => League::find($match->league_id),
+				'court' => $match->court,
+				'league' => $match->league,
 				'date' => $match->date,
 			];
 		});
-		
-		// Manually paginate the matches
-		$total = $formattedMatches->count();
-		$paginatedMatches = $formattedMatches->slice($offset, $perPage)->values();
-		
+
 		return response()->json([
 			'data' => $paginatedMatches,
 			'current_page' => (int) $page,

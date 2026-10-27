@@ -123,7 +123,9 @@ class CourtsController extends Controller
         // Wrapped so the counts and the current season's first price can be sorted on
         $query = DB::query()->fromSub($courts, 'c')
             ->select('c.*')
-            ->selectRaw('cast(json_value(prices, ?) as unsigned) as price', ['$.' . $season . '.morning']);
+            // json_extract instead of json_value, MySQL only takes a literal path in json_value;
+            // an unset price is a JSON null, which unquotes to the string 'null'
+            ->selectRaw("cast(nullif(json_unquote(json_extract(prices, ?)), 'null') as unsigned) as price", ['$.' . $season . '.morning']);
 
         if ($sortBy === 'price') {
             // Courts without prices stay at the bottom either way
@@ -209,9 +211,7 @@ class CourtsController extends Controller
 
         return [
             'season' => $season,
-            'court_types' => isset($court->court_types[$season])
-                ? array_intersect_key($court->court_types[$season], array_flip(Court::COURT_TYPES[$season]))
-                : null,
+            'court_types' => $court->seasonCourtTypes($season),
             'prices' => $court->prices[$season] ?? null,
             'name' => $court->name,
             'uri' => $court->uri,

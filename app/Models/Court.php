@@ -35,6 +35,33 @@ class Court extends Model {
         return Setting::get('season', 'summer');
     }
 
+    /**
+     * Number of courts of each type in a season, only the types that belong to it.
+     */
+    public function seasonCourtTypes($season)
+    {
+        if (!isset($this->court_types[$season])) return null;
+
+        return array_intersect_key($this->court_types[$season], array_flip(self::COURT_TYPES[$season]));
+    }
+
+    /**
+     * Courts of each type across all clubs in the current season.
+     */
+    public static function totalCourtTypes()
+    {
+        $season = self::currentSeason();
+        $totals = array_fill_keys(self::COURT_TYPES[$season], 0);
+
+        foreach (self::where('id', '>', 1)->whereNotNull('court_types')->get(['id', 'court_types']) as $court) {
+            foreach ($court->seasonCourtTypes($season) ?? [] as $type => $count) {
+                $totals[$type] += (int) $count;
+            }
+        }
+
+        return $totals;
+    }
+
     public function priceChanges()
     {
         return $this->hasMany(CourtPriceChange::class);

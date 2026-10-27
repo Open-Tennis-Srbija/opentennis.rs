@@ -6,6 +6,7 @@ import axios from "axios";
 import bus from "vue3-eventbus";
 import { ref } from "vue";
 import EditIcon from "@components/EditIcon.vue";
+import CourtTypes from "@components/CourtTypes.vue";
 import MatchTable from "@matches/Matches.vue";
 
 const utl = utils;
@@ -104,28 +105,6 @@ const prices = computed(() => {
     return Object.entries(priceTitles)
         .filter(([key]) => raw[key] != null)
         .map(([key, title]) => ({ key, title, value: utils.formatAsThousands(raw[key]) }));
-});
-
-// Forms for 1, 2-4 and 5+ courts, e.g. 1 šljaka, 3 šljake, 5 šljaka
-const courtTypeTitles = {
-    hard: ["otvoren beton", "otvorena betona", "otvorenih betona"],
-    gravel: ["šljaka", "šljake", "šljaka"],
-    hard_indoor: ["zatvoren beton", "zatvorena betona", "zatvorenih betona"],
-    gravel_indoor: ["zatvorena šljaka", "zatvorene šljake", "zatvorenih šljaka"],
-};
-
-const pluralForm = (count) => {
-    if (count % 10 === 1 && count % 100 !== 11) return 0;
-    if ([2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100)) return 1;
-    return 2;
-};
-
-const courtTypes = computed(() => {
-    const raw = court.value.court_types || {};
-
-    return Object.entries(courtTypeTitles)
-        .filter(([key]) => raw[key] > 0)
-        .map(([key, titles]) => ({ key, title: titles[pluralForm(raw[key])], count: raw[key] }));
 });
 
 const isInactive = (date_end) => {
@@ -276,16 +255,7 @@ const getRandomWidth = () => {
                     </div>
                 </div>
             </template>
-            <template v-if="courtTypes.length > 0">
-                <h2 class="summary-title">tereni</h2>
-                <div class="summary player court-types" :style="{ gridTemplateColumns: `repeat(${courtTypes.length}, 1fr)` }">
-                    <div class="summary-item" v-for="type in courtTypes" :key="type.key">
-                        <img :src="`/courts/court_${type.key}.png`" :alt="type.title">
-                        <p class="big">{{ type.count }}</p>
-                        <h2>{{ type.title }}</h2>
-                    </div>
-                </div>
-            </template>
+            <CourtTypes title="tereni" :counts="court.court_types" />
             <h2 class="summary-title">Statistika</h2>
             <div class="summary player two">
                 <div class="summary-item">
@@ -373,36 +343,6 @@ const getRandomWidth = () => {
   @media only screen and (max-width: 1200px) {
     padding-bottom: 10px;
   }
-}
-
-// Columns are set inline from the number of court types
-.summary.player.court-types {
-  display: grid;
-  // Images start at their edge, text has room above its letters
-  padding-top: 6px;
-  padding-bottom: 40px;
-
-  @media only screen and (max-width: 1200px) {
-    padding-bottom: 9px;
-  }
-
-  .summary-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-
-    img {
-      width: 64px;
-      height: 100px;
-      margin-bottom: 15px;
-    }
-
-    .big {
-      margin-bottom: 0;
-    }
-  }
-
 }
 
 // Skeleton base animation

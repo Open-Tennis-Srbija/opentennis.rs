@@ -53,6 +53,11 @@ class TennisMatch extends Model
         return $this->belongsTo(Court::class);
     }
 
+    public function league()
+    {
+        return $this->belongsTo(League::class);
+    }
+
     public function addPlayers(array $players, string $team)
     {
         foreach ($players as $player) {

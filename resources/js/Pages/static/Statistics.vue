@@ -2,6 +2,7 @@
     import { onMounted, computed } from 'vue';
     import utils from '../../utils';
     import LeagueChart from '@components/LeagueChart.vue';
+    import CourtTypes from '@components/CourtTypes.vue';
     import { usePage } from '@inertiajs/vue3';
     import axios from 'axios';
     import bus from 'vue3-eventbus';
@@ -377,6 +378,8 @@ import { ref } from 'vue';
                 </div>
             </div>
 
+            <CourtTypes title="aktivni tereni" title-class="big-margin" :counts="data.court_types" :space-below="false" />
+
             <h2 class="summary-title big-margin">Grafikoni</h2>
             <LeagueChart />
         </div>
@@ -384,6 +387,14 @@ import { ref } from 'vue';
 </template>
 
 <style scoped>
+/* Same space above every section as above "teniseri" (103px on desktop, mobile is already even);
+   :deep so it also reaches the title inside CourtTypes */
+@media (min-width: 1201px) {
+    .static-wrapper .dashboard-wrapper :deep(.summary-title.big-margin) {
+        margin-top: 95px;
+    }
+}
+
 /* Skeleton loading styles only - no typography changes */
 .skeleton-wrapper {
     pointer-events: none;

@@ -8,6 +8,7 @@ use App\Models\Court;
 use App\Models\League;
 use App\Models\TennisMatch;
 use LeagueChartData;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -359,9 +360,20 @@ class LeagueController extends Controller
         $data['totals']['matches'] = TennisMatch::count();
         $data['totals']['players'] = Player::count();
         $data['locations'] = Self::getLocations();
-        $players = PlayerController::getPlayers();
+        $data['court_types'] = Court::totalCourtTypes();
 
-        $players = $players->toArray();
+        // Only the counts the top lists need, getPlayers() also adds up games per player
+        $players = Player::select('id', 'first_name', 'last_name', 'uri')
+            ->withCount(['wins', 'losses'])
+            ->get()
+            ->map(fn ($player) => [
+                'name' => $player->first_name . ' ' . $player->last_name,
+                'uri' => $player->uri,
+                'wins' => $player->wins_count,
+                'loses' => $player->losses_count,
+                'total_matches' => $player->wins_count + $player->losses_count,
+            ])
+            ->all();
        usort($players, function($a, $b) {
             $matchComparison = $b['total_matches'] <=> $a['total_matches'];
 
@@ -426,51 +438,43 @@ class LeagueController extends Controller
     }
 
     public static function getLocations(){
-        $matches = TennisMatch::all();
-
+        // Counted in the database instead of loading every match with its court and league
         $data = [
-            'courts'=>[],
-            'locations'=>[],
-            'leagues'=>[]
+            'courts' => TennisMatch::join('courts', 'courts.id', '=', 'tennis_matches.court_id')
+                ->where('courts.id', '!=', 1)
+                ->groupBy('courts.id', 'courts.name', 'courts.uri')
+                ->get(['courts.id', 'courts.name', 'courts.uri', DB::raw('count(*) as count')])
+                ->map(fn ($court) => [
+                    'name' => $court->name,
+                    'id' => $court->id,
+                    'uri' => $court->uri,
+                    'count' => (int) $court->count,
+                ])
+                ->all(),
+            'locations' => [],
+            'leagues' => TennisMatch::join('leagues', 'leagues.id', '=', 'tennis_matches.league_id')
+                ->where('leagues.id', '!=', 1)
+                ->groupBy('leagues.id', 'leagues.name', 'leagues.link', 'leagues.uri')
+                ->get(['leagues.name', 'leagues.link', 'leagues.uri', DB::raw('count(*) as count')])
+                ->map(fn ($league) => [
+                    'name' => $league->name,
+                    'link' => $league->link,
+                    'uri' => $league->uri,
+                    'count' => (int) $league->count,
+                ])
+                ->all(),
         ];
 
-        foreach ($matches as $match) {
-            $court = Court::find($match->court_id);
-            $league = League::find($match->league_id);
-            if($league && $league->id != 1){
-                if(!isset($data['leagues'][$league->id])){
-                    $data['leagues'][$league->id] = [
-                        'name' => $league->name,
-                        'link' => $league->link,
-                        'uri' => $league->uri,
-                        'count' => 1
-                    ];
-                }
-                else{
-                    $data['leagues'][$league->id]['count']++;
-                }
-            }
-            if($court && $court->id != 1){
-                if(!isset($data['courts'][$court->id])){
-                    $data['courts'][$court->id] = [
-                        'name' => $court->name,
-                        'id' => $court->id,
-                        'uri' => $court->uri,
-                        'count' => 1
-                    ];
-                }
-                else{
-                    $data['courts'][$court->id]['count']++;
-                }
-            }
-            if(!isset($data['locations'][$match->county])){
-                $data['locations'][$match->county] = [
-                    'name' => $match->county,
+        // Counted here rather than grouped in SQL, which would merge counties differing only in case
+        foreach (TennisMatch::pluck('county') as $county) {
+            if(!isset($data['locations'][$county])){
+                $data['locations'][$county] = [
+                    'name' => $county,
                     'count' => 1
                 ];
             }
             else{
-                $data['locations'][$match->county]['count']++;
+                $data['locations'][$county]['count']++;
             }
         }
 

@@ -802,16 +802,17 @@ class TenisMatchController extends Controller
             return null;
         }
         
-        $winner1 = $match->winners()->first();
-        $loser1 = $match->losers()->first();
-        $winner2 = $match->winners()->skip(1)->first();
-        $loser2 = $match->losers()->skip(1)->first();
-        
-        // Format names for URI (lowercase, replace spaces with dashes)
-        $formatName = function($firstName, $lastName) {
-            return strtolower(Helper::formatName($firstName)) . '-' . strtolower(Helper::formatName($lastName));
-        };
-        
+        return self::matchUriFromPlayers(
+            $matchNumber,
+            $match->winners()->first(),
+            $match->winners()->skip(1)->first(),
+            $match->losers()->first(),
+            $match->losers()->skip(1)->first()
+        );
+    }
+
+    // For callers that already have the match's players loaded
+    public static function matchUriFromPlayers($matchNumber, $winner1, $winner2, $loser1, $loser2) {
         if ($winner2 && $loser2) {
             // Doubles match
             return $winner1->uri . '-' .

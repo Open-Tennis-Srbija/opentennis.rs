@@ -96,6 +96,8 @@
 
     .edit-btn {
         position: absolute;
+        // Above the h1, which is positioned and comes later, so it would cover the button
+        z-index: 1;
         text-transform: uppercase;
         color: black;
         font-size: 50px;

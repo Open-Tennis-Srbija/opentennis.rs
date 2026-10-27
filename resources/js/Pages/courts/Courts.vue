@@ -46,12 +46,11 @@ watch(selectedSort, (val) => {
     }
 }, { deep: true });
 
-// Current season prices as "1,500 / 2,200 / 2,200", leaving out the ones not set
+// Current season prices, leaving out the ones not set; shown as "1,500 / 2,200 / 2,200"
 const formatPrices = (prices) => {
     return ['morning', 'afternoon', 'weekend']
         .filter((key) => prices[key] != null)
-        .map((key) => utl.formatAsThousands(prices[key]))
-        .join(' / ');
+        .map((key) => utl.formatAsThousands(prices[key]));
 };
 
 // Courts come sorted from the server, a page of 100 at a time
@@ -123,7 +122,7 @@ const courtsText = computed(() => {
       <div id="desktop">
         <div class="rankings-header" :style="{ top: 200 - topOffset + 'px' }">
           <div class="name">teren</div>
-          <div class="total-matches">cene RSD</div>
+          <div class="total-matches prices-header">cene RSD<span class="prices-sub">(početak / kraj / vikend)</span></div>
           <div class="total-matches">mečevi</div>
           <div class="total-matches">teniseri</div>
           <div class="total-matches">opština</div>
@@ -184,7 +183,7 @@ const courtsText = computed(() => {
       <div id="desktop">
       <div class="rankings-header" :style="{ top: 200 - topOffset + 'px' }">
         <div class="name sortable" :class="{ active: sortKey === 'name', asc: sortKey === 'name' && sortDir === 'asc' }" @click="toggleSort('name')">teren</div>
-        <div class="total-matches sortable" :class="{ active: sortKey === 'price', asc: sortKey === 'price' && sortDir === 'asc' }" @click="toggleSort('price')">cene RSD</div>
+        <div class="total-matches sortable prices-header" :class="{ active: sortKey === 'price', asc: sortKey === 'price' && sortDir === 'asc' }" @click="toggleSort('price')"><span class="prices-label">cene RSD</span><span class="prices-sub">(početak / kraj / vikend)</span></div>
         <div class="total-matches sortable" :class="{ active: sortKey === 'matches_number', asc: sortKey === 'matches_number' && sortDir === 'asc' }" @click="toggleSort('matches_number')">mečevi</div>
         <div class="total-matches sortable" :class="{ active: sortKey === 'player_number', asc: sortKey === 'player_number' && sortDir === 'asc' }" @click="toggleSort('player_number')">teniseri</div>
         <div class="total-matches sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
@@ -192,7 +191,11 @@ const courtsText = computed(() => {
       <div class="ranking-entry" v-for="(court, index) in courts" :key="court.id" :style="{marginTop: index === 0 ? 25 - topOffset/3 + 'px' : '0'}">
                 <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-teren/${court.id}`"><EditBtn/></Link>
         <div class="name helvetica"><Link prefetch="false" :href="`/tereni/${court.uri}`">{{court.name}}</Link></div>
-        <div class="total-matches">{{ court.prices ? formatPrices(court.prices) : '' }}</div>
+        <div class="total-matches">
+          <template v-if="court.prices">
+            <template v-for="(price, i) in formatPrices(court.prices)" :key="i"><span v-if="i" class="price-slash"> / </span>{{ price }}</template>
+          </template>
+        </div>
         <div class="total-matches">{{court.matches_number}}</div>
         <div class="total-matches">{{court.player_number}}</div>
         <div class="total-matches smaller-font" style="text-align: center;">{{court.county}}</div>
@@ -233,8 +236,11 @@ const courtsText = computed(() => {
         <div class="name helvetica text-align-center"><Link prefetch="false" :href="`/tereni/${court.uri}`">{{court.name}}</Link></div>
         <div class="info one" v-if="court.prices">
           <div class="info-wrapp">
-            <div class="sup">cene RSD</div>
-            <div class="text">{{ formatPrices(court.prices) }}</div>
+            <div class="sup prices-sup">cene RSD<br>(početak / kraj / vikend)</div>
+            <!-- One span, .text lays out its children as a column -->
+            <div class="text"><span>
+              <template v-for="(price, i) in formatPrices(court.prices)" :key="i"><span v-if="i" class="price-slash"> / </span>{{ price }}</template>
+            </span></div>
           </div>
         </div>
         <div class="info two">
@@ -353,6 +359,41 @@ const courtsText = computed(() => {
     100% {
         background-position: -200% 0;
     }
+}
+
+/* "cene RSD" with the order of the three prices on a gray line under it */
+.prices-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* The sort arrows stay on the first row beside the label */
+.sortable.prices-header {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    /* The wider gray line stretches the columns, so the label is centered and the arrows hug it */
+    &::before { grid-area: 1 / 1; justify-self: end; }
+    .prices-label { grid-area: 1 / 2; justify-self: center; }
+    &::after { grid-area: 1 / 3; justify-self: start; }
+    .prices-sub { grid-area: 2 / 1 / 3 / 4; justify-self: center; }
+}
+
+.prices-sub {
+    color: #949494;
+    white-space: nowrap;
+}
+
+.price-slash {
+    color: #949494;
+}
+
+/* Mobile label, the second line centered under the first; its descenders sit lower
+   than "mečevi", so 3px more keeps the visible space to the numbers the same */
+.prices-sup {
+    text-align: center;
+    margin-bottom: 3px;
 }
 
 .sortable {
