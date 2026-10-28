@@ -21,6 +21,54 @@ const match = ref(props.match || {});
 
 const page = usePage();
 
+const DAYS_FULL = ['nedelja', 'ponedeljak', 'utorak', 'sreda', 'četvrtak', 'petak', 'subota'];
+const MONTHS_FULL = ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar'];
+
+// Plain-text version of the match for crawlers, scrapers and screen readers.
+// Each line is a single text node so text extraction doesn't split it up.
+const summary = computed(() => {
+    const m = match.value;
+    if (!m?.winner1_name || !m?.loser1_name) return null;
+
+    const side = (a, b) => (b ? `${a} / ${b}` : a);
+    const games = m.game_score ? ` (${m.game_score.split(',').map((s) => s.trim()).join(', ')})` : '';
+
+    const players = [
+        [m.winner1_name, m.winner1_category],
+        [m.winner2_name, m.winner2_category],
+        [m.loser1_name, m.loser1_category],
+        [m.loser2_name, m.loser2_category],
+    ]
+        .filter(([name]) => name)
+        .map(([name, category]) => (category && category !== '?' ? `${name}, kategorija ${category}` : name));
+
+    let event = null;
+    if (m.league?.uri) {
+        const kind = m.league.type === 'league' ? 'Liga' : 'Turnir';
+        event = `${kind}: ${m.league.name}${m.league.series?.name ? ` (${m.league.series.name})` : ''}`;
+    } else if (m.league) {
+        event = 'Sparing';
+    }
+
+    const county = m.county && m.county !== '?' ? m.county : null;
+    const place = m.court?.id > 1
+        ? `Teren: ${m.court.name}${county ? `, ${county}` : ''}`
+        : (county ? `Mesto: ${county}` : null);
+
+    // Parse the date parts directly so server and browser agree regardless of timezone.
+    let date = null;
+    const parts = /^(\d{4})-(\d{2})-(\d{2})/.exec(m.date || '');
+    if (parts) {
+        const d = new Date(+parts[1], +parts[2] - 1, +parts[3]);
+        date = `Datum: ${DAYS_FULL[d.getDay()]} ${d.getDate()}. ${MONTHS_FULL[d.getMonth()]} ${d.getFullYear()}`;
+    }
+
+    return {
+        heading: `${side(m.winner1_name, m.winner2_name)} – ${side(m.loser1_name, m.loser2_name)}`,
+        lines: [`Rezultat: ${m.set_score}${games}`, ...players, event, place, date].filter(Boolean),
+    };
+});
+
 onMounted(() => {
     // Refresh in the background, data may have changed since the server rendered this page.
     axios.get(`/api/match/${props.match_number}`).then(response => {
@@ -119,7 +167,11 @@ const matchTitle = computed(() => {
 </script>
 <template>
     <Head :title="matchTitle + ' -'" />
-    <div class="match-entry">
+    <div v-if="summary" class="sr-only">
+        <h1>{{ summary.heading }}</h1>
+        <p v-for="(line, i) in summary.lines" :key="i">{{ line }}</p>
+    </div>
+    <div class="match-entry" data-nosnippet>
         <Link :class="{ child: !isHome }" prefetch="false" class="edit-btn" v-if="$page.props.auth.user"
             :href="`/izmeni/${formatedMatch.number}`">
         <EditIcon />
@@ -256,6 +308,18 @@ const matchTitle = computed(() => {
 <style lang="scss" scoped>
 @use '@abstracts/' as *;
 $text-color-gray: #949494;
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
 
 
 .match-entry {

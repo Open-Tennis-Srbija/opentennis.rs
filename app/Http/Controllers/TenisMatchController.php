@@ -957,6 +957,7 @@ class TenisMatchController extends Controller
                 'id' => $match->league_id,
                 'name' => League::find($match->league_id)->name,
                 'uri' => League::find($match->league_id)->uri,
+                'type' => League::find($match->league_id)->type,
                 'series' => [
                     'name' => League::find($match->league_id)->tournamentSeries ? League::find($match->league_id)->tournamentSeries->name : null,
                     'uri' => League::find($match->league_id)->tournamentSeries ? League::find($match->league_id)->tournamentSeries->uri : null,
