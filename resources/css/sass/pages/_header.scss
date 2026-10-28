@@ -3,7 +3,7 @@
 .header-wrapper {
     max-width: 100vw;
     display: initial;
-    z-index: 5;
+    z-index: 102;
 
     .mobile-button {
         position: absolute;
@@ -17,7 +17,7 @@
         flex-direction: column;
         gap: 5px;
         top: bottom;
-        z-index: 5;
+        z-index: 102;
         display: none;
 
         .button {
@@ -143,7 +143,7 @@
         height: 50px;
         background: #ebebeb;
         position: sticky;
-        z-index: 5;
+        z-index: 102;
         top: 0;
 
         svg {
@@ -337,7 +337,7 @@
 .side-menu {
     transform: translateX(100%);
     display: block;
-    z-index: 4;
+    z-index: 101;
     position: fixed;
     top: 150px;
     overflow: hidden;
@@ -451,7 +451,7 @@
     display: none;
     transform: translateX(100%);
     display: block;
-    z-index: 4;
+    z-index: 101;
     position: fixed;
     top: 50px;
     height: calc(100vh - 100px);
@@ -588,7 +588,7 @@
         position: fixed;
         width: 100%;
         top: 0;
-        z-index: 5;
+        z-index: 102;
 
         .logo-wrapp {
             height: 40px !important;

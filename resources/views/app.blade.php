@@ -90,6 +90,22 @@
       gtag('config', '{{ $gaId }}');
     </script>
     @endif
+    {{-- Rendered by Blade, outside the Vue SSR bundle, so it is SSR-safe. --}}
+    @php $first1000Key = config('services.first1000.embed_key'); @endphp
+    @if($first1000Key)
+    <script src="{{ config('services.first1000.embed_src') }}" data-key="{{ $first1000Key }}" 
+    data-offset-top="50" 
+    data-offset-top-mobile="50" 
+    data-mobile-breakpoint="800" 
+    data-z-index="10" 
+    data-placeholder="Pitaj OTS AI" 
+    data-placeholder-mobile="Pitaj OTS AI" 
+    data-login-text="login/register"
+    data-button-color="#ec008c" 
+    data-offset-bottom-mobile="50"
+    data-button-style="arrow"
+    async></script>
+    @endif
     @inertiaHead
   </head>
   <body>

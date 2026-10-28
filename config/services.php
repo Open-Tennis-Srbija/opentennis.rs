@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'first1000' => [
+        'embed_key' => env('FIRST1000_EMBED_KEY'),
+        'embed_src' => env('FIRST1000_EMBED_SRC', 'https://first1000.ai/embed.js'),
+    ],
+
 ];
