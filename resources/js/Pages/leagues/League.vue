@@ -204,7 +204,7 @@ onBeforeUnmount(() => {
             </span>
         </h1>
 
-        <p class="subtitle small-margin">{{ league.county }}{{ league.court && league.court.id > 1 ? ',' : '' }} <a class="court-link" v-if="league.court && league.court.id > 1" :href="`/tereni/${league.court.uri}`">{{ league.court.name }}</a></p>
+        <p class="subtitle small-margin"><a class="court-link" v-if="league.court && league.court.id > 1" :href="`/tereni/${league.court.uri}`">{{ league.court.name }}</a>{{ league.court && league.court.id > 1 ? ', ' : '' }}{{ league.county }}</p>
         <p v-if="league.date_start || league.date_end" :style="{color: isInactive(league.date_end) ? '#949494' : 'black'}" class="subtitle smaller-margin league-margin">
             {{formatDate(league.date_start, league.date_end)}} 
         </p>
@@ -213,7 +213,15 @@ onBeforeUnmount(() => {
             Dodaj meč
         </a>
         <div class="dashboard-wrapper">
-            <h2 class="summary-title">Statistika</h2>
+            <template v-if="league.price != null">
+                <h2 class="summary-title">Cena RSD</h2>
+                <div class="summary player three single league-price">
+                    <div class="summary-item">
+                        <p class="big">{{ utils.formatAsThousands(league.price) }}</p>
+                    </div>
+                </div>
+            </template>
+            <h2 class="summary-title" :class="{ 'low-margin section-gap': league.price != null }">Statistika</h2>
             <div class="summary player two">
                 <div class="summary-item">
                     <h2>teniseri</h2>
@@ -224,14 +232,6 @@ onBeforeUnmount(() => {
                     <p class="big">{{ league.match_number }}</p>
                 </div>
             </div>
-            <template v-if="league.price != null">
-                <h2 class="summary-title low-margin section-gap">Cena RSD</h2>
-                <div class="summary player three single league-price">
-                    <div class="summary-item">
-                        <p class="big">{{ utils.formatAsThousands(league.price) }}</p>
-                    </div>
-                </div>
-            </template>
             <h2 class="summary-title low-margin section-gap">teniseri</h2>
             <div class="summary player three col single">
                 <div class="summary-item players mobile-mt-20">
