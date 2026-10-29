@@ -26,6 +26,7 @@ onMounted(() => {
         form.uri = response.data.uri;
         form.date_end = response.data.date_end;
         form.link = response.data.link;
+        form.price = response.data.price;
         form.type = response.data.type == 'league' ? 'liga' : 'turnir';
         form.court = response.data.court;
         league.value = response.data;
@@ -67,6 +68,7 @@ const form = useForm({
     name: null,
     location: null,
     link: null,
+    price: null,
     court: null,
     type: null,
     uri: null,
@@ -157,7 +159,7 @@ const handleInputs = (event,isDate = false) => {
 
 
       <div class="form-section">
-        <div class="form-row">
+        <div class="form-row three">
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
             <label for="winner-fname" class="input-label">
               Organizator (link)
@@ -178,6 +180,13 @@ const handleInputs = (event,isDate = false) => {
               :shouldReset="formState.shouldReset"
             ></Dropdown>
             <p class="error-message">{{ form.errors.court }}</p>
+          </div>
+          <div class="form-group">
+            <label for="price" class="input-label">
+              Cena RSD
+            </label>
+            <input v-model="form.price" :class="{'invalid': form.errors.price}" :disabled="formState.submitted" id="price" type="number" min="0">
+            <p class="error-message">{{ form.errors.price }}</p>
           </div>
         </div>
       </div>

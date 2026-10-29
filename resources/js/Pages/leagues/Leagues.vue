@@ -101,6 +101,9 @@ const formatDates =((start,end)=>{
 
 
 })
+// Empty when no price was entered, like on the courts list
+const formatPrice = (price) => price != null ? utl.formatAsThousands(price) : '';
+
 const isInactive = (date_end) => {
   const end = new Date(date_end);
   const now = new Date();
@@ -181,6 +184,7 @@ const leaguesText = computed(() => {
         <div class="rankings-header" :style="{ top: 200 - topOffset + 'px' }">
           <div class="name">lige</div>
           <div class="date-range">početak - kraj</div>
+          <div class="total-matches">cena RSD</div>
           <div class="total-matches">mečevi</div>
           <div class="loses">teniseri</div>
           <div class="county-col">opština</div>
@@ -192,6 +196,9 @@ const leaguesText = computed(() => {
           <div class="date-range smaller-font">
             <div class="skeleton-item skeleton-text" style="margin-bottom: 4px; width: 70%;"></div>
             <div class="skeleton-item skeleton-text" style="width: 80%;"></div>
+          </div>
+          <div class="total-matches">
+            <div class="skeleton-item skeleton-text small"></div>
           </div>
           <div class="total-matches">
             <div class="skeleton-item skeleton-text small"></div>
@@ -234,6 +241,7 @@ const leaguesText = computed(() => {
         <div class="rankings-header" :style="{ top: 200 - topOffset + 'px' }">
           <div class="name sortable" :class="{ active: sortKey === 'name', asc: sortKey === 'name' && sortDir === 'asc' }" @click="toggleSort('name')">lige</div>
           <div class="date-range sortable" :class="{ active: sortKey === 'date_start', asc: sortKey === 'date_start' && sortDir === 'asc' }" @click="toggleSort('date_start')">početak - kraj</div>
+          <div class="total-matches sortable" :class="{ active: sortKey === 'price', asc: sortKey === 'price' && sortDir === 'asc' }" @click="toggleSort('price')">cena RSD</div>
           <div class="total-matches sortable" :class="{ active: sortKey === 'match_number', asc: sortKey === 'match_number' && sortDir === 'asc' }" @click="toggleSort('match_number')">mečevi</div>
           <div class="loses sortable" :class="{ active: sortKey === 'player_number', asc: sortKey === 'player_number' && sortDir === 'asc' }" @click="toggleSort('player_number')">teniseri</div>
           <div class="county-col sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
@@ -242,6 +250,7 @@ const leaguesText = computed(() => {
           <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-ligu/${league.uri}`"><EditBtn/></Link>
           <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
           <div style="text-align: center; line-height: 1.6;" :class="{'inactive' : isInactive(league.date_end)}" class="date-range smaller-font">{{formatDates(league.date_start, league.date_end)[0]}}<template v-if="!areSameDate(league.date_start, league.date_end)"><br>{{formatDates(league.date_start, league.date_end)[1]}}</template></div>
+          <div class="total-matches">{{ formatPrice(league.price) }}</div>
           <div class="total-matches">{{league.match_number}}</div>
           <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
           <div style="text-align:center" class="county-col smaller-font" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
@@ -254,6 +263,9 @@ const leaguesText = computed(() => {
             <div class="date-range smaller-font">
               <div class="skeleton-item skeleton-text" style="margin-bottom: 4px; width: 70%;"></div>
               <div class="skeleton-item skeleton-text" style="width: 80%;"></div>
+            </div>
+            <div class="total-matches">
+              <div class="skeleton-item skeleton-text small"></div>
             </div>
             <div class="total-matches">
               <div class="skeleton-item skeleton-text small"></div>
@@ -280,6 +292,7 @@ const leaguesText = computed(() => {
         <div class="ranking-entry" v-for="(league, index) in leagues" :key="league.uri + index">
           <div class="name" style="font-weight: bold; text-align: center;"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link></div>
           <div :class="{'inactive' : isInactive(league.date_end)}" class="date">{{formatDate(league.date_start, league.date_end)}}</div>
+          <div v-if="league.price != null" class="price">{{ formatPrice(league.price) }} RSD</div>
           <div class="county" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
           <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-ligu/${league.uri}`"><EditBtn/></Link>
         </div>

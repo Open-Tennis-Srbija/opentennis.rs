@@ -40,6 +40,10 @@ const sortedLeagues = computed(() => {
             bVal = (bVal === '?' || !bVal) ? '' : bVal.toLowerCase();
             return dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
         }
+        // Tournaments without a price stay at the bottom both ways
+        if (key === 'price' && (aVal == null || bVal == null)) {
+            return (aVal == null) - (bVal == null);
+        }
         if (key === 'date_start') {
             aVal = new Date(aVal).getTime();
             bVal = new Date(bVal).getTime();
@@ -158,6 +162,9 @@ const formatDates =((start,end)=>{
 
 
 })
+// Empty when no price was entered, like on the courts list
+const formatPrice = (price) => price != null ? utl.formatAsThousands(price) : '';
+
 const isInactive = (date_end) => {
   const end = new Date(date_end);
   const now = new Date();
@@ -549,6 +556,7 @@ const tournamentsText = computed(() => {
         <div class="rankings-header" :style="{ top: 304 - topOffset + 'px' }">
           <div class="name sortable" :class="{ active: sortKey === 'name', asc: sortKey === 'name' && sortDir === 'asc' }" @click="toggleSort('name')">turniri</div>
           <div class="elo date-range sortable" :class="{ active: sortKey === 'date_start', asc: sortKey === 'date_start' && sortDir === 'asc' }" @click="toggleSort('date_start')">početak - kraj</div>
+          <div class="total-matches sortable" :class="{ active: sortKey === 'price', asc: sortKey === 'price' && sortDir === 'asc' }" @click="toggleSort('price')">cena RSD</div>
           <div class="total-matches sortable" :class="{ active: sortKey === 'match_number', asc: sortKey === 'match_number' && sortDir === 'asc' }" @click="toggleSort('match_number')">mečevi</div>
           <div class="loses sortable" :class="{ active: sortKey === 'player_number', asc: sortKey === 'player_number' && sortDir === 'asc' }" @click="toggleSort('player_number')">teniseri</div>
           <div class="elo county-col sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
@@ -560,6 +568,9 @@ const tournamentsText = computed(() => {
           <div class="wins smaller-font">
             <div class="skeleton-item skeleton-text" style="margin-bottom: 4px; width: 70%;"></div>
             <div class="skeleton-item skeleton-text" style="width: 80%;"></div>
+          </div>
+          <div class="total-matches">
+            <div class="skeleton-item skeleton-text small"></div>
           </div>
           <div class="total-matches">
             <div class="skeleton-item skeleton-text small"></div>
@@ -594,6 +605,7 @@ const tournamentsText = computed(() => {
         <!-- <div class="rankings-header" :style="{top: `${ 50 - topOffset}px`}"> -->
           <div class="name sortable" :class="{ active: sortKey === 'name', asc: sortKey === 'name' && sortDir === 'asc' }" @click="toggleSort('name')">turniri</div>
           <div class="elo date-range sortable" :class="{ active: sortKey === 'date_start', asc: sortKey === 'date_start' && sortDir === 'asc' }" @click="toggleSort('date_start')">početak - kraj</div>
+          <div class="total-matches sortable" :class="{ active: sortKey === 'price', asc: sortKey === 'price' && sortDir === 'asc' }" @click="toggleSort('price')">cena RSD</div>
           <div class="total-matches sortable" :class="{ active: sortKey === 'match_number', asc: sortKey === 'match_number' && sortDir === 'asc' }" @click="toggleSort('match_number')">mečevi</div>
           <div class="loses sortable" :class="{ active: sortKey === 'player_number', asc: sortKey === 'player_number' && sortDir === 'asc' }" @click="toggleSort('player_number')">teniseri</div>
           <div class="elo county-col sortable" :class="{ active: sortKey === 'county', asc: sortKey === 'county' && sortDir === 'asc' }" @click="toggleSort('county')">opština</div>
@@ -602,6 +614,7 @@ const tournamentsText = computed(() => {
           <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-turnir/${league.uri}`"><EditBtn/></Link>
           <div class="name"><Link prefetch="false" :href="`/${league.uri}`">{{league.name}}</Link><br><span class="series" :style="{'color': league.series?.color || '#8f8f8f'}">{{ league.series?.name || 'nezavistan' }}</span></div>
           <div style="text-align: center; line-height: 1.6;" :class="{'inactive' : isInactive(league.date_end)}" class="wins smaller-font">{{formatDates(league.date_start, league.date_end)[0]}}<template v-if="!areSameDate(league.date_start, league.date_end)"><br>{{formatDates(league.date_start, league.date_end)[1]}}</template></div>
+          <div class="total-matches">{{ formatPrice(league.price) }}</div>
           <div class="total-matches">{{league.match_number}}</div>
           <div class="loses" :class="{'unknown': league.player_number == 0}">{{league.player_number}}</div>
           <div style="text-align:center" class="wins smaller-font" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
@@ -614,6 +627,7 @@ const tournamentsText = computed(() => {
           <span class="series" :style="{'color': league.series?.color || '#8f8f8f'}">{{ league.series?.name || 'nezavistan' }}</span>
           </div>
           <div :class="{'inactive' : isInactive(league.date_end)}" class="date">{{formatDate(league.date_start, league.date_end)}}</div>
+          <div v-if="league.price != null" class="price">{{ formatPrice(league.price) }} RSD</div>
           <div class="county" :class="{'unknown': league.county == '?'}">{{league.county}}</div>
           <Link prefetch="false" class="edit-btn" v-if="$page.props.auth.user" :href="`/izmeni-turnir/${league.uri}`"><EditBtn/></Link>
 

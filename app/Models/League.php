@@ -26,7 +26,8 @@ class League extends Model
 
     protected $casts = [
         'date_begin' => 'date',
-        'date_end' => 'date'
+        'date_end' => 'date',
+        'price' => 'integer',
     ];
 
 
@@ -153,6 +154,11 @@ class League extends Model
     public function matches()
     {
         return $this->hasMany(TennisMatch::class, 'league_id');
+    }
+
+    public function priceChanges()
+    {
+        return $this->hasMany(LeaguePriceChange::class);
     }
 
     /**

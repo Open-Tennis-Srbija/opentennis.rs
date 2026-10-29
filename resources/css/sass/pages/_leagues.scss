@@ -9,7 +9,8 @@
     }
     .rankings-header,
     .ranking-entry{
-        grid-template-columns: 668px 133px 133px 133px 133px;
+        // name, dates, price, matches, players, county
+        grid-template-columns: 535px 133px 133px 133px 133px 133px;
 
         .league-points{
             font-weight: bold;

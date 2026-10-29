@@ -17,6 +17,29 @@ use Illuminate\Support\Str;
 
 class LeaguesController extends Controller
 {
+    const PRICE_RULE = 'nullable|integer|min:0|max:1000000';
+    const PRICE_MESSAGES = [
+        'price.integer' => 'Unesite broj.',
+        'price.min' => 'Cena ne može biti negativna.',
+        'price.max' => 'Cena je prevelika.',
+    ];
+
+    // Saves the league and adds a history row when its price was set or changed
+    private static function saveWithPriceHistory(League $league){
+        $priceChanged = $league->exists ? $league->isDirty('price') : $league->price !== null;
+
+        DB::transaction(function () use ($league, $priceChanged) {
+            $league->save();
+
+            if($priceChanged){
+                $league->priceChanges()->create([
+                    'price' => $league->price,
+                    'user_id' => auth()->id(),
+                ]);
+            }
+        });
+    }
+
     public static function getLeagues(){
         return League::where('id', '>', 1)->orderByRaw('LOWER(name)')->get();
     }
@@ -36,6 +59,7 @@ class LeaguesController extends Controller
             'player_number' => $league->getPlayerCount(),
             'match_number' => $league->getMatchCount(),
             'link' => $league->link,
+            'price' => $league->price,
             'rank' => $league->getRank(),
             'type'=> $league->type,
             'players' => $league->getPlayers(),
@@ -61,12 +85,13 @@ class LeaguesController extends Controller
             'uri' => 'max:50|regex:/^[a-zA-Z0-9-]+$/',
             'link' => '',
             'court' => '',
+            'price' => self::PRICE_RULE,
         ], [
             'name.required' => 'Ime je obavezno.',
             'county.required' => 'Opština je obavezna.',
             'date_begin.required' => 'Datum početka je obavezan.',
             'date_end.required' => 'Datum završetka je obavezan.',
-        ]);
+        ] + self::PRICE_MESSAGES);
 
         $league = League::find($data['id']);
         if($league){
@@ -77,6 +102,7 @@ class LeaguesController extends Controller
             $date_end = new DateTime($data['date_end']);
             $league->date_end = $date_end->format('Y-m-d');
             $league->link = $data['link'] ?? '';
+            $league->price = $data['price'] ?? null;
             $league->type = $data['type'] == 'liga' || $data['type'] == 'Liga' ? 'league' : 'tournament';
 
             if($data['uri'] != $league->uri)
@@ -101,7 +127,7 @@ class LeaguesController extends Controller
             } else {
                 $league->court_id = $data['court']['id'];
             }
-            $league->save();
+            self::saveWithPriceHistory($league);
             $uri = '/'.$league->uri;
             return redirect($uri);
         }
@@ -119,12 +145,13 @@ class LeaguesController extends Controller
             'link' => '',
             'court' => '',
             'series' => '',
+            'price' => self::PRICE_RULE,
         ], [
             'name.required' => 'Ime je obavezno.',
             'county.required' => 'Opština je obavezna.',
             'date_begin.required' => 'Datum početka je obavezan.',
             'date_end.required' => 'Datum završetka je obavezan.',
-        ]);
+        ] + self::PRICE_MESSAGES);
 
         $league = League::find($data['id']);
         if($league){
@@ -135,6 +162,7 @@ class LeaguesController extends Controller
             $date_end = new DateTime($data['date_end']);
             $league->date_end = $date_end->format('Y-m-d');
             $league->link = $data['link'] ?? '';
+            $league->price = $data['price'] ?? null;
             $league->type = $data['type'] == 'liga' || $data['type'] == 'Liga' ? 'league' : 'tournament';
 
             if($data['uri'] != $league->uri)
@@ -175,7 +203,7 @@ class LeaguesController extends Controller
                 $league->court_id = $data['court']['id'];
             }
 
-            $league->save();
+            self::saveWithPriceHistory($league);
             $uri = '/'.$league->uri;
             return redirect($uri);
         }
@@ -240,6 +268,7 @@ class LeaguesController extends Controller
             'date_end' => $league->date_end,
             'type' => $league->type,
             'link' => $league->link,
+            'price' => $league->price,
             'court' => Court::find($league->court_id),
         ];
     }
@@ -255,6 +284,7 @@ class LeaguesController extends Controller
             'date_end' => $tournament->date_end,
             'type' => $tournament->type,
             'link' => $tournament->link,
+            'price' => $tournament->price,
             'court' => Court::find($tournament->court_id),
             'series' => $tournament->tournamentSeries ? [
                 'id' => $tournament->tournamentSeries->id,
@@ -343,6 +373,7 @@ public static function getLeaguesForList(){
             'date_start' => 'date_begin',
             'player_number' => 'player_number',
             'county' => 'county',
+            'price' => 'price',
         ];
         if (!isset($columns[$sortBy])) {
             $sortBy = 'match_number';
@@ -355,10 +386,13 @@ public static function getLeaguesForList(){
 
         $query = League::where('id', '>', 1)
             ->where('type', 'league')
-            ->select('id', 'name', 'uri', 'type', 'county', 'link', 'date_begin', 'date_end')
+            ->select('id', 'name', 'uri', 'type', 'county', 'link', 'price', 'date_begin', 'date_end')
             ->withCount('matches')
-            ->selectSub($playerNumber, 'player_number')
-            ->orderBy($columns[$sortBy], $sortDir);
+            ->selectSub($playerNumber, 'player_number');
+
+        // Leagues without a price stay at the bottom both ways
+        if ($sortBy === 'price') $query->orderByRaw('price is null');
+        $query->orderBy($columns[$sortBy], $sortDir);
 
         // Same tie-breakers the list used when it sorted in the browser
         if ($sortBy !== 'match_number') $query->orderByDesc('matches_count');
@@ -377,6 +411,7 @@ public static function getLeaguesForList(){
                 'county' => $league->county,
                 'player_number' => $league->player_number,
                 'link' => $league->link,
+                'price' => $league->price,
             ];
         });
     }
@@ -398,6 +433,7 @@ public static function getTournamentsForList(){
             'player_number' => $league->getPlayerCount(),
             'points' => $league->getPoints(),
             'link' => $league->link,
+            'price' => $league->price,
             'series' => $league->tournamentSeries ? [
                 'id' => $league->tournamentSeries->id,
                 'name' => $league->tournamentSeries->name,
@@ -513,12 +549,13 @@ public static function getTournamentsForList(){
             'link' => '',
             'court' => '',
             'series' => '',
+            'price' => self::PRICE_RULE,
         ], [
             'name.required' => 'Ime je obavezno.',
             'county.required' => 'Opština je obavezna.',
             'date_begin.required' => 'Datum početka je obavezan.',
             'date_end.required' => 'Datum završetka je obavezan.',
-        ]);
+        ] + self::PRICE_MESSAGES);
 
         $league = new League();
         $league->name = $data['name'];
@@ -528,6 +565,7 @@ public static function getTournamentsForList(){
         $date_end = new DateTime($data['date_end']);
         $league->date_end = $date_end->format('Y-m-d');
         $league->link = $data['link'] ?? '';
+        $league->price = $data['price'] ?? null;
         $league->type = $data['type'] == 'liga' || $data['type'] == 'Liga' ? 'league' : 'tournament';
 
         $league->uri = Str::slug($data['name'], '-');
@@ -563,7 +601,7 @@ public static function getTournamentsForList(){
                 $league->tournament_series_id = null; // No series selected
         }
 
-        $league->save();
+        self::saveWithPriceHistory($league);
 
         return redirect('/'. $league->uri);
     }

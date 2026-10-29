@@ -45,6 +45,7 @@ const form = useForm({
     type: 'Liga',
     location: null,
     link: null,
+    price: null,
     court: null,
 });
 
@@ -118,7 +119,7 @@ const handleInputs = (event,isDate = false) => {
 
 
       <div class="form-section">
-        <div class="form-row">
+        <div class="form-row three">
           <div class="form-group" @focusin="prepareTemp()" @focusout="handleTemp('winner')">
             <label for="winner-fname" class="input-label">
               Organizator (link)
@@ -138,6 +139,13 @@ const handleInputs = (event,isDate = false) => {
               :shouldReset="formState.shouldReset"
             ></Dropdown>
             <p class="error-message">{{ form.errors.court }}</p>
+          </div>
+          <div class="form-group">
+            <label for="price" class="input-label">
+              Cena RSD
+            </label>
+            <input v-model="form.price" :class="{'invalid': form.errors.price}" :disabled="formState.submitted" id="price" type="number" min="0">
+            <p class="error-message">{{ form.errors.price }}</p>
           </div>
         </div>
       </div>

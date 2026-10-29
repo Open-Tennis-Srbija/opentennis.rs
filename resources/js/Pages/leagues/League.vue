@@ -224,7 +224,15 @@ onBeforeUnmount(() => {
                     <p class="big">{{ league.match_number }}</p>
                 </div>
             </div>
-            <h2 class="summary-title low-margin">teniseri</h2>
+            <template v-if="league.price != null">
+                <h2 class="summary-title low-margin section-gap">Cena RSD</h2>
+                <div class="summary player three single league-price">
+                    <div class="summary-item">
+                        <p class="big">{{ utils.formatAsThousands(league.price) }}</p>
+                    </div>
+                </div>
+            </template>
+            <h2 class="summary-title low-margin section-gap">teniseri</h2>
             <div class="summary player three col single">
                 <div class="summary-item players mobile-mt-20">
                     <template v-if="league.players?.length > 0">
@@ -247,7 +255,7 @@ onBeforeUnmount(() => {
                     </template>
                 </div>
             </div>
-            <h2 class="summary-title no-border big-margin mobile-mt-60 mobile-mb-0">mečevi</h2>
+            <h2 class="summary-title no-border big-margin mobile-mb-0 matches-gap">mečevi</h2>
             <div class="player-matches">
                 <Matches
                 :isHome="false"
@@ -261,6 +269,38 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
+// Same space between sections as on the player and court pages: 103px on desktop, 91px on mobile
+.static-wrapper .dashboard-wrapper .summary-title {
+  &.section-gap {
+    margin-top: 90px;
+
+    @media only screen and (max-width: 1200px) {
+      margin-top: 80px;
+    }
+  }
+
+  &.matches-gap {
+    margin-top: 96px;
+
+    @media only screen and (max-width: 1200px) {
+      margin-top: 85px;
+    }
+  }
+}
+
+// The "no players" message ends 6px lower than a list, this keeps the space under it the same;
+// important over the nested global rule for the players list headings
+.summary-item h2.black {
+  margin-bottom: 4px !important;
+}
+
+// The three-column layout adds 30px under the number on desktop, the statistika block above has none
+@media only screen and (min-width: 1201px) {
+  .summary.player.league-price .big {
+    margin-bottom: 0;
+  }
+}
+
 // Skeleton base animation
 @keyframes skeleton-loading {
   0% {

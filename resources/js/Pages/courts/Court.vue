@@ -290,7 +290,7 @@ const getRandomWidth = () => {
                     </template>
                 </div>
             </div>
-            <h2 class="summary-title big-margin">teniseri</h2>
+            <h2 class="summary-title big-margin after-list">teniseri</h2>
             <div class="summary player three col single">
                 <div class="summary-item players">
                     <template v-if="court.players?.length > 0">
@@ -313,7 +313,7 @@ const getRandomWidth = () => {
                     </template>
                 </div>
             </div>
-            <h2 class="summary-title no-border big-margin mobile-mb-0">mečevi</h2>
+            <h2 class="summary-title no-border big-margin mobile-mb-0 after-list">mečevi</h2>
             <div class="player-matches">
                 <MatchTable
                 :isHome="false"
@@ -328,6 +328,21 @@ const getRandomWidth = () => {
 </template>
 
 <style lang="scss" scoped>
+// Titles after a list of names get the same space as the others: 103px on desktop, 91px on mobile
+.static-wrapper .dashboard-wrapper .summary-title.big-margin.after-list {
+  margin-top: 96px;
+
+  @media only screen and (max-width: 1200px) {
+    margin-top: 85px;
+  }
+}
+
+// The "no leagues / no players" message ends 6px lower than a list, this keeps the space under it the same;
+// important over the nested global rule for the players list headings
+.summary-item h2.black {
+  margin-bottom: 4px !important;
+}
+
 // Bottom spacing matches the prices module, whose numbers carry a 30px margin.
 // Padding, since a margin here would collapse into the next title's margin.
 // On tablets the numbers keep that margin while the other modules lose theirs
