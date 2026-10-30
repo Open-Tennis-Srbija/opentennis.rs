@@ -100,7 +100,7 @@
     data-z-index="10" 
     data-placeholder="Pitaj OTS AI" 
     data-placeholder-mobile="Pitaj OTS AI" 
-    data-login-text="login / register"
+    data-login-text="prijava"
     data-button-color="#ec008c" 
     data-offset-bottom-mobile="50"
     data-button-style="arrow"
