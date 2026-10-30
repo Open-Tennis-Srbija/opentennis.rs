@@ -104,6 +104,7 @@
     data-button-color="#ec008c" 
     data-offset-bottom-mobile="50"
     data-button-style="arrow"
+    data-lang="sr"
     async></script>
     @endif
     @inertiaHead
