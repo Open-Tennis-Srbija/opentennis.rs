@@ -38,14 +38,17 @@ class Utils {
     serbianSortKey(text){
         const alphabet = ['a','b','c','č','ć','d','dž','đ','e','f','g','h','i','j','k','l','lj','m','n','nj','o','p','q','r','s','š','t','u','v','w','x','y','z','ž'];
 
-        return String(text).normalize('NFC').trim().toLowerCase().replace(/\d+|dž|lj|nj|./gsu, (token) => {
+        // ð looks the same as đ, some names are stored with it
+        return String(text).normalize('NFC').trim().toLowerCase().replace(/ð/g, 'đ').replace(/\d+|dž|lj|nj|./gsu, (token) => {
             if (/\d/.test(token)) return token.padStart(10, '0');
 
             let rank = alphabet.indexOf(token);
             // Foreign letters sort with their base letter (ö with o)
             if (rank === -1) rank = alphabet.indexOf(token.normalize('NFD')[0]);
+            if (rank !== -1) return String.fromCharCode(0xE000 + rank);
 
-            return rank === -1 ? token : String.fromCharCode(0xE000 + rank);
+            // Other scripts (Greek, Cyrillic) go after ž, punctuation before a
+            return /\p{L}/u.test(token) ? '' + token : token;
         });
     }
 }
