@@ -196,6 +196,7 @@ const selectMobileSort = (key) => {
           <Dropdown
             label="name"
             :options="sortOptions"
+            :sorted="false"
             v-model="selectedSort"
             :multiple="false"
             :searchable="false"
@@ -276,6 +277,7 @@ const selectMobileSort = (key) => {
           <Dropdown
             label="name"
             :options="sortOptions"
+            :sorted="false"
             v-model="selectedSort"
             :multiple="false"
             :searchable="false"

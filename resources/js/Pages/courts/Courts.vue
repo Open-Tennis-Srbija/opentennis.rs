@@ -151,6 +151,7 @@ const courtsText = computed(() => {
           <Dropdown
             label="name"
             :options="sortOptions"
+            :sorted="false"
             v-model="selectedSort"
             :multiple="false"
             :searchable="false"
@@ -226,6 +227,7 @@ const courtsText = computed(() => {
         <Dropdown
           label="name"
           :options="sortOptions"
+          :sorted="false"
           v-model="selectedSort"
           :multiple="false"
           :searchable="false"

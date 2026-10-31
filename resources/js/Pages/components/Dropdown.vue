@@ -1,6 +1,7 @@
 <script setup>
 import { getCurrentInstance, watch, ref } from "vue";
 import { computed, onBeforeMount, onMounted, onUnmounted, reactive } from "vue";
+import utils from "../../utils";
 
 const props = defineProps({
     autofocus: Boolean,
@@ -15,7 +16,8 @@ const props = defineProps({
     disabledOptions: Array,
     minWidth: String,
     clearable: Boolean,
-    searchable: { type: Boolean, default: true }
+    searchable: { type: Boolean, default: true },
+    sorted: { type: Boolean, default: true }
 });
 
 const model = defineModel();
@@ -52,7 +54,39 @@ const state = reactive({
     selectedIndex: 0,
     isBlured: false,
     placeholder: "",
-    options: props.options,
+});
+
+const isSpacer = (option) => option === "dropdown-spacer" || option?.name === "dropdown-spacer";
+
+// Spacers split the list into groups that are sorted on their own, so the
+// entries above a spacer (Beograd, sparing, Sve serije) stay where they are
+const sortedOptions = computed(() => {
+    if (!props.sorted) {
+        return props.options;
+    }
+
+    const optionText = (option) => (props.type === "array" ? option : option?.[props.label]) ?? "";
+    const sorted = [];
+    let group = [];
+
+    const flushGroup = () => {
+        const keyed = group.map((option) => ({ option, key: utils.serbianSortKey(optionText(option)) }));
+        keyed.sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
+        sorted.push(...keyed.map(({ option }) => option));
+        group = [];
+    };
+
+    (props.options ?? []).forEach((option) => {
+        if (isSpacer(option)) {
+            flushGroup();
+            sorted.push(option);
+        } else {
+            group.push(option);
+        }
+    });
+    flushGroup();
+
+    return sorted;
 });
 
 // Helper function to update display for multiple selection
@@ -128,23 +162,23 @@ const handleSearch = (e) => {
 const filteredOptions = computed(() => {
     // For multi-select mode or non-searchable, always show all options
     if (props.multiple || !props.searchable) {
-        return state.options;
+        return sortedOptions.value;
     }
-    
+
     // Single-select mode with no search term, show all options
     if (state.search === "" || (model.value && model.value.name == "")) {
-        return state.options;
+        return sortedOptions.value;
     }
-    
+
     // Filter options based on search for single-select only
     if (props.type !== "array") {
-        return state.options.filter((option) =>
+        return sortedOptions.value.filter((option) =>
             option[props.label]
                 .toLowerCase()
                 .includes(state.search.toLowerCase()),
         );
     } else {
-        return state.options.filter((option) =>
+        return sortedOptions.value.filter((option) =>
             option.toLowerCase().includes(state.search.toLowerCase()),
         );
     }

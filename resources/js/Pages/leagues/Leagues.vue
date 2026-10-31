@@ -216,6 +216,7 @@ const leaguesText = computed(() => {
           <Dropdown
             label="name"
             :options="sortOptions"
+            :sorted="false"
             v-model="selectedSort"
             :multiple="false"
             :searchable="false"
@@ -284,6 +285,7 @@ const leaguesText = computed(() => {
           <Dropdown
             label="name"
             :options="sortOptions"
+            :sorted="false"
             v-model="selectedSort"
             :multiple="false"
             :searchable="false"

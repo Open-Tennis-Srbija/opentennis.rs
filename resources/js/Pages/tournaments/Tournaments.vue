@@ -528,6 +528,7 @@ const tournamentsText = computed(() => {
           v-if="monthOptions.length > 0 && selectedMonth.id"
           label="name"
           :options="monthOptions"
+          :sorted="false"
           v-model="selectedMonth"
           :multiple="false"
           @input="onMonthChange"
