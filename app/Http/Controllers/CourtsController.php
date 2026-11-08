@@ -385,6 +385,7 @@ class CourtsController extends Controller
     }
 
     // Keeps only known keys per season, null when nothing was entered.
+    // The form fills empty fields with 0, so 0 is saved as not set too.
     // $keys is either one list for all seasons or a list per season.
     private static function seasonalValues($input, $keys){
         $result = [];
@@ -392,7 +393,7 @@ class CourtsController extends Controller
         foreach(Court::SEASONS as $season){
             foreach($keys[$season] ?? $keys as $key){
                 $value = $input[$season][$key] ?? null;
-                $result[$season][$key] = ($value === null || $value === '') ? null : (int) $value;
+                $result[$season][$key] = ($value === null || $value === '' || (int) $value === 0) ? null : (int) $value;
             }
         }
 
